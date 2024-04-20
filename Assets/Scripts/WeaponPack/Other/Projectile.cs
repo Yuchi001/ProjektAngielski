@@ -12,6 +12,8 @@ namespace WeaponPack.Other
         private Transform Target => _target.transform;
         private int _damage;
         private float _speed;
+        private GameObject _flightParticles;
+        private GameObject _onHitParticles;
         
         public Projectile Setup(int damage, float speed)
         {
@@ -30,6 +32,18 @@ namespace WeaponPack.Other
         public Projectile SetTarget(EnemyLogic enemyLogic)
         {
             _target = enemyLogic;
+            return this;
+        }
+
+        public Projectile SetFlightParticles(GameObject flightParticles)
+        {
+            _flightParticles = Instantiate(flightParticles, transform.position, Quaternion.identity, transform);
+            return this;
+        }
+
+        public Projectile SetOnHitParticles(GameObject onHitParticles)
+        {
+            _onHitParticles = onHitParticles;
             return this;
         }
 
@@ -57,6 +71,19 @@ namespace WeaponPack.Other
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.gameObject.TryGetComponent<EnemyLogic>(out var enemyLogic)) return;
+
+            if (_onHitParticles != null)
+            {
+                var particlesInstance = Instantiate(_onHitParticles, transform.position, Quaternion.identity);
+                Destroy(particlesInstance, 2f);
+            }
+
+            if (_flightParticles != null)
+            {
+                _flightParticles.transform.parent = null;
+                _flightParticles.GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
+                Destroy(_flightParticles, 2f);
+            }
             
             enemyLogic.GetDamaged(_damage);
             Destroy(gameObject);
