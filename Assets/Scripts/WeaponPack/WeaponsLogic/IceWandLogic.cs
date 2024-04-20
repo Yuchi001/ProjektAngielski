@@ -11,6 +11,7 @@ namespace WeaponPack.WeaponsLogic
     public class IceWandLogic : WeaponLogicBase
     {
         [SerializeField] private GameObject iceProjectile;
+        [SerializeField] private Sprite projectileSprite;
 
         private Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
         protected override void UseWeapon()
@@ -23,7 +24,9 @@ namespace WeaponPack.WeaponsLogic
 
             if (damage == null || speed == null) return; 
             
-            projectileScript.Setup((int)damage.statValue, speed.statValue, UtilsMethods.FindTarget(transform.position));
+            projectileScript.Setup((int)damage.statValue, speed.statValue)
+                .SetTarget(UtilsMethods.FindTarget(transform.position))
+                .SetSprite(projectileSprite);
         }
     }
 }
