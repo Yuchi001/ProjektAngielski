@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using EnemyPack;
+using UnityEngine;
 
 namespace Utils
 {
@@ -24,6 +26,30 @@ namespace Utils
             var y = mousePos.y - playerPos.y;
             var angleRad = Mathf.Atan2(y, x);
             return isRad ? angleRad - Mathf.Deg2Rad * 90 : (180 / Mathf.PI) * angleRad - 90;
+        }
+
+        public static T RandomClamp<T>(T val1, T val2)
+        {
+            var random = Random.Range(0, 2);
+            return random == 0 ? val1 : val2;
+        }
+        
+        public static EnemyLogic FindTarget(Vector2 position)
+        {
+            var enemies = Object.FindObjectsOfType<EnemyLogic>().ToList();
+            if (enemies.Count == 0) return null;
+            
+            var (pickedEnemy, smallestDistance) = (enemies[0], Vector2.Distance(position, enemies[0].transform.position));
+            foreach (var enemy in enemies)
+            {
+                var distance = Vector2.Distance(position, enemy.transform.position);
+                if (distance > smallestDistance) continue;
+
+                pickedEnemy = enemy;
+                smallestDistance = distance;
+            }
+
+            return pickedEnemy;
         }
     }
 }

@@ -9,12 +9,14 @@ namespace WeaponPack.SO
         [SerializeField] private string weaponName;
         [SerializeField] private Sprite weaponSprite;
         [SerializeField] private bool oneTimeSpawnLogic = false;
+        [SerializeField] private float cooldown;
         [SerializeField] private GameObject weaponLogicPrefab;
 
         [SerializeField] private List<WeaponStatPair> weaponStartingStats;
         [SerializeField, Tooltip("Each index will have ")] private List<UpgradeWeaponStats> weaponUpgradeStats;
 
         public string WeaponName => weaponName;
+        public float Cooldown => cooldown;
         public bool OneTimeSpawnLogic => oneTimeSpawnLogic;
         public GameObject WeaponLogicPrefab => weaponLogicPrefab;
         public Sprite WeaponSprite => weaponSprite;

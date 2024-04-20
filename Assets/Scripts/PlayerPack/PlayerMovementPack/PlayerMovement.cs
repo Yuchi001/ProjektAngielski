@@ -33,9 +33,10 @@ namespace PlayerPack.PlayerMovementPack
 
         private void ManageMovement()
         {
-            playerSpriteTransform.rotation = Quaternion.Euler(0, transform.position.x > UtilsMethods.GetMousePosition().x ? 0 : 180, 0);
-
             var movement = GetMovement();
+
+            if(movement.x != 0)
+                playerSpriteTransform.rotation = Quaternion.Euler(0, movement.x < 0 ? 0 : 180, 0);
             
             animator.SetBool("isWalking", movement != Vector2.zero);
             

@@ -14,9 +14,10 @@ namespace PlayerPack
         private void Awake()
         {
             CurrentLevel = 1;
+            NextLevelExp = levelOneCap;
         }
 
-        private void OnGainExp(int expPoints)
+        public void GainExp(int expPoints)
         {
             CurrentExp += expPoints;
             if (CurrentExp >= NextLevelExp) LevelUp();
@@ -25,8 +26,10 @@ namespace PlayerPack
         private void LevelUp()
         {
             CurrentLevel++;
-            CurrentExp -= NextLevelExp;
+            var expExcess = CurrentExp - NextLevelExp;
+            CurrentExp = 0;
             NextLevelExp = levelOneCap + Mathf.CeilToInt(CurrentLevel * (Mathf.Clamp(CurrentLevel - (float)CurrentLevel / 10, 1.1f, CurrentLevel)));
+            if(expExcess > 0) GainExp(expExcess);
         }
     }
 }

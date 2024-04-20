@@ -14,10 +14,12 @@ namespace WeaponPack
 
         protected List<WeaponStatPair> _realWeaponStats = new();
 
-        private float Cooldown => _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.Cooldown)!.statValue;
-        private float _timer = 0;
+        private float Cooldown => _weapon.Cooldown * (1 - _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.CooldownReduction)!.statValue);
+        private float timer = 0;
         
-        protected int _level = 0;
+        protected int Level = 0;
+
+        protected bool Spawned = false;
         
         public void Setup(SoWeapon weapon)
         {
@@ -33,21 +35,20 @@ namespace WeaponPack
 
         private void Update()
         {
-            if (_timer < Cooldown) return;
+            timer += Time.deltaTime;
+            if (timer < Cooldown || (Spawned && _weapon.OneTimeSpawnLogic)) return;
 
-            _timer = 0;
+            timer = 0;
             UseWeapon();
         }
 
-        protected virtual void UseWeapon()
-        {
-            
-        }
+        protected abstract void UseWeapon();
 
         private void OnLevelUp(string weaponName)
         {
             if (weaponName != _weapon.WeaponName) return;
 
+            Level++;
             IncrementStats();
         }
 
@@ -59,7 +60,7 @@ namespace WeaponPack
                 var statTuple = stats.FirstOrDefault(s => s.statType == stat.statType);
                 if(statTuple == default) continue;
 
-                if (stat.isPercentage) statTuple.statValue *= 1 - stat.statValue;
+                if (stat.isPercentage) statTuple.statValue *= 1 + stat.statValue;
                 else statTuple.statValue += stat.statValue;
             }
         }
@@ -68,7 +69,7 @@ namespace WeaponPack
         {
             for (var i = _weapon.WeaponUpgradeStats.Count; i > 0; i--)
             {
-                if (_level % i == 0) return _weapon.WeaponUpgradeStats[i].levelStats;
+                if (Level % i == 0) return _weapon.WeaponUpgradeStats[i].levelStats;
             }
 
             return new List<WeaponStatPair>();

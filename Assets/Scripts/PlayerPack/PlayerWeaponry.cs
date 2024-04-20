@@ -20,8 +20,7 @@ namespace PlayerPack
             var weapon = currentWeapons.FirstOrDefault(w => w.WeaponName == weaponToAdd.WeaponName);
             if (weapon != default) OnWeaponLevelUp?.Invoke(weaponToAdd.WeaponName);
             
-            var weaponLogicObj = new GameObject(weaponToAdd.WeaponName, typeof(WeaponLogicBase));
-            weaponLogicObj.transform.SetParent(transform);
+            var weaponLogicObj = Instantiate(weaponToAdd.WeaponLogicPrefab, transform, true);
             weaponLogicObj.transform.localPosition = Vector3.zero;
             weaponLogicObj.GetComponent<WeaponLogicBase>().Setup(weaponToAdd);
             currentWeapons.Add(weaponToAdd);

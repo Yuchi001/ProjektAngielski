@@ -3,7 +3,7 @@ namespace WeaponPack.Enums
 {
     public enum EWeaponStat
     {
-        Cooldown,
+        CooldownReduction,
         Damage,
         Speed,
         ProjectilesCount,

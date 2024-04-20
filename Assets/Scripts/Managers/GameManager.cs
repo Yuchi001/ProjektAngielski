@@ -2,6 +2,7 @@
 using PlayerPack;
 using PlayerPack.SO;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Managers
 {
@@ -23,12 +24,26 @@ namespace Managers
 
        [SerializeField] private SoCharacter debugCharacter;
        [SerializeField] private GameObject playerPrefab;
+       [SerializeField] private MainCamera mainCamera;
+       [SerializeField] private Transform worldCanvas;
+
+       public Transform WorldCanvas => worldCanvas;
+       public PlayerManager CurrentPlayer { get; private set; }
 
        private void Init()
        {
-           var playerObj = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+           LeanTween.init(100, 100);
            // todo: this shit is debug only replace with valid code later
-           playerObj.GetComponent<PlayerManager>().Setup(debugCharacter);
+           StartRun(debugCharacter);
+       }
+
+       public void StartRun(SoCharacter pickedCharacter)
+       {
+           var playerObj = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+           CurrentPlayer = playerObj.GetComponent<PlayerManager>();
+           CurrentPlayer.Setup(pickedCharacter);
+           
+           mainCamera.Setup(playerObj);
        }
     }
 }
