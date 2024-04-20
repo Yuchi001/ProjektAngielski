@@ -14,6 +14,8 @@ namespace WeaponPack.Other
         private float _speed;
         private GameObject _flightParticles;
         private GameObject _onHitParticles;
+
+        private bool _ready = false;
         
         public Projectile Setup(int damage, float speed)
         {
@@ -59,8 +61,15 @@ namespace WeaponPack.Other
             return this;
         }
 
+        public void SetReady()
+        {
+            _ready = true;
+        }
+
         private void Update()
         {
+            if (!_ready) return;
+            
             var newPos = _target == null ? 
                 (Vector2)(transform.position + transform.forward * _speed) :
                 Vector2.MoveTowards(transform.position, Target.position, _speed * Time.deltaTime);
@@ -70,6 +79,8 @@ namespace WeaponPack.Other
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            if (!_ready) return;
+
             if (!other.gameObject.TryGetComponent<EnemyLogic>(out var enemyLogic)) return;
 
             if (_onHitParticles != null)

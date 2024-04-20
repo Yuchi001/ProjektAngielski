@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using EnemyPack;
 using Managers;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace WeaponPack.WeaponsLogic
         [SerializeField] private Sprite projectileSprite;
 
         private Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
+        
         protected override void UseWeapon()
         {
             var projectile = Instantiate(iceProjectile, PlayerPos, Quaternion.identity);
@@ -22,11 +24,12 @@ namespace WeaponPack.WeaponsLogic
             var damage = _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.Damage);
             var speed = _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.Speed);
 
-            if (damage == null || speed == null) return; 
-            
+            if (damage == null || speed == null) return;
+
             projectileScript.Setup((int)damage.statValue, speed.statValue)
                 .SetTarget(UtilsMethods.FindTarget(transform.position))
-                .SetSprite(projectileSprite);
+                .SetSprite(projectileSprite)
+                .SetReady();
         }
     }
 }
