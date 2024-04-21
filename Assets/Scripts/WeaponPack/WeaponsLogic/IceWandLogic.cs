@@ -12,7 +12,9 @@ namespace WeaponPack.WeaponsLogic
     public class IceWandLogic : WeaponLogicBase
     {
         [SerializeField] private GameObject iceProjectile;
-        [SerializeField] private Sprite projectileSprite;
+        [SerializeField] private List<Sprite> projectileSprites;
+        [SerializeField] private float animSpeed;
+        [SerializeField] private GameObject flightParticles;
 
         private Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
         
@@ -28,7 +30,8 @@ namespace WeaponPack.WeaponsLogic
 
             projectileScript.Setup((int)damage.statValue, speed.statValue)
                 .SetTarget(UtilsMethods.FindTarget(transform.position))
-                .SetSprite(projectileSprite)
+                .SetSprite(projectileSprites, animSpeed)
+                .SetFlightParticles(flightParticles)
                 .SetReady();
         }
     }

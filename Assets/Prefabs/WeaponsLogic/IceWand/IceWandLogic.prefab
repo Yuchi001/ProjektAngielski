@@ -45,3 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iceProjectile: {fileID: 1996234102917140788, guid: 2413cf475826b9446be16fe3e8393093, type: 3}
+  projectileSprites:
+  - {fileID: 1612723638, guid: 4fca802783adf3d42a02066d83625b66, type: 3}
+  - {fileID: -1201079092, guid: 4fca802783adf3d42a02066d83625b66, type: 3}
+  - {fileID: -580312309, guid: 4fca802783adf3d42a02066d83625b66, type: 3}
+  - {fileID: 1588087438, guid: 4fca802783adf3d42a02066d83625b66, type: 3}
+  animSpeed: 5
+  flightParticles: {fileID: 4256252472447693762, guid: b822401d0a3ba9641bb6ce7916ef9f30, type: 3}

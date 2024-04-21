@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using EnemyPack;
 using UnityEngine;
 using Utils;
@@ -14,12 +15,20 @@ namespace WeaponPack.Other
         private float _speed;
         private GameObject _flightParticles;
         private GameObject _onHitParticles;
+        private SpriteRenderer _spriteRenderer;
+
+        private List<Sprite> _sprites = new();
+        private float _animSpeed = 1f;
+        private int _currentIndex = 0;
 
         private bool _ready = false;
+
+        private float _timer = 0;
         
         public Projectile Setup(int damage, float speed)
         {
             UtilsMethods.LookAtMouse(transform);
+            _spriteRenderer = GetComponent<SpriteRenderer>();
             _damage = damage;
             _speed = speed;
             return this;
@@ -27,7 +36,14 @@ namespace WeaponPack.Other
 
         public Projectile SetSprite(Sprite sprite)
         {
-            GetComponent<SpriteRenderer>().sprite = sprite;
+            _sprites.Add(sprite);
+            return this;
+        }
+        
+        public Projectile SetSprite(List<Sprite> sprites, float animSpeed)
+        {
+            _sprites.AddRange(sprites);
+            _animSpeed = animSpeed;
             return this;
         }
 
@@ -69,12 +85,21 @@ namespace WeaponPack.Other
         private void Update()
         {
             if (!_ready) return;
-            
+
             var newPos = _target == null ? 
                 (Vector2)(transform.position + transform.forward * _speed) :
                 Vector2.MoveTowards(transform.position, Target.position, _speed * Time.deltaTime);
 
             transform.position = newPos;
+            
+            _timer += Time.deltaTime;
+            if (_timer < 1 / _animSpeed) return;
+
+            _timer = 0;
+            _currentIndex++;
+            if (_currentIndex >= _sprites.Count) _currentIndex = 0;
+
+            _spriteRenderer.sprite = _sprites[_currentIndex];
         }
 
         private void OnTriggerEnter2D(Collider2D other)
