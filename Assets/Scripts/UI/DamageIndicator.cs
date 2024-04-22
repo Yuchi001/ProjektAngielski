@@ -13,6 +13,8 @@ namespace UI
         
         private void Setup(int damage)
         {
+            damageText.text = damage.ToString();
+            
             LeanTween.value(1, 0, animTime)
                 .setEaseInExpo()
                 .setOnUpdate((float val) =>

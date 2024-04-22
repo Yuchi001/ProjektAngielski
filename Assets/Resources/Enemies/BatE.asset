@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BatE
   m_EditorClassIdentifier: 
   walkingAnimationClip: {fileID: 7400000, guid: 143209ca4790ad24ba6c3a6152c34e1b, type: 2}
-  maxHealth: 5
+  maxHealth: 20
   movementSpeed: 1
   expGemType: 0

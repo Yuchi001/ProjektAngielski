@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Managers;
 using PlayerPack;
 using UnityEngine;
 using WeaponPack.Enums;
@@ -14,7 +15,14 @@ namespace WeaponPack
 
         protected List<WeaponStatPair> _realWeaponStats = new();
 
-        private float Cooldown => _weapon.Cooldown * (1 - _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.CooldownReduction)!.statValue);
+        protected int Damage => (int)_realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.Damage)!.statValue;
+        protected float Speed => _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.Speed)!.statValue;
+        protected int ProjectileCount => (int)_realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.ProjectilesCount)!.statValue;
+        
+        protected Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
+        protected Transform PlayerTransform => GameManager.Instance.CurrentPlayer.transform;
+
+        protected float Cooldown => _weapon.Cooldown * (1 - _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.CooldownReduction)!.statValue);
         private float timer = 0;
         
         protected int Level = 0;

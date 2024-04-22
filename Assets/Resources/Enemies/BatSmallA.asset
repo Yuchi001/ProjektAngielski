@@ -9,13 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b2cdeeb64054534907f59e669f9eced, type: 3}
-  m_Name: Test2
+  m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
+  m_Name: BatSmallA
   m_EditorClassIdentifier: 
-  characterName: 
-  characterSprite: {fileID: 0}
-  maxHp: 0
-  startingWeapon: {fileID: 0}
-  movementSpeed: 0
-  walkingAnim: {fileID: 0}
-  idleAnim: {fileID: 0}
+  walkingAnimationClip: {fileID: 7400000, guid: 574093ad42dba24488a2f9b69bad2b77, type: 2}
+  maxHealth: 5
+  movementSpeed: 2
+  expGemType: 0

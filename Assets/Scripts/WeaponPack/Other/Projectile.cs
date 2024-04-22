@@ -36,7 +36,7 @@ namespace WeaponPack.Other
 
         public Projectile SetSprite(Sprite sprite)
         {
-            _sprites.Add(sprite);
+            _spriteRenderer.sprite = sprite;
             return this;
         }
         
@@ -86,14 +86,15 @@ namespace WeaponPack.Other
         {
             if (!_ready) return;
 
+            var projectileTransform = transform;
             var newPos = _target == null ? 
-                (Vector2)(transform.position + transform.forward * _speed) :
+                (Vector2)(projectileTransform.position + projectileTransform.up * (_speed * Time.deltaTime)) :
                 Vector2.MoveTowards(transform.position, Target.position, _speed * Time.deltaTime);
 
             transform.position = newPos;
             
             _timer += Time.deltaTime;
-            if (_timer < 1 / _animSpeed) return;
+            if (_timer < 1 / _animSpeed || _sprites.Count <= 1) return;
 
             _timer = 0;
             _currentIndex++;
@@ -116,9 +117,10 @@ namespace WeaponPack.Other
 
             if (_flightParticles != null)
             {
-                _flightParticles.transform.parent = null;
-                _flightParticles.GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
-                Destroy(_flightParticles, 2f);
+                _flightParticles.transform.SetParent(null);
+                _flightParticles.transform.localScale = Vector2.one;
+                _flightParticles.GetComponent<ParticleSystem>().Stop(true);
+                Destroy(_flightParticles, 10f);
             }
             
             enemyLogic.GetDamaged(_damage);

@@ -15,24 +15,20 @@ namespace WeaponPack.WeaponsLogic
         [SerializeField] private List<Sprite> projectileSprites;
         [SerializeField] private float animSpeed;
         [SerializeField] private GameObject flightParticles;
-
-        private Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
         
         protected override void UseWeapon()
         {
-            var projectile = Instantiate(iceProjectile, PlayerPos, Quaternion.identity);
-            var projectileScript = projectile.GetComponent<Projectile>();
-
-            var damage = _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.Damage);
-            var speed = _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.Speed);
-
-            if (damage == null || speed == null) return;
-
-            projectileScript.Setup((int)damage.statValue, speed.statValue)
-                .SetTarget(UtilsMethods.FindTarget(transform.position))
-                .SetSprite(projectileSprites, animSpeed)
-                .SetFlightParticles(flightParticles)
-                .SetReady();
+            for (var i = 0; i < ProjectileCount; i++)
+            {
+                var projectile = Instantiate(iceProjectile, PlayerPos, Quaternion.identity);
+                var projectileScript = projectile.GetComponent<Projectile>();
+                
+                projectileScript.Setup(Damage, Speed)
+                    .SetTarget(UtilsMethods.FindTarget(transform.position))
+                    .SetSprite(projectileSprites, animSpeed)
+                    .SetFlightParticles(flightParticles)
+                    .SetReady();
+            }
         }
     }
 }
