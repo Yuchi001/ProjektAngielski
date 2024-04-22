@@ -935,6 +935,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 330592185322976742, guid: e47a3e113abbb854d8e54c4078081bbd, type: 3}
   mainCamera: {fileID: 300432657}
   worldCanvas: {fileID: 656852853}
+  mainCanvas: {fileID: 0}
 --- !u!4 &748811588
 Transform:
   m_ObjectHideFlags: 0
@@ -1708,8 +1709,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Level text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 209d1a309adbe2842a96b7ff82523ac8, type: 2}
-  m_sharedMaterial: {fileID: -5303534044024578630, guid: 209d1a309adbe2842a96b7ff82523ac8, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 06288fb1342ad2d41a77c03352206814, type: 2}
+  m_sharedMaterial: {fileID: 163434624877030962, guid: 06288fb1342ad2d41a77c03352206814, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1733,17 +1734,17 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 47.96
+  m_fontSizeBase: 47.96
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -9.3
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
