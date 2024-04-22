@@ -27,6 +27,7 @@ namespace PlayerPack
         public SoCharacter PickedCharacter => _pickedCharacter;
 
         public PlayerExp PlayerExp => GetComponent<PlayerExp>();
+        public PlayerWeaponry PlayerWeaponry => GetComponent<PlayerWeaponry>();
 
         public void Setup(SoCharacter pickedCharacter)
         {

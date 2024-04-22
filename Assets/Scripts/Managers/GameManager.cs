@@ -26,8 +26,10 @@ namespace Managers
        [SerializeField] private GameObject playerPrefab;
        [SerializeField] private MainCamera mainCamera;
        [SerializeField] private Transform worldCanvas;
+       [SerializeField] private Transform mainCanvas;
 
        public Transform WorldCanvas => worldCanvas;
+       public Transform MainCanvas => mainCanvas;
        public PlayerManager CurrentPlayer { get; private set; }
 
        private void Init()

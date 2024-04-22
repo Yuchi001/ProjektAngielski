@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using WeaponPack;
 using WeaponPack.SO;
+using Random = UnityEngine.Random;
 
 namespace PlayerPack
 {
@@ -10,20 +12,58 @@ namespace PlayerPack
     {
         [SerializeField] private int maxWeaponsInEq = 4;
 
-        private List<SoWeapon> currentWeapons = new();
+        private List<WeaponLogicBase> _currentWeapons = new();
+        private List<SoWeapon> _allWeapons = new();
 
         public delegate void WeaponLevelUpDelegate(string weaponName);
         public static event WeaponLevelUpDelegate OnWeaponLevelUp;
 
+        private void Awake()
+        {
+            _allWeapons = Resources.LoadAll<SoWeapon>("Weapons").ToList();
+        }
+
         public void AddWeapon(SoWeapon weaponToAdd)
         {
-            var weapon = currentWeapons.FirstOrDefault(w => w.WeaponName == weaponToAdd.WeaponName);
+            var weapon = _currentWeapons.FirstOrDefault(w => w.Weapon.WeaponName == weaponToAdd.WeaponName);
             if (weapon != default) OnWeaponLevelUp?.Invoke(weaponToAdd.WeaponName);
             
             var weaponLogicObj = Instantiate(weaponToAdd.WeaponLogicPrefab, transform, true);
             weaponLogicObj.transform.localPosition = Vector3.zero;
-            weaponLogicObj.GetComponent<WeaponLogicBase>().Setup(weaponToAdd);
-            currentWeapons.Add(weaponToAdd);
+            var weaponLogic = weaponLogicObj.GetComponent<WeaponLogicBase>();
+            weaponLogic.Setup(weaponToAdd);
+            _currentWeapons.Add(weaponLogic);
+        }
+
+        public string GetWeaponDescription(SoWeapon weapon)
+        {
+            var currentWeapon = _currentWeapons.FirstOrDefault(w => w.Weapon.WeaponName == weapon.WeaponName);
+            if (currentWeapon == default) return weapon.WeaponDescription;
+
+            var weaponUpgradeStats = currentWeapon.Weapon.WeaponUpgradeStats;
+            return weaponUpgradeStats[currentWeapon.Level % weaponUpgradeStats.Count].weaponLevelUpDescription;
+        }
+
+        public IEnumerable<SoWeapon> GetRandomWeapons(int count)
+        {
+            var weapons = new List<SoWeapon>();
+            var weaponPool = _allWeapons;
+            if (_currentWeapons.Count >= maxWeaponsInEq)
+            {
+                var weaponNames = _currentWeapons.Select(w => w.Weapon.WeaponName);
+                weaponPool = weaponPool.Where(w => weaponNames.Contains(w.WeaponName)).ToList();
+            }
+
+            for (var i = 0; i < count; i++)
+            {
+                if (weaponPool.Count == 0) break;
+                
+                var randomIndex = Random.Range(0, weaponPool.Count);
+                weapons.Add(weaponPool[randomIndex]);
+                weaponPool.RemoveAt(randomIndex);
+            }
+            
+            return weapons;
         }
     }
 }

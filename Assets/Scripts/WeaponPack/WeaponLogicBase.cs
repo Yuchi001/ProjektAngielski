@@ -11,6 +11,9 @@ namespace WeaponPack
 {
     public abstract class WeaponLogicBase : MonoBehaviour
     {
+        public SoWeapon Weapon => _weapon;
+        public int Level => _level;
+        
         protected SoWeapon _weapon;
 
         protected List<WeaponStatPair> _realWeaponStats = new();
@@ -23,11 +26,11 @@ namespace WeaponPack
         protected Transform PlayerTransform => GameManager.Instance.CurrentPlayer.transform;
 
         protected float Cooldown => _weapon.Cooldown * (1 - _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.CooldownReduction)!.statValue);
-        private float timer = 0;
+        private float _timer = 0;
         
-        protected int Level = 0;
+        protected int _level = 0;
 
-        protected bool Spawned = false;
+        protected bool spawned = false;
         
         public void Setup(SoWeapon weapon)
         {
@@ -43,10 +46,10 @@ namespace WeaponPack
 
         private void Update()
         {
-            timer += Time.deltaTime;
-            if (timer < Cooldown || (Spawned && _weapon.OneTimeSpawnLogic)) return;
+            _timer += Time.deltaTime;
+            if (_timer < Cooldown || (spawned && _weapon.OneTimeSpawnLogic)) return;
 
-            timer = 0;
+            _timer = 0;
             UseWeapon();
         }
 
@@ -56,7 +59,7 @@ namespace WeaponPack
         {
             if (weaponName != _weapon.WeaponName) return;
 
-            Level++;
+            _level++;
             IncrementStats();
         }
 
@@ -77,7 +80,7 @@ namespace WeaponPack
         {
             for (var i = _weapon.WeaponUpgradeStats.Count; i > 0; i--)
             {
-                if (Level % i == 0) return _weapon.WeaponUpgradeStats[i].levelStats;
+                if (_level % i == 0) return _weapon.WeaponUpgradeStats[i].levelStats;
             }
 
             return new List<WeaponStatPair>();
