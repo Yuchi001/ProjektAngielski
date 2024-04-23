@@ -7,12 +7,15 @@ namespace UI
 {
     public class DamageIndicator : MonoBehaviour
     {
+        [SerializeField] private Gradient damageColorGradient;
         [SerializeField] private float animTime = 0.3f;
         [SerializeField] private float moveValue = 0.5f;
         [SerializeField] private TextMeshProUGUI damageText;
         
         private void Setup(int damage)
         {
+            var scaledDamage = Mathf.Clamp(damage - 5, 0, 50);
+            damageText.color = damageColorGradient.Evaluate(scaledDamage / 50f);
             damageText.text = damage.ToString();
             
             LeanTween.value(1, 0, animTime)

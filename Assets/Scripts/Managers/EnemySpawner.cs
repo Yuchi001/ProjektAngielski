@@ -14,7 +14,6 @@ namespace Managers
     public class EnemySpawner : MonoBehaviour
     {
         [SerializeField] private int maxEnemiesCount = 100;
-        [SerializeField] private SoEnemy debugEnemy;
         [SerializeField] private GameObject enemyPrefab;
         [SerializeField] private float spawnRate;
         [SerializeField] private Camera mainCamera;
@@ -24,6 +23,8 @@ namespace Managers
         private float _spawnRangeY;
         private PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
 
+        private List<SoEnemy> _allEnemies = new();
+        
         private void Start()
         {
             var bottomLeftCorner = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, mainCamera.nearClipPlane));
@@ -34,6 +35,8 @@ namespace Managers
 
             _spawnRangeX = cameraWidthInUnits / 2 + 1;
             _spawnRangeY = cameraHeightInUnits / 2 + 1;
+
+            _allEnemies = Resources.LoadAll<SoEnemy>("Enemies").Select(Instantiate).ToList();
         }
 
         private void Update()
@@ -63,7 +66,15 @@ namespace Managers
             
             var enemyObj = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
             var enemyScript = enemyObj.GetComponent<EnemyLogic>();
-            enemyScript.Setup(debugEnemy, PlayerManager.transform);
+            
+            enemyScript.Setup(GetEnemy(), PlayerManager.transform);
+        }
+
+        private SoEnemy GetEnemy()
+        {
+            // todo: pick enemy logic
+
+            return _allEnemies[Random.Range(0, _allEnemies.Count)];
         }
     }
 }
