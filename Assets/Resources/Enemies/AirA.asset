@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: AirA
   m_EditorClassIdentifier: 
   walkingAnimationClip: {fileID: 7400000, guid: 3b4933883a3c0b84a9206ace12c522d7, type: 2}
-  maxHealth: 5
+  maxHealth: 40
   movementSpeed: 1
-  expGemType: 0
+  expGemType: 1

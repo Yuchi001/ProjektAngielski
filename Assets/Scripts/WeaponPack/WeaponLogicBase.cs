@@ -13,13 +13,13 @@ namespace WeaponPack
     {
         public SoWeapon Weapon => _weapon;
         public int Level => _level;
-        
-        protected SoWeapon _weapon;
 
-        protected List<WeaponStatPair> _realWeaponStats = new();
+        private SoWeapon _weapon;
+
+        private List<WeaponStatPair> _realWeaponStats = new();
 
         protected int Damage => (int)_realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.Damage)!.statValue;
-        protected float Speed => _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.Speed)!.statValue;
+        protected float Speed => _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.ProjectileSpeed)!.statValue;
         protected int ProjectileCount => (int)_realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.ProjectilesCount)!.statValue;
         
         protected Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
@@ -31,11 +31,14 @@ namespace WeaponPack
         protected int _level = 0;
 
         protected bool spawned = false;
+
+        protected List<WeaponStatPair> OngoingStats = new();
         
         public void Setup(SoWeapon weapon)
         {
-            _weapon = weapon;
-            _realWeaponStats = weapon.WeaponStartingStats;
+            _weapon = Instantiate(weapon);
+            OngoingStats = _weapon.WeaponStartingStats;
+            _realWeaponStats = _weapon.WeaponStartingStats;
             PlayerWeaponry.OnWeaponLevelUp += OnLevelUp;
         }
 
@@ -65,10 +68,9 @@ namespace WeaponPack
 
         private void IncrementStats()
         {
-            var stats = _weapon.WeaponStartingStats;
             foreach (var stat in GetCurrentUpgradeStats())
             {
-                var statTuple = stats.FirstOrDefault(s => s.statType == stat.statType);
+                var statTuple = OngoingStats.FirstOrDefault(s => s.statType == stat.statType);
                 if(statTuple == default) continue;
 
                 if (stat.isPercentage) statTuple.statValue *= 1 + stat.statValue;
@@ -78,9 +80,10 @@ namespace WeaponPack
 
         private List<WeaponStatPair> GetCurrentUpgradeStats()
         {
-            for (var i = _weapon.WeaponUpgradeStats.Count; i > 0; i--)
+            for (var i = 0; i < _weapon.WeaponUpgradeStats.Count; i++)
             {
-                if (_level % i == 0) return _weapon.WeaponUpgradeStats[i].levelStats;
+                if ((_level + _weapon.WeaponUpgradeStats.Count) % (Mathf.Abs(i - _weapon.WeaponUpgradeStats.Count)) == 1) 
+                    return _weapon.WeaponUpgradeStats[i].levelStats;
             }
 
             return new List<WeaponStatPair>();

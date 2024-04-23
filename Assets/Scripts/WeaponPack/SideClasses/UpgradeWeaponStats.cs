@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace WeaponPack
 {
     [System.Serializable]
     public class UpgradeWeaponStats
     {
-        public string weaponLevelUpDescription;
+        [TextArea] public string weaponLevelUpDescription;
         public List<WeaponStatPair> levelStats;
     }
 }

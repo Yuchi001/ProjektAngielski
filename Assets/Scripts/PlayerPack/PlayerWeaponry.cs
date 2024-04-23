@@ -20,13 +20,17 @@ namespace PlayerPack
 
         private void Awake()
         {
-            _allWeapons = Resources.LoadAll<SoWeapon>("Weapons").ToList();
+            _allWeapons = Resources.LoadAll<SoWeapon>("Weapons").Select(Instantiate).ToList();
         }
 
         public void AddWeapon(SoWeapon weaponToAdd)
         {
             var weapon = _currentWeapons.FirstOrDefault(w => w.Weapon.WeaponName == weaponToAdd.WeaponName);
-            if (weapon != default) OnWeaponLevelUp?.Invoke(weaponToAdd.WeaponName);
+            if (weapon != default)
+            {
+                OnWeaponLevelUp?.Invoke(weaponToAdd.WeaponName);
+                return;
+            }
             
             var weaponLogicObj = Instantiate(weaponToAdd.WeaponLogicPrefab, transform, true);
             weaponLogicObj.transform.localPosition = Vector3.zero;
@@ -38,16 +42,17 @@ namespace PlayerPack
         public string GetWeaponDescription(SoWeapon weapon)
         {
             var currentWeapon = _currentWeapons.FirstOrDefault(w => w.Weapon.WeaponName == weapon.WeaponName);
-            if (currentWeapon == default) return weapon.WeaponDescription;
+            if (currentWeapon == default) return "<color=red>NEW!</color> " + weapon.WeaponDescription;
 
             var weaponUpgradeStats = currentWeapon.Weapon.WeaponUpgradeStats;
-            return weaponUpgradeStats[currentWeapon.Level % weaponUpgradeStats.Count].weaponLevelUpDescription;
+            var level = currentWeapon.Level;
+            return $"<color=green>Next level {level + 2}:</color> " + weaponUpgradeStats[level % weaponUpgradeStats.Count].weaponLevelUpDescription;
         }
 
         public IEnumerable<SoWeapon> GetRandomWeapons(int count)
         {
             var weapons = new List<SoWeapon>();
-            var weaponPool = _allWeapons;
+            var weaponPool = new List<SoWeapon>(_allWeapons);
             if (_currentWeapons.Count >= maxWeaponsInEq)
             {
                 var weaponNames = _currentWeapons.Select(w => w.Weapon.WeaponName);

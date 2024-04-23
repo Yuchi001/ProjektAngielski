@@ -44,5 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bad9ac1e6ded41f79f9d90f4f388fce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectileLightColor: {r: 0.79235554, g: 0, b: 1, a: 1}
   projectileSprite: {fileID: 21300000, guid: 56702eb5870ae5d4fb2440945231eada, type: 3}
   projectilePrefab: {fileID: 1996234102917140788, guid: 2413cf475826b9446be16fe3e8393093, type: 3}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EnemyPack;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using Utils;
 
 namespace WeaponPack.Other
@@ -9,6 +10,8 @@ namespace WeaponPack.Other
     [RequireComponent(typeof(Sprite))]
     public class Projectile : MonoBehaviour
     {
+        [SerializeField] private Light2D light2D;
+        [SerializeField] private float maxDistance = 20f;
         private EnemyLogic _target;
         private Transform Target => _target.transform;
         private int _damage;
@@ -24,9 +27,12 @@ namespace WeaponPack.Other
         private bool _ready = false;
 
         private float _timer = 0;
+
+        private Vector2 _startDistance;
         
         public Projectile Setup(int damage, float speed)
         {
+            _startDistance = transform.position;
             UtilsMethods.LookAtMouse(transform);
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _damage = damage;
@@ -44,6 +50,12 @@ namespace WeaponPack.Other
         {
             _sprites.AddRange(sprites);
             _animSpeed = animSpeed;
+            return this;
+        }
+
+        public Projectile SetLightColor(Color color)
+        {
+            light2D.color = color;
             return this;
         }
 
@@ -85,6 +97,17 @@ namespace WeaponPack.Other
         private void Update()
         {
             if (!_ready) return;
+
+            if (Vector2.Distance(transform.position, _startDistance) >= maxDistance)
+            {
+                if (_onHitParticles != null)
+                {
+                    var particlesInstance = Instantiate(_onHitParticles, transform.position, Quaternion.identity);
+                    Destroy(particlesInstance, 2f);
+                }
+                Destroy(gameObject);
+                return;
+            }
 
             var projectileTransform = transform;
             var newPos = _target == null ? 

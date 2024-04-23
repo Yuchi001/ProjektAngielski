@@ -7,6 +7,7 @@ namespace WeaponPack.WeaponsLogic
 {
     public class MultiWand : WeaponLogicBase
     {
+        [SerializeField] private Color projectileLightColor;
         [SerializeField] private Sprite projectileSprite;
         [SerializeField] private GameObject projectilePrefab;
         protected override void UseWeapon()
@@ -36,16 +37,15 @@ namespace WeaponPack.WeaponsLogic
                 {
                     var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
                     var projectileScript = projectile.GetComponent<Projectile>();
-
-                    Debug.Log(rotations[j]);
                     
                     projectileScript.Setup(Damage, Speed)
                         .SetSprite(projectileSprite)
                         .SetDirection(rotations[j])
+                        .SetLightColor(projectileLightColor)
                         .SetReady();
                 }
                 
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.15f);
             }
         }
     }

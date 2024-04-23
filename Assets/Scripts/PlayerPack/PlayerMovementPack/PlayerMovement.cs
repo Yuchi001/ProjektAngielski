@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using PlayerPack.SO;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Utils;
 
 namespace PlayerPack.PlayerMovementPack
 {
@@ -12,8 +10,8 @@ namespace PlayerPack.PlayerMovementPack
         [SerializeField] private float animationSpeed = 0.5f;
         [SerializeField] private Animator animator;
         private SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
-        
-        
+
+
         private void Awake()
         {
             animator.speed = animationSpeed;
@@ -26,7 +24,7 @@ namespace PlayerPack.PlayerMovementPack
             };
         }
 
-        private void Update()
+        protected void Update()
         {
             ManageMovement();
         }

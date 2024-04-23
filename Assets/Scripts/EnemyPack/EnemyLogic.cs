@@ -11,6 +11,7 @@ namespace EnemyPack
 {
     public class EnemyLogic : CanBeDamaged
     {
+        [SerializeField] private float maxDistanceFromPlayer = 50f;
         [SerializeField] private GameObject damageIndicatorPrefab;
         [SerializeField] private GameObject expGemPrefab;
         [SerializeField] private float attacksPerSecond;
@@ -27,9 +28,12 @@ namespace EnemyPack
         private float _timer = 0;
         private int _health;
 
+        private Vector2 _startPosition;
+
         public void Setup(SoEnemy enemy, Transform target)
         {
-            _enemy = enemy;
+            _startPosition = transform.position;
+            _enemy = Instantiate(enemy);
             _target = target;
             _health = enemy.MaxHealth;
             
@@ -43,6 +47,9 @@ namespace EnemyPack
 
         private void Update()
         {
+            if(Vector2.Distance(transform.position, _startPosition) >= maxDistanceFromPlayer)
+                Destroy(gameObject);
+            
             if (_target == null) return;
             
             _timer += Time.deltaTime;

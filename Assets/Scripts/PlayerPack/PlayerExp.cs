@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Managers;
 using UI;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace PlayerPack
         public int NextLevelExp { get; private set; }
         public float CurrentExp { get; private set; }
 
+        private List<float> _expQueue = new();
+
         private void Awake()
         {
             CurrentLevel = 1;
@@ -24,27 +27,25 @@ namespace PlayerPack
 
         public void GainExp(int expPoints)
         {
-            LeanTween.value(CurrentExp, CurrentExp + expPoints, animTime).setOnUpdate((value) =>
-            {
-                CurrentExp = value;
-                if (CurrentExp >= NextLevelExp) StartCoroutine(LevelUp());
-                LeanTween.pause(gameObject);
-            });
+            CurrentExp += expPoints;
+            if (CurrentExp >= NextLevelExp) StartCoroutine(LevelUp());
         }
         
         private IEnumerator LevelUp()
         {
+            LeanTween.pause(gameObject);
+            
             CurrentLevel++;
             var expExcess = CurrentExp - NextLevelExp;
             CurrentExp = 0;
             NextLevelExp = levelOneCap + Mathf.CeilToInt(CurrentLevel * (Mathf.Clamp(CurrentLevel - (float)CurrentLevel / 10, 1.1f, CurrentLevel)));
 
-            var levelUpUiInstance = Instantiate(levelUpUiPrefab, GameManager.Instance.MainCanvas, true);
+            var levelUpUiInstance = Instantiate(levelUpUiPrefab, GameManager.Instance.MainCanvas, false);
             levelUpUiInstance.GetComponent<LevelUpUi>().Setup();
 
             yield return new WaitUntil(() => levelUpUiInstance == null);
             
-            if(expExcess > 0) GainExp((int)expExcess);
+            if(expExcess >= 1) GainExp((int)expExcess);
         }
     }
 }

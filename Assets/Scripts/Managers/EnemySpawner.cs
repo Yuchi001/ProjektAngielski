@@ -13,6 +13,7 @@ namespace Managers
 {
     public class EnemySpawner : MonoBehaviour
     {
+        [SerializeField] private int maxEnemiesCount = 100;
         [SerializeField] private SoEnemy debugEnemy;
         [SerializeField] private GameObject enemyPrefab;
         [SerializeField] private float spawnRate;
@@ -40,6 +41,8 @@ namespace Managers
             _timer += Time.deltaTime;
             if (_timer < 1 / spawnRate || PlayerManager == null) return;
 
+            if (GameObject.FindGameObjectsWithTag("Enemy").Length >= maxEnemiesCount) return;
+            
             _timer = 0;
 
             // true => x

@@ -11,7 +11,7 @@ namespace Other
         private const float flashTime = 0.1f;
         private Material spriteMaterial;
 
-        private void Awake()
+        private void Start()
         {
             spriteMaterial = spriteRenderer.material;
         }

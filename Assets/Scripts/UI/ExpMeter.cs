@@ -18,8 +18,8 @@ namespace UI
         {
             if (PlayerExp == null) return;
 
-            meter.fillAmount = (float)PlayerExp.CurrentExp / PlayerExp.NextLevelExp;
-            levelText.text = PlayerExp.CurrentLevel.ToString() + " LvL";
+            meter.fillAmount = PlayerExp.CurrentExp / PlayerExp.NextLevelExp;
+            levelText.text = PlayerExp.CurrentLevel + " LvL";
         }
     }
 }

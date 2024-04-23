@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4112197100625066992}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bloodParticles: {fileID: 7968732843853793858, guid: c5673512605494643b11f243bc5e09dd, type: 3}
   spriteRenderer: {fileID: 4733844501563839803}
+  maxDistanceFromPlayer: 50
   damageIndicatorPrefab: {fileID: 3205396376673001242, guid: 9da7d4d8d90b347429bf8af27e3ab55e, type: 3}
   expGemPrefab: {fileID: 330231302069748770, guid: a5c71c61939bde045aeafd593764c8a3, type: 3}
   attacksPerSecond: 2

@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c63a2f14dc49f58d64a2b95dcd1673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectileLightColor: {r: 0, g: 0.7134721, b: 1, a: 1}
   iceProjectile: {fileID: 1996234102917140788, guid: 2413cf475826b9446be16fe3e8393093, type: 3}
   projectileSprites:
   - {fileID: 1612723638, guid: 4fca802783adf3d42a02066d83625b66, type: 3}

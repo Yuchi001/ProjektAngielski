@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using EnemyPack;
 using UnityEngine;
 
@@ -49,9 +50,12 @@ namespace Utils
             return random == 0 ? val1 : val2;
         }
         
-        public static EnemyLogic FindTarget(Vector2 position)
+        public static EnemyLogic FindTarget(Vector2 position, List<int> usedTargets = null)
         {
+            usedTargets ??= new List<int>();
+            
             var enemies = Object.FindObjectsOfType<EnemyLogic>().ToList();
+            enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
             if (enemies.Count == 0) return null;
             
             var (pickedEnemy, smallestDistance) = (enemies[0], Vector2.Distance(position, enemies[0].transform.position));
@@ -65,6 +69,19 @@ namespace Utils
             }
 
             return pickedEnemy;
+        }
+        
+        public static EnemyLogic FindTarget(List<string> usedTargets = null)
+        {
+            usedTargets = usedTargets ?? new List<string>();
+            
+            var enemies = Object.FindObjectsOfType<EnemyLogic>().ToList();
+            enemies = enemies.Where(e => !usedTargets.Contains(e.name)).ToList();
+            if (enemies.Count == 0) return null;
+
+            var randomIndex = Random.Range(0, enemies.Count);
+            
+            return enemies[randomIndex];
         }
     }
 }

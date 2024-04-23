@@ -96,7 +96,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00e10621def44023add7980a4dd92d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animTime: 0.1
   levelOneCap: 4
+  levelUpUiPrefab: {fileID: 8283736004509688324, guid: 1bb27fe2e0239f94c91c6b4a50cf6644, type: 3}
 --- !u!114 &8992767131167538181
 MonoBehaviour:
   m_ObjectHideFlags: 0

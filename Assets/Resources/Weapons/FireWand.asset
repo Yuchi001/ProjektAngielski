@@ -13,36 +13,43 @@ MonoBehaviour:
   m_Name: FireWand
   m_EditorClassIdentifier: 
   weaponName: Fire wand
+  weaponDescription: Fire 2 particles in random enemy direction, dealing light damage
   weaponSprite: {fileID: 21300000, guid: bf8e9a357e5be82449202db38beaed22, type: 3}
   oneTimeSpawnLogic: 0
-  cooldown: 2
+  cooldown: 1
   weaponLogicPrefab: {fileID: 0}
   weaponStartingStats:
   - statType: 0
     statValue: 0
     isPercentage: 1
   - statType: 1
-    statValue: 20
+    statValue: 5
     isPercentage: 0
   - statType: 2
     statValue: 8
     isPercentage: 0
   - statType: 3
-    statValue: 1
+    statValue: 2
     isPercentage: 0
   weaponUpgradeStats:
-  - levelStats:
+  - weaponLevelUpDescription: Fire additional 2 projectiles, gain 10% attack speed
+    levelStats:
     - statType: 0
-      statValue: 0
+      statValue: 0.1
+      isPercentage: 1
+    - statType: 3
+      statValue: 2
       isPercentage: 0
+  - weaponLevelUpDescription: Gain 10% attack speed
+    levelStats:
     - statType: 0
-      statValue: 0
+      statValue: 0.1
+      isPercentage: 1
+  - weaponLevelUpDescription: Gain 1 additional projectile and deal 2 more damage
+    levelStats:
+    - statType: 3
+      statValue: 1
       isPercentage: 0
-  - levelStats:
-    - statType: 0
-      statValue: 0
-      isPercentage: 0
-  - levelStats:
-    - statType: 0
-      statValue: 0
+    - statType: 1
+      statValue: 2
       isPercentage: 0

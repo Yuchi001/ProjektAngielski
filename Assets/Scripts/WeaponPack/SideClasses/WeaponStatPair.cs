@@ -1,4 +1,5 @@
-﻿using WeaponPack.Enums;
+﻿using UnityEngine.Serialization;
+using WeaponPack.Enums;
 
 namespace WeaponPack
 {

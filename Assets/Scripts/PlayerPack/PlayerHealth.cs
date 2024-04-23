@@ -14,7 +14,7 @@ namespace PlayerPack
         
         private static SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
 
-        private void Start()
+        private void OnEnable()
         {
             _currentHealth = PickedCharacter.MaxHp;
         }

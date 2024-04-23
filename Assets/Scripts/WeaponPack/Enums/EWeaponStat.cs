@@ -5,7 +5,7 @@ namespace WeaponPack.Enums
     {
         CooldownReduction,
         Damage,
-        Speed,
+        ProjectileSpeed,
         ProjectilesCount,
     }
 }

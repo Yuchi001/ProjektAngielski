@@ -7,7 +7,7 @@ namespace WeaponPack.SO
     public class SoWeapon : ScriptableObject
     {
         [SerializeField] private string weaponName;
-        [SerializeField] private string weaponDescription;
+        [SerializeField, TextArea] private string weaponDescription;
         [SerializeField] private Sprite weaponSprite;
         [SerializeField] private bool oneTimeSpawnLogic = false;
         [SerializeField] private float cooldown;
