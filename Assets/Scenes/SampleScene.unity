@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxEnemiesCount: 100
-  debugEnemy: {fileID: 11400000, guid: d21a996aa246cb14dbea5c16ba8048cd, type: 2}
+  debugEnemy: {fileID: 11400000, guid: 2ae31305bb9aec64bbbd20551da4d5e3, type: 2}
   enemyPrefab: {fileID: 2320810237440355403, guid: 10c5074b751d15a4a82a2da0f26e89c1, type: 3}
   spawnRate: 4
   mainCamera: {fileID: 300432655}

@@ -61,14 +61,15 @@ namespace WeaponPack
         private void OnLevelUp(string weaponName)
         {
             if (weaponName != _weapon.WeaponName) return;
-
-            _level++;
+            
             IncrementStats();
         }
 
         private void IncrementStats()
         {
-            foreach (var stat in GetCurrentUpgradeStats())
+            var weaponStats = _weapon.WeaponUpgradeStats;
+            var currentWeaponStats = weaponStats[_level % weaponStats.Count].levelStats;
+            foreach (var stat in currentWeaponStats)
             {
                 var statTuple = OngoingStats.FirstOrDefault(s => s.statType == stat.statType);
                 if(statTuple == default) continue;
@@ -76,17 +77,7 @@ namespace WeaponPack
                 if (stat.isPercentage) statTuple.statValue *= 1 + stat.statValue;
                 else statTuple.statValue += stat.statValue;
             }
-        }
-
-        private List<WeaponStatPair> GetCurrentUpgradeStats()
-        {
-            for (var i = 0; i < _weapon.WeaponUpgradeStats.Count; i++)
-            {
-                if ((_level + _weapon.WeaponUpgradeStats.Count) % (Mathf.Abs(i - _weapon.WeaponUpgradeStats.Count)) == 1) 
-                    return _weapon.WeaponUpgradeStats[i].levelStats;
-            }
-
-            return new List<WeaponStatPair>();
+            _level++;
         }
     }
 }
