@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EnemyPack;
+using EnemyPack.SO;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Utils;
@@ -11,6 +12,7 @@ namespace WeaponPack.Other
     public class Projectile : MonoBehaviour
     {
         [SerializeField] private Light2D light2D;
+        [SerializeField] private Collider2D collider2D;
         [SerializeField] private float maxDistance = 20f;
         private EnemyLogic _target;
         private Transform Target => _target.transform;
@@ -19,6 +21,8 @@ namespace WeaponPack.Other
         private GameObject _flightParticles;
         private GameObject _onHitParticles;
         private SpriteRenderer _spriteRenderer;
+
+        private Action<GameObject> _onHit = null;
 
         private List<Sprite> _sprites = new();
         private float _animSpeed = 1f;
@@ -29,7 +33,9 @@ namespace WeaponPack.Other
         private float _timer = 0;
 
         private Vector2 _startDistance;
-        
+
+        #region Setup methods
+
         public Projectile Setup(int damage, float speed)
         {
             _startDistance = transform.position;
@@ -37,6 +43,18 @@ namespace WeaponPack.Other
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _damage = damage;
             _speed = speed;
+            return this;
+        }
+
+        public Projectile SetCollisionHard()
+        {
+            collider2D.isTrigger = false;
+            return this;
+        }
+
+        public Projectile SetLightOff()
+        {
+            light2D.enabled = false;
             return this;
         }
 
@@ -62,6 +80,7 @@ namespace WeaponPack.Other
         public Projectile SetTarget(EnemyLogic enemyLogic)
         {
             _target = enemyLogic;
+            UtilsMethods.LookAtObj(transform, _target.transform.position);
             return this;
         }
 
@@ -83,6 +102,12 @@ namespace WeaponPack.Other
             return this;
         }
 
+        public Projectile SetOnHitAction(Action<GameObject> onHit)
+        {
+            _onHit = onHit;
+            return this;
+        }
+
         public Projectile SetScale(float scale)
         {
             transform.localScale = new Vector3(scale, scale, 0);
@@ -93,6 +118,8 @@ namespace WeaponPack.Other
         {
             _ready = true;
         }
+
+        #endregion
 
         private void Update()
         {
@@ -106,7 +133,6 @@ namespace WeaponPack.Other
                     Destroy(particlesInstance, 2f);
                 }
                 Destroy(gameObject);
-                return;
             }
 
             var projectileTransform = transform;
@@ -137,6 +163,8 @@ namespace WeaponPack.Other
                 var particlesInstance = Instantiate(_onHitParticles, transform.position, Quaternion.identity);
                 Destroy(particlesInstance, 2f);
             }
+            
+            _onHit?.Invoke(other.gameObject);
 
             if (_flightParticles != null)
             {

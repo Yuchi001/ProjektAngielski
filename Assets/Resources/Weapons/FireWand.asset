@@ -13,31 +13,39 @@ MonoBehaviour:
   m_Name: FireWand
   m_EditorClassIdentifier: 
   weaponName: Fire wand
-  weaponDescription: Fire 2 particles in random enemy direction, dealing light damage
+  weaponDescription: Fire 1 particle at enemy dealing heavy damage and creating explosion
+    in hit area
   weaponSprite: {fileID: 21300000, guid: bf8e9a357e5be82449202db38beaed22, type: 3}
   oneTimeSpawnLogic: 0
-  cooldown: 1
-  weaponLogicPrefab: {fileID: 0}
+  cooldown: 2
+  weaponLogicPrefab: {fileID: 4261295729194090879, guid: d121175665331e7439c184e59110ac7f, type: 3}
   weaponStartingStats:
   - statType: 0
     statValue: 0
     isPercentage: 1
   - statType: 1
-    statValue: 5
+    statValue: 20
     isPercentage: 0
   - statType: 2
     statValue: 8
     isPercentage: 0
   - statType: 3
-    statValue: 2
+    statValue: 1
+    isPercentage: 0
+  - statType: 4
+    statValue: 1
+    isPercentage: 0
+  - statType: 5
+    statValue: 5
     isPercentage: 0
   weaponUpgradeStats:
-  - weaponLevelUpDescription: Fire additional 2 projectiles, gain 10% attack speed
+  - weaponLevelUpDescription: Gain additional 5 blast damage, increase blast range
+      by 10%
     levelStats:
-    - statType: 0
+    - statType: 4
       statValue: 0.1
       isPercentage: 1
-    - statType: 3
+    - statType: 5
       statValue: 2
       isPercentage: 0
   - weaponLevelUpDescription: Gain 10% attack speed
@@ -45,11 +53,11 @@ MonoBehaviour:
     - statType: 0
       statValue: 0.1
       isPercentage: 1
-  - weaponLevelUpDescription: Gain 1 additional projectile and deal 2 more damage
+  - weaponLevelUpDescription: Gain 1 additional projectile and deal 5 more damage
     levelStats:
     - statType: 3
       statValue: 1
       isPercentage: 0
     - statType: 1
-      statValue: 2
+      statValue: 5
       isPercentage: 0

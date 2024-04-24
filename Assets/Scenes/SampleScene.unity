@@ -155,6 +155,7 @@ MonoBehaviour:
   maxEnemiesCount: 100
   enemyPrefab: {fileID: 2320810237440355403, guid: 10c5074b751d15a4a82a2da0f26e89c1, type: 3}
   spawnRate: 4
+  hordeSpawnRate: 0
   mainCamera: {fileID: 300432655}
 --- !u!4 &155985568
 Transform:
@@ -1073,10 +1074,10 @@ RectTransform:
   - {fileID: 1628441880}
   m_Father: {fileID: 762196563}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 50}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 889.99994, y: -25}
+  m_SizeDelta: {x: 1779.9999, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1291318896
 MonoBehaviour:

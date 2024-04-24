@@ -13,9 +13,10 @@ namespace Managers
 {
     public class EnemySpawner : MonoBehaviour
     {
-        [SerializeField] private int maxEnemiesCount = 100;
+        [SerializeField] private int maxEnemiesCount = 300;
         [SerializeField] private GameObject enemyPrefab;
         [SerializeField] private float spawnRate;
+        [SerializeField] private float hordeSpawnRate;
         [SerializeField] private Camera mainCamera;
 
         private float _timer = 0;

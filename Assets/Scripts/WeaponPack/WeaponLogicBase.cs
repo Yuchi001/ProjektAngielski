@@ -79,5 +79,11 @@ namespace WeaponPack
             }
             _level++;
         }
+
+        protected float? GetStatValue(EWeaponStat statType)
+        {
+            var stat = _realWeaponStats.FirstOrDefault(s => s.statType == statType);
+            return stat?.statValue;
+        }
     }
 }

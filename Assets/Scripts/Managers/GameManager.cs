@@ -34,7 +34,7 @@ namespace Managers
 
        private void Init()
        {
-           LeanTween.init(1000, 1000);
+           LeanTween.init(10000, 10000);
            // todo: this shit is debug only replace with valid code later
            StartRun(debugCharacter);
        }
