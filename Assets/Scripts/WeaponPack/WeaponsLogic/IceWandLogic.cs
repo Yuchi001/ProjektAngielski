@@ -29,7 +29,7 @@ namespace WeaponPack.WeaponsLogic
                 }
                 
                 projectileScript.Setup(Damage, Speed)
-                    .SetTarget(target)
+                    .SetTarget(target.transform)
                     .SetSprite(projectileSprites, animSpeed)
                     .SetFlightParticles(flightParticles)
                     .SetLightColor(projectileLightColor)

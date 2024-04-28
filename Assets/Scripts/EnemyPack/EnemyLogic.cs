@@ -17,13 +17,13 @@ namespace EnemyPack
         [SerializeField] private float attacksPerSecond;
         [SerializeField] private int attackDamage;
         [SerializeField] private Transform bodyTransform;
-        [SerializeField] private Rigidbody2D rigidbody2D;
+        [SerializeField] private new Rigidbody2D rigidbody2D;
         [SerializeField] private Animator animator;
 
         private SoEnemy _enemy;
         private Transform _target;
 
-        private Vector2 desiredDir;
+        private Vector2 _desiredDir;
 
         private float _timer = 0;
         private int _health;
@@ -58,14 +58,14 @@ namespace EnemyPack
 
             Vector2 dir = _target.position - transform.position;
             dir.Normalize();
-            desiredDir = dir;
+            _desiredDir = dir;
         }
 
         private void FixedUpdate()
         {
             if (_target == null) return;
             
-            rigidbody2D.velocity = desiredDir * _enemy.MovementSpeed;
+            rigidbody2D.velocity = _desiredDir * _enemy.MovementSpeed;
         }
 
         private void OnCollisionStay2D(Collision2D other)

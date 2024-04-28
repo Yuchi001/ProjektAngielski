@@ -15,6 +15,9 @@ namespace PlayerPack
         private List<WeaponLogicBase> _currentWeapons = new();
         private List<SoWeapon> _allWeapons = new();
 
+        public delegate void WeaponAddDelegate(WeaponLogicBase weaponLogicBase);
+        public static event WeaponAddDelegate OnWeaponAdd;
+
         public delegate void WeaponLevelUpDelegate(string weaponName);
         public static event WeaponLevelUpDelegate OnWeaponLevelUp;
 
@@ -37,6 +40,8 @@ namespace PlayerPack
             var weaponLogic = weaponLogicObj.GetComponent<WeaponLogicBase>();
             weaponLogic.Setup(weaponToAdd);
             _currentWeapons.Add(weaponLogic);
+            
+            OnWeaponAdd?.Invoke(weaponLogic);
         }
 
         public string GetWeaponDescription(SoWeapon weapon)

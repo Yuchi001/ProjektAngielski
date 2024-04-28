@@ -11,22 +11,23 @@ namespace WeaponPack.Other
     [RequireComponent(typeof(Sprite))]
     public class Projectile : MonoBehaviour
     {
+        [SerializeField] private SpriteRenderer projectileSprite;
         [SerializeField] private Light2D light2D;
-        [SerializeField] private Collider2D collider2D;
+        [SerializeField] private new Collider2D collider2D;
         [SerializeField] private float maxDistance = 20f;
-        private EnemyLogic _target;
-        private Transform Target => _target.transform;
+        private Transform _target;
         private int _damage;
         private float _speed;
         private GameObject _flightParticles;
         private GameObject _onHitParticles;
-        private SpriteRenderer _spriteRenderer;
 
         private Action<GameObject> _onHit = null;
 
         private List<Sprite> _sprites = new();
         private float _animSpeed = 1f;
         private int _currentIndex = 0;
+        private float? _rotationSpeed = null;
+        private float? _range = null;
 
         private bool _ready = false;
 
@@ -34,15 +35,43 @@ namespace WeaponPack.Other
 
         private Vector2 _startDistance;
 
+        private Action<GameObject> _deathBehaviour = Destroy;
+        private Action<GameObject> _outOfRangeBehaviour = Destroy;
+
         #region Setup methods
 
         public Projectile Setup(int damage, float speed)
         {
-            _startDistance = transform.position;
-            UtilsMethods.LookAtMouse(transform);
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _range = maxDistance;
+            var t = transform;
+            _startDistance = t.position;
+            UtilsMethods.LookAtMouse(t);
             _damage = damage;
             _speed = speed;
+            return this;
+        }
+
+        public Projectile SetDontDestroyOnHit()
+        {
+            _deathBehaviour = null;
+            return this;
+        }
+
+        public Projectile SetOutOfRangeBehaviour(Action<GameObject> outOfRangeBehaviour)
+        {
+            _outOfRangeBehaviour = outOfRangeBehaviour;
+            return this;
+        }
+
+        public Projectile SetRange(float range)
+        {
+            _range = range;
+            return this;
+        }
+
+        public Projectile SetRotationSpeed(float speed)
+        {
+            _rotationSpeed = speed;
             return this;
         }
 
@@ -52,15 +81,9 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Projectile SetLightOff()
-        {
-            light2D.enabled = false;
-            return this;
-        }
-
         public Projectile SetSprite(Sprite sprite)
         {
-            _spriteRenderer.sprite = sprite;
+            projectileSprite.sprite = sprite;
             return this;
         }
         
@@ -77,10 +100,10 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Projectile SetTarget(EnemyLogic enemyLogic)
+        public Projectile SetTarget(Transform target)
         {
-            _target = enemyLogic;
-            UtilsMethods.LookAtObj(transform, _target.transform.position);
+            _target = target;
+            UtilsMethods.LookAtObj(target, _target.transform.position);
             return this;
         }
 
@@ -125,23 +148,42 @@ namespace WeaponPack.Other
         {
             if (!_ready) return;
 
-            if (Vector2.Distance(transform.position, _startDistance) >= maxDistance)
+            if (_rotationSpeed != null)
             {
-                if (_onHitParticles != null)
-                {
-                    var particlesInstance = Instantiate(_onHitParticles, transform.position, Quaternion.identity);
-                    Destroy(particlesInstance, 2f);
-                }
-                Destroy(gameObject);
+                projectileSprite.transform.Rotate(0, 0, _rotationSpeed.Value);
             }
+            
+            AnimateProjectile();
+            MoveProjectile();
+            CheckDistance();
+        }
 
+        private void CheckDistance()
+        {
+            var distance = Vector2.Distance(transform.position, _startDistance);
+
+            if (distance < _range) return;
+
+            if (_onHitParticles != null)
+            {
+                var particlesInstance = Instantiate(_onHitParticles, transform.position, Quaternion.identity);
+                Destroy(particlesInstance, 2f);
+            }
+            _outOfRangeBehaviour.Invoke(gameObject);
+        }
+
+        private void MoveProjectile()
+        {
             var projectileTransform = transform;
             var newPos = _target == null ? 
                 (Vector2)(projectileTransform.position + projectileTransform.up * (_speed * Time.deltaTime)) :
-                Vector2.MoveTowards(transform.position, Target.position, _speed * Time.deltaTime);
+                Vector2.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
 
             transform.position = newPos;
-            
+        }
+
+        private void AnimateProjectile()
+        {
             _timer += Time.deltaTime;
             if (_timer < 1 / _animSpeed || _sprites.Count <= 1) return;
 
@@ -149,14 +191,26 @@ namespace WeaponPack.Other
             _currentIndex++;
             if (_currentIndex >= _sprites.Count) _currentIndex = 0;
 
-            _spriteRenderer.sprite = _sprites[_currentIndex];
+            projectileSprite.sprite = _sprites[_currentIndex];
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            ManageHit(other.gameObject);
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            ManageHit(other.gameObject);
+        }
+
+        private void ManageHit(GameObject hitObj)
+        {
             if (!_ready) return;
 
-            if (!other.gameObject.TryGetComponent<EnemyLogic>(out var enemyLogic)) return;
+            var isEnemyHit = hitObj.TryGetComponent<EnemyLogic>(out var enemyLogic);
+            var isTargetHit = _target != null && hitObj.transform.GetInstanceID() == _target.GetInstanceID();
+            if (!isEnemyHit && !isTargetHit) return;
 
             if (_onHitParticles != null)
             {
@@ -164,7 +218,7 @@ namespace WeaponPack.Other
                 Destroy(particlesInstance, 2f);
             }
             
-            _onHit?.Invoke(other.gameObject);
+            _onHit?.Invoke(hitObj);
 
             if (_flightParticles != null)
             {
@@ -174,8 +228,9 @@ namespace WeaponPack.Other
                 Destroy(_flightParticles, 10f);
             }
             
-            enemyLogic.GetDamaged(_damage);
-            Destroy(gameObject);
+            if(isEnemyHit) enemyLogic.GetDamaged(_damage);
+            
+            _deathBehaviour?.Invoke(gameObject);
         }
     }
 }

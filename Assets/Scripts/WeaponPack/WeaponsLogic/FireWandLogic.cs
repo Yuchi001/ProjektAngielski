@@ -35,7 +35,7 @@ namespace WeaponPack.WeaponsLogic
                 }
                 
                 projectileScript.Setup(Damage, Speed)
-                    .SetTarget(target)
+                    .SetTarget(target.transform)
                     .SetOnHitParticles(onHitParticles)
                     .SetOnHitAction(OnHitAction)
                     .SetFlightParticles(flightParticles)

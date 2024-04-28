@@ -25,7 +25,7 @@ namespace WeaponPack
         protected Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
         protected Transform PlayerTransform => GameManager.Instance.CurrentPlayer.transform;
 
-        protected float Cooldown => _weapon.Cooldown * (1 - _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.CooldownReduction)!.statValue);
+        public float Cooldown => _weapon.Cooldown * (1 - _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.CooldownReduction)!.statValue);
         private float _timer = 0;
         
         protected int _level = 0;
@@ -33,6 +33,9 @@ namespace WeaponPack
         protected bool spawned = false;
 
         protected List<WeaponStatPair> OngoingStats = new();
+
+
+        public float CurrentTimer => _timer;
         
         public void Setup(SoWeapon weapon)
         {

@@ -9,6 +9,7 @@ namespace WeaponPack.SO
         [SerializeField] private string weaponName;
         [SerializeField, TextArea] private string weaponDescription;
         [SerializeField] private Sprite weaponSprite;
+        [SerializeField] private Color weaponColor;
         [SerializeField] private bool oneTimeSpawnLogic = false;
         [SerializeField] private float cooldown;
         [SerializeField] private GameObject weaponLogicPrefab;
@@ -20,6 +21,7 @@ namespace WeaponPack.SO
         public string WeaponDescription => weaponDescription;
         public float Cooldown => cooldown;
         public bool OneTimeSpawnLogic => oneTimeSpawnLogic;
+        public Color WeaponColor => weaponColor;
         public GameObject WeaponLogicPrefab => weaponLogicPrefab;
         public Sprite WeaponSprite => weaponSprite;
         public List<WeaponStatPair> WeaponStartingStats => weaponStartingStats;

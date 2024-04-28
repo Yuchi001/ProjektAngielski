@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8513629063015508182}
   - component: {fileID: 8992767131167538181}
   - component: {fileID: 1848376943485978515}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 8960180597437508849}
   - component: {fileID: 5190692849910276064}
   - component: {fileID: 8848137075180025286}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 5926926411695020931}
   - component: {fileID: 2417607781582475378}
   - component: {fileID: 3749063910285452931}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 5243228708926100448}
   - component: {fileID: 7769488697711521028}
   - component: {fileID: 869978575978462742}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: meter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -411,7 +411,7 @@ GameObject:
   - component: {fileID: 8191276423356007028}
   - component: {fileID: 6528374986980264091}
   - component: {fileID: 7771533845673863798}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -516,7 +516,7 @@ GameObject:
   m_Component:
   - component: {fileID: 130082526019164611}
   - component: {fileID: 5148331027512085462}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: playerLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
