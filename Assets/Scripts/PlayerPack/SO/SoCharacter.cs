@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using WeaponPack.SO;
 
 namespace PlayerPack.SO
 {
@@ -8,16 +9,19 @@ namespace PlayerPack.SO
         [SerializeField] private string characterName;
         [SerializeField] private Sprite characterSprite;
         [SerializeField] private int maxHp;
-        
-        // todo: Implement weapon system
-        
+        [SerializeField] private int maxWeaponsInEq;
+        [SerializeField] private SoWeapon startingWeapon;
         [SerializeField] private float movementSpeed;
         [SerializeField] private AnimationClip walkingAnim;
+        [SerializeField] private AnimationClip idleAnim;
 
         public string CharacterName => characterName;
         public Sprite CharacterSprite => characterSprite;
         public int MaxHp => maxHp;
+        public int MaxWeaponsInEq => maxWeaponsInEq;
         public float MovementSpeed => movementSpeed;
         public AnimationClip WalkingAnimation => walkingAnim;
+        public AnimationClip IdleAnimation => idleAnim;
+        public SoWeapon StartingWeapon => startingWeapon;
     }
 }

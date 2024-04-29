@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
+  m_Name: MultiWand
+  m_EditorClassIdentifier: 
+  weaponName: Multi wand
+  weaponDescription: Fire 4 projectiles in each direction dealing medium damage
+  weaponSprite: {fileID: 21300000, guid: 5cffaf3ab50366648acc8e28da5bd84f, type: 3}
+  weaponColor: {r: 0.2277284, g: 0, b: 0.33962262, a: 1}
+  oneTimeSpawnLogic: 0
+  weaponLogicPrefab: {fileID: 6423456404719172056, guid: d8b880929f8634f4d96c1b774d251ead, type: 3}
+  weaponStartingStats:
+  - statType: 0
+    statValue: 1.5
+    isPercentage: 0
+  - statType: 1
+    statValue: 25
+    isPercentage: 0
+  - statType: 2
+    statValue: 7
+    isPercentage: 0
+  - statType: 3
+    statValue: 1
+    isPercentage: 0
+  weaponUpgradeStats:
+  - weaponLevelUpDescription: Gain 20% attack speed, projectiles move much faster
+    levelStats:
+    - statType: 0
+      statValue: -0.2
+      isPercentage: 1
+    - statType: 2
+      statValue: 1
+      isPercentage: 0
+  - weaponLevelUpDescription: Gain 5 more damage
+    levelStats:
+    - statType: 1
+      statValue: 5
+      isPercentage: 0
+  - weaponLevelUpDescription: Gain 1 more salvo
+    levelStats:
+    - statType: 3
+      statValue: 1
+      isPercentage: 0

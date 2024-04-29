@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
+  m_Name: IceWand
+  m_EditorClassIdentifier: 
+  weaponName: Ice wand
+  weaponDescription: Fire for projectiles that targets the closest targets in range,
+    dealing light damage
+  weaponSprite: {fileID: 21300000, guid: bda977de6e362264fa803dc9557325f0, type: 3}
+  weaponColor: {r: 0, g: 0.04509096, b: 0.61635214, a: 1}
+  oneTimeSpawnLogic: 0
+  weaponLogicPrefab: {fileID: 2453183114215846659, guid: 7cf16a8bd57bbe44ebfb481c79f37527, type: 3}
+  weaponStartingStats:
+  - statType: 0
+    statValue: 2
+    isPercentage: 0
+  - statType: 1
+    statValue: 5
+    isPercentage: 0
+  - statType: 2
+    statValue: 14
+    isPercentage: 0
+  - statType: 3
+    statValue: 4
+    isPercentage: 0
+  weaponUpgradeStats:
+  - weaponLevelUpDescription: Additional 2 damage, 10% faster attack
+    levelStats:
+    - statType: 1
+      statValue: 2
+      isPercentage: 0
+    - statType: 0
+      statValue: -0.1
+      isPercentage: 1
+  - weaponLevelUpDescription: Additional 2 damage, projectiles fly faster
+    levelStats:
+    - statType: 2
+      statValue: 0.5
+      isPercentage: 0
+    - statType: 1
+      statValue: 2
+      isPercentage: 0
+  - weaponLevelUpDescription: Increase projectiles by 1
+    levelStats:
+    - statType: 3
+      statValue: 1
+      isPercentage: 0
