@@ -84,6 +84,7 @@ MonoBehaviour:
   bloodParticles: {fileID: 7968732843853793858, guid: c5673512605494643b11f243bc5e09dd, type: 3}
   spriteRenderer: {fileID: 6528374986980264091}
   healthMeter: {fileID: 869978575978462742}
+  damageIndicator: {fileID: 3205396376673001242, guid: 9da7d4d8d90b347429bf8af27e3ab55e, type: 3}
 --- !u!114 &8513629063015508182
 MonoBehaviour:
   m_ObjectHideFlags: 0

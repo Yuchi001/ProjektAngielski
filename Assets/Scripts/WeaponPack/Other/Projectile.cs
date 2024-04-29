@@ -15,28 +15,32 @@ namespace WeaponPack.Other
         [SerializeField] private Light2D light2D;
         [SerializeField] private new Collider2D collider2D;
         [SerializeField] private float maxDistance = 20f;
+        
+        private readonly List<Sprite> _sprites = new();
+
         private Transform _target;
-        private int _damage;
-        private float _speed;
         private GameObject _flightParticles;
         private GameObject _onHitParticles;
 
-        private Action<GameObject> _onHit = null;
-
-        private List<Sprite> _sprites = new();
-        private float _animSpeed = 1f;
+        private float _onHitParticlesScale = 1;
+        private int _damage;
         private int _currentIndex = 0;
+        
+        private float _speed;
+        private float _animSpeed = 1f;
+        private float _timer = 0;
+
         private float? _rotationSpeed = null;
         private float? _range = null;
-
+        
         private bool _ready = false;
-
-        private float _timer = 0;
 
         private Vector2 _startDistance;
 
+        private Action<GameObject> _onHit = null;
         private Action<GameObject> _deathBehaviour = Destroy;
         private Action<GameObject> _outOfRangeBehaviour = Destroy;
+        private Action<Projectile> _update = null;
 
         #region Setup methods
 
@@ -45,7 +49,6 @@ namespace WeaponPack.Other
             _range = maxDistance;
             var t = transform;
             _startDistance = t.position;
-            UtilsMethods.LookAtMouse(t);
             _damage = damage;
             _speed = speed;
             return this;
@@ -54,6 +57,12 @@ namespace WeaponPack.Other
         public Projectile SetDontDestroyOnHit()
         {
             _deathBehaviour = null;
+            return this;
+        }
+
+        public Projectile SetUpdate(Action<Projectile> update)
+        {
+            _update = update;
             return this;
         }
 
@@ -75,19 +84,13 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Projectile SetCollisionHard()
-        {
-            collider2D.isTrigger = false;
-            return this;
-        }
-
         public Projectile SetSprite(Sprite sprite)
         {
             projectileSprite.sprite = sprite;
             return this;
         }
         
-        public Projectile SetSprite(List<Sprite> sprites, float animSpeed)
+        public Projectile SetSprite(IEnumerable<Sprite> sprites, float animSpeed)
         {
             _sprites.AddRange(sprites);
             _animSpeed = animSpeed;
@@ -103,7 +106,7 @@ namespace WeaponPack.Other
         public Projectile SetTarget(Transform target)
         {
             _target = target;
-            UtilsMethods.LookAtObj(target, _target.transform.position);
+            UtilsMethods.LookAtObj(transform, _target.transform.position);
             return this;
         }
 
@@ -113,9 +116,10 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Projectile SetOnHitParticles(GameObject onHitParticles)
+        public Projectile SetOnHitParticles(GameObject onHitParticles, float scale = 1)
         {
             _onHitParticles = onHitParticles;
+            _onHitParticlesScale = scale;
             return this;
         }
 
@@ -153,6 +157,8 @@ namespace WeaponPack.Other
                 projectileSprite.transform.Rotate(0, 0, _rotationSpeed.Value);
             }
             
+            _update?.Invoke(this);
+            
             AnimateProjectile();
             MoveProjectile();
             CheckDistance();
@@ -167,6 +173,8 @@ namespace WeaponPack.Other
             if (_onHitParticles != null)
             {
                 var particlesInstance = Instantiate(_onHitParticles, transform.position, Quaternion.identity);
+                particlesInstance.transform.localScale =
+                    new Vector3(_onHitParticlesScale, _onHitParticlesScale, _onHitParticlesScale);
                 Destroy(particlesInstance, 2f);
             }
             _outOfRangeBehaviour.Invoke(gameObject);
@@ -209,8 +217,7 @@ namespace WeaponPack.Other
             if (!_ready) return;
 
             var isEnemyHit = hitObj.TryGetComponent<EnemyLogic>(out var enemyLogic);
-            var isTargetHit = _target != null && hitObj.transform.GetInstanceID() == _target.GetInstanceID();
-            if (!isEnemyHit && !isTargetHit) return;
+            if (!isEnemyHit) return;
 
             if (_onHitParticles != null)
             {

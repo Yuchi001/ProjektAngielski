@@ -44,8 +44,7 @@ namespace EnemyPack
             aoc.ApplyOverrides(anims);
             animator.runtimeAnimatorController = aoc;
         }
-
-        private void Update()
+        protected override void OnUpdate()
         {
             if(Vector2.Distance(transform.position, _startPosition) >= maxDistanceFromPlayer)
                 Destroy(gameObject);
@@ -89,6 +88,9 @@ namespace EnemyPack
         public override void OnDie()
         {
             ExpGem.SpawnExpGem(expGemPrefab, transform.position, _enemy.ExpGemType);
+            _target = null;
+            rigidbody2D.velocity = Vector2.zero;
+            GetComponent<Collider2D>().enabled = false;
             
             base.OnDie();
         }

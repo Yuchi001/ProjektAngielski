@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &83292465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6ad64d905246959d1209eebe50a24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxEnemiesCount: 100
+  maxEnemiesCount: 1000
   enemyPrefab: {fileID: 2320810237440355403, guid: 10c5074b751d15a4a82a2da0f26e89c1, type: 3}
   mainCamera: {fileID: 300432655}
   enemySpawnRateCurve:
@@ -227,7 +227,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  enemySpawnRate: 5
+  enemySpawnRate: 20
   hordeSpawnRateCurve:
     serializedVersion: 2
     m_Curve:
@@ -262,8 +262,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   hordeSpawnRate: 0.1
-  hordeEnemiesCount: 100
-  maximumDifficultyTimeCap: 3600
+  hordeEnemiesCount: 300
+  maximumDifficultyTimeCap: 1800
   gemRarityList:
   - gemType: 0
     weight: 1000
@@ -273,6 +273,8 @@ MonoBehaviour:
     weight: 62
   - gemType: 3
     weight: 15
+  - gemType: 4
+    weight: 1
 --- !u!4 &155985568
 Transform:
   m_ObjectHideFlags: 0
@@ -1135,7 +1137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c2352e8652747c0b5a5a21c63adcd76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugCharacter: {fileID: 11400000, guid: 5f6cd0fd34284894cb32dd5367dcf7ce, type: 2}
+  debugCharacter: {fileID: 11400000, guid: 34dc23964e051a04cafd430d86e2cc86, type: 2}
   playerPrefab: {fileID: 330592185322976742, guid: e47a3e113abbb854d8e54c4078081bbd, type: 3}
   mainCamera: {fileID: 300432657}
   worldCanvas: {fileID: 656852853}

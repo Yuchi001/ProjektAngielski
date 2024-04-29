@@ -10,8 +10,6 @@ namespace PlayerPack
 {
     public class PlayerWeaponry : MonoBehaviour
     {
-        [SerializeField] private int maxWeaponsInEq = 4;
-
         private List<WeaponLogicBase> _currentWeapons = new();
         private List<SoWeapon> _allWeapons = new();
 
@@ -58,7 +56,7 @@ namespace PlayerPack
         {
             var weapons = new List<SoWeapon>();
             var weaponPool = new List<SoWeapon>(_allWeapons);
-            if (_currentWeapons.Count >= maxWeaponsInEq)
+            if (_currentWeapons.Count >= PlayerManager.Instance.PickedCharacter.MaxWeaponsInEq)
             {
                 var weaponNames = _currentWeapons.Select(w => w.Weapon.WeaponName);
                 weaponPool = weaponPool.Where(w => weaponNames.Contains(w.WeaponName)).ToList();

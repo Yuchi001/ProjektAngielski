@@ -7,7 +7,14 @@ namespace WeaponPack.Enums
         Damage,
         ProjectileSpeed,
         ProjectilesCount,
+        ProjectileRange,
+        ProjectileScale,
         BlastRange,
         BlastDamage,
+        BulletsPerSecond,
+        Accuracy,
     }
 }
+
+// 139
+// 132, 134

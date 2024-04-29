@@ -32,8 +32,7 @@ namespace FoodPack
         {
             var foodList = Resources.LoadAll<SoFood>("Food").Select(Instantiate).ToList();
             foodList.Sort((a, b) => a.SaturationValue - b.SaturationValue);
-            _biggestWeight = foodList[^1].SaturationValue - 1;
-            _weightSum = foodList.Sum(f => f.SaturationValue);
+            _biggestWeight = foodList[^1].SaturationValue + 1;
             foreach (var food in foodList)
             {
                 var weight = _biggestWeight - food.SaturationValue;
@@ -56,6 +55,8 @@ namespace FoodPack
         {
             _timer += Time.deltaTime;
             if (_timer < 1 / trySpawnRate) return;
+
+            _timer = 0;
             
             var randomPercentage = Random.Range(0, 101);
             if (randomPercentage > foodSpawnChance) return;
@@ -81,7 +82,11 @@ namespace FoodPack
 
         private SoFood GetRandomFood()
         {
-            var randomNumber = Random.Range(0, _weightSum + 1);
+            var randomNumber = Random.Range(0, _weightSum);
+
+            Debug.Log(randomNumber);
+            Debug.Log(_foodWeightList[0].weight);
+            
             foreach (var food in _foodWeightList)
             {
                 if (randomNumber <= food.weight) return food.food;

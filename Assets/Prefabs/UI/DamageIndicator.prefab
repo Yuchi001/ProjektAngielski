@@ -80,6 +80,7 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  healColor: {r: 0.23092759, g: 1, b: 0, a: 1}
   animTime: 0.7
   moveValue: 0.5
   damageText: {fileID: 6780214576218909493}

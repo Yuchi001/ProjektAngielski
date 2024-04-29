@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Managers;
 using PlayerPack;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using WeaponPack.Enums;
 using WeaponPack.SO;
@@ -25,7 +26,7 @@ namespace WeaponPack
         protected Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
         protected Transform PlayerTransform => GameManager.Instance.CurrentPlayer.transform;
 
-        public float Cooldown => _weapon.Cooldown * (1 - _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.CooldownReduction)!.statValue);
+        public float Cooldown => GetStatValue(EWeaponStat.CooldownReduction) ?? 1;
         private float _timer = 0;
         
         protected int _level = 0;

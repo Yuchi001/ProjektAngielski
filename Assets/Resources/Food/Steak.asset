@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ff70f67469456ca8c056af90c56910, type: 3}
   m_Name: Steak
   m_EditorClassIdentifier: 
-  saturationValue: 12
-  foodSprite: {fileID: 21300000, guid: eede1a84ea6e95546a16048f52f25e39, type: 3}
+  saturationValue: 60
+  foodSprite: {fileID: 21300000, guid: 6c4f57b3f40d31b44bcae3382797cf86, type: 3}

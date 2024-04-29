@@ -17,4 +17,4 @@ MonoBehaviour:
   bodyScale: 1
   movementSpeed: 1
   expGemType: 0
-  isHorde: 1
+  isHorde: 0

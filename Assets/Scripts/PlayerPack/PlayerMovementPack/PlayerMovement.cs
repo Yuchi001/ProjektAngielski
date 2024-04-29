@@ -4,13 +4,14 @@ using UnityEngine;
 
 namespace PlayerPack.PlayerMovementPack
 {
+    [RequireComponent(typeof(PlayerHealth))]
     public partial class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private Transform playerSpriteTransform;
         [SerializeField] private float animationSpeed = 0.5f;
         [SerializeField] private Animator animator;
         private SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
-
+        private PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
 
         private void Awake()
         {
@@ -26,6 +27,8 @@ namespace PlayerPack.PlayerMovementPack
 
         protected void Update()
         {
+            if (PlayerHealth.Dead) return;
+            
             ManageMovement();
         }
 

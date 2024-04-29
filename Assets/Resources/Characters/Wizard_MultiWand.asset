@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b2cdeeb64054534907f59e669f9eced, type: 3}
+  m_Name: Wizard_MultiWand
+  m_EditorClassIdentifier: 
+  characterName: Albus the Wizard
+  characterSprite: {fileID: -1228116626, guid: 9c82e02e413a1b04c8702c3ad74a5a4e, type: 3}
+  maxHp: 75
+  maxWeaponsInEq: 3
+  startingWeapon: {fileID: 11400000, guid: 31178e428a9a55549806b557b5b45324, type: 2}
+  movementSpeed: 3
+  walkingAnim: {fileID: 7400000, guid: 40ad2c07a687cfd48a2cda912ee39931, type: 2}
+  idleAnim: {fileID: 7400000, guid: 312eb9f26c713614dae37db3fad8032d, type: 2}

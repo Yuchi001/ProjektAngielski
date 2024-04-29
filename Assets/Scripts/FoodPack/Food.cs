@@ -1,4 +1,5 @@
-﻿using Other.SO;
+﻿using System;
+using Other.SO;
 using PlayerPack;
 using UnityEngine;
 
@@ -7,20 +8,30 @@ namespace FoodPack
     public class Food : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private float range;
         
         private SoFood _food;
+
+        private Vector2 PlayerPos => PlayerManager.Instance.transform.position;
+        private PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
         
         public void Setup(SoFood food)
         {
             _food = food;
             spriteRenderer.sprite = food.FoodSprite;
         }
-        
-        private void OnTriggerEnter2D(Collider2D other)
+
+        private void Update()
         {
-            if (!other.TryGetComponent<PlayerHealth>(out var playerHealth)) return;
+            if (Vector2.Distance(transform.position, PlayerPos) > range) return;
             
-            playerHealth.Heal(_food.SaturationValue);
+            PlayerHealth.Heal(_food.SaturationValue);
+            Destroy(gameObject);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(transform.position, range);
         }
     }
 }

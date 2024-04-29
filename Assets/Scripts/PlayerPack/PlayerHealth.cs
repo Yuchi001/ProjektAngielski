@@ -1,6 +1,7 @@
 ﻿using System;
 using Other;
 using PlayerPack.SO;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ namespace PlayerPack
     public class PlayerHealth : CanBeDamaged
     {
         [SerializeField] private Image healthMeter;
+        [SerializeField] private GameObject damageIndicator;
 
         private int _currentHealth = 0;
         
@@ -19,7 +21,7 @@ namespace PlayerPack
             _currentHealth = PickedCharacter.MaxHp;
         }
 
-        private void Update()
+        protected override void OnUpdate()
         {
             healthMeter.fillAmount = (float)_currentHealth / PickedCharacter.MaxHp;
         }
@@ -35,6 +37,8 @@ namespace PlayerPack
         {
             _currentHealth = Mathf.Clamp(_currentHealth + value, 
                 0, PickedCharacter.MaxHp);
+            
+            DamageIndicator.SpawnDamageIndicator(transform.position, damageIndicator, value, false);
         }
     }
 }

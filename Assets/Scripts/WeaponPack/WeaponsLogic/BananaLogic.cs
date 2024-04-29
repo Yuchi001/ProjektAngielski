@@ -3,6 +3,7 @@ using EnemyPack;
 using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
+using WeaponPack.Enums;
 using WeaponPack.Other;
 
 namespace WeaponPack.WeaponsLogic
@@ -12,7 +13,9 @@ namespace WeaponPack.WeaponsLogic
         [SerializeField] private Sprite projectileSprite;
         [SerializeField] private float rotationSpeed;
         [SerializeField] private GameObject projectilePrefab;
-        [SerializeField] private float range;
+
+        private float Range => GetStatValue(EWeaponStat.ProjectileRange) ?? 2;
+        
         protected override void UseWeapon()
         {
             var targetedEnemies = new List<int>();
@@ -35,7 +38,7 @@ namespace WeaponPack.WeaponsLogic
                     .SetOutOfRangeBehaviour(OutOfRangeBehaviour)
                     .SetSprite(projectileSprite)
                     .SetScale(0.5f)
-                    .SetRange(range)
+                    .SetRange(Range)
                     .SetRotationSpeed(rotationSpeed)
                     .SetLightColor(Color.clear)
                     .SetReady();
@@ -54,9 +57,19 @@ namespace WeaponPack.WeaponsLogic
                 .SetScale(0.5f)
                 .SetRotationSpeed(rotationSpeed)
                 .SetLightColor(Color.clear)
+                .SetUpdate(ProjectileUpdate)
                 .SetReady();
             
             Destroy(thisGameObject);
+        }
+
+        private void ProjectileUpdate(Projectile projectile)
+        {
+            var projectilePos = projectile.transform.position;
+            var playerPos = PlayerTransform.position;
+            if (Vector2.Distance(projectilePos, playerPos) > 0.1f) return;
+            
+            Destroy(projectile.gameObject);
         }
     }
 }
