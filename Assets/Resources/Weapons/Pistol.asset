@@ -35,13 +35,13 @@ MonoBehaviour:
     statValue: 1
     isPercentage: 0
   weaponUpgradeStats:
-  - weaponLevelUpDescription: Reload 10% faster, gain 1 damage
+  - weaponLevelUpDescription: Reload 10% faster, gain 3 damage
     levelStats:
     - statType: 0
-      statValue: 0.1
+      statValue: -0.1
       isPercentage: 1
     - statType: 1
-      statValue: 1
+      statValue: 3
       isPercentage: 0
   - weaponLevelUpDescription: Gain 10% accuracy, increase magazine capacity by 1
     levelStats:

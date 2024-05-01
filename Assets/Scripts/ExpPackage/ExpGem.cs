@@ -20,10 +20,6 @@ namespace ExpPackage
 
         private bool _pickedUp = false;
         
-        private bool _animating = false;
-
-        private const float minStrFallOff = 0.7f;
-        
         public static void SpawnExpGem(GameObject expGemPrefab, Vector3 position, EExpGemType expGemType)
         {
             var expGem = Instantiate(expGemPrefab, position, Quaternion.identity);
@@ -43,37 +39,10 @@ namespace ExpPackage
         private void Update()
         {
             if (PlayerManager.Instance == null) return;
-
-            ManageAnimation();
             
             if (Vector2.Distance(transform.position, PlayerPos) > range || _pickedUp) return;
 
             PickUp();
-        }
-
-        private void ManageAnimation()
-        {
-            if (_animating) return;
-
-            _animating = true;
-            
-            if (light2D.falloffIntensity <= minStrFallOff)
-            {
-                LeanTween.value(light2D.falloffIntensity, 1, 1f)
-                    .setOnUpdate((float val) =>
-                    {
-                        light2D.falloffIntensity = val;
-                    })
-                    .setOnComplete(() => _animating = false);
-                return;
-            }
-            
-            LeanTween.value(1, minStrFallOff - 0.05f, 1f)
-                .setOnUpdate((float val) =>
-                {
-                    light2D.falloffIntensity = val;
-                })
-                .setOnComplete(() => _animating = false);
         }
 
         private void PickUp()

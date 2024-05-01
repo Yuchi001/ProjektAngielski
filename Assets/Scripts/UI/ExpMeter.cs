@@ -16,7 +16,7 @@ namespace UI
         
         private void Update()
         {
-            if (PlayerExp == null) return;
+            if (PlayerManager.Instance == null) return;
 
             meter.fillAmount = PlayerExp.CurrentExp / PlayerExp.NextLevelExp;
             levelText.text = PlayerExp.CurrentLevel + " LvL";

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using PlayerPack;
 using PlayerPack.SO;
 using UnityEngine;
@@ -22,11 +23,12 @@ namespace Managers
        
        #endregion
 
-       [SerializeField] private SoCharacter debugCharacter;
        [SerializeField] private GameObject playerPrefab;
        [SerializeField] private MainCamera mainCamera;
        [SerializeField] private Transform worldCanvas;
        [SerializeField] private Transform mainCanvas;
+
+       [SerializeField] private Transform menuCanvas;
 
        public Transform WorldCanvas => worldCanvas;
        public Transform MainCanvas => mainCanvas;
@@ -35,14 +37,20 @@ namespace Managers
        private void Init()
        {
            LeanTween.init(10000, 10000);
-           // todo: this shit is debug only replace with valid code later
-           StartRun(debugCharacter);
        }
 
        public void StartRun(SoCharacter pickedCharacter)
        {
            var playerObj = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
            CurrentPlayer = playerObj.GetComponent<PlayerManager>();
+           
+           foreach (Transform child in transform)
+           {
+               child.gameObject.SetActive(true);
+           }
+           
+           menuCanvas.gameObject.SetActive(false);
+           
            CurrentPlayer.Setup(pickedCharacter);
            
            mainCamera.Setup(playerObj);
