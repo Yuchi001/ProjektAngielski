@@ -59,7 +59,7 @@ namespace WeaponPack
             _timer = 0;
             UseWeapon();
         }
-
+         // TEST
         protected abstract void UseWeapon();
 
         private void OnLevelUp(string weaponName)
