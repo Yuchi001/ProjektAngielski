@@ -59,6 +59,7 @@ namespace WeaponPack
             _timer = 0;
             UseWeapon();
         }
+        //test 2
          // TEST
         protected abstract void UseWeapon();
 
