@@ -27,13 +27,13 @@ namespace WeaponPack.WeaponsLogic
                 .SetReady();
         }
 
-        private void OnHit(GameObject projectile)
+        private void OnHit(GameObject hitObj, Projectile projectile)
         {
             var hitObjs = Physics2D.OverlapCircleAll(projectile.transform.position, BlastRange);
 
-            foreach (var hitObj in hitObjs)
+            foreach (var hit in hitObjs)
             {
-                if(!hitObj.TryGetComponent<EnemyLogic>(out var enemy)) continue;
+                if(!hit.TryGetComponent<EnemyLogic>(out var enemy)) continue;
                 
                 enemy.GetDamaged(Damage);
             }

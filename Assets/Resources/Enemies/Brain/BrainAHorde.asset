@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BrainAHorde
   m_EditorClassIdentifier: 
   walkingAnimationClip: {fileID: 7400000, guid: 5ba4886c002345346976500986a2be03, type: 2}
-  maxHealth: 40
+  maxHealth: 20
   bodyScale: 1
   movementSpeed: 0.5
   expGemType: 0

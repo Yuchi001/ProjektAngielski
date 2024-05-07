@@ -37,7 +37,14 @@ namespace Managers
 
         private List<SoEnemy> _allEnemies = new();
 
+        private List<EnemyLogic> _outOfRangeEnemies = new();
+
         private float _difficultyTimer = 0;
+
+        public void AddOutOfRangeEnemy(EnemyLogic enemy)
+        {
+            _outOfRangeEnemies.Add(enemy);
+        }
         
         private void Start()
         {
@@ -61,6 +68,7 @@ namespace Managers
             
             if (GameObject.FindGameObjectsWithTag("Enemy").Length >= maxEnemiesCount) return;
 
+            ClearOutOfRangeEnemies();
             TrySpawnEnemy();
             TrySpawnHorde();
         }
@@ -89,15 +97,8 @@ namespace Managers
             return validEnemies[Random.Range(0, validEnemies.Count)];
         }
 
-        private void TrySpawnEnemy()
+        private Vector3 GetRandomPos()
         {
-            var spawnRate = enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * enemySpawnRate;
-            if (_enemyTimer < 1 / spawnRate || PlayerManager == null) return;
-
-            _enemyTimer = 0;
-            
-            // true => x
-            // false => y
             var randomDimension = UtilsMethods.RandomClamp(true, false);
             
             var xDiff = randomDimension ? 
@@ -111,6 +112,29 @@ namespace Managers
             var spawnPos = PlayerManager.transform.position;
             spawnPos.x += xDiff;
             spawnPos.y += yDiff;
+
+            return spawnPos;
+        }
+
+        private void ClearOutOfRangeEnemies()
+        {
+            foreach (var enemy in _outOfRangeEnemies)
+            {
+                var spawnPos = GetRandomPos();
+                enemy.Despawn(spawnPos);
+            }
+            
+            _outOfRangeEnemies.Clear();
+        }
+
+        private void TrySpawnEnemy()
+        {
+            var spawnRate = enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * enemySpawnRate;
+            if (_enemyTimer < 1 / spawnRate || PlayerManager == null) return;
+
+            _enemyTimer = 0;
+
+            var spawnPos = GetRandomPos();
             
             InstantiateEnemy(GetEnemy(false), spawnPos);
         }
@@ -153,7 +177,7 @@ namespace Managers
             var scale = enemy.BodyScale;
             enemyObj.transform.localScale = new Vector3(scale, scale, scale);
             
-            enemyScript.Setup(enemy, PlayerManager.transform);
+            enemyScript.Setup(enemy, PlayerManager.transform, this);
         }
     }
 

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using EnemyPack.SO;
 using ExpPackage;
+using Managers;
+using Managers.Enums;
 using Other;
 using PlayerPack;
 using UI;
@@ -11,7 +13,7 @@ namespace EnemyPack
 {
     public class EnemyLogic : CanBeDamaged
     {
-        [SerializeField] private float maxDistanceFromPlayer = 50f;
+        [SerializeField] private float maxDistanceFromPlayer = 10f;
         [SerializeField] private GameObject damageIndicatorPrefab;
         [SerializeField] private GameObject expGemPrefab;
         [SerializeField] private float attacksPerSecond;
@@ -28,11 +30,19 @@ namespace EnemyPack
         private float _timer = 0;
         private int _health;
 
-        private Vector2 _startPosition;
+        private EnemySpawner _enemySpawner;
+        
 
-        public void Setup(SoEnemy enemy, Transform target)
+        private bool _outOfRange = false;
+
+        private Vector2 PlayerPos => PlayerManager.Instance.transform.position;
+
+        public void Setup(SoEnemy enemy, Transform target, EnemySpawner enemySpawner)
         {
-            _startPosition = transform.position;
+            rigidbody2D.mass = enemy.BodyScale * 10;
+            
+            _outOfRange = false;
+            _enemySpawner = enemySpawner;
             _enemy = Instantiate(enemy);
             _target = target;
             _health = enemy.MaxHealth;
@@ -44,10 +54,17 @@ namespace EnemyPack
             aoc.ApplyOverrides(anims);
             animator.runtimeAnimatorController = aoc;
         }
+
+        public void Despawn(Vector3 newPos)
+        {
+            _outOfRange = false;
+            transform.position = newPos;
+        }
         protected override void OnUpdate()
         {
-            if(Vector2.Distance(transform.position, _startPosition) >= maxDistanceFromPlayer)
-                Destroy(gameObject);
+            if (_outOfRange) _enemySpawner.AddOutOfRangeEnemy(this);
+            
+            _outOfRange = Vector2.Distance(transform.position, PlayerPos) >= maxDistanceFromPlayer;
             
             if (_target == null) return;
             
@@ -79,6 +96,8 @@ namespace EnemyPack
         public override void GetDamaged(int value)
         {
             base.GetDamaged(value);
+            
+            AudioManager.Instance.PlaySound(ESoundType.EnemyHurt, 0.1f);
             
             DamageIndicator.SpawnDamageIndicator(transform.position, damageIndicatorPrefab, value);
             _health = Mathf.Clamp(_health - value, 0, _enemy.MaxHealth);

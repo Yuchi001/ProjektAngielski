@@ -13,6 +13,7 @@ namespace WeaponPack.Enums
         BlastDamage,
         BulletsPerSecond,
         Accuracy,
+        MaxPiercedEnemies,
     }
 }
 

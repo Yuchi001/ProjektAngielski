@@ -36,7 +36,7 @@ namespace Managers
 
        private void Init()
        {
-           LeanTween.init(10000, 10000);
+           LeanTween.init(1000000, 1000000);
        }
 
        public void StartRun(SoCharacter pickedCharacter)

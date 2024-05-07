@@ -45,12 +45,12 @@ namespace WeaponPack.WeaponsLogic
             }
         }
 
-        private void OutOfRangeBehaviour(GameObject thisGameObject)
+        private void OutOfRangeBehaviour(Projectile projectile)
         {
-            var projectile = Instantiate(projectilePrefab, thisGameObject.transform.position, Quaternion.identity);
-            var projectileScript = projectile.GetComponent<Projectile>();
-           
-            projectileScript.Setup(Damage, Speed)
+            var newProjectile = Instantiate(projectilePrefab, projectile.transform.position, Quaternion.identity);
+            var newProjectileScript = newProjectile.GetComponent<Projectile>();
+            
+            newProjectileScript.Setup(Damage, Speed)
                 .SetTarget(PlayerTransform)
                 .SetSprite(projectileSprite)
                 .SetDontDestroyOnHit()
@@ -60,7 +60,7 @@ namespace WeaponPack.WeaponsLogic
                 .SetUpdate(ProjectileUpdate)
                 .SetReady();
             
-            Destroy(thisGameObject);
+            Destroy(projectile.gameObject);
         }
 
         private void ProjectileUpdate(Projectile projectile)

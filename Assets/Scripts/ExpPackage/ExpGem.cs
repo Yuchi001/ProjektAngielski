@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ExpPackage.Enums;
 using Managers;
+using Managers.Enums;
 using PlayerPack;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -57,6 +58,9 @@ namespace ExpPackage
                     if (playerExp == null) return;
                 
                     playerExp.GainExp(expAmount);
+                    
+                    AudioManager.Instance.PlaySound(ESoundType.PickUpGem, 0.1f);
+                    
                     Destroy(gameObject);
                 });
             tween.setOnUpdate((float val) => tween.setTo(PlayerPos));

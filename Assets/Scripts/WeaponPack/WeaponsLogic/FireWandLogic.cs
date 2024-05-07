@@ -46,7 +46,7 @@ namespace WeaponPack.WeaponsLogic
             }
         }
 
-        private void OnHitAction(GameObject enemy)
+        private void OnHitAction(GameObject enemy, Projectile projectile)
         {
             var range = GetStatValue(EWeaponStat.BlastRange);
             var damage = GetStatValue(EWeaponStat.BlastDamage);

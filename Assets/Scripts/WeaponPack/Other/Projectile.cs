@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using EnemyPack;
 using EnemyPack.SO;
 using UnityEngine;
@@ -37,10 +38,14 @@ namespace WeaponPack.Other
 
         private Vector2 _startDistance;
 
-        private Action<GameObject> _onHit = null;
-        private Action<GameObject> _deathBehaviour = Destroy;
-        private Action<GameObject> _outOfRangeBehaviour = Destroy;
+        private Action<GameObject, Projectile> _onHit = null;
+        private Action<Projectile> _deathBehaviour = projectile => Destroy(projectile.gameObject);
+        private Action<Projectile> _outOfRangeBehaviour = projectile => Destroy(projectile.gameObject);
         private Action<Projectile> _update = null;
+
+        private bool _damageOnHit = true;
+
+        private readonly Dictionary<string, float> _customValues = new();
 
         #region Setup methods
 
@@ -54,9 +59,21 @@ namespace WeaponPack.Other
             return this;
         }
 
+        public Projectile SetCustomValue(float value, string id)
+        {
+            _customValues.Add(id, value);
+            return this;
+        }
+
         public Projectile SetDontDestroyOnHit()
         {
             _deathBehaviour = null;
+            return this;
+        }
+
+        public Projectile DisableDamageOnHit()
+        {
+            _damageOnHit = false;
             return this;
         }
 
@@ -66,7 +83,7 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Projectile SetOutOfRangeBehaviour(Action<GameObject> outOfRangeBehaviour)
+        public Projectile SetOutOfRangeBehaviour(Action<Projectile> outOfRangeBehaviour)
         {
             _outOfRangeBehaviour = outOfRangeBehaviour;
             return this;
@@ -129,7 +146,7 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Projectile SetOnHitAction(Action<GameObject> onHit)
+        public Projectile SetOnHitAction(Action<GameObject, Projectile> onHit)
         {
             _onHit = onHit;
             return this;
@@ -163,6 +180,18 @@ namespace WeaponPack.Other
             MoveProjectile();
             CheckDistance();
         }
+        
+        public float GetCustomValue(string id)
+        {
+            if (!_customValues.ContainsKey(id)) return -1;
+            return _customValues[id];
+        }
+        
+        public void SetCustomValue(string id, float newValue)
+        {
+            if (!_customValues.ContainsKey(id)) return;
+            _customValues[id] = newValue;
+        }
 
         private void CheckDistance()
         {
@@ -177,7 +206,7 @@ namespace WeaponPack.Other
                     new Vector3(_onHitParticlesScale, _onHitParticlesScale, _onHitParticlesScale);
                 Destroy(particlesInstance, 2f);
             }
-            _outOfRangeBehaviour.Invoke(gameObject);
+            _outOfRangeBehaviour.Invoke(this);
         }
 
         private void MoveProjectile()
@@ -225,7 +254,7 @@ namespace WeaponPack.Other
                 Destroy(particlesInstance, 2f);
             }
             
-            _onHit?.Invoke(hitObj);
+            _onHit?.Invoke(hitObj, this);
 
             if (_flightParticles != null)
             {
@@ -235,9 +264,9 @@ namespace WeaponPack.Other
                 Destroy(_flightParticles, 10f);
             }
             
-            if(isEnemyHit) enemyLogic.GetDamaged(_damage);
+            if (_damageOnHit) enemyLogic.GetDamaged(_damage);
             
-            _deathBehaviour?.Invoke(gameObject);
+            _deathBehaviour?.Invoke(this);
         }
     }
 }

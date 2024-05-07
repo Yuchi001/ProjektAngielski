@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
+  m_Name: Sword
+  m_EditorClassIdentifier: 
+  weaponName: Sword
+  weaponDescription: Throw a sword that pierces thru enemies dealing two times more
+    damage for each hit enemy
+  weaponSprite: {fileID: 21300000, guid: 962e9e936d4e0bd42bc6c82ceff146e2, type: 3}
+  weaponColor: {r: 0.26477394, g: 0.38979062, b: 0.4716981, a: 1}
+  oneTimeSpawnLogic: 0
+  weaponLogicPrefab: {fileID: 2117946469768778277, guid: 311f0087cefd9f64b88b94b7f70dc9c7, type: 3}
+  weaponStartingStats:
+  - statType: 0
+    statValue: 0.5
+    isPercentage: 0
+  - statType: 1
+    statValue: 2
+    isPercentage: 0
+  - statType: 2
+    statValue: 6
+    isPercentage: 0
+  - statType: 3
+    statValue: 1
+    isPercentage: 0
+  - statType: 10
+    statValue: 2
+    isPercentage: 0
+  weaponUpgradeStats:
+  - weaponLevelUpDescription: Increase max pierced enemies by 2
+    levelStats:
+    - statType: 10
+      statValue: 2
+      isPercentage: 0
+  - weaponLevelUpDescription: Gain 1 more damage and 10% attack speed
+    levelStats:
+    - statType: 1
+      statValue: 1
+      isPercentage: 0
+    - statType: 0
+      statValue: 0.1
+      isPercentage: 1
+  - weaponLevelUpDescription: Gain 1 more sword, increase pierced enemies count by
+      1
+    levelStats:
+    - statType: 3
+      statValue: 1
+      isPercentage: 0
+    - statType: 10
+      statValue: 1
+      isPercentage: 0

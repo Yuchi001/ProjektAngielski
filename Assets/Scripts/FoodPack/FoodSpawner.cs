@@ -83,9 +83,6 @@ namespace FoodPack
         private SoFood GetRandomFood()
         {
             var randomNumber = Random.Range(0, _weightSum);
-
-            Debug.Log(randomNumber);
-            Debug.Log(_foodWeightList[0].weight);
             
             foreach (var food in _foodWeightList)
             {
