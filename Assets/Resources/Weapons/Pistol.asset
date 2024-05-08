@@ -20,10 +20,10 @@ MonoBehaviour:
   weaponLogicPrefab: {fileID: 4604547026064372186, guid: 51b8214004e8c9246a98ad9ae5463170, type: 3}
   weaponStartingStats:
   - statType: 0
-    statValue: 2
+    statValue: 1
     isPercentage: 0
   - statType: 1
-    statValue: 3
+    statValue: 12
     isPercentage: 0
   - statType: 2
     statValue: 10
@@ -32,14 +32,11 @@ MonoBehaviour:
     statValue: 7
     isPercentage: 0
   - statType: 9
-    statValue: 1
+    statValue: 0.5
     isPercentage: 0
   weaponUpgradeStats:
-  - weaponLevelUpDescription: Reload 10% faster, gain 3 damage
+  - weaponLevelUpDescription: Gain 3 damage
     levelStats:
-    - statType: 0
-      statValue: -0.1
-      isPercentage: 1
     - statType: 1
       statValue: 3
       isPercentage: 0
@@ -54,5 +51,5 @@ MonoBehaviour:
   - weaponLevelUpDescription: Gain 20% accuracy
     levelStats:
     - statType: 9
-      statValue: -0.2
+      statValue: -0.4
       isPercentage: 1

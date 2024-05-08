@@ -365,7 +365,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   hordeSpawnRate: 0.1
   hordeEnemiesCount: 300
-  maximumDifficultyTimeCap: 1800
+  maximumDifficultyTimeCap: 600
   gemRarityList:
   - gemType: 0
     weight: 1000

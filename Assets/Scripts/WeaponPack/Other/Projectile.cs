@@ -12,6 +12,7 @@ namespace WeaponPack.Other
     [RequireComponent(typeof(Sprite))]
     public class Projectile : MonoBehaviour
     {
+        [SerializeField] private TrailRenderer trailRenderer;
         [SerializeField] private SpriteRenderer projectileSprite;
         [SerializeField] private Light2D light2D;
         [SerializeField] private new Collider2D collider2D;
@@ -51,11 +52,19 @@ namespace WeaponPack.Other
 
         public Projectile Setup(int damage, float speed)
         {
+            trailRenderer.gameObject.SetActive(false);
             _range = maxDistance;
             var t = transform;
             _startDistance = t.position;
             _damage = damage;
             _speed = speed;
+            return this;
+        }
+
+        public Projectile SetTrail(float time = 0.1f)
+        {
+            trailRenderer.gameObject.SetActive(true);
+            trailRenderer.time = time;
             return this;
         }
 
@@ -71,7 +80,7 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Projectile DisableDamageOnHit()
+        public Projectile SetDisableDamageOnHit()
         {
             _damageOnHit = false;
             return this;
@@ -140,10 +149,16 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Projectile SetDirection(Vector3 direction, float additionalRotation = 0)
+        public Projectile SetDirection(Vector3 direction, float rotateBy = 0)
         {
             UtilsMethods.LookAtObj(transform, direction);
-            transform.Rotate(0, 0, additionalRotation);
+            transform.Rotate(0, 0, rotateBy);
+            return this;
+        }
+
+        public Projectile SetSpriteRotation(float angle)
+        {
+            projectileSprite.transform.Rotate(0, 0, angle);
             return this;
         }
 

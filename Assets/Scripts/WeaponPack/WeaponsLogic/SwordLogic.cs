@@ -33,13 +33,14 @@ namespace WeaponPack.WeaponsLogic
                 }
                 
                 projectileScript.Setup(Damage, Speed)
-                    .SetDirection(target.transform.position, 90)
+                    .SetDirection(target.transform.position)
                     .SetSprite(projectileSprite)
+                    .SetSpriteRotation(45)
                     .SetDontDestroyOnHit()
-                    .DisableDamageOnHit()
+                    .SetDisableDamageOnHit()
                     .SetCustomValue(0, HitEnemyCountName)
                     .SetOnHitAction(OnHit)
-                    .SetScale(0.3f)
+                    .SetScale(0.4f)
                     .SetLightColor(Color.clear)
                     .SetReady();
                 

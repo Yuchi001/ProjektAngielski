@@ -1,4 +1,6 @@
 ﻿using EnemyPack;
+using Managers;
+using Managers.Enums;
 using UnityEngine;
 using WeaponPack.Enums;
 using WeaponPack.Other;
@@ -29,6 +31,8 @@ namespace WeaponPack.WeaponsLogic
 
         private void OnHit(GameObject hitObj, Projectile projectile)
         {
+            AudioManager.Instance.PlaySound(ESoundType.BananaBoom, 0.2f);
+            
             var hitObjs = Physics2D.OverlapCircleAll(projectile.transform.position, BlastRange);
 
             foreach (var hit in hitObjs)

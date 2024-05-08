@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Managers;
+using Managers.Enums;
 using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
@@ -10,6 +12,8 @@ namespace WeaponPack.WeaponsLogic
 {
     public class PistolLogic : WeaponLogicBase
     {
+        [SerializeField] private float bulletScale = 0.2f;
+        [SerializeField] private float trailTime = 0.2f;
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private Sprite projectileSprite;
 
@@ -22,13 +26,16 @@ namespace WeaponPack.WeaponsLogic
             var target = UtilsMethods.FindTarget(transform.position);
 
             if (target == null) return;
-            StartCoroutine(ShootAllMagazines(target.transform.position));
+            var position = target.transform.position;
+            StartCoroutine(ShootAllMagazines(position));
         }
 
         private IEnumerator ShootAllMagazines(Vector2 position)
         {
             for (var i = 0; i < ProjectilesCount; i++)
             {
+                AudioManager.Instance.PlaySound(ESoundType.PistolShoot, 0.05f);
+                
                 var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
                 var projectileScript = projectile.GetComponent<Projectile>();
                 
@@ -36,7 +43,8 @@ namespace WeaponPack.WeaponsLogic
                     .SetDirection(GetDirection(position))
                     .SetLightColor(Color.clear)
                     .SetSprite(projectileSprite)
-                    .SetScale(0.5f)
+                    .SetScale(bulletScale)
+                    .SetTrail(trailTime)
                     .SetReady();
                 
                 yield return new WaitForSeconds(Cooldown / (2 * ProjectilesCount));
