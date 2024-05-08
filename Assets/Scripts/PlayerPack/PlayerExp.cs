@@ -9,7 +9,6 @@ namespace PlayerPack
 {
     public class PlayerExp : MonoBehaviour
     {
-        [SerializeField] private float animTime = 0.1f;
         [SerializeField] private int levelOneCap;
         [SerializeField] private GameObject levelUpUiPrefab;
 

@@ -140,9 +140,10 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Projectile SetDirection(Vector3 direction)
+        public Projectile SetDirection(Vector3 direction, float additionalRotation = 0)
         {
             UtilsMethods.LookAtObj(transform, direction);
+            transform.Rotate(0, 0, additionalRotation);
             return this;
         }
 

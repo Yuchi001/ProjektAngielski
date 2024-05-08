@@ -33,7 +33,7 @@ namespace WeaponPack.WeaponsLogic
                 }
                 
                 projectileScript.Setup(Damage, Speed)
-                    .SetDirection(target.transform.position)
+                    .SetDirection(target.transform.position, 90)
                     .SetSprite(projectileSprite)
                     .SetDontDestroyOnHit()
                     .DisableDamageOnHit()
