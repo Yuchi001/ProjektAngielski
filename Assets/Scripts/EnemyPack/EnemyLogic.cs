@@ -31,7 +31,8 @@ namespace EnemyPack
         private int _health;
 
         private EnemySpawner _enemySpawner;
-        
+
+        private int MaxHealth => Mathf.CeilToInt(_enemy.MaxHealth * _enemySpawner.EnemiesHpScale);
 
         private bool _outOfRange = false;
 
@@ -45,7 +46,8 @@ namespace EnemyPack
             _enemySpawner = enemySpawner;
             _enemy = Instantiate(enemy);
             _target = target;
-            _health = enemy.MaxHealth;
+            
+            _health = MaxHealth;
             
             var aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
             var anims = new List<KeyValuePair<AnimationClip, AnimationClip>>();
@@ -100,13 +102,22 @@ namespace EnemyPack
             AudioManager.Instance.PlaySound(ESoundType.EnemyHurt, 0.1f);
             
             DamageIndicator.SpawnDamageIndicator(transform.position, damageIndicatorPrefab, value);
-            _health = Mathf.Clamp(_health - value, 0, _enemy.MaxHealth);
+            _health = Mathf.Clamp(_health - value, 0, MaxHealth);
             if(_health <= 0) OnDie();
         }
 
         public override void OnDie()
         {
             ExpGem.SpawnExpGem(expGemPrefab, transform.position, _enemy.ExpGemType);
+            _target = null;
+            rigidbody2D.velocity = Vector2.zero;
+            GetComponent<Collider2D>().enabled = false;
+            
+            base.OnDie();
+        }
+
+        public void DieWithoutGem()
+        {
             _target = null;
             rigidbody2D.velocity = Vector2.zero;
             GetComponent<Collider2D>().enabled = false;

@@ -28,12 +28,12 @@ namespace WeaponPack
 
         public float Cooldown => GetStatValue(EWeaponStat.CooldownReduction) ?? 1;
         private float _timer = 0;
-        
-        protected int _level = 0;
 
-        protected bool spawned = false;
+        private int _level = 0;
 
-        protected List<WeaponStatPair> OngoingStats = new();
+        private bool spawned = false;
+
+        private List<WeaponStatPair> OngoingStats = new();
 
 
         public float CurrentTimer => _timer;
@@ -57,6 +57,7 @@ namespace WeaponPack
             if (_timer < Cooldown || (spawned && _weapon.OneTimeSpawnLogic)) return;
 
             _timer = 0;
+            spawned = true;
             UseWeapon();
         }
         //test 2
@@ -83,6 +84,9 @@ namespace WeaponPack
                 else statTuple.statValue += stat.statValue;
             }
             _level++;
+
+            // jesli bron jest jednorazowego uzytku zresetuj ja
+            spawned = !_weapon.OneTimeSpawnLogic;
         }
 
         protected float? GetStatValue(EWeaponStat statType)

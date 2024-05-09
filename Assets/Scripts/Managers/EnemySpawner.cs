@@ -15,6 +15,7 @@ namespace Managers
 {
     public class EnemySpawner : MonoBehaviour
     {
+        [SerializeField] private float enemiesHpScale = 1;
         [SerializeField] private int maxEnemiesCount = 300;
         [SerializeField] private GameObject enemyPrefab;
         [SerializeField] private Camera mainCamera;
@@ -40,6 +41,8 @@ namespace Managers
         private List<EnemyLogic> _outOfRangeEnemies = new();
 
         private float _difficultyTimer = 0;
+
+        public float EnemiesHpScale => enemiesHpScale;
 
         public void AddOutOfRangeEnemy(EnemyLogic enemy)
         {

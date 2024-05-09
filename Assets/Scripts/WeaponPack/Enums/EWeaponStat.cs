@@ -14,6 +14,7 @@ namespace WeaponPack.Enums
         BulletsPerSecond,
         Accuracy,
         MaxPiercedEnemies,
+        DropExpChance,
     }
 }
 
