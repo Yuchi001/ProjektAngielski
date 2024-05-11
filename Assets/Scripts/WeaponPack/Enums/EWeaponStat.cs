@@ -15,8 +15,7 @@ namespace WeaponPack.Enums
         Accuracy,
         MaxPiercedEnemies,
         DropExpChance,
+        Duration,
+        DamageRate,
     }
 }
-
-// 139
-// 132, 134

@@ -34,11 +34,15 @@ namespace WeaponPack.Other
 
         private float? _rotationSpeed = null;
         private float? _range = null;
+
+        private float? _lifeTime = null;
+        private float _currentLifeTime = 0;
         
         private bool _ready = false;
 
         private Vector2 _startDistance;
 
+        private Action<GameObject, Projectile> _onCollisionStay = null;
         private Action<GameObject, Projectile> _onHit = null;
         private Action<Projectile> _deathBehaviour = projectile => Destroy(projectile.gameObject);
         private Action<Projectile> _outOfRangeBehaviour = projectile => Destroy(projectile.gameObject);
@@ -68,7 +72,13 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Projectile SetCustomValue(float value, string id)
+        public Projectile SetLifeTime(float lifeTime)
+        {
+            _lifeTime = lifeTime;
+            return this;
+        }
+
+        public Projectile SetNewCustomValue(string id, float value = 0)
         {
             _customValues.Add(id, value);
             return this;
@@ -110,16 +120,19 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Projectile SetSprite(Sprite sprite)
+        public Projectile SetSprite(Sprite sprite, float spriteScale = 1)
         {
             projectileSprite.sprite = sprite;
+            projectileSprite.transform.localScale = new Vector3(spriteScale, spriteScale, 0);
+            if (sprite == null) projectileSprite.enabled = false;
             return this;
         }
         
-        public Projectile SetSprite(IEnumerable<Sprite> sprites, float animSpeed)
+        public Projectile SetSprite(IEnumerable<Sprite> sprites, float animSpeed, float spriteScale = 1)
         {
             _sprites.AddRange(sprites);
             _animSpeed = animSpeed;
+            projectileSprite.transform.localScale = new Vector3(spriteScale, spriteScale, 0);
             return this;
         }
 
@@ -136,9 +149,17 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Projectile SetFlightParticles(GameObject flightParticles)
+        public Projectile SetOnCollisionStay(Action<GameObject, Projectile> onCollisionStay)
+        {
+            _onCollisionStay = onCollisionStay;
+            return this;
+        }
+
+        public Projectile SetFlightParticles(GameObject flightParticles, float scale = 1, bool setOnTop = false)
         {
             _flightParticles = Instantiate(flightParticles, transform.position, Quaternion.identity, transform);
+            _flightParticles.transform.localScale = new Vector3(scale, scale, 0);
+            _flightParticles.GetComponent<ParticleSystemRenderer>().sortingOrder = setOnTop ? 1 : 0;
             return this;
         }
 
@@ -189,12 +210,13 @@ namespace WeaponPack.Other
             {
                 projectileSprite.transform.Rotate(0, 0, _rotationSpeed.Value);
             }
-            
+
             _update?.Invoke(this);
             
             AnimateProjectile();
             MoveProjectile();
             CheckDistance();
+            CheckLifeTime();
         }
         
         public float GetCustomValue(string id)
@@ -207,6 +229,23 @@ namespace WeaponPack.Other
         {
             if (!_customValues.ContainsKey(id)) return;
             _customValues[id] = newValue;
+        }
+
+        private void CheckLifeTime()
+        {
+            if (_lifeTime == null) return;
+            
+            _currentLifeTime += Time.deltaTime;
+            if (_lifeTime > _currentLifeTime) return;
+            
+            if (_onHitParticles != null)
+            {
+                var particlesInstance = Instantiate(_onHitParticles, transform.position, Quaternion.identity);
+                particlesInstance.transform.localScale =
+                    new Vector3(_onHitParticlesScale, _onHitParticlesScale, _onHitParticlesScale);
+                Destroy(particlesInstance, 2f);
+            }
+            _outOfRangeBehaviour.Invoke(this);
         }
 
         private void CheckDistance()
@@ -257,6 +296,26 @@ namespace WeaponPack.Other
             ManageHit(other.gameObject);
         }
 
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            ManageCollisionStay(other.gameObject);
+        }
+
+        private void OnCollisionStay2D(Collision2D other)
+        {
+            ManageCollisionStay(other.gameObject);
+        }
+
+        private void ManageCollisionStay(GameObject hitObj)
+        {
+            if (!_ready) return;
+
+            var isEnemyHit = hitObj.TryGetComponent<EnemyLogic>(out var enemyLogic);
+            if (!isEnemyHit) return;
+            
+            _onCollisionStay?.Invoke(hitObj, this);
+        }
+
         private void ManageHit(GameObject hitObj)
         {
             if (!_ready) return;
@@ -267,6 +326,8 @@ namespace WeaponPack.Other
             if (_onHitParticles != null)
             {
                 var particlesInstance = Instantiate(_onHitParticles, transform.position, Quaternion.identity);
+                particlesInstance.transform.localScale =
+                    new Vector3(_onHitParticlesScale, _onHitParticlesScale, _onHitParticlesScale);
                 Destroy(particlesInstance, 2f);
             }
             

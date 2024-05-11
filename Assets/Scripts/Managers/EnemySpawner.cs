@@ -43,6 +43,7 @@ namespace Managers
         private float _difficultyTimer = 0;
 
         public float EnemiesHpScale => enemiesHpScale;
+        public int DeadEnemies { get; set; } = 0;
 
         public void AddOutOfRangeEnemy(EnemyLogic enemy)
         {
@@ -51,6 +52,8 @@ namespace Managers
         
         private void Start()
         {
+            DeadEnemies = 0;
+            
             var bottomLeftCorner = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, mainCamera.nearClipPlane));
             var topRightCorner = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, mainCamera.nearClipPlane));
 
@@ -96,8 +99,8 @@ namespace Managers
             }
 
             validEnemies = validEnemies.Where(e => e.ExpGemType == pickedGemType).ToList();
-
-            return validEnemies[Random.Range(0, validEnemies.Count)];
+            
+            return validEnemies.Count != 0 ? validEnemies[Random.Range(0, validEnemies.Count)] : _allEnemies[0];
         }
 
         private Vector3 GetRandomPos()

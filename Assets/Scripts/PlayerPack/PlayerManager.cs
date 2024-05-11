@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Managers;
 using PlayerPack.SO;
 using UnityEngine;
 
@@ -48,6 +49,17 @@ namespace PlayerPack
             animator.runtimeAnimatorController = aoc;
             
             GetComponent<PlayerWeaponry>().AddWeapon(pickedCharacter.StartingWeapon);
+        }
+
+        public void ManagePlayerDeath()
+        {
+            PlayerHealth.enabled = false;
+            PlayerExp.enabled = false;
+            
+            PlayerWeaponry.DestroyAllWeapons();
+            PlayerWeaponry.enabled = false;
+
+            GameManager.Instance.OnPlayerDeath();
         }
     }
 }

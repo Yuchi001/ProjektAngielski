@@ -6,5 +6,9 @@
         EnemyHurt,
         PickUpGem,
         PistolShoot,
+        Heal,
+        ButtonClick,
+        PlayerDeath,
+        PlayerHurt,
     }
 }

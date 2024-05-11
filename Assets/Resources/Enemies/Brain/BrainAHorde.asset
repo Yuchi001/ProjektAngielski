@@ -16,5 +16,5 @@ MonoBehaviour:
   maxHealth: 20
   bodyScale: 1
   movementSpeed: 0.5
-  expGemType: 0
+  expGemType: 1
   isHorde: 1

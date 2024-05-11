@@ -19,19 +19,19 @@ namespace WeaponPack.WeaponsLogic
         {
             var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
             var projectileScript = projectile.GetComponent<Projectile>();
-                
+
             projectileScript.Setup(Damage, 0)
                 .SetSprite(projectileSprite)
                 .SetScale(0.5f)
                 .SetOnHitAction(OnHit)
-                .SetOnHitParticles(boomParticles, BlastRange * 10)
+                .SetOnHitParticles(boomParticles, BlastRange * 2)
                 .SetLightColor(Color.red)
                 .SetReady();
         }
 
         private void OnHit(GameObject hitObj, Projectile projectile)
         {
-            AudioManager.Instance.PlaySound(ESoundType.BananaBoom, 0.2f);
+            AudioManager.Instance.PlaySound(ESoundType.BananaBoom);
             
             var hitObjs = Physics2D.OverlapCircleAll(projectile.transform.position, BlastRange);
 

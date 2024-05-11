@@ -32,13 +32,13 @@ MonoBehaviour:
   - statType: 1
     statValue: 25
     isPercentage: 0
-  - statType: 5
+  - statType: 6
     statValue: 1
     isPercentage: 0
   weaponUpgradeStats:
   - weaponLevelUpDescription: Blast range enlarged by 20%
     levelStats:
-    - statType: 5
+    - statType: 6
       statValue: 0.2
       isPercentage: 1
   - weaponLevelUpDescription: Gain 25% cooldown reduction and 5 more damage
@@ -54,6 +54,6 @@ MonoBehaviour:
     - statType: 0
       statValue: -0.1
       isPercentage: 1
-    - statType: 5
+    - statType: 6
       statValue: 0.1
       isPercentage: 1

@@ -99,19 +99,21 @@ namespace EnemyPack
         {
             base.GetDamaged(value);
             
-            AudioManager.Instance.PlaySound(ESoundType.EnemyHurt, 0.1f);
+            AudioManager.Instance.PlaySound(ESoundType.EnemyHurt);
             
             DamageIndicator.SpawnDamageIndicator(transform.position, damageIndicatorPrefab, value);
             _health = Mathf.Clamp(_health - value, 0, MaxHealth);
             if(_health <= 0) OnDie();
         }
 
-        public override void OnDie()
+        public override void OnDie(bool destroyObj = true)
         {
             ExpGem.SpawnExpGem(expGemPrefab, transform.position, _enemy.ExpGemType);
             _target = null;
             rigidbody2D.velocity = Vector2.zero;
             GetComponent<Collider2D>().enabled = false;
+
+            _enemySpawner.DeadEnemies++;
             
             base.OnDie();
         }

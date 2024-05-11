@@ -38,7 +38,7 @@ namespace WeaponPack.WeaponsLogic
                     .SetSpriteRotation(45)
                     .SetDontDestroyOnHit()
                     .SetDisableDamageOnHit()
-                    .SetCustomValue(0, HitEnemyCountName)
+                    .SetNewCustomValue(HitEnemyCountName)
                     .SetOnHitAction(OnHit)
                     .SetScale(0.4f)
                     .SetLightColor(Color.clear)

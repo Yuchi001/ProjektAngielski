@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Managers.Enums;
 using PlayerPack;
 using PlayerPack.SO;
 using UnityEngine;
@@ -54,6 +55,16 @@ namespace Managers
            CurrentPlayer.Setup(pickedCharacter);
            
            mainCamera.Setup(playerObj);
+           
+           AudioManager.Instance.SetTheme(EThemeType.Main1);
+       }
+
+       public void OnPlayerDeath()
+       {
+           foreach (Transform child in transform)
+           {
+               child.gameObject.SetActive(false);
+           }
        }
     }
 }

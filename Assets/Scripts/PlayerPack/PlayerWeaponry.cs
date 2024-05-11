@@ -73,5 +73,14 @@ namespace PlayerPack
             
             return weapons;
         }
+
+        public void DestroyAllWeapons()
+        {
+            foreach (var weapon in _currentWeapons)
+            {
+                if (weapon == null) continue;
+                Destroy(weapon.gameObject);
+            }
+        }
     }
 }

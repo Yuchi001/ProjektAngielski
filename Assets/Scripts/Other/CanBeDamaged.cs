@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -11,6 +12,8 @@ namespace Other
 
         private const float _flashTime = 0.1f;
         private Material _spriteMaterial;
+
+        private Coroutine _currentCoroutine = null;
 
         public bool Dead { get; private set; }
 
@@ -31,14 +34,7 @@ namespace Other
 
         public virtual void GetDamaged(int value)
         {
-            LeanTween.pause(gameObject);
-            LeanTween.value(gameObject, 0, 1, _flashTime).setOnUpdate(val =>
-            {
-                _spriteMaterial.SetFloat("_FlashAmmount", val);
-            }).setOnComplete(() => LeanTween.value(gameObject, 1, 0, _flashTime).setOnUpdate(val =>
-            {
-                _spriteMaterial.SetFloat("_FlashAmmount", val);
-            }));
+            _currentCoroutine ??= StartCoroutine(DamageAnim());
 
             if (bloodParticles == null) return;
 
@@ -46,19 +42,29 @@ namespace Other
             Destroy(particles, 5f);
         }
 
-        public virtual void OnDie()
+        public virtual void OnDie(bool destroyObj = true)
         {
             Dead = true;
-            LeanTween.pause(gameObject);
             _spriteMaterial.SetColor("_FlashColor", Color.red);
-            LeanTween.value(gameObject, 0, 1, _flashTime).setOnUpdate(val =>
+            _spriteMaterial.SetFloat("_FlashAmmount", 1);
+            StartCoroutine(Die(destroyObj));
+        }
+
+        private IEnumerator Die(bool destroyObj)
+        {
+            for (float time = 0; time < _flashTime; time+=Time.deltaTime)
             {
-                _spriteMaterial.SetFloat("_FlashAmmount", val);
-            }).setOnComplete(() => LeanTween.value(gameObject, 1, 0, _flashTime).setOnUpdate(val =>
-            {
-                _spriteMaterial.SetFloat("_FlashAmmount", val);
-            }));
-            LeanTween.scaleX(gameObject, 0, 0.2f).setOnComplete(() => Destroy(gameObject));
+                transform.localScale = new Vector3(1f - time / _flashTime, 1, 1);
+                yield return new WaitForSeconds(Time.deltaTime);
+            }
+            if(destroyObj) Destroy(gameObject);
+        }
+        
+        private IEnumerator DamageAnim()
+        {
+            _spriteMaterial.SetFloat("_FlashAmmount", 1);
+            yield return new WaitForSeconds(_flashTime);
+            _spriteMaterial.SetFloat("_FlashAmmount", 0);
         }
     }
 }

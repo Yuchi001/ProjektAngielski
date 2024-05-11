@@ -34,7 +34,7 @@ namespace WeaponPack.WeaponsLogic
         {
             for (var i = 0; i < ProjectilesCount; i++)
             {
-                AudioManager.Instance.PlaySound(ESoundType.PistolShoot, 0.05f);
+                AudioManager.Instance.PlaySound(ESoundType.PistolShoot);
                 
                 var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
                 var projectileScript = projectile.GetComponent<Projectile>();

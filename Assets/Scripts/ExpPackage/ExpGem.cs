@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ExpPackage.Enums;
@@ -16,10 +17,13 @@ namespace ExpPackage
         [SerializeField] private float range;
         [SerializeField] private float animTime;
         [SerializeField] private List<ExpGemInfo> expAmountPair = new();
-        private Vector3 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
+        private static Vector3 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
         private int expAmount = 0;
 
-        private bool _pickedUp = false;
+        private float _timer = 0;
+
+        private EGemState _gemState = EGemState.Default;
+        private Vector2 startPosition;
         
         public static void SpawnExpGem(GameObject expGemPrefab, Vector3 position, EExpGemType expGemType)
         {
@@ -35,40 +39,51 @@ namespace ExpPackage
 
             expAmount = pair.expAmount;
             GetComponent<SpriteRenderer>().sprite = pair.gemSprite;
+            startPosition = transform.position;
         }
 
         private void Update()
         {
             if (PlayerManager.Instance == null) return;
-            
-            if (Vector2.Distance(transform.position, PlayerPos) > range || _pickedUp) return;
 
-            PickUp();
-        }
+            switch (_gemState)
+            {
+                case EGemState.Default:
+                    if (Vector2.Distance(transform.position, PlayerPos) > range) return;
 
-        private void PickUp()
-        {
-            var playerExp = PlayerManager.Instance.PlayerExp;
-            
-            _pickedUp = true;
-            var tween = LeanTween.move(gameObject, PlayerPos, animTime)
-                .setEaseInExpo()
-                .setOnComplete(() =>
-                {
-                    if (playerExp == null) return;
-                
+                    _gemState = EGemState.PickingUpPhase;
+                    return;
+                case EGemState.PickingUpPhase:
+                    _timer += Time.deltaTime;
+                    var remainingTime = Mathf.Clamp01(_timer / animTime);
+
+                    transform.position = Vector3.Lerp(startPosition, PlayerPos, remainingTime);
+                    
+                    if (Vector2.Distance(transform.position, PlayerPos) > 0.1f) return;
+                    
+                    AudioManager.Instance.PlaySound(ESoundType.PickUpGem);
+
+                    _gemState = EGemState.PickedUp;
+                    
+                    var playerExp = PlayerManager.Instance.PlayerExp;
                     playerExp.GainExp(expAmount);
-                    
-                    AudioManager.Instance.PlaySound(ESoundType.PickUpGem, 0.1f);
-                    
                     Destroy(gameObject);
-                });
-            tween.setOnUpdate((float val) => tween.setTo(PlayerPos));
+                    return;
+                case EGemState.PickedUp: return;
+                default: return;
+            }
         }
 
         private void OnDrawGizmos()
         {
             Gizmos.DrawWireSphere(transform.position, range);
+        }
+
+        private enum EGemState
+        {
+            Default,
+            PickingUpPhase,
+            PickedUp,
         }
     }
 }
