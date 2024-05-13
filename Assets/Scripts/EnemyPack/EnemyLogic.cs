@@ -8,11 +8,14 @@ using Other;
 using PlayerPack;
 using UI;
 using UnityEngine;
+using WeaponPack.Other;
 
 namespace EnemyPack
 {
     public class EnemyLogic : CanBeDamaged
     {
+        [Header("General")]
+        
         [SerializeField] private float maxDistanceFromPlayer = 10f;
         [SerializeField] private GameObject damageIndicatorPrefab;
         [SerializeField] private GameObject expGemPrefab;
@@ -21,13 +24,18 @@ namespace EnemyPack
         [SerializeField] private Transform bodyTransform;
         [SerializeField] private new Rigidbody2D rigidbody2D;
         [SerializeField] private Animator animator;
+        
+        [Header("Shooting")]
+        
+        [SerializeField] private GameObject projectilePrefab;
 
         private SoEnemy _enemy;
         private Transform _target;
 
         private Vector2 _desiredDir;
 
-        private float _timer = 0;
+        private float _collisionTimer = 0;
+        private float _shootTimer = 0;
         private int _health;
 
         private EnemySpawner _enemySpawner;
@@ -41,7 +49,7 @@ namespace EnemyPack
         public void Setup(SoEnemy enemy, Transform target, EnemySpawner enemySpawner)
         {
             rigidbody2D.mass = enemy.BodyScale * 10;
-            
+
             _outOfRange = false;
             _enemySpawner = enemySpawner;
             _enemy = Instantiate(enemy);
@@ -69,8 +77,8 @@ namespace EnemyPack
             _outOfRange = Vector2.Distance(transform.position, PlayerPos) >= maxDistanceFromPlayer;
             
             if (_target == null) return;
-            
-            _timer += Time.deltaTime;
+
+            _collisionTimer += Time.deltaTime;
             
             bodyTransform.rotation = Quaternion.Euler(0, _target.position.x < transform.position.x ? 0 : 180, 0);
 
@@ -89,9 +97,9 @@ namespace EnemyPack
         private void OnCollisionStay2D(Collision2D other)
         {
             if (!other.gameObject.TryGetComponent<PlayerHealth>(out var playerHealth) 
-                || _timer < 1 / attacksPerSecond) return;
+                || _collisionTimer < 1 / attacksPerSecond) return;
 
-            _timer = 0;
+            _collisionTimer = 0;
             playerHealth.GetDamaged(attackDamage);
         }
 

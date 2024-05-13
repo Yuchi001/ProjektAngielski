@@ -13,6 +13,11 @@ namespace EnemyPack.SO
         [SerializeField] private EExpGemType expGemType;
         [SerializeField] private bool isHorde;
 
+        [SerializeField] private bool useAction = false;
+        [SerializeField] private bool oneTimeSpawnAction = false;
+        [SerializeField] private float enemyActionCooldown;
+        [SerializeField] private GameObject enemyAction = null;
+
         public float BodyScale => bodyScale;
         public bool IsHorde => isHorde;
         public AnimationClip WalkingAnimationClip => walkingAnimationClip;
