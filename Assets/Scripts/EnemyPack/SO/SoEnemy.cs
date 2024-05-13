@@ -1,5 +1,6 @@
 ﻿using ExpPackage.Enums;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace EnemyPack.SO
 {
@@ -15,7 +16,7 @@ namespace EnemyPack.SO
 
         [SerializeField] private bool useAction = false;
         [SerializeField] private bool oneTimeSpawnAction = false;
-        [SerializeField] private float enemyActionCooldown;
+        [FormerlySerializedAs("enemyActionCooldown")] [SerializeField] private float actionCooldown;
         [SerializeField] private GameObject enemyAction = null;
 
         public float BodyScale => bodyScale;
@@ -24,5 +25,9 @@ namespace EnemyPack.SO
         public int MaxHealth => maxHealth;
         public float MovementSpeed => movementSpeed;
         public EExpGemType ExpGemType => expGemType;
+        public bool UseAction => useAction;
+        public bool OnTimeSpawnLogic => oneTimeSpawnAction;
+        public float ActionCooldown => actionCooldown;
+        public GameObject EnemyAction => enemyAction;
     }
 }

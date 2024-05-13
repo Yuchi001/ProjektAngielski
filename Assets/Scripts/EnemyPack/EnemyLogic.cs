@@ -35,7 +35,7 @@ namespace EnemyPack
         private Vector2 _desiredDir;
 
         private float _collisionTimer = 0;
-        private float _shootTimer = 0;
+        private float _actionTimer = 0;
         private int _health;
 
         private EnemySpawner _enemySpawner;
@@ -85,6 +85,17 @@ namespace EnemyPack
             Vector2 dir = _target.position - transform.position;
             dir.Normalize();
             _desiredDir = dir;
+        }
+
+        private void HandleAction()
+        {
+            if (!_enemy.UseAction) return;
+
+            _actionTimer += Time.deltaTime;
+            if (_actionTimer < _enemy.ActionCooldown) return;
+
+            _actionTimer = 0;
+            
         }
 
         private void FixedUpdate()
