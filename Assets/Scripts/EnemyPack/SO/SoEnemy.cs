@@ -14,10 +14,8 @@ namespace EnemyPack.SO
         [SerializeField] private EExpGemType expGemType;
         [SerializeField] private bool isHorde;
 
-        [SerializeField] private bool useAction = false;
-        [SerializeField] private bool oneTimeSpawnAction = false;
         [FormerlySerializedAs("enemyActionCooldown")] [SerializeField] private float actionCooldown;
-        [SerializeField] private GameObject enemyAction = null;
+        [SerializeField] private GameObject enemyAdditionalLogic = null;
 
         public float BodyScale => bodyScale;
         public bool IsHorde => isHorde;
@@ -25,9 +23,15 @@ namespace EnemyPack.SO
         public int MaxHealth => maxHealth;
         public float MovementSpeed => movementSpeed;
         public EExpGemType ExpGemType => expGemType;
-        public bool UseAction => useAction;
-        public bool OnTimeSpawnLogic => oneTimeSpawnAction;
         public float ActionCooldown => actionCooldown;
-        public GameObject EnemyAction => enemyAction;
+        public void SpawnEnemyLogic(EnemyLogic enemyLogic)
+        {
+            if (enemyAdditionalLogic == null) return;
+
+            var enemyActionScript =
+                Instantiate(enemyAdditionalLogic, enemyLogic.transform.position, Quaternion.identity,
+                    enemyLogic.transform).GetComponent<EnemyAction>();
+            enemyActionScript.Setup(enemyLogic, this);
+        }
     }
 }

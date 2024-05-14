@@ -63,6 +63,8 @@ namespace EnemyPack
                 anims.Add(new KeyValuePair<AnimationClip, AnimationClip>(a, _enemy.WalkingAnimationClip));
             aoc.ApplyOverrides(anims);
             animator.runtimeAnimatorController = aoc;
+            
+            _enemy.SpawnEnemyLogic(this);
         }
 
         public void Despawn(Vector3 newPos)
@@ -85,17 +87,6 @@ namespace EnemyPack
             Vector2 dir = _target.position - transform.position;
             dir.Normalize();
             _desiredDir = dir;
-        }
-
-        private void HandleAction()
-        {
-            if (!_enemy.UseAction) return;
-
-            _actionTimer += Time.deltaTime;
-            if (_actionTimer < _enemy.ActionCooldown) return;
-
-            _actionTimer = 0;
-            
         }
 
         private void FixedUpdate()
