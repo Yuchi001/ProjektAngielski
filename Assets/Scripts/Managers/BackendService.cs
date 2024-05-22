@@ -1,33 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Text;
-using Newtonsoft.Json;
 
-public class BackendService : MonoBehaviour
+namespace Managers
 {
-    private static string baseUrl = "http://localhost:3000/api";
-    private static string authToken = "";
-
-    public void RegisterUser(string username, string password)
+    //todo: @Kamil ogarnianianie zapisu achievementow
+    //todo: @Filip dodanie metod do odczytu, update statystyk
+    public class BackendService : MonoBehaviour
     {
-        StartCoroutine(RegisterUserCoroutine(username, password));
-    }
+        private static string baseUrl = "http://localhost:3000/api";
+        private static string authToken = "";
 
-    private IEnumerator RegisterUserCoroutine(string username, string password)
-    {
-        var user = new Dictionary<string, string>
+        public void RegisterUser(string username, string password)
         {
-            { "username", username },
-            { "password", password }
-        };
+            StartCoroutine(RegisterUserCoroutine(username, password));
+        }
 
-        string jsonData = JsonConvert.SerializeObject(user);
-
-        using (UnityWebRequest request = new UnityWebRequest(baseUrl + "/register", "POST"))
+        private IEnumerator RegisterUserCoroutine(string username, string password)
         {
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+            var user = new Dictionary<string, string>
+            {
+                { "username", username },
+                { "password", password }
+            };
+
+        
+            var jsonData = JsonUtility.ToJson(user); //JsonConvert.SerializeObject(user);
+
+            using var request = new UnityWebRequest(baseUrl + "/register", "POST");
+            var bodyRaw = Encoding.UTF8.GetBytes(jsonData);
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
@@ -43,26 +46,25 @@ public class BackendService : MonoBehaviour
                 Debug.LogError("Error: " + request.error);
             }
         }
-    }
 
-    public void LoginUser(string username, string password)
-    {
-        StartCoroutine(LoginUserCoroutine(username, password));
-    }
-
-    private IEnumerator LoginUserCoroutine(string username, string password)
-    {
-        var user = new Dictionary<string, string>
+        public void LoginUser(string username, string password)
         {
-            { "username", username },
-            { "password", password }
-        };
+            StartCoroutine(LoginUserCoroutine(username, password));
+        }
 
-        string jsonData = JsonConvert.SerializeObject(user);
-
-        using (UnityWebRequest request = new UnityWebRequest(baseUrl + "/login", "POST"))
+        private IEnumerator LoginUserCoroutine(string username, string password)
         {
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+            var user = new Dictionary<string, string>
+            {
+                { "username", username },
+                { "password", password }
+            };
+
+            var jsonData = JsonUtility.ToJson(user); //JsonConvert.SerializeObject(user);
+
+            using var request = new UnityWebRequest(baseUrl + "/login", "POST");
+        
+            var bodyRaw = Encoding.UTF8.GetBytes(jsonData);
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
@@ -71,7 +73,7 @@ public class BackendService : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                var response = JsonConvert.DeserializeObject<Dictionary<string, object>>(request.downloadHandler.text);
+                var response = JsonUtility.FromJson<Dictionary<string, object>>(request.downloadHandler.text); //JsonConvert.DeserializeObject<Dictionary<string, object>>(request.downloadHandler.text);
                 authToken = response["token"].ToString();
                 Debug.Log("User logged in successfully!");
             }
@@ -80,51 +82,48 @@ public class BackendService : MonoBehaviour
                 Debug.LogError("Error: " + request.error);
             }
         }
-    }
 
-    public void GetAchievements()
-    {
-        StartCoroutine(GetAchievementsCoroutine());
-    }
-
-    private IEnumerator GetAchievementsCoroutine()
-    {
-        using (UnityWebRequest request = UnityWebRequest.Get(baseUrl + "/achievements"))
+        public void GetAchievements()
         {
+            StartCoroutine(GetAchievementsCoroutine());
+        }
+
+        private IEnumerator GetAchievementsCoroutine()
+        {
+            using var request = UnityWebRequest.Get(baseUrl + "/achievements");
+        
             request.SetRequestHeader("x-access-token", authToken);
 
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                var achievements = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(request.downloadHandler.text);
-                Debug.Log("Achievements: " + JsonConvert.SerializeObject(achievements, Formatting.Indented));
+                var achievements = JsonUtility.FromJson<List<Dictionary<string, object>>>(request.downloadHandler.text); // JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(request.downloadHandler.text);
             }
             else
             {
                 Debug.LogError("Error: " + request.error);
             }
         }
-    }
 
-    public void UpdateAchievement(int achievementId, int value)
-    {
-        StartCoroutine(UpdateAchievementCoroutine(achievementId, value));
-    }
-
-    private IEnumerator UpdateAchievementCoroutine(int achievementId, int value)
-    {
-        var achievement = new Dictionary<string, int>
+        public void UpdateAchievement(int achievementId, int value)
         {
-            { "achievementId", achievementId },
-            { "value", value }
-        };
+            StartCoroutine(UpdateAchievementCoroutine(achievementId, value));
+        }
 
-        string jsonData = JsonConvert.SerializeObject(achievement);
-
-        using (UnityWebRequest request = new UnityWebRequest(baseUrl + "/achievements", "PUT"))
+        private IEnumerator UpdateAchievementCoroutine(int achievementId, int value)
         {
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+            var achievement = new Dictionary<string, int>
+            {
+                { "achievementId", achievementId },
+                { "value", value }
+            };
+
+            var jsonData = JsonUtility.ToJson(achievement);
+
+            using var request = new UnityWebRequest(baseUrl + "/achievements", "PUT");
+        
+            var bodyRaw = Encoding.UTF8.GetBytes(jsonData);
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
@@ -141,23 +140,20 @@ public class BackendService : MonoBehaviour
                 Debug.LogError("Error: " + request.error);
             }
         }
-    }
 
-    public void GetAllAchievements()
-    {
-        StartCoroutine(GetAllAchievementsCoroutine());
-    }
-
-    private IEnumerator GetAllAchievementsCoroutine()
-    {
-        using (UnityWebRequest request = UnityWebRequest.Get(baseUrl + "/all-achievements"))
+        public void GetAllAchievements()
         {
+            StartCoroutine(GetAllAchievementsCoroutine());
+        }
+
+        private IEnumerator GetAllAchievementsCoroutine()
+        {
+            using var request = UnityWebRequest.Get(baseUrl + "/all-achievements");
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                var achievements = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(request.downloadHandler.text);
-                Debug.Log("All Achievements: " + JsonConvert.SerializeObject(achievements, Formatting.Indented));
+                var achievements = JsonUtility.FromJson<List<Dictionary<string, object>>>(request.downloadHandler.text);
             }
             else
             {
