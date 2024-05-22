@@ -16,7 +16,7 @@ MonoBehaviour:
   characterSprite: {fileID: -1228116626, guid: 9c82e02e413a1b04c8702c3ad74a5a4e, type: 3}
   maxHp: 999
   maxWeaponsInEq: 999
-  startingWeapon: {fileID: 11400000, guid: 4109ca3d4823c824b82213e08386dca1, type: 2}
+  startingWeapon: {fileID: 11400000, guid: e8c616d0f5ff4a84486199d84bee0c78, type: 2}
   movementSpeed: 3
   walkingAnim: {fileID: 7400000, guid: 3b4933883a3c0b84a9206ace12c522d7, type: 2}
   idleAnim: {fileID: 7400000, guid: 3b4933883a3c0b84a9206ace12c522d7, type: 2}

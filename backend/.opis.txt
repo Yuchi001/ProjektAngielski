@@ -1,4 +1,5 @@
-Instalujemy Dockera. Po zainstalowaniu w folderze api odpalamy:
+Instalujemy Dockera (https://www.docker.com/products/docker-desktop/). 
+Po zainstalowaniu, odpalamy docker desktop a następnie w folderze backend odpalamy:
 
 docker compose up --build
 
