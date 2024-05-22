@@ -35,6 +35,7 @@ namespace WeaponPack.WeaponsLogic
                     .SetDirection(target.transform.position)
                     .SetDontDestroyOnHit()
                     .SetSprite(projectileSprite)
+                    .SetPushForce(PushForce)
                     .SetScale(ProjectileScale)
                     .SetRotationSpeed(-rotationSpeedModifier * Speed)
                     .SetLightColor(Color.clear)

@@ -18,8 +18,6 @@ namespace WeaponPack.WeaponsLogic
         [SerializeField] private Sprite projectileSprite;
 
         private float Accuracy => GetStatValue(EWeaponStat.Accuracy) ?? 1;
-        private float BulletsPerSecond => GetStatValue(EWeaponStat.BulletsPerSecond) ?? 1;
-        private float ProjectilesCount => GetStatValue(EWeaponStat.ProjectilesCount) ?? 1;
         
         protected override void UseWeapon()
         {
@@ -32,7 +30,7 @@ namespace WeaponPack.WeaponsLogic
 
         private IEnumerator ShootAllMagazines(Vector2 position)
         {
-            for (var i = 0; i < ProjectilesCount; i++)
+            for (var i = 0; i < ProjectileCount; i++)
             {
                 AudioManager.Instance.PlaySound(ESoundType.PistolShoot);
                 
@@ -45,9 +43,10 @@ namespace WeaponPack.WeaponsLogic
                     .SetSprite(projectileSprite)
                     .SetScale(bulletScale)
                     .SetTrail(trailTime)
+                    .SetPushForce(PushForce)
                     .SetReady();
                 
-                yield return new WaitForSeconds(Cooldown / (2 * ProjectilesCount));
+                yield return new WaitForSeconds(Cooldown / (2 * ProjectileCount));
             }
         }
 

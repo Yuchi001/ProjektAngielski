@@ -42,6 +42,8 @@ namespace UI
         
         private void Awake()
         {
+            AudioManager.Instance.SetTheme(EThemeType.Menu1);
+            
             var allCharacters = Resources.LoadAll<SoCharacter>("Characters").Select(Instantiate).ToList();
             // todo: show only available characters
             _availableCharacters = allCharacters; // .Where(c => c.CharacterName != "Debug").ToList();

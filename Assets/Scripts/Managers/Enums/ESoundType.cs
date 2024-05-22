@@ -10,5 +10,6 @@
         ButtonClick,
         PlayerDeath,
         PlayerHurt,
+        Note,
     }
 }

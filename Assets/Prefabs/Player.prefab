@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 1848376943485978515}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -83,6 +83,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bloodParticles: {fileID: 7968732843853793858, guid: c5673512605494643b11f243bc5e09dd, type: 3}
   spriteRenderer: {fileID: 6528374986980264091}
+  healParticles: {fileID: 688343070385823546, guid: 877920fa71092614cb362fb6205349c2, type: 3}
   healthMeter: {fileID: 869978575978462742}
   damageIndicator: {fileID: 3205396376673001242, guid: 9da7d4d8d90b347429bf8af27e3ab55e, type: 3}
 --- !u!114 &8513629063015508182
@@ -97,7 +98,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00e10621def44023add7980a4dd92d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animTime: 0.1
   levelOneCap: 4
   levelUpUiPrefab: {fileID: 8283736004509688324, guid: 1bb27fe2e0239f94c91c6b4a50cf6644, type: 3}
 --- !u!114 &8992767131167538181
@@ -112,7 +112,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37a3df67aa824a6097309cbbaece6829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxWeaponsInEq: 4
 --- !u!58 &1848376943485978515
 CircleCollider2D:
   m_ObjectHideFlags: 0

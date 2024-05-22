@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using EnemyPack.SO;
 using ExpPackage;
@@ -32,23 +33,24 @@ namespace EnemyPack
         private SoEnemy _enemy;
         private Transform _target;
 
-        private Vector2 _desiredDir;
+        private Vector3 _desiredDir;
 
         private float _collisionTimer = 0;
         private float _actionTimer = 0;
         private int _health;
 
         private EnemySpawner _enemySpawner;
-
         private int MaxHealth => Mathf.CeilToInt(_enemy.MaxHealth * _enemySpawner.EnemiesHpScale);
 
         private bool _outOfRange = false;
+
+        private bool _isBeingPushed = false;
 
         private Vector2 PlayerPos => PlayerManager.Instance.transform.position;
 
         public void Setup(SoEnemy enemy, Transform target, EnemySpawner enemySpawner)
         {
-            rigidbody2D.mass = enemy.BodyScale * 10;
+            rigidbody2D.mass = enemy.IsHeavy ? 999 : enemy.BodyScale * enemy.BodyScale;
 
             _outOfRange = false;
             _enemySpawner = enemySpawner;
@@ -72,6 +74,22 @@ namespace EnemyPack
             _outOfRange = false;
             transform.position = newPos;
         }
+
+        public void PushEnemy(Vector2 force, float time)
+        {
+            if (_isBeingPushed) return;
+            
+            rigidbody2D.AddForce(force, ForceMode2D.Impulse);
+            _isBeingPushed = true;
+            StartCoroutine(PushCoroutine(time));
+        }
+
+        private IEnumerator PushCoroutine(float time)
+        {
+            yield return new WaitForSeconds(time);
+            _isBeingPushed = false;
+        }
+        
         protected override void OnUpdate()
         {
             if (_outOfRange) _enemySpawner.AddOutOfRangeEnemy(this);
@@ -91,9 +109,10 @@ namespace EnemyPack
 
         private void FixedUpdate()
         {
-            if (_target == null) return;
+            if (_target == null || _isBeingPushed) return;
             
             rigidbody2D.velocity = _desiredDir * _enemy.MovementSpeed;
+            //rigidbody2D.MovePosition(transform.position + _desiredDir * (_enemy.MovementSpeed * Time.deltaTime));
         }
 
         private void OnCollisionStay2D(Collision2D other)

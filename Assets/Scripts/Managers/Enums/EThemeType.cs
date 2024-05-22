@@ -2,6 +2,7 @@
 {
     public enum EThemeType
     {
-        Main1
+        Main1,
+        Menu1,
     }
 }

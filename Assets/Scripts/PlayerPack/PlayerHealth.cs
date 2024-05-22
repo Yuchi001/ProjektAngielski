@@ -11,6 +11,7 @@ namespace PlayerPack
 {
     public class PlayerHealth : CanBeDamaged
     {
+        [SerializeField] private GameObject healParticles;
         [SerializeField] private Image healthMeter;
         [SerializeField] private GameObject damageIndicator;
 
@@ -45,6 +46,9 @@ namespace PlayerPack
         {
             AudioManager.Instance.PlaySound(ESoundType.Heal);
             DamageIndicator.SpawnDamageIndicator(transform.position, damageIndicator, value, false);
+            
+            var particles = Instantiate(healParticles, transform.position, Quaternion.identity);
+            Destroy(particles, 1f);
             
             _currentHealth = Mathf.Clamp(_currentHealth + value, 
                 0, PickedCharacter.MaxHp);

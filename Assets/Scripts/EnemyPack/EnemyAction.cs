@@ -14,6 +14,9 @@ namespace EnemyPack
         protected SoEnemy EnemyValues => _enemyValues;
         private SoEnemy _enemyValues;
         
+        protected const int EnemyProjectileLayerMask = 7;
+        protected const string PlayerTagName = "Player";
+        
         public virtual void Setup(EnemyLogic enemyLogic, SoEnemy enemyValues)
         {
             _enemyValues = enemyValues;

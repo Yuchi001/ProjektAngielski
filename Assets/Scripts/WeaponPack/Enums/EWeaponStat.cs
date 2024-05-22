@@ -17,5 +17,7 @@ namespace WeaponPack.Enums
         DropExpChance,
         Duration,
         DamageRate,
+        HealValue,
+        PushForce,
     }
 }

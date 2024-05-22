@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using EnemyPack;
 using EnemyPack.SO;
+using Other;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Utils;
@@ -36,7 +37,11 @@ namespace WeaponPack.Other
         private float? _range = null;
 
         private float? _lifeTime = null;
+        private float? _pushForce = null;
+        
         private float _currentLifeTime = 0;
+
+        private string _targetTag = "Enemy";
         
         private bool _ready = false;
 
@@ -75,6 +80,13 @@ namespace WeaponPack.Other
         public Projectile SetLifeTime(float lifeTime)
         {
             _lifeTime = lifeTime;
+            return this;
+        }
+
+        public Projectile SetTargetTag(string targetTag, int layerIndex = 3)
+        {
+            gameObject.layer = layerIndex;
+            _targetTag = targetTag;
             return this;
         }
 
@@ -170,16 +182,24 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Projectile SetDirection(Vector3 direction, float rotateBy = 0)
+        public Projectile SetDirection(Vector3 direction, float rotateBy = 0, bool checkX = false)
         {
             UtilsMethods.LookAtObj(transform, direction);
             transform.Rotate(0, 0, rotateBy);
+            if(checkX && direction.x < transform.position.x) 
+                projectileSprite.transform.Rotate(0, 0, 180);
             return this;
         }
 
         public Projectile SetSpriteRotation(float angle)
         {
             projectileSprite.transform.Rotate(0, 0, angle);
+            return this;
+        }
+        
+        public Projectile SetPushForce(float force)
+        {
+            _pushForce = force;
             return this;
         }
 
@@ -308,9 +328,11 @@ namespace WeaponPack.Other
 
         private void ManageCollisionStay(GameObject hitObj)
         {
+            if (!hitObj.CompareTag(_targetTag)) return;
+            
             if (!_ready) return;
 
-            var isEnemyHit = hitObj.TryGetComponent<EnemyLogic>(out var enemyLogic);
+            var isEnemyHit = hitObj.TryGetComponent<CanBeDamaged>(out var enemyLogic);
             if (!isEnemyHit) return;
             
             _onCollisionStay?.Invoke(hitObj, this);
@@ -318,11 +340,39 @@ namespace WeaponPack.Other
 
         private void ManageHit(GameObject hitObj)
         {
+            if (!hitObj.CompareTag(_targetTag)) return;
+            
             if (!_ready) return;
 
-            var isEnemyHit = hitObj.TryGetComponent<EnemyLogic>(out var enemyLogic);
-            if (!isEnemyHit) return;
+            var isHit = hitObj.TryGetComponent<CanBeDamaged>(out var hitEntity);
+            if (!isHit) return;
+            
+            _onHit?.Invoke(hitObj, this);
+            
+            TryPush(hitEntity, hitObj);
 
+            ManageParticlesOnHit();
+            
+            if (_damageOnHit) hitEntity.GetDamaged(_damage);
+            
+            _deathBehaviour?.Invoke(this);
+        }
+
+        private void TryPush(CanBeDamaged hitEntity, GameObject hitObj)
+        {
+            if (_pushForce == null) return;
+            
+            var enemy = hitEntity as EnemyLogic;
+            
+            if (enemy == null) return;
+            
+            var diff = hitObj.transform.position - transform.position;
+            diff = diff.normalized;
+            enemy.PushEnemy(diff * _pushForce.Value, 0.3f);
+        }
+
+        private void ManageParticlesOnHit()
+        {
             if (_onHitParticles != null)
             {
                 var particlesInstance = Instantiate(_onHitParticles, transform.position, Quaternion.identity);
@@ -330,20 +380,13 @@ namespace WeaponPack.Other
                     new Vector3(_onHitParticlesScale, _onHitParticlesScale, _onHitParticlesScale);
                 Destroy(particlesInstance, 2f);
             }
-            
-            _onHit?.Invoke(hitObj, this);
 
-            if (_flightParticles != null)
-            {
-                _flightParticles.transform.SetParent(null);
-                _flightParticles.transform.localScale = Vector2.one;
-                _flightParticles.GetComponent<ParticleSystem>().Stop(true);
-                Destroy(_flightParticles, 10f);
-            }
+            if (_flightParticles == null) return;
             
-            if (_damageOnHit) enemyLogic.GetDamaged(_damage);
-            
-            _deathBehaviour?.Invoke(this);
+            _flightParticles.transform.SetParent(null);
+            _flightParticles.transform.localScale = Vector2.one;
+            _flightParticles.GetComponent<ParticleSystem>().Stop(true);
+            Destroy(_flightParticles, 10f);
         }
     }
 }

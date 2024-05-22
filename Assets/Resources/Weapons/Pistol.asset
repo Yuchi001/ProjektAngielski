@@ -34,6 +34,9 @@ MonoBehaviour:
   - statType: 9
     statValue: 0.5
     isPercentage: 0
+  - statType: 15
+    statValue: 3
+    isPercentage: 0
   weaponUpgradeStats:
   - weaponLevelUpDescription: Gain 3 damage
     levelStats:
@@ -48,8 +51,11 @@ MonoBehaviour:
     - statType: 3
       statValue: 1
       isPercentage: 0
-  - weaponLevelUpDescription: Gain 20% accuracy
+  - weaponLevelUpDescription: Gain 40% accuracy, bullets pushes enemies 20% further
     levelStats:
     - statType: 9
       statValue: -0.4
+      isPercentage: 1
+    - statType: 15
+      statValue: 0.2
       isPercentage: 1

@@ -39,6 +39,7 @@ namespace WeaponPack.WeaponsLogic
                     .SetSprite(projectileSprite)
                     .SetScale(0.5f)
                     .SetRange(Range)
+                    .SetPushForce(PushForce)
                     .SetRotationSpeed(rotationSpeed)
                     .SetLightColor(Color.clear)
                     .SetReady();

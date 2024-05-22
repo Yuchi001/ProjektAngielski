@@ -9,16 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d3c261c06914976a966b05f09ab9d9c, type: 3}
+  m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
   m_Name: MonolithB
   m_EditorClassIdentifier: 
   walkingAnimationClip: {fileID: 7400000, guid: 85ec84c1c20c0e744a377322863eaaa9, type: 2}
-  maxHealth: 1500
+  maxHealth: 200
   bodyScale: 3
   movementSpeed: 0
   expGemType: 4
   isHorde: 0
-  projectileSprite: {fileID: 21300000, guid: 2131710759c88544a9d9827b020c9b57, type: 3}
-  projectileDamage: 10
-  projectileSpeed: 4
-  shootRate: 1
+  isHeavy: 1
+  actionCooldown: 1
+  enemyAdditionalLogic: {fileID: 2530310422960604555, guid: 65371f4edb294f6499af98f0ca2505e5, type: 3}

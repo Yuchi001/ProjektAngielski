@@ -49,6 +49,7 @@ namespace Managers
             {
                 var audioSourceObj = new GameObject($"Audio: {themeType}", typeof(AudioSource));
                 audioSource = audioSourceObj.GetComponent<AudioSource>();
+                mainAudio = audioSource;
             }
             
             var clip = themes.FirstOrDefault(s => s.ThemeType == themeType)?.AudioClip;

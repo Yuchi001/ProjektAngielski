@@ -34,6 +34,9 @@ MonoBehaviour:
   - statType: 5
     statValue: 0.5
     isPercentage: 0
+  - statType: 15
+    statValue: 4
+    isPercentage: 0
   weaponUpgradeStats:
   - weaponLevelUpDescription: Axes are 20% bigger, also gain 5% cooldown reduction
     levelStats:
@@ -62,6 +65,11 @@ MonoBehaviour:
       statValue: 3
       isPercentage: 0
     - statType: 5
+      statValue: 0.1
+      isPercentage: 1
+  - weaponLevelUpDescription: Axes are heavier, pushing enemies harder by 10%
+    levelStats:
+    - statType: 15
       statValue: 0.1
       isPercentage: 1
   - weaponLevelUpDescription: Throw one more axe

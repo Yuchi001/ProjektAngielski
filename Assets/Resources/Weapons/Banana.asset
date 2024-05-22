@@ -18,7 +18,6 @@ MonoBehaviour:
   weaponSprite: {fileID: 21300000, guid: c920ceccbb8f309418a84f2c2f97ab8d, type: 3}
   weaponColor: {r: 0.5345911, g: 0.4877812, b: 0, a: 1}
   oneTimeSpawnLogic: 0
-  cooldown: 0.5
   weaponLogicPrefab: {fileID: 2937538197172490658, guid: d6c41f141806b284fa3d9a90abb65612, type: 3}
   weaponStartingStats:
   - statType: 0
@@ -35,6 +34,9 @@ MonoBehaviour:
     isPercentage: 0
   - statType: 5
     statValue: 2
+    isPercentage: 0
+  - statType: 15
+    statValue: 3
     isPercentage: 0
   weaponUpgradeStats:
   - weaponLevelUpDescription: Gain 10% attack speed and 20% range
@@ -53,11 +55,15 @@ MonoBehaviour:
     - statType: 1
       statValue: 1
       isPercentage: 0
-  - weaponLevelUpDescription: Projectiles move 20% faster, range increases by 20%
+  - weaponLevelUpDescription: Projectiles move 20% faster, range increases by 20%,
+      bananas pushes enemies 20% further
     levelStats:
     - statType: 2
       statValue: 0.2
       isPercentage: 1
     - statType: 4
+      statValue: 0.2
+      isPercentage: 1
+    - statType: 15
       statValue: 0.2
       isPercentage: 1

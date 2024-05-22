@@ -65,6 +65,8 @@ namespace Other
             _spriteMaterial.SetFloat("_FlashAmmount", 1);
             yield return new WaitForSeconds(_flashTime);
             _spriteMaterial.SetFloat("_FlashAmmount", 0);
+
+            _currentCoroutine = null;
         }
     }
 }

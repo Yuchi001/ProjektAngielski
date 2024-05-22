@@ -1,4 +1,7 @@
-﻿using EnemyPack;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using EnemyPack;
 using UnityEngine;
 using WeaponPack.Enums;
 using WeaponPack.Other;
@@ -10,15 +13,23 @@ namespace WeaponPack.WeaponsLogic
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private GameObject fieldParticles;
         [SerializeField] private Sprite fieldSprite;
+        [SerializeField] private float minimalFieldDistance = 0.4f;
 
         private float Duration => GetStatValue(EWeaponStat.Duration) ?? 0;
         private float Scale => GetStatValue(EWeaponStat.ProjectileScale) ?? 0;
         private float DamageRate => GetStatValue(EWeaponStat.DamageRate) ?? 1;
 
         private const string DamageRateName = "DamageRate";
+
+        private readonly List<GameObject> _poisonFields = new();
         
         protected override void UseWeapon()
         {
+            _poisonFields.RemoveAll(go => go == null);
+
+            Func<Vector2, bool> isTooClose = pos => Vector2.Distance(pos, PlayerPos) < minimalFieldDistance; 
+            if (_poisonFields.FirstOrDefault(go => isTooClose(go.transform.position))) return;
+            
             var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
             var projectileScript = projectile.GetComponent<Projectile>();
 
@@ -33,6 +44,8 @@ namespace WeaponPack.WeaponsLogic
                 .SetOnCollisionStay(CollisionStay)
                 .SetFlightParticles(fieldParticles, Scale * 2, true)
                 .SetReady();
+            
+            _poisonFields.Add(projectile);
         }
 
         private void ParticleUpdate(Projectile projectile)

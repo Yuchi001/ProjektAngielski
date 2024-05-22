@@ -24,6 +24,7 @@ namespace Managers
        
        #endregion
 
+       [SerializeField] private GameObject deathUi;
        [SerializeField] private GameObject playerPrefab;
        [SerializeField] private MainCamera mainCamera;
        [SerializeField] private Transform worldCanvas;
@@ -65,6 +66,8 @@ namespace Managers
            {
                child.gameObject.SetActive(false);
            }
+           
+           deathUi.SetActive(true);
        }
     }
 }
