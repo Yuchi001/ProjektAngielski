@@ -1,0 +1,17 @@
+Instalujemy Dockera. Po zainstalowaniu w folderze api odpalamy:
+
+docker compose up --build
+
+Sprawdzamy w terminalu czy wszystkie usługi wstały poprawnie. Jeżeli tak to odpalamy Postmana i importujemy dołączoną kolekcję.
+
+W kolekcji znajdują się endpointy służące do: logowania użytkownika, rejestracji, pobierania możliwych osiągnięć, dodawania nowych osiągnięć danego użytkownika.
+Obecnie brak jest możliwości usunięcia użytkownika.
+
+Po zalogowaniu w odpowiedzi otrzymamy token jwt, który należy dołączać do headera podczas modyfikacji osiągnięć użytkownika.
+Żeby pobrać wszystkie możliwe osiągnięcia dołączenie tokena nie jest wymagane.
+
+Podczas rejestracji dokonuje się sprawdzenia w bazie, czy użytkownik istnieje. Jeżeli tak, to stosowna informacja jest zwracana.
+Osiągnięcia są inicjalizowane z pliku /db/02_populate_achievements.sql . Należy podać potrzebne dane w wierszach i nadać ID ręcznie. API nie przewiduje dodawania osiągnięć w czasie rzeczywistym.
+Nie da się dodać osiągnięcia użytkownika, którego nie ma w tabeli możliwych osiągnięć.
+
+
