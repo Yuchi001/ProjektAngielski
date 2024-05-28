@@ -39,12 +39,32 @@ MonoBehaviour:
     statValue: 0.3
     isPercentage: 0
   - statType: 13
-    statValue: 3
+    statValue: 2
     isPercentage: 0
   weaponUpgradeStats:
-  - weaponLevelUpDescription: 
-    levelStats: []
-  - weaponLevelUpDescription: 
-    levelStats: []
-  - weaponLevelUpDescription: 
-    levelStats: []
+  - weaponLevelUpDescription: Laser bigger by 20%, gain 10% damage rate
+    levelStats:
+    - statType: 13
+      statValue: 0.1
+      isPercentage: 1
+    - statType: 5
+      statValue: 0.2
+      isPercentage: 1
+  - weaponLevelUpDescription: Gain 10% cooldown reduction
+    levelStats:
+    - statType: 0
+      statValue: -0.1
+      isPercentage: 1
+  - weaponLevelUpDescription: Gain 5 damage
+    levelStats:
+    - statType: 1
+      statValue: 5
+      isPercentage: 0
+  - weaponLevelUpDescription: Laser is 20% bigger, gain 20% duration
+    levelStats:
+    - statType: 12
+      statValue: 0.2
+      isPercentage: 1
+    - statType: 5
+      statValue: 0.2
+      isPercentage: 1

@@ -17,7 +17,6 @@ namespace EnemyPack
     {
         [Header("General")]
         
-        [SerializeField] private float maxDistanceFromPlayer = 10f;
         [SerializeField] private GameObject damageIndicatorPrefab;
         [SerializeField] private GameObject expGemPrefab;
         [SerializeField] private float attacksPerSecond;
@@ -36,7 +35,6 @@ namespace EnemyPack
         private Vector3 _desiredDir;
 
         private float _collisionTimer = 0;
-        private float _actionTimer = 0;
         private int _health;
 
         private EnemySpawner _enemySpawner;

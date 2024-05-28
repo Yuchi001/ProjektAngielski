@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MainCameraPack;
+using Managers.Base;
 using Managers.Enums;
 using PlayerPack;
 using PlayerPack.SO;
@@ -25,6 +26,7 @@ namespace Managers
        
        #endregion
 
+       [SerializeField] private List<SpawnerBase> spawners;
        [SerializeField] private GameObject deathUi;
        [SerializeField] private GameObject playerPrefab;
        [SerializeField] private MainCamera mainCamera;
@@ -65,6 +67,8 @@ namespace Managers
            CurrentPlayer.Setup(pickedCharacter);
            
            mainCamera.Setup(playerObj);
+           
+           spawners.ForEach(s => s.SetState(ESpawnerState.Spawn));
            
            AudioManager.Instance.SetTheme(EThemeType.Main1);
        }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Managers;
+using Managers.Base;
 using Other;
 using Other.Enums;
 using Other.SO;
@@ -12,22 +13,18 @@ using Random = UnityEngine.Random;
 
 namespace FoodPack
 {
-    public class FoodSpawner : MonoBehaviour
+    public class FoodSpawner : SpawnerBase
     {
-        [SerializeField] private Camera mainCamera;
         [SerializeField] private float foodSpawnChance;
         [SerializeField] private float trySpawnRate;
         [SerializeField] private GameObject foodPrefab;
 
-        private float _timer = 0;
         private float _biggestWeight;
         private float _weightSum;
-        
-        private float _spawnRangeX;
-        private float _spawnRangeY;
 
         private readonly List<(float weight, SoFood food)> _foodWeightList = new();
-        
+
+        protected override float MaxTimer => trySpawnRate;
         private PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
 
         private void Awake()
@@ -42,23 +39,11 @@ namespace FoodPack
                 _weightSum += weight;
             }
             _foodWeightList.Sort((a, b) => (int)a.weight - (int)b.weight);
-            
-            var bottomLeftCorner = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, mainCamera.nearClipPlane));
-            var topRightCorner = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, mainCamera.nearClipPlane));
-
-            var cameraWidthInUnits = Mathf.Abs(topRightCorner.x - bottomLeftCorner.x);
-            var cameraHeightInUnits = Mathf.Abs(topRightCorner.y - bottomLeftCorner.y);
-
-            _spawnRangeX = cameraWidthInUnits / 2 + 1;
-            _spawnRangeY = cameraHeightInUnits / 2 + 1;
         }
 
-        private void Update()
+        protected override void SpawnLogic()
         {
-            _timer += Time.deltaTime;
-            if (_timer < 1 / trySpawnRate) return;
-
-            _timer = 0;
+            if (PlayerManager == null) return;
             
             var randomPercentage = Random.Range(0, 101);
             if (randomPercentage > foodSpawnChance) return;
