@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Managers;
+using Other;
+using Other.Enums;
 using Other.SO;
 using PlayerPack;
 using UnityEngine;
@@ -60,24 +62,14 @@ namespace FoodPack
             
             var randomPercentage = Random.Range(0, 101);
             if (randomPercentage > foodSpawnChance) return;
-            
-            var randomDimension = UtilsMethods.RandomClamp(true, false);
-            
-            var xDiff = randomDimension ? 
-                Random.Range(-_spawnRangeX, _spawnRangeX) : 
-                UtilsMethods.RandomClamp(-_spawnRangeX, _spawnRangeX);
-            
-            var yDiff = !randomDimension ? 
-                Random.Range(-_spawnRangeY, _spawnRangeY) : 
-                UtilsMethods.RandomClamp(-_spawnRangeY, _spawnRangeY);
-            
-            var spawnPos = PlayerManager.transform.position;
-            spawnPos.x += xDiff;
-            spawnPos.y += yDiff;
 
             var food = GetRandomFood();
-            var foodInstance = Instantiate(foodPrefab, spawnPos, Quaternion.identity);
-            foodInstance.GetComponent<Food>().Setup(food);
+            
+            SpawnEntity.InstantiateSpawnEntity()
+                .Setup(foodPrefab)
+                .SetEntityType(EEntityType.Positive)
+                .SetSpawnAction((foodObj) => foodObj.GetComponent<Food>().Setup(food))
+                .SetReady();
         }
 
         private SoFood GetRandomFood()

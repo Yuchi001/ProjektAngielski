@@ -16,6 +16,9 @@ namespace PlayerPack
         [SerializeField] private GameObject damageIndicator;
 
         private int _currentHealth = 0;
+
+        public delegate void PlayerDamagedDelegate();
+        public static event PlayerDamagedDelegate OnPlayerDamaged; 
         
         private static SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
 
@@ -32,6 +35,8 @@ namespace PlayerPack
         public override void GetDamaged(int value)
         {
             if (Dead) return;
+            
+            OnPlayerDamaged?.Invoke();
             
             base.GetDamaged(value);
             _currentHealth = Mathf.Clamp(_currentHealth - value, 

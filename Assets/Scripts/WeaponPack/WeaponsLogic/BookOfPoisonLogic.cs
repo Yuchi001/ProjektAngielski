@@ -40,6 +40,7 @@ namespace WeaponPack.WeaponsLogic
                 .SetLifeTime(Duration)
                 .SetDontDestroyOnHit()
                 .SetNewCustomValue(DamageRateName)
+                .SetSortingLayer("Floor", 1)
                 .SetUpdate(ParticleUpdate)
                 .SetOnCollisionStay(CollisionStay)
                 .SetFlightParticles(fieldParticles, Scale * 2, true)

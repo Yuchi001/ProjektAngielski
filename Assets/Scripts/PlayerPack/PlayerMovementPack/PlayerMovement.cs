@@ -43,7 +43,7 @@ namespace PlayerPack.PlayerMovementPack
             
             var position = transform.position;
             position += (Vector3)movement;
-
+            
             transform.position = position;
         }
     }

@@ -24,7 +24,7 @@ MonoBehaviour:
     statValue: 3
     isPercentage: 0
   - statType: 14
-    statValue: 2
+    statValue: 10
     isPercentage: 0
   - statType: 15
     statValue: 7

@@ -139,6 +139,13 @@ namespace WeaponPack.Other
             if (sprite == null) projectileSprite.enabled = false;
             return this;
         }
+
+        public Projectile SetSortingLayer(string sortingLayerName, int index = 0)
+        {
+            projectileSprite.sortingLayerName = "";
+            projectileSprite.sortingOrder = index;
+            return this;
+        }
         
         public Projectile SetSprite(IEnumerable<Sprite> sprites, float animSpeed, float spriteScale = 1)
         {

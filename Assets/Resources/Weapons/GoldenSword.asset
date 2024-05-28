@@ -21,7 +21,7 @@ MonoBehaviour:
   weaponLogicPrefab: {fileID: 7828294396412686620, guid: cdfd063e08717aa4580bb1eae587d07d, type: 3}
   weaponStartingStats:
   - statType: 0
-    statValue: 5
+    statValue: 4
     isPercentage: 0
   - statType: 1
     statValue: 30
@@ -37,6 +37,9 @@ MonoBehaviour:
     isPercentage: 0
   - statType: 5
     statValue: 0.3
+    isPercentage: 0
+  - statType: 13
+    statValue: 3
     isPercentage: 0
   weaponUpgradeStats:
   - weaponLevelUpDescription: 

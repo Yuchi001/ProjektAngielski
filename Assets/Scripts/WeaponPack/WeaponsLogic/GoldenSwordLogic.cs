@@ -13,6 +13,7 @@ namespace WeaponPack.WeaponsLogic
 
         private float Duration => GetStatValue(EWeaponStat.Duration) ?? 0;
         private float Scale => GetStatValue(EWeaponStat.ProjectileScale) ?? 1;
+        private float DamageRate => GetStatValue(EWeaponStat.DamageRate) ?? 1;
         
         protected override void UseWeapon()
         {
@@ -20,8 +21,10 @@ namespace WeaponPack.WeaponsLogic
             var laserScript = spawnedProjectile.GetComponent<Laser>();
             
             var target = UtilsMethods.FindTarget();
+
+            if (target == null) return;
             
-            laserScript.Setup()
+            laserScript.Setup(Damage, DamageRate)
                 .SetTarget(target)
                 .SetDuration(Duration)
                 .SetAnimTime(animTime)

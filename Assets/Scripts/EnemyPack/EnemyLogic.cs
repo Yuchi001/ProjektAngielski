@@ -42,7 +42,6 @@ namespace EnemyPack
         private EnemySpawner _enemySpawner;
         private int MaxHealth => Mathf.CeilToInt(_enemy.MaxHealth * _enemySpawner.EnemiesHpScale);
 
-        private bool _outOfRange = false;
 
         private bool _isBeingPushed = false;
 
@@ -52,7 +51,6 @@ namespace EnemyPack
         {
             rigidbody2D.mass = enemy.IsHeavy ? 999 : enemy.BodyScale * enemy.BodyScale;
 
-            _outOfRange = false;
             _enemySpawner = enemySpawner;
             _enemy = Instantiate(enemy);
             _target = target;
@@ -67,12 +65,6 @@ namespace EnemyPack
             animator.runtimeAnimatorController = aoc;
             
             _enemy.SpawnEnemyLogic(this);
-        }
-
-        public void Despawn(Vector3 newPos)
-        {
-            _outOfRange = false;
-            transform.position = newPos;
         }
 
         public void PushEnemy(Vector2 force, float time)
@@ -92,10 +84,6 @@ namespace EnemyPack
         
         protected override void OnUpdate()
         {
-            if (_outOfRange) _enemySpawner.AddOutOfRangeEnemy(this);
-            
-            _outOfRange = Vector2.Distance(transform.position, PlayerPos) >= maxDistanceFromPlayer;
-            
             if (_target == null) return;
 
             _collisionTimer += Time.deltaTime;
@@ -112,7 +100,6 @@ namespace EnemyPack
             if (_target == null || _isBeingPushed) return;
             
             rigidbody2D.velocity = _desiredDir * _enemy.MovementSpeed;
-            //rigidbody2D.MovePosition(transform.position + _desiredDir * (_enemy.MovementSpeed * Time.deltaTime));
         }
 
         private void OnCollisionStay2D(Collision2D other)

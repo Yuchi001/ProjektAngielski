@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MainCameraPack;
 using Managers.Enums;
 using PlayerPack;
 using PlayerPack.SO;
@@ -31,6 +32,14 @@ namespace Managers
        [SerializeField] private Transform mainCanvas;
 
        [SerializeField] private Transform menuCanvas;
+
+       #region Prefabs
+
+       [Header("Public prefabs")] 
+       [SerializeField] private GameObject spawnEntityPrefab;
+       public GameObject SpawnEntityPrefab => spawnEntityPrefab;
+
+       #endregion
 
        public Transform WorldCanvas => worldCanvas;
        public Transform MainCanvas => mainCanvas;

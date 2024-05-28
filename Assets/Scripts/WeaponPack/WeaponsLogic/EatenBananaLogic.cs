@@ -25,7 +25,7 @@ namespace WeaponPack.WeaponsLogic
                 .SetScale(0.5f)
                 .SetOnHitAction(OnHit)
                 .SetOnHitParticles(boomParticles, BlastRange * 2)
-                .SetLightColor(Color.red)
+                .SetLightColor(Color.yellow)
                 .SetReady();
         }
 

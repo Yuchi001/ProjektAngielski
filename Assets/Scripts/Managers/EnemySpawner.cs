@@ -5,6 +5,8 @@ using System.Linq;
 using EnemyPack;
 using EnemyPack.SO;
 using ExpPackage.Enums;
+using Other;
+using Other.Enums;
 using PlayerPack;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -32,36 +34,18 @@ namespace Managers
 
         private float _enemyTimer = 0;
         private float _hordeTimer = 0;
-        private float _spawnRangeX;
-        private float _spawnRangeY;
         private PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
 
         private List<SoEnemy> _allEnemies = new();
-
-        private List<EnemyLogic> _outOfRangeEnemies = new();
-
+        
         private float _difficultyTimer = 0;
 
         public float EnemiesHpScale => enemiesHpScale;
         public int DeadEnemies { get; set; } = 0;
-
-        public void AddOutOfRangeEnemy(EnemyLogic enemy)
-        {
-            _outOfRangeEnemies.Add(enemy);
-        }
         
         private void Start()
         {
             DeadEnemies = 0;
-            
-            var bottomLeftCorner = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, mainCamera.nearClipPlane));
-            var topRightCorner = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, mainCamera.nearClipPlane));
-
-            var cameraWidthInUnits = Mathf.Abs(topRightCorner.x - bottomLeftCorner.x);
-            var cameraHeightInUnits = Mathf.Abs(topRightCorner.y - bottomLeftCorner.y);
-
-            _spawnRangeX = cameraWidthInUnits / 2 + 1;
-            _spawnRangeY = cameraHeightInUnits / 2 + 1;
 
             _allEnemies = Resources.LoadAll<SoEnemy>("Enemies").Select(Instantiate).ToList();
         }
@@ -74,7 +58,6 @@ namespace Managers
             
             if (GameObject.FindGameObjectsWithTag("Enemy").Length >= maxEnemiesCount) return;
 
-            ClearOutOfRangeEnemies();
             TrySpawnEnemy();
             TrySpawnHorde();
         }
@@ -103,36 +86,6 @@ namespace Managers
             return validEnemies.Count != 0 ? validEnemies[Random.Range(0, validEnemies.Count)] : _allEnemies[0];
         }
 
-        private Vector3 GetRandomPos()
-        {
-            var randomDimension = UtilsMethods.RandomClamp(true, false);
-            
-            var xDiff = randomDimension ? 
-                Random.Range(-_spawnRangeX, _spawnRangeX) : 
-                UtilsMethods.RandomClamp(-_spawnRangeX, _spawnRangeX);
-            
-            var yDiff = !randomDimension ? 
-                Random.Range(-_spawnRangeY, _spawnRangeY) : 
-                UtilsMethods.RandomClamp(-_spawnRangeY, _spawnRangeY);
-            
-            var spawnPos = PlayerManager.transform.position;
-            spawnPos.x += xDiff;
-            spawnPos.y += yDiff;
-
-            return spawnPos;
-        }
-
-        private void ClearOutOfRangeEnemies()
-        {
-            foreach (var enemy in _outOfRangeEnemies)
-            {
-                var spawnPos = GetRandomPos();
-                enemy.Despawn(spawnPos);
-            }
-            
-            _outOfRangeEnemies.Clear();
-        }
-
         private void TrySpawnEnemy()
         {
             var spawnRate = enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * enemySpawnRate;
@@ -140,9 +93,14 @@ namespace Managers
 
             _enemyTimer = 0;
 
-            var spawnPos = GetRandomPos();
+            var enemySo = GetEnemy(false);
             
-            InstantiateEnemy(GetEnemy(false), spawnPos);
+            SpawnEntity.InstantiateSpawnEntity()
+                .Setup(enemyPrefab)
+                .SetEntityType(EEntityType.Negative)
+                .SetScale(enemySo.BodyScale)
+                .SetSpawnAction((spawnedObj) => SetupEnemy(spawnedObj, enemySo))
+                .SetReady();
         }
 
         private void TrySpawnHorde()
@@ -162,23 +120,20 @@ namespace Managers
             {
                 for (int i = 0, j = 0; i < hordeEnemiesCount / 4; i++, j += hordeEnemiesCount % i == 4 ? 1 : 0)
                 {
-                    var xDiff = j % 2 == 0 ? i % 2 == 0 ? -_spawnRangeX : _spawnRangeX : Random.Range(-_spawnRangeX, _spawnRangeX);
-                    var yDiff = j % 2 == 0 ? Random.Range(-_spawnRangeY, _spawnRangeY) : i % 2 == 0 ? -_spawnRangeY : _spawnRangeY;
-                    
-                    var spawnPos = PlayerManager.transform.position;
-                    spawnPos.x += xDiff;
-                    spawnPos.y += yDiff;
-
-                    InstantiateEnemy(hordeEnemy, spawnPos);
+                    SpawnEntity.InstantiateSpawnEntity()
+                        .Setup(enemyPrefab)
+                        .SetEntityType(EEntityType.Negative)
+                        .SetScale(hordeEnemy.BodyScale)
+                        .SetSpawnAction((spawnedObj) => SetupEnemy(spawnedObj, hordeEnemy))
+                        .SetReady();
                 }
 
                 yield return new WaitForSeconds(0.1f);
             }
         }
 
-        private void InstantiateEnemy(SoEnemy enemy, Vector2 spawnPos)
+        private void SetupEnemy(GameObject enemyObj, SoEnemy enemy)
         {
-            var enemyObj = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
             var enemyScript = enemyObj.GetComponent<EnemyLogic>();
             var scale = enemy.BodyScale;
             enemyObj.transform.localScale = new Vector3(scale, scale, scale);
