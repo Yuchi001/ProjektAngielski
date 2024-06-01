@@ -35,6 +35,9 @@ namespace Managers
 
        [SerializeField] private Transform menuCanvas;
 
+       [SerializeField] private float boundaryX;
+       [SerializeField] private float boundaryY;
+
        #region Prefabs
 
        [Header("Public prefabs")] 
@@ -46,6 +49,8 @@ namespace Managers
        public Transform WorldCanvas => worldCanvas;
        public Transform MainCanvas => mainCanvas;
        public PlayerManager CurrentPlayer { get; private set; }
+       public float BoundaryX => boundaryX;
+       public float BoundaryY => boundaryY;
 
        private void Init()
        {

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AssaultRifle
   m_EditorClassIdentifier: 
   weaponName: Assault rifle
-  weaponDescription: Shoot 30 bullets dealing light damage
+  weaponDescription: Fire many bullets dealing light damage
   weaponSprite: {fileID: 21300000, guid: 77af35722b5983046b7c502d2e5fedf2, type: 3}
   weaponColor: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
   oneTimeSpawnLogic: 0

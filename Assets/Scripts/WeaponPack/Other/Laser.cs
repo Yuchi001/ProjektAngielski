@@ -115,7 +115,7 @@ namespace WeaponPack.Other
             {
                 _rateTimer += Time.deltaTime;
                 _timer += Time.deltaTime;
-                if (_rateTimer < 1 / _damageRate) yield return null;
+                if (_rateTimer < 1f / _damageRate) yield return null;
 
                 _enableCollisions = true;
                 _rateTimer = 0;

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: FireWand
   m_EditorClassIdentifier: 
   weaponName: Fire wand
-  weaponDescription: Fire 1 particle at enemy dealing heavy damage and creating explosion
-    in hit area
+  weaponDescription: Shoot fire ball at enemy dealing heavy damage and creating explosion
+    in hit area, igniting first hit enemy
   weaponSprite: {fileID: 21300000, guid: bf8e9a357e5be82449202db38beaed22, type: 3}
   weaponColor: {r: 0.42138356, g: 0.25317696, b: 0, a: 1}
   oneTimeSpawnLogic: 0
@@ -38,6 +38,9 @@ MonoBehaviour:
   - statType: 7
     statValue: 5
     isPercentage: 0
+  - statType: 16
+    statValue: 3
+    isPercentage: 0
   weaponUpgradeStats:
   - weaponLevelUpDescription: Gain additional 20% blast damage, increase blast range
       by 10%
@@ -53,6 +56,11 @@ MonoBehaviour:
     - statType: 0
       statValue: -0.1
       isPercentage: 1
+  - weaponLevelUpDescription: Burn effect last 50% longer
+    levelStats:
+    - statType: 3
+      statValue: 1
+      isPercentage: 0
   - weaponLevelUpDescription: Gain 1 additional projectile and deal 5 more damage
     levelStats:
     - statType: 3
@@ -61,3 +69,8 @@ MonoBehaviour:
     - statType: 1
       statValue: 5
       isPercentage: 0
+  - weaponLevelUpDescription: Enemy burns 50% longer
+    levelStats:
+    - statType: 16
+      statValue: 0.5
+      isPercentage: 1

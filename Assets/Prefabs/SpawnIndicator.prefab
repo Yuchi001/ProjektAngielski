@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a79781a980148f396f742ee64d0b9d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxXOffset: 4
-  maxYOffset: 2
+  maxXOffset: 5.5
+  maxYOffset: 3.7
   spawnTime: 3
   _colorPairs:
   - entityType: 0

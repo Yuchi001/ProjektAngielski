@@ -19,5 +19,6 @@ MonoBehaviour:
   expGemType: 0
   isHorde: 0
   isHeavy: 0
-  actionCooldown: 0.5
+  enemyState: 1
+  actionCooldown: 2
   enemyAdditionalLogic: {fileID: 2530310422960604555, guid: 65371f4edb294f6499af98f0ca2505e5, type: 3}

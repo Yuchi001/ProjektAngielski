@@ -18,3 +18,7 @@ MonoBehaviour:
   movementSpeed: 1
   expGemType: 0
   isHorde: 1
+  isHeavy: 0
+  enemyState: 1
+  actionCooldown: 0
+  enemyAdditionalLogic: {fileID: 0}

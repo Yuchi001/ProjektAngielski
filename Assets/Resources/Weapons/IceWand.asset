@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: IceWand
   m_EditorClassIdentifier: 
   weaponName: Ice wand
-  weaponDescription: Fire for projectiles that targets the closest targets in range,
-    dealing light damage
+  weaponDescription: Fire projectiles that targets the closest enemies in range,
+    dealing light damage and slowing them up
   weaponSprite: {fileID: 21300000, guid: bda977de6e362264fa803dc9557325f0, type: 3}
   weaponColor: {r: 0, g: 0.04509096, b: 0.61635214, a: 1}
   oneTimeSpawnLogic: 0
@@ -31,6 +31,9 @@ MonoBehaviour:
     isPercentage: 0
   - statType: 3
     statValue: 4
+    isPercentage: 0
+  - statType: 16
+    statValue: 3
     isPercentage: 0
   weaponUpgradeStats:
   - weaponLevelUpDescription: Additional 2 damage, 10% faster attack
@@ -54,3 +57,8 @@ MonoBehaviour:
     - statType: 3
       statValue: 1
       isPercentage: 0
+  - weaponLevelUpDescription: Increase slow duration by 50%
+    levelStats:
+    - statType: 16
+      statValue: 0.5
+      isPercentage: 1

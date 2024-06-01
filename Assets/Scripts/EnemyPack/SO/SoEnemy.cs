@@ -1,4 +1,5 @@
-﻿using ExpPackage.Enums;
+﻿using EnemyPack.Enums;
+using ExpPackage.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -14,6 +15,7 @@ namespace EnemyPack.SO
         [SerializeField] private EExpGemType expGemType;
         [SerializeField] private bool isHorde;
         [SerializeField] private bool isHeavy;
+        [SerializeField] private EEnemyState enemyState;
 
         [FormerlySerializedAs("enemyActionCooldown")] [SerializeField] private float actionCooldown;
         [SerializeField] private GameObject enemyAdditionalLogic = null;
@@ -26,6 +28,7 @@ namespace EnemyPack.SO
         public EExpGemType ExpGemType => expGemType;
         public float ActionCooldown => actionCooldown;
         public bool IsHeavy => isHeavy;
+        public EEnemyState EnemyState => enemyState;
         public void SpawnEnemyLogic(EnemyLogic enemyLogic)
         {
             if (enemyAdditionalLogic == null) return;

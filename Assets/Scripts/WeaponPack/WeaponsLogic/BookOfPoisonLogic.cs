@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EnemyPack;
+using Other.Enums;
 using UnityEngine;
 using WeaponPack.Enums;
 using WeaponPack.Other;
@@ -18,6 +19,7 @@ namespace WeaponPack.WeaponsLogic
         private float Duration => GetStatValue(EWeaponStat.Duration) ?? 0;
         private float Scale => GetStatValue(EWeaponStat.ProjectileScale) ?? 0;
         private float DamageRate => GetStatValue(EWeaponStat.DamageRate) ?? 1;
+        private float EffectDuration => GetStatValue(EWeaponStat.EffectDuration) ?? 0;
 
         private const string DamageRateName = "DamageRate";
 
@@ -42,7 +44,9 @@ namespace WeaponPack.WeaponsLogic
                 .SetNewCustomValue(DamageRateName)
                 .SetSortingLayer("Floor", 1)
                 .SetUpdate(ParticleUpdate)
+                .SetDisableDestroyOnContactWithWall()
                 .SetOnCollisionStay(CollisionStay)
+                .SetEffect(EEffectType.Poison, EffectDuration)
                 .SetFlightParticles(fieldParticles, Scale * 2, true)
                 .SetReady();
             

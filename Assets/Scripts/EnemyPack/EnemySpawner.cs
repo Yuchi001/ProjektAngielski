@@ -30,7 +30,7 @@ namespace EnemyPack
         private float _difficultyTimer = 0;
         
         public float EnemiesHpScale => enemiesHpScale;
-        protected override float MaxTimer => enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * enemySpawnRate;
+        protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * enemySpawnRate);
         public int DeadEnemies { get; set; } = 0;
         
         private void Start()
@@ -43,6 +43,7 @@ namespace EnemyPack
         protected override void Update()
         {
             _difficultyTimer += Time.deltaTime;
+            base.Update();
         }
 
         protected override void SpawnLogic()

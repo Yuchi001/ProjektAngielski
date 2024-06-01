@@ -32,13 +32,13 @@ namespace PlayerPack
             healthMeter.fillAmount = (float)_currentHealth / PickedCharacter.MaxHp;
         }
 
-        public override void GetDamaged(int value)
+        public override void GetDamaged(int value, Color? color = null)
         {
             if (Dead) return;
             
             OnPlayerDamaged?.Invoke();
             
-            base.GetDamaged(value);
+            base.GetDamaged(value, color);
             _currentHealth = Mathf.Clamp(_currentHealth - value, 
                 0, PickedCharacter.MaxHp);
             

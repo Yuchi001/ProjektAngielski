@@ -17,7 +17,7 @@ namespace Managers.Base
             _timer += Time.deltaTime;
             if (_timer < MaxTimer) return;
             _timer = 0;
-            
+
             SpawnLogic();
         }
 

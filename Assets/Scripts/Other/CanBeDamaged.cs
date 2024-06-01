@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Managers;
+using Managers.Other;
+using Other.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -7,34 +12,49 @@ namespace Other
 {
     public abstract class CanBeDamaged : MonoBehaviour
     {
+        [SerializeField] private GameObject effectsManagerPrefab;
         [SerializeField] private GameObject bloodParticles;
         [SerializeField] private SpriteRenderer spriteRenderer;
 
         private const float _flashTime = 0.1f;
         private Material _spriteMaterial;
-
+        
         private Coroutine _currentCoroutine = null;
+        private EffectsManager _effectsManager;
 
         public bool Dead { get; private set; }
 
+        protected bool Stuned => _effectsManager.Stuned;
+        protected bool Slowed => _effectsManager.Slowed;
+
+        public SpriteRenderer SpriteRenderer => spriteRenderer;
+        
         private void Start()
         {
             Dead = false;
             _spriteMaterial = spriteRenderer.material;
+            _effectsManager = Instantiate(effectsManagerPrefab, transform).GetComponent<EffectsManager>();
+            _effectsManager.Setup(this);
         }
 
         protected void Update()
         {
-            if(Dead) return;
+            if (Dead || Stuned) return;
             
             OnUpdate();
         }
 
+        public virtual void AddEffect(EffectInfo effectInfo)
+        {
+            _effectsManager.AddEffect(effectInfo.effectType, effectInfo.time);
+        }
+
         protected abstract void OnUpdate();
 
-        public virtual void GetDamaged(int value)
+        public virtual void GetDamaged(int value, Color? flashColor = null)
         {
-            _currentCoroutine ??= StartCoroutine(DamageAnim());
+            flashColor = flashColor ?? Color.white;
+            _currentCoroutine ??= StartCoroutine(DamageAnim(flashColor.Value));
 
             if (bloodParticles == null) return;
 
@@ -60,8 +80,9 @@ namespace Other
             if(destroyObj) Destroy(gameObject);
         }
         
-        private IEnumerator DamageAnim()
+        private IEnumerator DamageAnim(Color flashColor)
         {
+            _spriteMaterial.SetColor("_FlashColor", flashColor);
             _spriteMaterial.SetFloat("_FlashAmmount", 1);
             yield return new WaitForSeconds(_flashTime);
             _spriteMaterial.SetFloat("_FlashAmmount", 0);

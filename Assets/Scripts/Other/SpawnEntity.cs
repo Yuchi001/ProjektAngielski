@@ -12,8 +12,6 @@ namespace Other
 {
     public class SpawnEntity : MonoBehaviour
     {
-        [SerializeField] private float maxXOffset;
-        [SerializeField] private float maxYOffset;
         [SerializeField] private float spawnTime;
         [SerializeField] private List<EntityColorPair> _colorPairs = new();
 
@@ -81,9 +79,12 @@ namespace Other
         private Vector2 GetRandomPos()
         {
             var pos = Vector2.zero;
+            
+            var boundsX = GameManager.Instance.BoundaryX;
+            var boundsY = GameManager.Instance.BoundaryY;
 
-            pos.x += Random.Range(-maxXOffset, maxXOffset + 0.1f);
-            pos.y += Random.Range(-maxYOffset, maxYOffset + 0.1f);
+            pos.x += Random.Range(-boundsX, boundsX + 0.1f);
+            pos.y += Random.Range(-boundsY, boundsY + 0.1f);
             
             return pos;
         }

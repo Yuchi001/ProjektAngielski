@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Other.Enums;
 using UnityEngine;
 using Utils;
+using WeaponPack.Enums;
 using WeaponPack.Other;
 
 namespace WeaponPack.WeaponsLogic
@@ -12,6 +14,8 @@ namespace WeaponPack.WeaponsLogic
         [SerializeField] private List<Sprite> projectileSprites;
         [SerializeField] private float animSpeed;
         [SerializeField] private GameObject flightParticles;
+
+        private float EffectDuration => GetStatValue(EWeaponStat.EffectDuration) ?? 0;
         
         protected override void UseWeapon()
         {
@@ -33,6 +37,7 @@ namespace WeaponPack.WeaponsLogic
                     .SetSprite(projectileSprites, animSpeed)
                     .SetFlightParticles(flightParticles)
                     .SetLightColor(projectileLightColor)
+                    .SetEffect(EEffectType.Slow, EffectDuration)
                     .SetReady();
                 
                 targetedEnemies.Add(target.GetInstanceID());

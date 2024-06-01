@@ -16,6 +16,8 @@ namespace Other
         private void OnCollisionEnter2D(Collision2D other)
         {
             if (!other.gameObject.TryGetComponent(out Projectile projectile)) return;
+
+            if (!projectile.DestroyOnContactWithWall) return;
             
             Destroy(other.gameObject);
         }

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: DruidWand
   m_EditorClassIdentifier: 
   weaponName: Druid Wand
-  weaponDescription: Release healing force pushing back all enemies around you and
-    healing you by 2 hp
+  weaponDescription: Release healing force pushing back all enemies around and healing
+    you
   weaponSprite: {fileID: 21300000, guid: 68bbb5ab5f030c44c9fd2d53e83b2967, type: 3}
   weaponColor: {r: 0.10250047, g: 0.6320754, b: 0, a: 1}
   oneTimeSpawnLogic: 0
@@ -24,7 +24,7 @@ MonoBehaviour:
     statValue: 3
     isPercentage: 0
   - statType: 14
-    statValue: 10
+    statValue: 2
     isPercentage: 0
   - statType: 15
     statValue: 7

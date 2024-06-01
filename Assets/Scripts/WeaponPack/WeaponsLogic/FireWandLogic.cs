@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EnemyPack;
 using EnemyPack.SO;
+using Other.Enums;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -18,6 +19,8 @@ namespace WeaponPack.WeaponsLogic
         [SerializeField] private GameObject projectile;
         [SerializeField] private GameObject flightParticles;
         [SerializeField] private GameObject onHitParticles;
+
+        private float EffectDuration => GetStatValue(EWeaponStat.EffectDuration) ?? 0;
         
         protected override void UseWeapon()
         {
@@ -40,6 +43,7 @@ namespace WeaponPack.WeaponsLogic
                     .SetOnHitAction(OnHitAction)
                     .SetFlightParticles(flightParticles)
                     .SetLightColor(projectileLightColor)
+                    .SetEffect(EEffectType.Burn, EffectDuration)
                     .SetReady();
                 
                 targetedEnemies.Add(target.GetInstanceID());

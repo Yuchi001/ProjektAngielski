@@ -194,8 +194,8 @@ MonoBehaviour:
     expAmount: 25
     gemSprite: {fileID: 21300000, guid: 7df4d466fa6dd5f4da6a693fbf9e8966, type: 3}
   - gemType: 3
-    expAmount: 125
+    expAmount: 50
     gemSprite: {fileID: 21300000, guid: e47a00f9b0f0bdb4b984e4038feefa6b, type: 3}
   - gemType: 4
-    expAmount: 625
+    expAmount: 100
     gemSprite: {fileID: 21300000, guid: d5d27dbf8dd139440a1da9cd3efafcdd, type: 3}
