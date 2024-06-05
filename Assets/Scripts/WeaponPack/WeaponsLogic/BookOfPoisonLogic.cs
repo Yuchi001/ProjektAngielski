@@ -25,12 +25,11 @@ namespace WeaponPack.WeaponsLogic
 
         private readonly List<GameObject> _poisonFields = new();
         
-        protected override void UseWeapon()
+        protected override bool UseWeapon()
         {
             _poisonFields.RemoveAll(go => go == null);
 
-            Func<Vector2, bool> isTooClose = pos => Vector2.Distance(pos, PlayerPos) < minimalFieldDistance; 
-            if (_poisonFields.FirstOrDefault(go => isTooClose(go.transform.position))) return;
+            if (_poisonFields.FirstOrDefault(go => IsTooClose(go.transform.position))) return false;
             
             var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
             var projectileScript = projectile.GetComponent<Projectile>();
@@ -51,6 +50,10 @@ namespace WeaponPack.WeaponsLogic
                 .SetReady();
             
             _poisonFields.Add(projectile);
+
+            return true;
+
+            bool IsTooClose(Vector2 pos) => Vector2.Distance(pos, PlayerPos) < minimalFieldDistance;
         }
 
         private void ParticleUpdate(Projectile projectile)

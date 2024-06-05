@@ -27,8 +27,8 @@ namespace Managers.Other
         
         private CanBeDamaged _canBeDamaged;
         
-        private List<EffectInfo> _effectList = new();
-        private List<EffectActiveObjects> _effectSpawnedObjects = new();
+        private readonly List<EffectInfo> _effectList = new();
+        private readonly List<EffectActiveObjects> _effectSpawnedObjects = new();
         
         public bool Stuned { get; private set; }
         public bool Slowed { get; private set; }
@@ -36,7 +36,7 @@ namespace Managers.Other
         private bool _ready = false;
         private float _timer = 0;
         
-        private List<EffectInfo> _effectListQueue = new();
+        private readonly List<EffectInfo> _effectListQueue = new();
 
         public void Setup(CanBeDamaged canBeDamaged)
         {
@@ -116,8 +116,10 @@ namespace Managers.Other
             switch (effectInfo.effectType)
             {
                 case EEffectType.Poison:
+                    if(_canBeDamaged.CurrentHealth == 1) break;
                     var poisonParticlesInstance = Instantiate(poisonParticles, entityPos, Quaternion.identity);
                     Destroy(poisonParticlesInstance, 2f);
+                    if (poisonDamage > _canBeDamaged.CurrentHealth + 1) poisonDamage = _canBeDamaged.CurrentHealth - 1;
                     _canBeDamaged.GetDamaged(poisonDamage, effectStatus.Value.effectColor);
                     break;
                 case EEffectType.Burn:

@@ -40,7 +40,7 @@ namespace UI
 
         private int _currentIndex = 0;
         
-        private void Awake()
+        private void Start()
         {
             AudioManager.Instance.SetTheme(EThemeType.Menu1);
             

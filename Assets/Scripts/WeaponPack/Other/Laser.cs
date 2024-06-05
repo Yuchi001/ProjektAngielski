@@ -15,7 +15,7 @@ namespace WeaponPack.Other
         [SerializeField] private GameObject laserParticlesPrefab;
         private Vector2 PlayerPos => PlayerManager.Instance.transform.position;
 
-        private EnemyLogic _target;
+        private Vector2 _target;
 
         private float _animTime = 0.3f;
         private float _maxScale = 1;
@@ -57,10 +57,10 @@ namespace WeaponPack.Other
             return this;
         }
 
-        public Laser SetTarget(EnemyLogic target)
+        public Laser SetTargetPosition(Vector2 target)
         {
             _target = target;
-            lineRenderer.SetPosition(1, _target.transform.position);
+            lineRenderer.SetPosition(1, _target);
             return this;
         }
 
@@ -83,8 +83,8 @@ namespace WeaponPack.Other
                     StartCoroutine(HandleLaserDamage(lineRenderer));
                 });
             
-            var startParticles = SpawnParticles(PlayerPos, _target.transform.position);
-            var endParticles = SpawnParticles(_target.transform.position, PlayerPos);
+            var startParticles = SpawnParticles(PlayerPos, _target);
+            var endParticles = SpawnParticles(_target, PlayerPos);
             
             _spawnedParticles.Add(startParticles);
             _spawnedParticles.Add(endParticles);
@@ -113,9 +113,11 @@ namespace WeaponPack.Other
             float _rateTimer = 999;
             while (_timer < _duration)
             {
+                yield return new WaitForEndOfFrame();
+                
                 _rateTimer += Time.deltaTime;
                 _timer += Time.deltaTime;
-                if (_rateTimer < 1f / _damageRate) yield return null;
+                if (_rateTimer < 1f / _damageRate) continue;
 
                 _enableCollisions = true;
                 _rateTimer = 0;
@@ -130,7 +132,7 @@ namespace WeaponPack.Other
                     _spawnedParticles.ForEach(p =>
                     {
                         var shape = p.shape;
-                        shape.radius = _maxScale / 2;
+                        shape.radius = value / 2;
                     });
                 }).setOnComplete(() =>
                 {

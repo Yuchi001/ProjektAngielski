@@ -7,12 +7,16 @@ namespace PlayerPack.PlayerMovementPack
     [RequireComponent(typeof(PlayerHealth))]
     public partial class PlayerMovement : MonoBehaviour
     {
+        [SerializeField] private Rigidbody2D rb2d;
         [SerializeField] private Transform playerSpriteTransform;
         [SerializeField] private float animationSpeed = 0.5f;
         [SerializeField] private Animator animator;
         private SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
         private PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
 
+        public bool LookingRight => _lookingRight;
+        private bool _lookingRight;
+        
         private void Awake()
         {
             animator.speed = animationSpeed;
@@ -34,17 +38,15 @@ namespace PlayerPack.PlayerMovementPack
 
         private void ManageMovement()
         {
-            var movement = GetMovement();
+            var velocity = GetVelocity();
+            rb2d.velocity = velocity;
+            animator.SetBool("isWalking", velocity != Vector2.zero);
 
-            if(movement.x != 0)
-                playerSpriteTransform.rotation = Quaternion.Euler(0, movement.x < 0 ? 0 : 180, 0);
-            
-            animator.SetBool("isWalking", movement != Vector2.zero);
-            
-            var position = transform.position;
-            position += (Vector3)movement;
-            
-            transform.position = position;
+            if (velocity.x == 0) return;
+
+            _lookingRight = velocity.x > 0;
+            Debug.Log(_lookingRight);
+            playerSpriteTransform.rotation = Quaternion.Euler(0, _lookingRight ? 180 : 0, 0);
         }
     }
 }

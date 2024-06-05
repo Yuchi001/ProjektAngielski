@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using EnemyPack.Enums;
 using EnemyPack.SO;
@@ -10,53 +9,59 @@ using Other;
 using PlayerPack;
 using UI;
 using UnityEngine;
-using WeaponPack.Other;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace EnemyPack
 {
+    [RequireComponent(typeof(EnemyHealthBar))]
     public class EnemyLogic : CanBeDamaged
     {
-        [Header("General")]
-        
+        [Header("General")] 
+        [SerializeField] private float attackRange = 0.3f;
         [SerializeField] private GameObject damageIndicatorPrefab;
         [SerializeField] private GameObject expGemPrefab;
         [SerializeField] private float attacksPerSecond;
         [SerializeField] private int attackDamage;
         [SerializeField] private Transform bodyTransform;
-        [SerializeField] private new Rigidbody2D rigidbody2D;
+        [SerializeField] private Rigidbody2D rb2d;
         [SerializeField] private Animator animator;
+        public override int CurrentHealth => _currentHealth;
         
         private SoEnemy _enemy;
         private Transform _target;
+        private EnemySpawner _enemySpawner;
 
         private Vector3 _desiredDir;
         private Vector2 _desiredPos;
 
-        private float _collisionTimer = 0;
-        private int _health;
-
-        private float MovementSpeed => Slowed ? _enemy.MovementSpeed / 2f : _enemy.MovementSpeed;
-
-        private EnemySpawner _enemySpawner;
+        private static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
+        private static Vector2 PlayerPos => PlayerManager.Instance.transform.position;
+        
+        private EnemyHealthBar EnemyHealthBar => GetComponent<EnemyHealthBar>();
+       
+        private bool _isBeingPushed = false;
+        
+        private int _currentHealth;
         private int MaxHealth => Mathf.CeilToInt(_enemy.MaxHealth * _enemySpawner.EnemiesHpScale);
         
-        private bool _isBeingPushed = false;
+        private float AttackRange => attackRange * _enemy.BodyScale;
+        private float _collisionTimer = 0;
         private float Mass => Mathf.Pow(_enemy.BodyScale, 2);
-
-        private Vector2 PlayerPos => PlayerManager.Instance.transform.position;
-
+        private float MovementSpeed => Slowed ? _enemy.MovementSpeed / 2f : _enemy.MovementSpeed;
+        
+        
         public void Setup(SoEnemy enemy, Transform target, EnemySpawner enemySpawner)
         {
             _enemySpawner = enemySpawner;
             _enemy = Instantiate(enemy);
             _target = target;
 
-            rigidbody2D.mass = enemy.IsHeavy ? 999 : Mass;
+            rb2d.mass = enemy.IsHeavy ? 999 : Mass;
 
             _desiredPos = transform.position;
             
-            _health = MaxHealth;
+            _currentHealth = MaxHealth;
 
             GetComponent<Collider2D>().isTrigger = _enemy.EnemyState != EEnemyState.Chase;
             
@@ -68,21 +73,8 @@ namespace EnemyPack
             animator.runtimeAnimatorController = aoc;
             
             _enemy.SpawnEnemyLogic(this);
-        }
-
-        public void PushEnemy(Vector2 force, float time)
-        {
-            if (_isBeingPushed) return;
             
-            rigidbody2D.AddForce(force, ForceMode2D.Impulse);
-            _isBeingPushed = true;
-            StartCoroutine(PushCoroutine(time));
-        }
-
-        private IEnumerator PushCoroutine(float time)
-        {
-            yield return new WaitForSeconds(time);
-            _isBeingPushed = false;
+            EnemyHealthBar.Setup(SpriteRenderer);
         }
         
         protected override void OnUpdate()
@@ -98,15 +90,18 @@ namespace EnemyPack
                 case EEnemyState.DontMove:
                     break;
             }
+
+            ManagePlayerCollision();
+            EnemyHealthBar.ManageHealthBar();
         }
-        
+
         private void FixedUpdate()
         {
             animator.speed = Stuned ? 0 : Slowed ? 0.5f : 1;
-            rigidbody2D.mass = Stuned ? 999 : Slowed ? Mass * 2 : Mass;
+            rb2d.mass = Stuned ? 999 : Slowed ? Mass * 2 : Mass;
             if (Stuned)
             {
-                rigidbody2D.velocity = Vector2.zero;
+                rb2d.velocity = Vector2.zero;
                 return;
             }
             
@@ -116,10 +111,10 @@ namespace EnemyPack
             {
                 case EEnemyState.Chase:
                     if (_target == null) return;
-                    rigidbody2D.velocity = _desiredDir * MovementSpeed;
+                    rb2d.velocity = _desiredDir * MovementSpeed;
                     break;
                 case EEnemyState.Patrol:
-                    rigidbody2D.velocity = _desiredDir * MovementSpeed;
+                    rb2d.velocity = _desiredDir * MovementSpeed;
                     break;
                 case EEnemyState.DontMove:
                     break;
@@ -148,8 +143,6 @@ namespace EnemyPack
         private void Chase()
         {
             if (_target == null) return;
-
-            _collisionTimer += Time.deltaTime;
             
             bodyTransform.rotation = Quaternion.Euler(0, _target.position.x < transform.position.x ? 0 : 180, 0);
 
@@ -158,31 +151,53 @@ namespace EnemyPack
             _desiredDir = dir;
         }
 
-        private void OnCollisionStay2D(Collision2D other)
+        private void ManagePlayerCollision()
         {
-            if (!other.gameObject.TryGetComponent<PlayerHealth>(out var playerHealth) 
-                || _collisionTimer < 1 / attacksPerSecond) return;
+            _collisionTimer += Time.deltaTime;
+            
+            if (_collisionTimer < 1f / attacksPerSecond) return;
 
+            if (Vector2.Distance(PlayerPos, transform.position) >= AttackRange) return;
+            
             _collisionTimer = 0;
-            playerHealth.GetDamaged(attackDamage);
+            PlayerHealth.GetDamaged(attackDamage);
+        }
+        
+        public void PushEnemy(Vector2 force, float time)
+        {
+            if (_isBeingPushed) return;
+            
+            rb2d.AddForce(force, ForceMode2D.Impulse);
+            _isBeingPushed = true;
+            StartCoroutine(PushCoroutine(time));
+        }
+
+        private IEnumerator PushCoroutine(float time)
+        {
+            yield return new WaitForSeconds(time);
+            _isBeingPushed = false;
         }
 
         public override void GetDamaged(int value, Color? color = null)
         {
             base.GetDamaged(value, color);
             
+            
             AudioManager.Instance.PlaySound(ESoundType.EnemyHurt);
             
             DamageIndicator.SpawnDamageIndicator(transform.position, damageIndicatorPrefab, value);
-            _health = Mathf.Clamp(_health - value, 0, MaxHealth);
-            if(_health <= 0) OnDie();
+            _currentHealth = Mathf.Clamp(_currentHealth - value, 0, MaxHealth);
+            
+            EnemyHealthBar.UpdateHealthBar(_currentHealth, MaxHealth);
+            
+            if(_currentHealth <= 0) OnDie();
         }
 
         public override void OnDie(bool destroyObj = true)
         {
             ExpGem.SpawnExpGem(expGemPrefab, transform.position, _enemy.ExpGemType);
             _target = null;
-            rigidbody2D.velocity = Vector2.zero;
+            rb2d.velocity = Vector2.zero;
             GetComponent<Collider2D>().enabled = false;
 
             _enemySpawner.DeadEnemies++;
@@ -193,7 +208,7 @@ namespace EnemyPack
         public void DieWithoutGem()
         {
             _target = null;
-            rigidbody2D.velocity = Vector2.zero;
+            rb2d.velocity = Vector2.zero;
             GetComponent<Collider2D>().enabled = false;
             
             base.OnDie();

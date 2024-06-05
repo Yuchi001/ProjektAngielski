@@ -56,14 +56,12 @@ namespace WeaponPack
         {
             _timer += Time.deltaTime;
             if (_timer < Cooldown || (spawned && _weapon.OneTimeSpawnLogic)) return;
-
-            _timer = 0;
-            spawned = true;
-            UseWeapon();
+            
+            spawned = UseWeapon();
+            _timer = spawned ? 0 : Cooldown;
         }
-        //test 2
-         // TEST
-        protected abstract void UseWeapon();
+ 
+        protected abstract bool UseWeapon();
 
         private void OnLevelUp(string weaponName)
         {

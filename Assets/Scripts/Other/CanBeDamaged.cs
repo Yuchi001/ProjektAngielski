@@ -23,6 +23,8 @@ namespace Other
         private EffectsManager _effectsManager;
 
         public bool Dead { get; private set; }
+        
+        public abstract int CurrentHealth { get; }
 
         protected bool Stuned => _effectsManager.Stuned;
         protected bool Slowed => _effectsManager.Slowed;
@@ -53,7 +55,7 @@ namespace Other
 
         public virtual void GetDamaged(int value, Color? flashColor = null)
         {
-            flashColor = flashColor ?? Color.white;
+            flashColor ??= Color.white;
             _currentCoroutine ??= StartCoroutine(DamageAnim(flashColor.Value));
 
             if (bloodParticles == null) return;

@@ -11,7 +11,7 @@ namespace PlayerPack.PlayerMovementPack
         private static KeyCode LeftBind => KeyCode.A;
         private static KeyCode RightBind => KeyCode.D;
         
-        private Vector2 GetMovement()
+        private Vector2 GetVelocity()
         {
             var movement = Vector2.zero;
 
@@ -21,12 +21,9 @@ namespace PlayerPack.PlayerMovementPack
             movement.x = _buttonsActive[RightBind] ? 1 : (_buttonsActive[LeftBind] ? -1 : 0);
             movement.y = _buttonsActive[UpBind] ? 1 : (_buttonsActive[DownBind] ? -1 : 0);
 
-            if (movement.x != 0 && movement.y != 0)
-                movement *= PickedCharacter.MovementSpeed / Mathf.Sqrt(2) * Time.deltaTime;
-            else
-                movement *= PickedCharacter.MovementSpeed * Time.deltaTime;
-
-            return movement;
+            if(movement == Vector2.zero) return Vector2.zero;
+            
+            return movement * PickedCharacter.MovementSpeed;
         }
 
         private void CheckKey(KeyCode main, KeyCode opposite)

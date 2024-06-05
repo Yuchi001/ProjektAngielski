@@ -22,20 +22,19 @@ namespace WeaponPack.WeaponsLogic
 
         private float EffectDuration => GetStatValue(EWeaponStat.EffectDuration) ?? 0;
         
-        protected override void UseWeapon()
+        protected override bool UseWeapon()
         {
             var targetedEnemies = new List<int>();
+            var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
+                var target = UtilsMethods.FindTarget(transform.position, targetedEnemies);
+                if (target == null) continue;
+
+                spawnedProjectiles++;
+                
                 var projectile = Instantiate(this.projectile, PlayerPos, Quaternion.identity);
                 var projectileScript = projectile.GetComponent<Projectile>();
-
-                var target = UtilsMethods.FindTarget(transform.position, targetedEnemies);
-                if (target == null)
-                {
-                    Destroy(projectile);
-                    continue;
-                }
                 
                 projectileScript.Setup(Damage, Speed)
                     .SetTarget(target.transform)
@@ -48,6 +47,8 @@ namespace WeaponPack.WeaponsLogic
                 
                 targetedEnemies.Add(target.GetInstanceID());
             }
+
+            return spawnedProjectiles > 0;
         }
 
         private void OnHitAction(GameObject enemy, Projectile projectile)

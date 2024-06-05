@@ -9,7 +9,7 @@ namespace WeaponPack.WeaponsLogic
         private float Range => GetStatValue(EWeaponStat.BlastRange) ?? 0;
         private float DropExpChance => GetStatValue(EWeaponStat.DropExpChance) ?? 0;
 
-        protected override void UseWeapon()
+        protected override bool UseWeapon()
         {
             var foundObjects = Physics2D.OverlapCircleAll(PlayerPos, Range);
             foreach (var colliderObj in foundObjects)
@@ -20,6 +20,8 @@ namespace WeaponPack.WeaponsLogic
                 if(randomNum < DropExpChance) enemy.OnDie();
                 else enemy.DieWithoutGem();
             }
+
+            return true;
         }
     }
 }

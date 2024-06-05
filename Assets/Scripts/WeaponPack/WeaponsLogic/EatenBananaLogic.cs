@@ -15,7 +15,7 @@ namespace WeaponPack.WeaponsLogic
 
         private float BlastRange => GetStatValue(EWeaponStat.BlastRange) ?? 0;
         
-        protected override void UseWeapon()
+        protected override bool UseWeapon()
         {
             var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
             var projectileScript = projectile.GetComponent<Projectile>();
@@ -27,6 +27,8 @@ namespace WeaponPack.WeaponsLogic
                 .SetOnHitParticles(boomParticles, BlastRange * 2)
                 .SetLightColor(Color.yellow)
                 .SetReady();
+
+            return true;
         }
 
         private void OnHit(GameObject hitObj, Projectile projectile)

@@ -10,9 +10,11 @@ namespace WeaponPack.WeaponsLogic
         [SerializeField] private Color projectileLightColor;
         [SerializeField] private Sprite projectileSprite;
         [SerializeField] private GameObject projectilePrefab;
-        protected override void UseWeapon()
+        protected override bool UseWeapon()
         {
             StartCoroutine(SpawnParticles());
+
+            return true;
         }
 
         private IEnumerator SpawnParticles()

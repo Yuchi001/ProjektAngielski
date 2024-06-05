@@ -25,15 +25,12 @@ namespace Managers
        }
        
        #endregion
-
-       [SerializeField] private List<SpawnerBase> spawners;
-       [SerializeField] private GameObject deathUi;
+       
        [SerializeField] private GameObject playerPrefab;
        [SerializeField] private MainCamera mainCamera;
-       [SerializeField] private Transform worldCanvas;
-       [SerializeField] private Transform mainCanvas;
 
-       [SerializeField] private Transform menuCanvas;
+       [SerializeField] private WaveManager waveManager;
+       [SerializeField] private GameUiManager gameUiManager;
 
        [SerializeField] private float boundaryX;
        [SerializeField] private float boundaryY;
@@ -45,9 +42,6 @@ namespace Managers
        public GameObject SpawnEntityPrefab => spawnEntityPrefab;
 
        #endregion
-
-       public Transform WorldCanvas => worldCanvas;
-       public Transform MainCanvas => mainCanvas;
        public PlayerManager CurrentPlayer { get; private set; }
        public float BoundaryX => boundaryX;
        public float BoundaryY => boundaryY;
@@ -59,33 +53,17 @@ namespace Managers
 
        public void StartRun(SoCharacter pickedCharacter)
        {
+           gameUiManager.BeginPlay();
+           
            var playerObj = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
            CurrentPlayer = playerObj.GetComponent<PlayerManager>();
-           
-           foreach (Transform child in transform)
-           {
-               child.gameObject.SetActive(true);
-           }
-           
-           menuCanvas.gameObject.SetActive(false);
-           
            CurrentPlayer.Setup(pickedCharacter);
            
            mainCamera.Setup(playerObj);
            
-           spawners.ForEach(s => s.SetState(ESpawnerState.Spawn));
-           
            AudioManager.Instance.SetTheme(EThemeType.Main1);
-       }
-
-       public void OnPlayerDeath()
-       {
-           foreach (Transform child in transform)
-           {
-               child.gameObject.SetActive(false);
-           }
            
-           deathUi.SetActive(true);
+           waveManager.BeginSpawn();
        }
     }
 }

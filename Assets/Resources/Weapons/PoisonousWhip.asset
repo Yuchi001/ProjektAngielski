@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
+  m_Name: PoisonousWhip
+  m_EditorClassIdentifier: 
+  weaponName: Poisonous whip
+  weaponDescription: Slash thru enemies dealing very light damage, pushing them away
+    and poisoning them
+  weaponSprite: {fileID: 21300000, guid: 30a6ce95fb90d8540a13f493696b2f9f, type: 3}
+  weaponColor: {r: 0.14738339, g: 0.33962262, b: 0, a: 1}
+  oneTimeSpawnLogic: 0
+  weaponLogicPrefab: {fileID: 6078984998771875696, guid: 1e1d7b61cf01f9247b83c3a717ab0b79, type: 3}
+  weaponStartingStats:
+  - statType: 0
+    statValue: 1
+    isPercentage: 0
+  - statType: 1
+    statValue: 1
+    isPercentage: 0
+  - statType: 3
+    statValue: 1
+    isPercentage: 0
+  - statType: 2
+    statValue: 0
+    isPercentage: 0
+  - statType: 5
+    statValue: 1
+    isPercentage: 0
+  - statType: 16
+    statValue: 1.5
+    isPercentage: 0
+  - statType: 15
+    statValue: 2
+    isPercentage: 0
+  weaponUpgradeStats:
+  - weaponLevelUpDescription: 
+    levelStats: []

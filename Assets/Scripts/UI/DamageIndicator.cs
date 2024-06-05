@@ -46,7 +46,7 @@ namespace UI
                 indicatorPrefab, 
                 position, 
                 Quaternion.identity, 
-                GameManager.Instance.WorldCanvas);
+                GameUiManager.Instance.WorldCanvas);
             var indicatorScript = indicator.GetComponent<DamageIndicator>();
             indicatorScript.Setup(value, isDamage);
         }

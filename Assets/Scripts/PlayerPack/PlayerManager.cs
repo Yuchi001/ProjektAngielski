@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Managers;
+using PlayerPack.PlayerMovementPack;
 using PlayerPack.SO;
 using UnityEngine;
 
@@ -30,6 +31,10 @@ namespace PlayerPack
         public PlayerExp PlayerExp => GetComponent<PlayerExp>();
         public PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
         public PlayerWeaponry PlayerWeaponry => GetComponent<PlayerWeaponry>();
+        public PlayerMovement PlayerMovement => GetComponent<PlayerMovement>();
+
+        public delegate void PlayerDeathDelegate();
+        public static event PlayerDeathDelegate OnPlayerDeath;
 
         public void Setup(SoCharacter pickedCharacter)
         {
@@ -59,7 +64,7 @@ namespace PlayerPack
             PlayerWeaponry.DestroyAllWeapons();
             PlayerWeaponry.enabled = false;
 
-            GameManager.Instance.OnPlayerDeath();
+            OnPlayerDeath?.Invoke();
         }
     }
 }

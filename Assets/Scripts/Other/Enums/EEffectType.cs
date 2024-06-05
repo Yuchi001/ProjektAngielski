@@ -6,5 +6,6 @@
         Burn,
         Stun,
         Slow,
+        Bleed,
     }
 }

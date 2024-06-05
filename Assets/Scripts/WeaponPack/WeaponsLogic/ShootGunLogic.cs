@@ -21,13 +21,14 @@ namespace WeaponPack.WeaponsLogic
 
         private float Accuracy => GetStatValue(EWeaponStat.Accuracy) ?? 1;
         
-        protected override void UseWeapon()
+        protected override bool UseWeapon()
         {
             var target = UtilsMethods.FindTarget(transform.position);
 
-            if (target == null) return;
+            if (target == null) return false;
             var position = target.transform.position;
             StartCoroutine(ShootAllMagazines(position));
+            return true;
         }
 
         private IEnumerator ShootAllMagazines(Vector2 position)
