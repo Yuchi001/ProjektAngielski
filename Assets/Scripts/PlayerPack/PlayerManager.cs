@@ -35,6 +35,9 @@ namespace PlayerPack
 
         public delegate void PlayerDeathDelegate();
         public static event PlayerDeathDelegate OnPlayerDeath;
+        
+        public delegate void PlayerReadyDelegate();
+        public static event PlayerReadyDelegate OnPlayerReady;
 
         public void Setup(SoCharacter pickedCharacter)
         {
@@ -54,6 +57,8 @@ namespace PlayerPack
             animator.runtimeAnimatorController = aoc;
             
             GetComponent<PlayerWeaponry>().AddWeapon(pickedCharacter.StartingWeapon);
+            
+            OnPlayerReady?.Invoke();
         }
 
         public void ManagePlayerDeath()

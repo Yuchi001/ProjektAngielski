@@ -45,7 +45,6 @@ namespace PlayerPack.PlayerMovementPack
             if (velocity.x == 0) return;
 
             _lookingRight = velocity.x > 0;
-            Debug.Log(_lookingRight);
             playerSpriteTransform.rotation = Quaternion.Euler(0, _lookingRight ? 180 : 0, 0);
         }
     }

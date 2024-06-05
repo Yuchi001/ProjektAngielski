@@ -15,6 +15,7 @@ namespace PlayerPack
         [SerializeField] private Image healthMeter;
         [SerializeField] private GameObject damageIndicator;
 
+        public int MaxHealth => PickedCharacter.MaxHp;
         public override int CurrentHealth => _currentHealth;
         
         private int _currentHealth = 0;
