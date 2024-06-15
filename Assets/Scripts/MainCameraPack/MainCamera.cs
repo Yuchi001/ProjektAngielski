@@ -6,12 +6,11 @@ namespace MainCameraPack
 {
     public class MainCamera : MonoBehaviour
     {
-        private CameraShaker _cameraShaker;
+        [SerializeField] private CameraShaker _cameraShaker;
         private Transform _player;
 
         private void Awake()
         {
-            _cameraShaker = GetComponent<CameraShaker>();
             PlayerHealth.OnPlayerDamaged += ShakeCamera;
         }
 

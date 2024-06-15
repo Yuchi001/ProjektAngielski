@@ -13,6 +13,7 @@ namespace UI
         [SerializeField] private Image frameImage;
         [SerializeField] private Image fillImage;
         [SerializeField] private TextMeshProUGUI timerTextField;
+        [SerializeField] private TextMeshProUGUI levelTextField;
 
         private WeaponLogicBase _weaponLogicBase;
         private bool _ready = false;
@@ -29,9 +30,12 @@ namespace UI
         private void Update()
         {
             if (!_ready) return;
-            
-            timerTextField.text = _weaponLogicBase.Cooldown > 0.3f ? $"{_weaponLogicBase.Cooldown - _weaponLogicBase.CurrentTimer:0.0}" : "Max.";
+
+            var displaySeconds = _weaponLogicBase.Cooldown - _weaponLogicBase.CurrentTimer;
+            timerTextField.gameObject.SetActive(displaySeconds > 0.1f);
+            timerTextField.text = _weaponLogicBase.Cooldown > 0.3f ? $"{displaySeconds:0.0}" : "Max.";
             fillImage.fillAmount = _weaponLogicBase.Cooldown > 0.3f ? 1 - _weaponLogicBase.CurrentTimer / _weaponLogicBase.Cooldown : 1;
+            levelTextField.text = $"{_weaponLogicBase.Level + 1} Lvl";
         }
     }
 }

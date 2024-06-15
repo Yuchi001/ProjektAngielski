@@ -12,7 +12,6 @@ namespace PlayerPack
     public class PlayerHealth : CanBeDamaged
     {
         [SerializeField] private GameObject healParticles;
-        [SerializeField] private Image healthMeter;
         [SerializeField] private GameObject damageIndicator;
 
         public int MaxHealth => PickedCharacter.MaxHp;
@@ -32,7 +31,7 @@ namespace PlayerPack
 
         protected override void OnUpdate()
         {
-            healthMeter.fillAmount = (float)_currentHealth / PickedCharacter.MaxHp;
+            
         }
 
         public override void GetDamaged(int value, Color? color = null)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Other;
 using Other.Enums;
@@ -7,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace Managers.Other
+namespace Managers
 {
     public class EffectsManager : MonoBehaviour
     {
@@ -51,6 +50,9 @@ namespace Managers.Other
             var topCenter = topRight;
             topCenter.x = center.x;
             topCenter.y += 0.1f;
+            
+            var scale = statusListObject.transform.localScale.x / canBeDamaged.transform.localScale.x;
+            statusListObject.transform.localScale = new Vector3(scale, scale, scale);
 
             statusListObject.transform.position = topCenter;
         }

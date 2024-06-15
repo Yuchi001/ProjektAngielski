@@ -14,7 +14,9 @@ namespace PlayerPack.SO
         [SerializeField] private float movementSpeed;
         [SerializeField] private AnimationClip walkingAnim;
         [SerializeField] private AnimationClip idleAnim;
+        [SerializeField] private Color characterColor;
 
+        public Color CharacterColor => characterColor;
         public string CharacterName => characterName;
         public Sprite CharacterSprite => characterSprite;
         public int MaxHp => maxHp;

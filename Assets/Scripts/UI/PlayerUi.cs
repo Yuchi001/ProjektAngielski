@@ -17,6 +17,7 @@ namespace UI
         [SerializeField] private TextMeshProUGUI healthText;
         
         [SerializeField] private Image characterImage;
+        [SerializeField] private Image characterFrameImage;
         
         private static PlayerExp PlayerExp => PlayerManager.Instance.PlayerExp;
         private static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
@@ -40,6 +41,7 @@ namespace UI
             levelText.text = "1 Lvl";
             healthText.text = $"{PlayerHealth.CurrentHealth}/{PlayerHealth.MaxHealth}";
             characterImage.sprite = PlayerManager.Instance.PickedCharacter.CharacterSprite;
+            characterFrameImage.color = PlayerManager.Instance.PickedCharacter.CharacterColor;
         }
 
         private void Update()
@@ -50,7 +52,7 @@ namespace UI
             if (_uiUpdateTimer < 1 / uiUpdateRate) return;
 
             healthBar.fillAmount = PlayerHealth.CurrentHealth / (float)PlayerHealth.MaxHealth;
-            healthText.text = PlayerHealth.CurrentHealth.ToString();
+            healthText.text = $"{PlayerHealth.CurrentHealth}/{PlayerHealth.MaxHealth}";
 
             expMeter.fillAmount = PlayerExp.CurrentExp / PlayerExp.NextLevelExp;
             levelText.text = PlayerExp.CurrentLevel + " LvL";

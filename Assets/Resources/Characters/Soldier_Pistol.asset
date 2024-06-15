@@ -20,3 +20,4 @@ MonoBehaviour:
   movementSpeed: 3.5
   walkingAnim: {fileID: 7400000, guid: 0d0b0e488b7407e42ad83378291f6997, type: 2}
   idleAnim: {fileID: 7400000, guid: 79c0093d5d14c64479d7c3b183f32e72, type: 2}
+  characterColor: {r: 0.078431375, g: 0.24313727, b: 0.20000002, a: 1}

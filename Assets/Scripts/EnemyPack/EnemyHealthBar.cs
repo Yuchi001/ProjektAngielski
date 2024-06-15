@@ -21,7 +21,10 @@ namespace EnemyPack
             
             var healthCanvasPos = bounds.min;
             healthCanvasPos.x += bounds.size.x / 2;
+            healthCanvasPos.y += 0.1f;
             healthCanvas.position = healthCanvasPos;
+            var scale = healthCanvas.localScale.x / healthCanvas.parent.localScale.x;
+            healthCanvas.localScale = new Vector3(scale, scale, scale);
 
             var healthBarColor = healthBar.color;
             healthBarColor.a = 0;
