@@ -24,22 +24,64 @@ MonoBehaviour:
   - statType: 0
     statValue: 4
     isPercentage: 0
+    canUpgrade: 1
   - statType: 1
     statValue: 30
     isPercentage: 0
+    canUpgrade: 1
   - statType: 2
     statValue: 0
     isPercentage: 0
+    canUpgrade: 0
   - statType: 3
     statValue: 1
     isPercentage: 0
+    canUpgrade: 0
   - statType: 12
     statValue: 1.5
     isPercentage: 0
+    canUpgrade: 1
   - statType: 5
     statValue: 0.3
     isPercentage: 0
+    canUpgrade: 1
   - statType: 13
     statValue: 2
     isPercentage: 0
-  weaponUpgradeStats: []
+    canUpgrade: 1
+  weaponUpgradeStats:
+  - statType: 0
+    statValue: 4
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> cooldown reduction
+    valueLevels: 0
+    valueGrowth: 0
+  - statType: 1
+    statValue: 30
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: 
+    valueLevels: 0
+    valueGrowth: 0
+  - statType: 12
+    statValue: 1.5
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: 
+    valueLevels: 0
+    valueGrowth: 0
+  - statType: 5
+    statValue: 0.3
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: 
+    valueLevels: 0
+    valueGrowth: 0
+  - statType: 13
+    statValue: 2
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: 
+    valueLevels: 0
+    valueGrowth: 0

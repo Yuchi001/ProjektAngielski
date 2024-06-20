@@ -24,13 +24,45 @@ MonoBehaviour:
   - statType: 0
     statValue: 3
     isPercentage: 0
+    canUpgrade: 1
   - statType: 14
     statValue: 2
     isPercentage: 0
+    canUpgrade: 1
   - statType: 15
     statValue: 7
     isPercentage: 0
+    canUpgrade: 1
   - statType: 6
     statValue: 3
     isPercentage: 0
-  weaponUpgradeStats: []
+    canUpgrade: 1
+  weaponUpgradeStats:
+  - statType: 0
+    statValue: -0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> cooldown reduction
+    valueLevels: 3
+    valueGrowth: -0.05
+  - statType: 14
+    statValue: 1
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Heal <v> more hp
+    valueLevels: 6
+    valueGrowth: 1
+  - statType: 15
+    statValue: 0.1
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Push force stronger by <v>
+    valueLevels: 6
+    valueGrowth: 0.05
+  - statType: 6
+    statValue: 0.2
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Blast range bigger by <v>
+    valueLevels: 3
+    valueGrowth: 0.05

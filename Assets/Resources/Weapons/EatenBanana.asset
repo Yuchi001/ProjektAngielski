@@ -24,16 +24,42 @@ MonoBehaviour:
   - statType: 0
     statValue: 4
     isPercentage: 0
+    canUpgrade: 1
   - statType: 3
     statValue: 1
     isPercentage: 0
+    canUpgrade: 0
   - statType: 2
     statValue: 0
     isPercentage: 0
+    canUpgrade: 0
   - statType: 1
     statValue: 25
     isPercentage: 0
+    canUpgrade: 1
   - statType: 6
     statValue: 1
     isPercentage: 0
-  weaponUpgradeStats: []
+    canUpgrade: 1
+  weaponUpgradeStats:
+  - statType: 0
+    statValue: -0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> cooldown reduction
+    valueLevels: 3
+    valueGrowth: -0.05
+  - statType: 1
+    statValue: 5
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Blast deals <v> more damage
+    valueLevels: 3
+    valueGrowth: 5
+  - statType: 6
+    statValue: 0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Explosion range bigger by <v>
+    valueLevels: 6
+    valueGrowth: 0.05
