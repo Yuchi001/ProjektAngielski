@@ -23,55 +23,67 @@ MonoBehaviour:
   - statType: 0
     statValue: 3.5
     isPercentage: 0
+    canUpgrade: 1
   - statType: 1
     statValue: 3
     isPercentage: 0
+    canUpgrade: 1
   - statType: 2
     statValue: 9
     isPercentage: 0
+    canUpgrade: 1
   - statType: 3
     statValue: 30
     isPercentage: 0
+    canUpgrade: 1
   - statType: 9
     statValue: 1.5
     isPercentage: 0
+    canUpgrade: 1
   - statType: 15
     statValue: 2
     isPercentage: 0
+    canUpgrade: 1
   weaponUpgradeStats:
   - statType: 0
-    statValue: -0.1
+    statValue: -0.2
     isPercentage: 1
+    canUpgrade: 1
     weaponLevelUpDescription: Reload <v> faster
-    valueLevels: 3
+    valueLevels: 5
     valueGrowth: -0.1
   - statType: 1
     statValue: 1
     isPercentage: 0
+    canUpgrade: 1
     weaponLevelUpDescription: Gain <v> damage per bullet
     valueLevels: 3
     valueGrowth: 2
   - statType: 2
-    statValue: 0.1
+    statValue: 0.3
     isPercentage: 1
-    weaponLevelUpDescription: Bullets fly <v> faster
+    canUpgrade: 1
+    weaponLevelUpDescription: Bullets are <v> faster
     valueLevels: 2
-    valueGrowth: 0.2
+    valueGrowth: 0.1
   - statType: 3
     statValue: 5
     isPercentage: 0
-    weaponLevelUpDescription: Clips have <v> more bullets
-    valueLevels: 2
-    valueGrowth: 10
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> clip capacity
+    valueLevels: 5
+    valueGrowth: 5
   - statType: 9
     statValue: -0.1
     isPercentage: 1
-    weaponLevelUpDescription: Gain <v> accuracy
-    valueLevels: 1
-    valueGrowth: -0.1
+    canUpgrade: 1
+    weaponLevelUpDescription: Weapon becomes <v> more accurate
+    valueLevels: 3
+    valueGrowth: -0.2
   - statType: 15
-    statValue: 0.1
-    isPercentage: 0
-    weaponLevelUpDescription: Bullets push enemies <v> stronger
-    valueLevels: 4
+    statValue: 0.2
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Bullets push enemies <v> harder
+    valueLevels: 3
     valueGrowth: 0.2

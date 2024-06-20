@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using WeaponPack.SideClasses;
 using WeaponPack.SO;
 
@@ -10,19 +12,50 @@ namespace WeaponPack.Editor
     [CustomEditor(typeof(SoWeapon))]
     public class CeSoWeapon : UnityEditor.Editor
     {
+        private SerializedProperty weaponName;
+        private SerializedProperty weaponDescription;
+        private SerializedProperty weaponSprite;
+        private SerializedProperty weaponColor;
+        private SerializedProperty oneTimeSpawnLogic;
+        private SerializedProperty weaponLogicPrefab;
+        private SerializedProperty maxLevelPrize;
+        private SerializedProperty weaponStartingStats;
+
         private SoWeapon _soWeapon;
         
         private void OnEnable()
         {
+            weaponName = serializedObject.FindProperty("weaponName");
+            weaponDescription = serializedObject.FindProperty("weaponDescription");
+            weaponSprite = serializedObject.FindProperty("weaponSprite");
+            weaponColor = serializedObject.FindProperty("weaponColor"); 
+            oneTimeSpawnLogic = serializedObject.FindProperty("oneTimeSpawnLogic");
+            weaponLogicPrefab = serializedObject.FindProperty("weaponLogicPrefab");
+            maxLevelPrize = serializedObject.FindProperty("maxLevelPrize");
+            weaponStartingStats = serializedObject.FindProperty("weaponStartingStats");
             _soWeapon = target as SoWeapon;
         }
 
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
+            serializedObject.Update();
 
+            EditorGUILayout.PropertyField(weaponName);
+            EditorGUILayout.PropertyField(weaponDescription);
+            EditorGUILayout.PropertyField(weaponSprite);
+            EditorGUILayout.PropertyField(weaponColor);
+            EditorGUILayout.PropertyField(oneTimeSpawnLogic);
+            EditorGUILayout.PropertyField(weaponLogicPrefab);
+            EditorGUILayout.PropertyField(maxLevelPrize);
+            EditorGUILayout.PropertyField(weaponStartingStats);
+
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+            
             if (GUILayout.Button("Generate upgrade stats")) HandleGenerateUpdateStats();
 
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
             var upgradeStats = new List<UpgradeWeaponStat>();
             foreach (var upgradeWeaponStat in _soWeapon.WeaponUpgradeStats)
             {
@@ -42,8 +75,10 @@ namespace WeaponPack.Editor
                 upgradeStats.Add(updatedWeaponStat);
             }
             _soWeapon.SetWeaponUpgradeStats(upgradeStats);
-
+            
             serializedObject.ApplyModifiedProperties();
+            
+            EditorUtility.SetDirty(_soWeapon);
         }
 
         private void HandleGenerateUpdateStats()
@@ -51,6 +86,8 @@ namespace WeaponPack.Editor
             var upgradeStats = new List<UpgradeWeaponStat>();
             foreach (var pair in _soWeapon.WeaponStartingStats)
             {
+                if(!pair.CanUpgrade) continue;
+                
                 var current = _soWeapon.WeaponUpgradeStats.FirstOrDefault(w => w.StatType == pair.StatType);
                     
                 upgradeStats.Add(current ?? new UpgradeWeaponStat(pair));

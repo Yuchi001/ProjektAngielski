@@ -59,7 +59,8 @@ namespace WeaponPack.SideClasses
         
         public string GetDescription(float value)
         {
-            var statString = isPercentage ? $"{value}%" : $"{value}";
+            var absValue = Mathf.Abs(value);
+            var statString = isPercentage ? $"{absValue}%" : $"{absValue}";
             return weaponLevelUpDescription.Replace(valueMarker, statString);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using Utils;
 using WeaponPack.Enums;
@@ -21,7 +22,7 @@ namespace WeaponPack.SO
 
         [SerializeField] private List<WeaponStatPair> weaponStartingStats;
         
-        private List<UpgradeWeaponStat> weaponUpgradeStats = new();
+        [SerializeField] private List<UpgradeWeaponStat> weaponUpgradeStats = new();
         public List<UpgradeWeaponStat> WeaponUpgradeStats => weaponUpgradeStats;
 
         public string WeaponName => weaponName;
@@ -82,9 +83,9 @@ namespace WeaponPack.SO
             return stats;
         }
 
-        public void SetWeaponUpgradeStats(List<UpgradeWeaponStat> upgradeWeaponStats)
+        public void SetWeaponUpgradeStats(IEnumerable<UpgradeWeaponStat> upgradeWeaponStats)
         {
-            weaponUpgradeStats = upgradeWeaponStats;
+            weaponUpgradeStats = new List<UpgradeWeaponStat>(upgradeWeaponStats);
         }
     }
 }

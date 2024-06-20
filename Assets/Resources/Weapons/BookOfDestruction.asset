@@ -24,19 +24,46 @@ MonoBehaviour:
   - statType: 0
     statValue: 60
     isPercentage: 0
+    canUpgrade: 1
   - statType: 1
     statValue: 0
     isPercentage: 0
+    canUpgrade: 0
   - statType: 2
     statValue: 0
     isPercentage: 0
+    canUpgrade: 0
   - statType: 3
     statValue: 0
     isPercentage: 0
+    canUpgrade: 0
   - statType: 11
     statValue: 1
     isPercentage: 0
+    canUpgrade: 1
   - statType: 6
     statValue: 4
     isPercentage: 0
-  weaponUpgradeStats: []
+    canUpgrade: 1
+  weaponUpgradeStats:
+  - statType: 0
+    statValue: -0.05
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> cooldown reduction
+    valueLevels: 5
+    valueGrowth: -0.05
+  - statType: 11
+    statValue: 0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> chance for enemy to drop exp gem
+    valueLevels: 4
+    valueGrowth: 0.05
+  - statType: 6
+    statValue: 0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> extra range
+    valueLevels: 4
+    valueGrowth: 0.05

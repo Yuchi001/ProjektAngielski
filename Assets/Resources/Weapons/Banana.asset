@@ -24,19 +24,46 @@ MonoBehaviour:
   - statType: 0
     statValue: 0.5
     isPercentage: 0
+    canUpgrade: 1
   - statType: 1
     statValue: 5
     isPercentage: 0
-  - statType: 3
-    statValue: 1
-    isPercentage: 0
+    canUpgrade: 1
   - statType: 2
     statValue: 5
     isPercentage: 0
+    canUpgrade: 0
   - statType: 5
     statValue: 2
     isPercentage: 0
+    canUpgrade: 0
   - statType: 15
     statValue: 3
     isPercentage: 0
-  weaponUpgradeStats: []
+    canUpgrade: 1
+  - statType: 3
+    statValue: 1
+    isPercentage: 0
+    canUpgrade: 0
+  weaponUpgradeStats:
+  - statType: 0
+    statValue: -0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> cooldown reduction
+    valueLevels: 5
+    valueGrowth: -0.1
+  - statType: 1
+    statValue: 3
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Banana deals <v> more damage
+    valueLevels: 3
+    valueGrowth: 1
+  - statType: 15
+    statValue: 0.2
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Banana pushed enemies <v> harder
+    valueLevels: 4
+    valueGrowth: 0.2
