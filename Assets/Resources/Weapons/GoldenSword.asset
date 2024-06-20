@@ -19,6 +19,7 @@ MonoBehaviour:
   weaponColor: {r: 0.6981132, g: 0.5685923, b: 0, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 7828294396412686620, guid: cdfd063e08717aa4580bb1eae587d07d, type: 3}
+  maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
     statValue: 4
@@ -41,30 +42,4 @@ MonoBehaviour:
   - statType: 13
     statValue: 2
     isPercentage: 0
-  weaponUpgradeStats:
-  - weaponLevelUpDescription: Laser bigger by 20%, gain 10% damage rate
-    levelStats:
-    - statType: 13
-      statValue: 0.1
-      isPercentage: 1
-    - statType: 5
-      statValue: 0.2
-      isPercentage: 1
-  - weaponLevelUpDescription: Gain 10% cooldown reduction
-    levelStats:
-    - statType: 0
-      statValue: -0.1
-      isPercentage: 1
-  - weaponLevelUpDescription: Gain 5 damage
-    levelStats:
-    - statType: 1
-      statValue: 5
-      isPercentage: 0
-  - weaponLevelUpDescription: Laser is 20% bigger, gain 20% duration
-    levelStats:
-    - statType: 12
-      statValue: 0.2
-      isPercentage: 1
-    - statType: 5
-      statValue: 0.2
-      isPercentage: 1
+  weaponUpgradeStats: []

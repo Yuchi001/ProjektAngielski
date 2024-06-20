@@ -19,6 +19,7 @@ MonoBehaviour:
   weaponColor: {r: 0.26477394, g: 0.38979062, b: 0.4716981, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 2117946469768778277, guid: 311f0087cefd9f64b88b94b7f70dc9c7, type: 3}
+  maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
     statValue: 0.5
@@ -35,26 +36,4 @@ MonoBehaviour:
   - statType: 10
     statValue: 2
     isPercentage: 0
-  weaponUpgradeStats:
-  - weaponLevelUpDescription: Increase max pierced enemies by 2
-    levelStats:
-    - statType: 10
-      statValue: 2
-      isPercentage: 0
-  - weaponLevelUpDescription: Gain 1 more damage and 10% attack speed
-    levelStats:
-    - statType: 1
-      statValue: 1
-      isPercentage: 0
-    - statType: 0
-      statValue: 0.1
-      isPercentage: 1
-  - weaponLevelUpDescription: Gain 1 more sword, increase pierced enemies count by
-      1
-    levelStats:
-    - statType: 3
-      statValue: 1
-      isPercentage: 0
-    - statType: 10
-      statValue: 1
-      isPercentage: 0
+  weaponUpgradeStats: []

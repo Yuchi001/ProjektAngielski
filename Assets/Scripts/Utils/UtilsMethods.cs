@@ -71,6 +71,11 @@ namespace Utils
             return pickedEnemy;
         }
         
+        public static string StringJoin(this IEnumerable<string> values, string separator)
+        {
+            return string.Join(separator, values);
+        }
+        
         public static EnemyLogic FindTarget(List<string> usedTargets = null)
         {
             usedTargets = usedTargets ?? new List<string>();

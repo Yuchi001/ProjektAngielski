@@ -19,10 +19,10 @@ namespace WeaponPack
 
         private List<WeaponStatPair> _realWeaponStats = new();
 
-        protected int Damage => (int)_realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.Damage)!.statValue;
-        protected float Speed => _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.ProjectileSpeed)!.statValue;
-        protected int ProjectileCount => (int)_realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.ProjectilesCount)!.statValue;
-        protected float PushForce => _realWeaponStats.FirstOrDefault(s => s.statType == EWeaponStat.PushForce)!.statValue;
+        protected int Damage => (int)_realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.Damage)!.StatValue;
+        protected float Speed => _realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.ProjectileSpeed)!.StatValue;
+        protected int ProjectileCount => (int)_realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.ProjectilesCount)!.StatValue;
+        protected float PushForce => _realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.PushForce)!.StatValue;
         
         protected Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
         protected Transform PlayerTransform => GameManager.Instance.CurrentPlayer.transform;
@@ -72,15 +72,14 @@ namespace WeaponPack
 
         private void IncrementStats()
         {
-            var weaponStats = _weapon.WeaponUpgradeStats;
-            var currentWeaponStats = weaponStats[_level % weaponStats.Count].levelStats;
+            var currentWeaponStats = _weapon.GetNextLevelStats();
             foreach (var stat in currentWeaponStats)
             {
-                var statTuple = OngoingStats.FirstOrDefault(s => s.statType == stat.statType);
+                var statTuple = OngoingStats.FirstOrDefault(s => s.StatType == stat.StatType);
                 if(statTuple == default) continue;
 
-                if (stat.isPercentage) statTuple.statValue *= 1 + stat.statValue;
-                else statTuple.statValue += stat.statValue;
+                if (stat.IsPercentage) statTuple.SetStatValue(statTuple.StatValue * (1 + stat.StatValue));
+                else statTuple.SetStatValue(statTuple.StatValue + stat.StatValue);
             }
             _level++;
 
@@ -90,8 +89,8 @@ namespace WeaponPack
 
         protected float? GetStatValue(EWeaponStat statType)
         {
-            var stat = _realWeaponStats.FirstOrDefault(s => s.statType == statType);
-            return stat?.statValue;
+            var stat = _realWeaponStats.FirstOrDefault(s => s.StatType == statType);
+            return stat?.StatValue;
         }
     }
 }

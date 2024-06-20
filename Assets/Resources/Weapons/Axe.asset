@@ -18,6 +18,7 @@ MonoBehaviour:
   weaponColor: {r: 0, g: 0.3403601, b: 0.6226415, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 1544064868321799355, guid: 0afe6e8b9009e8c4a960660c2ba5085f, type: 3}
+  maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
     statValue: 6
@@ -37,43 +38,3 @@ MonoBehaviour:
   - statType: 15
     statValue: 4
     isPercentage: 0
-  weaponUpgradeStats:
-  - weaponLevelUpDescription: Axes are 20% bigger, also gain 5% cooldown reduction
-    levelStats:
-    - statType: 5
-      statValue: 0.2
-      isPercentage: 1
-    - statType: 0
-      statValue: -0.05
-      isPercentage: 1
-  - weaponLevelUpDescription: Axes move 20% faster, deal additional 5 damage
-    levelStats:
-    - statType: 2
-      statValue: 0.2
-      isPercentage: 1
-    - statType: 1
-      statValue: 5
-      isPercentage: 0
-  - weaponLevelUpDescription: Enlarge axe size by 30%
-    levelStats:
-    - statType: 5
-      statValue: 0.3
-      isPercentage: 1
-  - weaponLevelUpDescription: Gain 3 damage and 10% larger axes
-    levelStats:
-    - statType: 1
-      statValue: 3
-      isPercentage: 0
-    - statType: 5
-      statValue: 0.1
-      isPercentage: 1
-  - weaponLevelUpDescription: Axes are heavier, pushing enemies harder by 10%
-    levelStats:
-    - statType: 15
-      statValue: 0.1
-      isPercentage: 1
-  - weaponLevelUpDescription: Throw one more axe
-    levelStats:
-    - statType: 3
-      statValue: 1
-      isPercentage: 0

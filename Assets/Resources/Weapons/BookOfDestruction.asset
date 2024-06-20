@@ -19,6 +19,7 @@ MonoBehaviour:
   weaponColor: {r: 0.509434, g: 0.4702468, b: 0, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 3137407747276850785, guid: 3fbda3aa0cbee3441833825b0e7504ad, type: 3}
+  maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
     statValue: 60
@@ -38,19 +39,4 @@ MonoBehaviour:
   - statType: 6
     statValue: 4
     isPercentage: 0
-  weaponUpgradeStats:
-  - weaponLevelUpDescription: Gain 10% cooldown reduction
-    levelStats:
-    - statType: 0
-      statValue: -0.05
-      isPercentage: 1
-  - weaponLevelUpDescription: 1% more chance for enemy to drop exp orb
-    levelStats:
-    - statType: 11
-      statValue: 1
-      isPercentage: 0
-  - weaponLevelUpDescription: Blast range is bigger by 10%
-    levelStats:
-    - statType: 6
-      statValue: 0.1
-      isPercentage: 1
+  weaponUpgradeStats: []

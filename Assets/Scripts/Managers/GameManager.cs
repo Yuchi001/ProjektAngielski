@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using MainCameraPack;
-using Managers.Base;
+﻿using MainCameraPack;
 using Managers.Enums;
 using PlayerPack;
 using PlayerPack.SO;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Managers
 {

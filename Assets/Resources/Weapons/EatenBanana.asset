@@ -19,6 +19,7 @@ MonoBehaviour:
   weaponColor: {r: 0.6132076, g: 0.5995091, b: 0, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 7822075170094059949, guid: 382939469f0b7da488a9a344c6d1ad7c, type: 3}
+  maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
     statValue: 4
@@ -35,25 +36,4 @@ MonoBehaviour:
   - statType: 6
     statValue: 1
     isPercentage: 0
-  weaponUpgradeStats:
-  - weaponLevelUpDescription: Blast range enlarged by 20%
-    levelStats:
-    - statType: 6
-      statValue: 0.2
-      isPercentage: 1
-  - weaponLevelUpDescription: Gain 25% cooldown reduction and 5 more damage
-    levelStats:
-    - statType: 0
-      statValue: -0.25
-      isPercentage: 1
-    - statType: 1
-      statValue: 5
-      isPercentage: 0
-  - weaponLevelUpDescription: Gain 10% blast range and cooldown reduction
-    levelStats:
-    - statType: 0
-      statValue: -0.1
-      isPercentage: 1
-    - statType: 6
-      statValue: 0.1
-      isPercentage: 1
+  weaponUpgradeStats: []

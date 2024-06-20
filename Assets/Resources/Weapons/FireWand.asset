@@ -19,6 +19,7 @@ MonoBehaviour:
   weaponColor: {r: 0.42138356, g: 0.25317696, b: 0, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 4261295729194090879, guid: d121175665331e7439c184e59110ac7f, type: 3}
+  maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
     statValue: 4
@@ -41,36 +42,4 @@ MonoBehaviour:
   - statType: 16
     statValue: 3
     isPercentage: 0
-  weaponUpgradeStats:
-  - weaponLevelUpDescription: Gain additional 20% blast damage, increase blast range
-      by 10%
-    levelStats:
-    - statType: 6
-      statValue: 0.1
-      isPercentage: 1
-    - statType: 7
-      statValue: 0.2
-      isPercentage: 1
-  - weaponLevelUpDescription: Gain 10% attack speed
-    levelStats:
-    - statType: 0
-      statValue: -0.1
-      isPercentage: 1
-  - weaponLevelUpDescription: Burn effect last 50% longer
-    levelStats:
-    - statType: 3
-      statValue: 1
-      isPercentage: 0
-  - weaponLevelUpDescription: Gain 1 additional projectile and deal 5 more damage
-    levelStats:
-    - statType: 3
-      statValue: 1
-      isPercentage: 0
-    - statType: 1
-      statValue: 5
-      isPercentage: 0
-  - weaponLevelUpDescription: Enemy burns 50% longer
-    levelStats:
-    - statType: 16
-      statValue: 0.5
-      isPercentage: 1
+  weaponUpgradeStats: []

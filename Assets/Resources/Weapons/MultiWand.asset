@@ -18,6 +18,7 @@ MonoBehaviour:
   weaponColor: {r: 0.2277284, g: 0, b: 0.33962262, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 6423456404719172056, guid: d8b880929f8634f4d96c1b774d251ead, type: 3}
+  maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
     statValue: 2
@@ -31,22 +32,4 @@ MonoBehaviour:
   - statType: 3
     statValue: 1
     isPercentage: 0
-  weaponUpgradeStats:
-  - weaponLevelUpDescription: Projectiles move much faster, gain one more salvae
-    levelStats:
-    - statType: 2
-      statValue: 1
-      isPercentage: 0
-    - statType: 3
-      statValue: 1
-      isPercentage: 0
-  - weaponLevelUpDescription: Gain 5 more damage
-    levelStats:
-    - statType: 1
-      statValue: 5
-      isPercentage: 0
-  - weaponLevelUpDescription: Gain 1 more salvo
-    levelStats:
-    - statType: 3
-      statValue: 1
-      isPercentage: 0
+  weaponUpgradeStats: []
