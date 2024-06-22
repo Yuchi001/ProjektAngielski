@@ -51,6 +51,12 @@ namespace PlayerPack
             return $"<color=green>Next level {level + 2}:</color> " + currentWeapon.Weapon.GetNextLevelDescription();
         }
 
+        public int GetNextLevelEnchantmentLevel(SoWeapon weapon)
+        {
+            var currentWeapon = _currentWeapons.FirstOrDefault(w => w.Weapon.WeaponName == weapon.WeaponName);
+            return currentWeapon == default ? 0 : currentWeapon.Weapon.GetNextLevelEnchantmentLevel();
+        }
+
         public IEnumerable<SoWeapon> GetRandomWeapons(int count)
         {
             var weapons = new List<SoWeapon>();

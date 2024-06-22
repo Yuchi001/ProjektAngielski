@@ -594,6 +594,15 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
+      time: 0.12538882
+      value: 0.503894
+      inSlope: 0.008979627
+      outSlope: 0.008979627
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.1948803
+    - serializedVersion: 3
       time: 1
       value: 1
       inSlope: 0
@@ -605,8 +614,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  enemySpawnRate: 5
-  maximumDifficultyTimeCap: 1200
+  enemySpawnRate: 10
+  maximumDifficultyTimeCap: 1000
   gemRarityList:
   - gemType: 0
     weight: 1000

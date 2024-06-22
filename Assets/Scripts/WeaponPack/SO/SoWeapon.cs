@@ -34,44 +34,54 @@ namespace WeaponPack.SO
         public List<WeaponStatPair> WeaponStartingStats => weaponStartingStats;
         
         
-        private (string description, List<WeaponStatPair> stats)? nextLevelStats = null;
+        private (string description, List<WeaponStatPair> stats, int level)? nextLevelStats = null;
 
         private void GenerateNextLevelStats()
         {
             var stats = new List<WeaponStatPair>();
             var description = "";
+            var level = 0;
             
             var maxLevelCount = maxLevelPrize < weaponUpgradeStats.Count ? maxLevelPrize : weaponUpgradeStats.Count - 1;
-            var levelCount = Random.Range(0, maxLevelCount);
+            var levelCount = Random.Range(1, maxLevelCount);
             var unusedStats = weaponUpgradeStats.Select(s => s.StatType).ToList();
             for (var i = 0; i < levelCount; i++)
             {
+                level++;
                 var randomIndex = Random.Range(0, unusedStats.Count());
                 var statType = unusedStats[randomIndex];
                 var stat = GetStatPair(statType);
+                level += stat.level;
                 stats.Add(stat.stat);
-                description += stat.description;
+                description += $"{stat.description}. ";
                 unusedStats.Remove(statType);
             }
 
-            nextLevelStats = (description, stats);
+            nextLevelStats = (description, stats, level);
         }
 
-        private (string description, WeaponStatPair stat) GetStatPair(EWeaponStat statType)
+        private (string description, WeaponStatPair stat, int level) GetStatPair(EWeaponStat statType)
         {
             var currentStat = weaponUpgradeStats.FirstOrDefault(w => w.StatType == statType);
-            if (currentStat == default) return ("", null);
+            if (currentStat == default) return ("", null, 0);
 
-            var value = currentStat.GetLeveledStatValue();
-            var description = currentStat.GetDescription(value);
+            var result = currentStat.GetLeveledStatValue();
+            var description = currentStat.GetDescription(result.value);
             
-            return (description, UpgradeWeaponStat.GetModifiedStat(currentStat, value));
+            return (description, UpgradeWeaponStat.GetModifiedStat(currentStat, result.value), result.level);
         }
 
         public string GetNextLevelDescription()
         {
             if(nextLevelStats == null) GenerateNextLevelStats();
             return nextLevelStats?.description ?? "";
+        }
+
+        public int GetNextLevelEnchantmentLevel()
+        {
+            if(nextLevelStats == null) GenerateNextLevelStats();
+
+            return nextLevelStats?.level ?? 0;
         }
 
         public IEnumerable<WeaponStatPair> GetNextLevelStats()

@@ -24,22 +24,64 @@ MonoBehaviour:
   - statType: 0
     statValue: 4
     isPercentage: 0
+    canUpgrade: 1
   - statType: 1
     statValue: 1
     isPercentage: 0
+    canUpgrade: 1
   - statType: 3
     statValue: 1
     isPercentage: 0
+    canUpgrade: 0
   - statType: 2
     statValue: 0
     isPercentage: 0
+    canUpgrade: 0
   - statType: 5
     statValue: 1
     isPercentage: 0
+    canUpgrade: 1
   - statType: 16
     statValue: 1.5
     isPercentage: 0
+    canUpgrade: 1
   - statType: 15
     statValue: 2
     isPercentage: 0
-  weaponUpgradeStats: []
+    canUpgrade: 1
+  weaponUpgradeStats:
+  - statType: 0
+    statValue: -0.2
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> cooldown reduction
+    valueLevels: 5
+    valueGrowth: -0.05
+  - statType: 1
+    statValue: 1
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> damage
+    valueLevels: 3
+    valueGrowth: 1
+  - statType: 5
+    statValue: 0.2
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Whip bigger by <v>
+    valueLevels: 5
+    valueGrowth: 0.05
+  - statType: 16
+    statValue: 0.2
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Poison lasts <v> longer
+    valueLevels: 5
+    valueGrowth: 0.05
+  - statType: 15
+    statValue: 0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Push enemies <v> harder
+    valueLevels: 3
+    valueGrowth: 0.05

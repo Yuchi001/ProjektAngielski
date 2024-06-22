@@ -36,9 +36,10 @@ namespace WeaponPack.SideClasses
             this.valueLevels = valueLevels;
         }
 
-        public float GetLeveledStatValue()
+        public (float value, int level) GetLeveledStatValue()
         {
             var weightSum = 0;
+            var level = 0;
             var valueWeightPair = new List<(int weight, float value)>();
             for (var i = 1; i <= valueLevels; i++)
             {
@@ -50,17 +51,18 @@ namespace WeaponPack.SideClasses
             var randomNumber = Random.Range(0, weightSum);
             foreach (var pair in valueWeightPair)
             {
-                if (randomNumber <= pair.weight) return pair.value;
+                level++;
+                if (randomNumber <= pair.weight) return (pair.value, level);
                 randomNumber -= pair.weight;
             }
 
-            return 0;
+            return (0,0);
         }
         
         public string GetDescription(float value)
         {
             var absValue = Mathf.Abs(value);
-            var statString = isPercentage ? $"{absValue}%" : $"{absValue}";
+            var statString = isPercentage ? $"{absValue * 100}%" : $"{absValue}";
             return weaponLevelUpDescription.Replace(valueMarker, statString);
         }
 

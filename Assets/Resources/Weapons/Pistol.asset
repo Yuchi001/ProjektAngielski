@@ -23,19 +23,60 @@ MonoBehaviour:
   - statType: 0
     statValue: 1
     isPercentage: 0
+    canUpgrade: 1
   - statType: 1
     statValue: 12
     isPercentage: 0
+    canUpgrade: 1
   - statType: 2
     statValue: 10
     isPercentage: 0
+    canUpgrade: 0
   - statType: 3
     statValue: 7
     isPercentage: 0
+    canUpgrade: 1
   - statType: 9
     statValue: 0.5
     isPercentage: 0
+    canUpgrade: 1
   - statType: 15
     statValue: 3
     isPercentage: 0
-  weaponUpgradeStats: []
+    canUpgrade: 1
+  weaponUpgradeStats:
+  - statType: 0
+    statValue: -0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Reload <v> faster
+    valueLevels: 4
+    valueGrowth: -0.05
+  - statType: 1
+    statValue: 3
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> damage
+    valueLevels: 5
+    valueGrowth: 1
+  - statType: 3
+    statValue: 2
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Calip hold <v> more bullets
+    valueLevels: 3
+    valueGrowth: 1
+  - statType: 9
+    statValue: -0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> accuracy
+    valueLevels: 2
+    valueGrowth: -0.05
+  - statType: 15
+    statValue: 0.2
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Bullets push <v> stronger
+    valueLevels: 3
+    valueGrowth: 0.1

@@ -11,6 +11,7 @@ namespace UI
     {
         [SerializeField] private Image weaponImage;
         [SerializeField] private TextMeshProUGUI weaponDescriptionField;
+        [SerializeField] private TextMeshProUGUI enchantmentLevelField;
 
         private PlayerWeaponry PlayerWeaponry => PlayerManager.Instance.PlayerWeaponry;
         private SoWeapon _weapon;
@@ -39,6 +40,7 @@ namespace UI
             _weapon = weapon;
             _levelUpUiGameObject = levelUpUiGameObject;
             weaponDescriptionField.text = PlayerWeaponry.GetWeaponDescription(weapon);
+            enchantmentLevelField.text = $"Lvl {PlayerWeaponry.GetNextLevelEnchantmentLevel(weapon)}";
             weaponImage.sprite = weapon.WeaponSprite;
         }
 
