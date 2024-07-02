@@ -62,7 +62,7 @@ namespace WeaponPack.SideClasses
         public string GetDescription(float value)
         {
             var absValue = Mathf.Abs(value);
-            var statString = isPercentage ? $"{absValue * 100}%" : $"{absValue}";
+            var statString = isPercentage ? $"{Mathf.FloorToInt(absValue * 100)}%" : $"{absValue}";
             return weaponLevelUpDescription.Replace(valueMarker, statString);
         }
 

@@ -82,7 +82,7 @@ MonoBehaviour:
     valueGrowth: 0.1
   - statType: 15
     statValue: 0.2
-    isPercentage: 0
+    isPercentage: 1
     canUpgrade: 1
     weaponLevelUpDescription: 'Push force strengthen '
     valueLevels: 5

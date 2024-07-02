@@ -39,8 +39,9 @@ namespace UI
             _index = index;
             _weapon = weapon;
             _levelUpUiGameObject = levelUpUiGameObject;
+            weapon.GenerateNextLevelStats();
             weaponDescriptionField.text = PlayerWeaponry.GetWeaponDescription(weapon);
-            enchantmentLevelField.text = $"Lvl {PlayerWeaponry.GetNextLevelEnchantmentLevel(weapon)}";
+            enchantmentLevelField.text = $"Lvl {weapon.GetNextLevelEnchantmentLevel()}";
             weaponImage.sprite = weapon.WeaponSprite;
         }
 

@@ -57,9 +57,20 @@ namespace Utils
             var enemies = Object.FindObjectsOfType<EnemyLogic>().ToList();
             enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
             if (enemies.Count == 0) return null;
+
+            var left = new List<EnemyLogic>();
+            var right = new List<EnemyLogic>();
+            foreach (var enemy in enemies)
+            {
+                var isLeft = enemy.transform.position.x < position.x;
+                if (isLeft) left.Add(enemy);
+                else right.Add(enemy);
+            }
+
+            var biggestGroup = left.Count > right.Count ? left : right;
             
             var (pickedEnemy, smallestDistance) = (enemies[0], Vector2.Distance(position, enemies[0].transform.position));
-            foreach (var enemy in enemies)
+            foreach (var enemy in biggestGroup)
             {
                 var distance = Vector2.Distance(position, enemy.transform.position);
                 if (distance > smallestDistance) continue;

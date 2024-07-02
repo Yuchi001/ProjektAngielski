@@ -22,13 +22,13 @@ MonoBehaviour:
   maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
-    statValue: 0.5
+    statValue: 1.5
     isPercentage: 0
     canUpgrade: 1
   - statType: 1
     statValue: 2
     isPercentage: 0
-    canUpgrade: 1
+    canUpgrade: 0
   - statType: 2
     statValue: 6
     isPercentage: 0
@@ -49,19 +49,12 @@ MonoBehaviour:
     weaponLevelUpDescription: Gain <v> cooldown reduction
     valueLevels: 3
     valueGrowth: -0.05
-  - statType: 1
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> damage
-    valueLevels: 4
-    valueGrowth: 1
   - statType: 3
     statValue: 1
     isPercentage: 0
     canUpgrade: 1
     weaponLevelUpDescription: Gain <v> more projectile/s
-    valueLevels: 3
+    valueLevels: 2
     valueGrowth: 1
   - statType: 10
     statValue: 2

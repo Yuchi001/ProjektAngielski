@@ -19,6 +19,8 @@ namespace PlayerPack
         
         private int _currentHealth = 0;
 
+        public bool Invincible { get; set; } = false;
+
         public delegate void PlayerDamagedDelegate();
         public static event PlayerDamagedDelegate OnPlayerDamaged; 
         
@@ -36,7 +38,7 @@ namespace PlayerPack
 
         public override void GetDamaged(int value, Color? color = null)
         {
-            if (Dead) return;
+            if (Dead || Invincible) return;
             
             OnPlayerDamaged?.Invoke();
             

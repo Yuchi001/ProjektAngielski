@@ -25,7 +25,7 @@ MonoBehaviour:
     isPercentage: 0
     canUpgrade: 1
   - statType: 1
-    statValue: 12
+    statValue: 6
     isPercentage: 0
     canUpgrade: 1
   - statType: 2

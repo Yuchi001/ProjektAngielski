@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using Utils;
 using WeaponPack.Enums;
 using WeaponPack.SideClasses;
 
@@ -15,7 +13,7 @@ namespace WeaponPack.SO
         [SerializeField, TextArea] private string weaponDescription;
         [SerializeField] private Sprite weaponSprite;
         [SerializeField] private Color weaponColor;
-        [SerializeField] private bool oneTimeSpawnLogic = false;
+        [SerializeField] private bool oneTimeSpawnLogic;
         [SerializeField] private GameObject weaponLogicPrefab;
         
         [SerializeField] private int maxLevelPrize = 3;
@@ -32,11 +30,11 @@ namespace WeaponPack.SO
         public GameObject WeaponLogicPrefab => weaponLogicPrefab;
         public Sprite WeaponSprite => weaponSprite;
         public List<WeaponStatPair> WeaponStartingStats => weaponStartingStats;
-        
-        
-        private (string description, List<WeaponStatPair> stats, int level)? nextLevelStats = null;
 
-        private void GenerateNextLevelStats()
+
+        private (string description, List<WeaponStatPair> stats, int level)? nextLevelStats;
+
+        public void GenerateNextLevelStats()
         {
             var stats = new List<WeaponStatPair>();
             var description = "";
@@ -56,7 +54,7 @@ namespace WeaponPack.SO
                 description += $"{stat.description}. ";
                 unusedStats.Remove(statType);
             }
-
+            
             nextLevelStats = (description, stats, level);
         }
 
@@ -73,24 +71,17 @@ namespace WeaponPack.SO
 
         public string GetNextLevelDescription()
         {
-            if(nextLevelStats == null) GenerateNextLevelStats();
             return nextLevelStats?.description ?? "";
         }
 
         public int GetNextLevelEnchantmentLevel()
         {
-            if(nextLevelStats == null) GenerateNextLevelStats();
-
             return nextLevelStats?.level ?? 0;
         }
 
         public IEnumerable<WeaponStatPair> GetNextLevelStats()
         {
-            if(nextLevelStats == null) GenerateNextLevelStats();
-            
-            var stats = new List<WeaponStatPair>(nextLevelStats?.stats ?? new List<WeaponStatPair>());
-            nextLevelStats = null;
-            return stats;
+            return nextLevelStats?.stats ?? new List<WeaponStatPair>();
         }
 
         public void SetWeaponUpgradeStats(IEnumerable<UpgradeWeaponStat> upgradeWeaponStats)

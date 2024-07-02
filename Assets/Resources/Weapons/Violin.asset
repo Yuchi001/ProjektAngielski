@@ -43,7 +43,7 @@ MonoBehaviour:
   - statType: 5
     statValue: 0.3
     isPercentage: 0
-    canUpgrade: 1
+    canUpgrade: 0
   weaponUpgradeStats:
   - statType: 0
     statValue: -0.1
@@ -66,10 +66,3 @@ MonoBehaviour:
     weaponLevelUpDescription: Gain <v> more notes
     valueLevels: 3
     valueGrowth: 2
-  - statType: 5
-    statValue: 0.3
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: 
-    valueLevels: 0
-    valueGrowth: 0

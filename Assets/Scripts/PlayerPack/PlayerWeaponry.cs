@@ -48,13 +48,7 @@ namespace PlayerPack
             if (currentWeapon == default) return "<color=red>NEW!</color> " + weapon.WeaponDescription;
             
             var level = currentWeapon.Level;
-            return $"<color=green>Next level {level + 2}:</color> " + currentWeapon.Weapon.GetNextLevelDescription();
-        }
-
-        public int GetNextLevelEnchantmentLevel(SoWeapon weapon)
-        {
-            var currentWeapon = _currentWeapons.FirstOrDefault(w => w.Weapon.WeaponName == weapon.WeaponName);
-            return currentWeapon == default ? 0 : currentWeapon.Weapon.GetNextLevelEnchantmentLevel();
+            return $"<color=green>Next level {level + 2}:</color> " + weapon.GetNextLevelDescription();
         }
 
         public IEnumerable<SoWeapon> GetRandomWeapons(int count)
@@ -72,7 +66,8 @@ namespace PlayerPack
                 if (weaponPool.Count == 0) break;
                 
                 var randomIndex = Random.Range(0, weaponPool.Count);
-                weapons.Add(weaponPool[randomIndex]);
+                var pickedWeapon = Instantiate(weaponPool[randomIndex]);
+                weapons.Add(pickedWeapon);
                 weaponPool.RemoveAt(randomIndex);
             }
             
