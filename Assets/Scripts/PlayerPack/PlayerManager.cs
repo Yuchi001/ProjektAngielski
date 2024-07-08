@@ -32,6 +32,7 @@ namespace PlayerPack
         public PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
         public PlayerWeaponry PlayerWeaponry => GetComponent<PlayerWeaponry>();
         public PlayerMovement PlayerMovement => GetComponent<PlayerMovement>();
+        public PlayerStats PlayerStats => GetComponent<PlayerStats>();
 
         public delegate void PlayerDeathDelegate();
         public static event PlayerDeathDelegate OnPlayerDeath;
@@ -57,6 +58,8 @@ namespace PlayerPack
             animator.runtimeAnimatorController = aoc;
             
             GetComponent<PlayerWeaponry>().AddWeapon(pickedCharacter.StartingWeapon);
+            
+            PlayerStats.Setup(pickedCharacter);
             
             OnPlayerReady?.Invoke();
         }

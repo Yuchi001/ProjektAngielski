@@ -4,6 +4,7 @@ using Managers.Enums;
 using UnityEngine;
 using WeaponPack.Enums;
 using WeaponPack.Other;
+using EnemyLogic = EnemyPack.EnemyBehaviours.EnemyLogic;
 
 namespace WeaponPack.WeaponsLogic
 {

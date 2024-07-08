@@ -22,8 +22,8 @@ namespace PlayerPack.PlayerMovementPack
             movement.y = _buttonsActive[UpBind] ? 1 : (_buttonsActive[DownBind] ? -1 : 0);
 
             if(movement == Vector2.zero) return Vector2.zero;
-            
-            return movement * PickedCharacter.MovementSpeed;
+
+            return movement * PlayerStats.GetStat(EPlayerStat.MovementSpeed);
         }
 
         private void CheckKey(KeyCode main, KeyCode opposite)

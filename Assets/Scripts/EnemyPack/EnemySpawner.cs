@@ -86,7 +86,7 @@ namespace EnemyPack
 
         private void SetupEnemy(GameObject enemyObj, SoEnemy enemy)
         {
-            var enemyScript = enemyObj.GetComponent<EnemyLogic>();
+            var enemyScript = enemyObj.GetComponent<EnemyBehaviours.EnemyLogic>();
             var scale = enemy.BodyScale;
             enemyObj.transform.localScale = new Vector3(scale, scale, scale);
             

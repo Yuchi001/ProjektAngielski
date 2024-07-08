@@ -55,7 +55,7 @@ namespace PlayerPack
         {
             var weapons = new List<SoWeapon>();
             var weaponPool = new List<SoWeapon>(_allWeapons);
-            if (_currentWeapons.Count >= PlayerManager.Instance.PickedCharacter.MaxWeaponsInEq)
+            if (_currentWeapons.Count >= PlayerManager.Instance.PlayerStats.GetStat(EPlayerStat.WeaponCapacity))
             {
                 var weaponNames = _currentWeapons.Select(w => w.Weapon.WeaponName);
                 weaponPool = weaponPool.Where(w => weaponNames.Contains(w.WeaponName)).ToList();

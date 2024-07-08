@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using EnemyPack.Enums;
 using EnemyPack.SO;
 using ExpPackage;
 using Managers;
@@ -9,13 +8,11 @@ using Other;
 using PlayerPack;
 using UI;
 using UnityEngine;
-using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
-namespace EnemyPack
+namespace EnemyPack.EnemyBehaviours
 {
     [RequireComponent(typeof(EnemyHealthBar))]
-    public class EnemyLogic : CanBeDamaged
+    public partial class EnemyLogic : CanBeDamaged
     {
         [Header("General")] 
         [SerializeField] private float attackRange = 0.3f;
@@ -29,11 +26,7 @@ namespace EnemyPack
         public override int CurrentHealth => _currentHealth;
         
         private SoEnemy _enemy;
-        private Transform _target;
         private EnemySpawner _enemySpawner;
-
-        private Vector3 _desiredDir;
-        private Vector2 _desiredPos;
 
         private static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
         private static Vector2 PlayerPos => PlayerManager.Instance.transform.position;
@@ -49,21 +42,18 @@ namespace EnemyPack
         private float _collisionTimer = 0;
         private float Mass => Mathf.Pow(_enemy.BodyScale, 2);
         private float MovementSpeed => Slowed ? _enemy.MovementSpeed / 2f : _enemy.MovementSpeed;
-        
+        private List<EnemyBehaviourBase> _behaviours = new();
         
         public void Setup(SoEnemy enemy, Transform target, EnemySpawner enemySpawner)
         {
             _enemySpawner = enemySpawner;
             _enemy = Instantiate(enemy);
-            _target = target;
 
             rb2d.mass = enemy.IsHeavy ? 999 : Mass;
-
-            _desiredPos = transform.position;
             
             _currentHealth = MaxHealth;
 
-            GetComponent<Collider2D>().isTrigger = _enemy.EnemyState != EEnemyState.Chase;
+            _behaviours = _enemy.Behaviours;
             
             var aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
             var anims = new List<KeyValuePair<AnimationClip, AnimationClip>>();
@@ -72,25 +62,11 @@ namespace EnemyPack
             aoc.ApplyOverrides(anims);
             animator.runtimeAnimatorController = aoc;
             
-            _enemy.SpawnEnemyLogic(this);
-            
             EnemyHealthBar.Setup(SpriteRenderer);
         }
         
         protected override void OnUpdate()
         {
-            switch (_enemy.EnemyState)
-            {
-                case EEnemyState.Chase:
-                    Chase();
-                    break;
-                case EEnemyState.Patrol:
-                    Patrol();
-                    break;
-                case EEnemyState.DontMove:
-                    break;
-            }
-
             ManagePlayerCollision();
             EnemyHealthBar.ManageHealthBar();
         }
@@ -107,23 +83,12 @@ namespace EnemyPack
             
             if (_isBeingPushed) return;
             
-            switch (_enemy.EnemyState)
-            {
-                case EEnemyState.Chase:
-                    if (_target == null) return;
-                    rb2d.velocity = _desiredDir * MovementSpeed;
-                    break;
-                case EEnemyState.Patrol:
-                    rb2d.velocity = _desiredDir * MovementSpeed;
-                    break;
-                case EEnemyState.DontMove:
-                    break;
-            }
+            _behaviours.ForEach(b => b.OnLateUpdate());
         }
 
         private void Patrol()
         {
-            var currentPos = (Vector2)transform.position;
+            /*var currentPos = (Vector2)transform.position;
             if (Vector2.Distance(currentPos, _desiredPos) <= 0.1f)
             {
                 var boundsX = GameManager.Instance.BoundaryX;
@@ -137,18 +102,7 @@ namespace EnemyPack
             
             var dir = _desiredPos - currentPos;
             dir.Normalize();
-            _desiredDir = dir;
-        }
-
-        private void Chase()
-        {
-            if (_target == null) return;
-            
-            bodyTransform.rotation = Quaternion.Euler(0, _target.position.x < transform.position.x ? 0 : 180, 0);
-
-            var dir = _target.position - transform.position;
-            dir.Normalize();
-            _desiredDir = dir;
+            _desiredDir = dir;*/
         }
 
         private void ManagePlayerCollision()
@@ -196,7 +150,6 @@ namespace EnemyPack
         public override void OnDie(bool destroyObj = true)
         {
             ExpGem.SpawnExpGem(expGemPrefab, transform.position, _enemy.ExpGemType);
-            _target = null;
             rb2d.velocity = Vector2.zero;
             GetComponent<Collider2D>().enabled = false;
 
@@ -207,7 +160,6 @@ namespace EnemyPack
 
         public void DieWithoutGem()
         {
-            _target = null;
             rb2d.velocity = Vector2.zero;
             GetComponent<Collider2D>().enabled = false;
             

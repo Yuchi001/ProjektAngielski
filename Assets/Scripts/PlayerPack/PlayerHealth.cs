@@ -14,22 +14,15 @@ namespace PlayerPack
         [SerializeField] private GameObject healParticles;
         [SerializeField] private GameObject damageIndicator;
 
-        public int MaxHealth => PickedCharacter.MaxHp;
-        public override int CurrentHealth => _currentHealth;
+        public int MaxHealth => (int)PlayerStats.GetStat(EPlayerStat.MaxHealthPoints);
+        public override int CurrentHealth => (int)PlayerStats.GetStat(EPlayerStat.CurrentHealthPoints);
         
-        private int _currentHealth = 0;
-
         public bool Invincible { get; set; } = false;
 
         public delegate void PlayerDamagedDelegate();
-        public static event PlayerDamagedDelegate OnPlayerDamaged; 
-        
-        private static SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
+        public static event PlayerDamagedDelegate OnPlayerDamaged;
 
-        private void OnEnable()
-        {
-            _currentHealth = PickedCharacter.MaxHp;
-        }
+        private static PlayerStats PlayerStats => PlayerManager.Instance.PlayerStats;
 
         protected override void OnUpdate()
         {
@@ -43,12 +36,14 @@ namespace PlayerPack
             OnPlayerDamaged?.Invoke();
             
             base.GetDamaged(value, color);
-            _currentHealth = Mathf.Clamp(_currentHealth - value, 
-                0, PickedCharacter.MaxHp);
+            var currentHealth = Mathf.Clamp(CurrentHealth - value, 
+                0, MaxHealth);
+            
+            PlayerStats.SetStat(EPlayerStat.CurrentHealthPoints, currentHealth);
             
             AudioManager.Instance.PlaySound(ESoundType.PlayerHurt);
             
-            if(_currentHealth <= 0) OnDie(false);
+            if(currentHealth <= 0) OnDie(false);
         }
 
         public void Heal(int value)
@@ -59,8 +54,10 @@ namespace PlayerPack
             var particles = Instantiate(healParticles, transform.position, Quaternion.identity);
             Destroy(particles, 1f);
             
-            _currentHealth = Mathf.Clamp(_currentHealth + value, 
-                0, PickedCharacter.MaxHp);
+            var currentHealth = Mathf.Clamp(CurrentHealth + value, 
+                0, MaxHealth);
+            
+            PlayerStats.SetStat(EPlayerStat.CurrentHealthPoints, currentHealth);
         }
 
         public override void OnDie(bool destroyObj = true)

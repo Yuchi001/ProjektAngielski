@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Managers;
 using PlayerPack.SO;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace PlayerPack.PlayerMovementPack
         [SerializeField] private float dashTime = 0.5f;
         [SerializeField] private float dashCooldown = 2f;
         [SerializeField] private Animator animator;
-        private SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
+        private PlayerStats PlayerStats => PlayerManager.Instance.PlayerStats;
         private PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
 
         public bool LookingRight => _lookingRight;
@@ -61,7 +62,7 @@ namespace PlayerPack.PlayerMovementPack
             _dashTimer += Time.deltaTime;
             if (_dash)
             {
-                if (_dashTimer < dashTime) return;
+                if (_dashTimer < dashTime) return; 
                 
                 _dash = false;
                 PlayerHealth.Invincible = false;
@@ -70,7 +71,7 @@ namespace PlayerPack.PlayerMovementPack
                 return;
             }
 
-            if (!Input.GetKey(KeyCode.Space) || _dashTimer < dashCooldown) return;
+            if (!Input.GetKey(KeyCode.Space) || _dashTimer < dashCooldown * (1f - PlayerStats.GetStat(EPlayerStat.Agility) / 100f)) return;
             
             _dashTimer = 0;
             _dash = true;

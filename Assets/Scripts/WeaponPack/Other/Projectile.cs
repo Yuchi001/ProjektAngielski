@@ -10,6 +10,7 @@ using Other.Enums;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Utils;
+using EnemyLogic = EnemyPack.EnemyBehaviours.EnemyLogic;
 
 namespace WeaponPack.Other
 {

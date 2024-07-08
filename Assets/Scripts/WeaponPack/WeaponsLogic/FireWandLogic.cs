@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 using Utils;
 using WeaponPack.Enums;
 using WeaponPack.Other;
-using EnemyLogic = EnemyPack.EnemyLogic;
+using EnemyLogic = EnemyPack.EnemyBehaviours.EnemyLogic;
 
 namespace WeaponPack.WeaponsLogic
 {

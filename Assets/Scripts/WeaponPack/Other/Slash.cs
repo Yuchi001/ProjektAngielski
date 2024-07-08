@@ -5,6 +5,7 @@ using Managers.Other;
 using Other.Enums;
 using PlayerPack;
 using UnityEngine;
+using EnemyLogic = EnemyPack.EnemyBehaviours.EnemyLogic;
 
 namespace WeaponPack.Other
 {

@@ -1,6 +1,7 @@
 ﻿using EnemyPack;
 using UnityEngine;
 using WeaponPack.Enums;
+using EnemyLogic = EnemyPack.EnemyBehaviours.EnemyLogic;
 
 namespace WeaponPack.WeaponsLogic
 {

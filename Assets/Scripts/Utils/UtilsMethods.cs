@@ -2,6 +2,7 @@
 using System.Linq;
 using EnemyPack;
 using UnityEngine;
+using EnemyLogic = EnemyPack.EnemyBehaviours.EnemyLogic;
 
 namespace Utils
 {

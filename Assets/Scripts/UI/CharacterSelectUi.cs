@@ -113,9 +113,9 @@ namespace UI
             pickedCharacterWeaponDescription.text = pickedCharacter.StartingWeapon.WeaponDescription;
             pickedCharacterWeaponName.text = $"{pickedCharacter.StartingWeapon.WeaponName}";
             pickedCharacterWeaponImage.sprite = pickedCharacter.StartingWeapon.WeaponSprite;
-            pickedCharacterHp.text = $"<sprite name=hp> {pickedCharacter.MaxHp.ToString()}";
+            /*pickedCharacterHp.text = $"<sprite name=hp> {pickedCharacter.MaxHp.ToString()}";
             pickedCharacterMs.text = $"<sprite name=ms2> {pickedCharacter.MovementSpeed.ToString()}";
-            pickedCharacterWeaponCount.text = $"<sprite name=wc> {pickedCharacter.MaxWeaponsInEq.ToString()}";
+            pickedCharacterWeaponCount.text = $"<sprite name=wc> {pickedCharacter.MaxWeaponsInEq.ToString()}";*/
             
             OnPickCharacter?.Invoke(pickedCharacter.CharacterName);
         }

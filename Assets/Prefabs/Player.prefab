@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7787685337975628636}
   - component: {fileID: 8513629063015508182}
   - component: {fileID: 8992767131167538181}
+  - component: {fileID: 1431597104306123765}
   - component: {fileID: 1848376943485978515}
   - component: {fileID: 1743729601478481784}
   m_Layer: 6
@@ -69,6 +70,9 @@ MonoBehaviour:
   rb2d: {fileID: 1743729601478481784}
   playerSpriteTransform: {fileID: 8191276423356007028}
   animationSpeed: 0.5
+  dashForceMultiplier: 4
+  dashTime: 0.5
+  dashCooldown: 2
   animator: {fileID: 7771533845673863798}
 --- !u!114 &7787685337975628636
 MonoBehaviour:
@@ -111,6 +115,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37a3df67aa824a6097309cbbaece6829, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1431597104306123765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330592185322976742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ccd3fee4d56415cb609455f99a0993b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!58 &1848376943485978515
