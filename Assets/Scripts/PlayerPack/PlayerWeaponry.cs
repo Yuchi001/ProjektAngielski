@@ -16,7 +16,7 @@ namespace PlayerPack
         public delegate void WeaponAddDelegate(WeaponLogicBase weaponLogicBase);
         public static event WeaponAddDelegate OnWeaponAdd;
 
-        public delegate void WeaponLevelUpDelegate(string weaponName);
+        public delegate void WeaponLevelUpDelegate(SoWeapon weapon);
         public static event WeaponLevelUpDelegate OnWeaponLevelUp;
 
         private void Awake()
@@ -29,7 +29,7 @@ namespace PlayerPack
             var weapon = _currentWeapons.FirstOrDefault(w => w.Weapon.WeaponName == weaponToAdd.WeaponName);
             if (weapon != default)
             {
-                OnWeaponLevelUp?.Invoke(weaponToAdd.WeaponName);
+                OnWeaponLevelUp?.Invoke(weaponToAdd);
                 return;
             }
             

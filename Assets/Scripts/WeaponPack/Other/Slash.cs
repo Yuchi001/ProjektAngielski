@@ -5,6 +5,7 @@ using Managers.Other;
 using Other.Enums;
 using PlayerPack;
 using UnityEngine;
+using Utils;
 
 namespace WeaponPack.Other
 {
@@ -15,7 +16,6 @@ namespace WeaponPack.Other
         [SerializeField] private SpriteRenderer spriteRenderer;
 
         private Vector2 PlayerPos => PlayerManager.Instance.transform.position;
-        private bool LookingRight => PlayerManager.Instance.PlayerMovement.LookingRight;
         
         private EEffectType? _effectType = null;
 
@@ -59,12 +59,13 @@ namespace WeaponPack.Other
             var bounds = spriteRender.bounds;
             
             var newPos = transform.position;
-            var mod = LookingRight ? 1 : -1;
+            var lookingRight = UtilsMethods.FindTarget(PlayerPos).transform.position.x > PlayerPos.x;
+            var mod = lookingRight ? 1 : -1;
             var offset = mod * bounds.size.x / 2;
 
             newPos.x += offset;
             transform.position = newPos;
-            spriteRender.flipX = !LookingRight;
+            spriteRender.flipX = !lookingRight;
             
             var topRight = bounds.max;
             topRight.x += offset;

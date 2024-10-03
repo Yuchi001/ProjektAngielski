@@ -1,5 +1,6 @@
 ﻿using System;
 using PlayerPack;
+using PlayerPack.PlayerMovementPack;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ namespace UI
         [SerializeField] private TextMeshProUGUI enchantmentLevelField;
 
         private PlayerWeaponry PlayerWeaponry => PlayerManager.Instance.PlayerWeaponry;
+        private PlayerMovement PlayerMovement => PlayerManager.Instance.PlayerMovement;
         private SoWeapon _weapon;
         private int _index;
         private GameObject _levelUpUiGameObject;
@@ -50,6 +52,7 @@ namespace UI
             Time.timeScale = 1;
             PlayerWeaponry.AddWeapon(_weapon);
             Destroy(_levelUpUiGameObject);
+            PlayerMovement.ResetKeys();
         }
 
         public void OnSelect(int index)

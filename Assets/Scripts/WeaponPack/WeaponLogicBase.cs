@@ -63,17 +63,16 @@ namespace WeaponPack
  
         protected abstract bool UseWeapon();
 
-        private void OnLevelUp(string weaponName)
+        private void OnLevelUp(SoWeapon weapon)
         {
-            if (weaponName != _weapon.WeaponName) return;
+            if (weapon.WeaponName != _weapon.WeaponName) return;
             
-            IncrementStats();
+            IncrementStats(weapon);
         }
 
-        private void IncrementStats()
+        private void IncrementStats(SoWeapon weapon)
         {
-            var currentWeaponStats = _weapon.GetNextLevelStats();
-            foreach (var stat in currentWeaponStats)
+            foreach (var stat in weapon.GetNextLevelStats())
             {
                 var statTuple = OngoingStats.FirstOrDefault(s => s.StatType == stat.StatType);
                 if(statTuple == default) continue;
@@ -83,7 +82,6 @@ namespace WeaponPack
             }
             _level++;
 
-            // jesli bron jest jednorazowego uzytku zresetuj ja
             spawned = !_weapon.OneTimeSpawnLogic;
         }
 

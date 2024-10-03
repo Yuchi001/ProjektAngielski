@@ -69,6 +69,9 @@ MonoBehaviour:
   rb2d: {fileID: 1743729601478481784}
   playerSpriteTransform: {fileID: 8191276423356007028}
   animationSpeed: 0.5
+  dashForceMultiplier: 25
+  dashTime: 0.075
+  dashCooldown: 2
   animator: {fileID: 7771533845673863798}
 --- !u!114 &7787685337975628636
 MonoBehaviour:

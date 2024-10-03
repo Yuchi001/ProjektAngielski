@@ -17,7 +17,6 @@ namespace PlayerPack.PlayerMovementPack
         private SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
         private PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
 
-        public bool LookingRight => _lookingRight;
         private bool _lookingRight;
 
         private bool _dash = false;
@@ -74,7 +73,7 @@ namespace PlayerPack.PlayerMovementPack
             
             _dashTimer = 0;
             _dash = true;
-            rb2d.velocity *= dashForceMultiplier;
+            rb2d.velocity = rb2d.velocity.normalized * dashForceMultiplier;
             PlayerHealth.Invincible = true;
         }
     }

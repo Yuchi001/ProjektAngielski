@@ -32,7 +32,7 @@ MonoBehaviour:
   - statType: 2
     statValue: 5
     isPercentage: 0
-    canUpgrade: 0
+    canUpgrade: 1
   - statType: 5
     statValue: 2
     isPercentage: 0
@@ -60,6 +60,13 @@ MonoBehaviour:
     weaponLevelUpDescription: Banana deals <v> more damage
     valueLevels: 3
     valueGrowth: 1
+  - statType: 2
+    statValue: -0.2
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Banana is slower by <v>
+    valueLevels: 3
+    valueGrowth: -0.05
   - statType: 15
     statValue: 0.2
     isPercentage: 1

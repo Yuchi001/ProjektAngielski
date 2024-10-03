@@ -26,6 +26,14 @@ namespace PlayerPack.PlayerMovementPack
             return movement * PickedCharacter.MovementSpeed;
         }
 
+        public void ResetKeys()
+        {
+            foreach (var key in new List<KeyCode>(_buttonsActive.Keys))
+            {
+                _buttonsActive[key] = true;
+            }
+        }
+
         private void CheckKey(KeyCode main, KeyCode opposite)
         {
             if (Input.GetKeyDown(main))

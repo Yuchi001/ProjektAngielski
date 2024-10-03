@@ -55,7 +55,7 @@ namespace WeaponPack.SO
                 unusedStats.Remove(statType);
             }
             
-            nextLevelStats = (description, stats, level);
+            nextLevelStats = (description, new List<WeaponStatPair>(stats), level);
         }
 
         private (string description, WeaponStatPair stat, int level) GetStatPair(EWeaponStat statType)
