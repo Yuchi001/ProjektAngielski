@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using PlayerPack;
+using PlayerPack.PlayerMovementPack;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,11 +20,19 @@ namespace UI
         
         [SerializeField] private Image characterImage;
         [SerializeField] private Image characterFrameImage;
+
+        [SerializeField] private GameObject dashStackHolder;
+
+        [SerializeField] private GameObject dashStack;
         
         private static PlayerExp PlayerExp => PlayerManager.Instance.PlayerExp;
         private static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
+        private static int PlayerMaxDashStacks => PlayerManager.Instance.PickedCharacter.MaxDashStacks;
+        private static int CurrentPlayerDashStacks => PlayerManager.Instance.PlayerMovement.CurrentDashStacks;
+        private static float DashProgress => PlayerManager.Instance.PlayerMovement.GetDashProgress();
         
         private float _uiUpdateTimer = 0;
+        private List<Image> _spawnedDashStacks = new();
 
         private void Awake()
         {
@@ -42,11 +52,24 @@ namespace UI
             healthText.text = $"{PlayerHealth.CurrentHealth}/{PlayerHealth.MaxHealth}";
             characterImage.sprite = PlayerManager.Instance.PickedCharacter.CharacterSprite;
             characterFrameImage.color = PlayerManager.Instance.PickedCharacter.CharacterColor;
+
+            for (var i = 0; i < PlayerMaxDashStacks; i++)
+            {
+                var obj = Instantiate(dashStack, dashStackHolder.transform).GetComponent<Image>();
+                _spawnedDashStacks.Add(obj);
+                obj.fillAmount = 1;
+            }
         }
 
         private void Update()
         {
             if (PlayerManager.Instance == null) return;
+
+            for (var i = 0; i < PlayerMaxDashStacks; i++) {
+                if (i < CurrentPlayerDashStacks) _spawnedDashStacks[i].fillAmount = 1;
+                else _spawnedDashStacks[i].fillAmount = i > CurrentPlayerDashStacks ? 
+                    0 : DashProgress;
+            }
 
             _uiUpdateTimer += Time.deltaTime;
             if (_uiUpdateTimer < 1 / uiUpdateRate) return;

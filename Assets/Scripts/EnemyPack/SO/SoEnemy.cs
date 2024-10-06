@@ -12,6 +12,7 @@ namespace EnemyPack.SO
         [SerializeField] private int maxHealth;
         [SerializeField] private float bodyScale = 1;
         [SerializeField] private float movementSpeed;
+        [SerializeField] private bool playerSpeed;
         [SerializeField] private EExpGemType expGemType;
         [SerializeField] private bool isHorde;
         [SerializeField] private bool isHeavy;
@@ -25,6 +26,7 @@ namespace EnemyPack.SO
         public AnimationClip WalkingAnimationClip => walkingAnimationClip;
         public int MaxHealth => maxHealth;
         public float MovementSpeed => movementSpeed;
+        public bool PlayerSpeed => playerSpeed;
         public EExpGemType ExpGemType => expGemType;
         public float ActionCooldown => actionCooldown;
         public bool IsHeavy => isHeavy;

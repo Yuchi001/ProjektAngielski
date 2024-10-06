@@ -15,9 +15,10 @@ MonoBehaviour:
   characterName: Albus the Wizard
   characterSprite: {fileID: -1228116626, guid: 9c82e02e413a1b04c8702c3ad74a5a4e, type: 3}
   maxHp: 75
-  maxWeaponsInEq: 3
+  maxWeaponsInEq: 5
+  maxDashStacks: 4
   startingWeapon: {fileID: 11400000, guid: 31178e428a9a55549806b557b5b45324, type: 2}
-  movementSpeed: 3
+  movementSpeed: 3.25
   walkingAnim: {fileID: 7400000, guid: 40ad2c07a687cfd48a2cda912ee39931, type: 2}
   idleAnim: {fileID: 7400000, guid: 312eb9f26c713614dae37db3fad8032d, type: 2}
   characterColor: {r: 0.2901961, g: 0.098039225, b: 0.22352943, a: 1}

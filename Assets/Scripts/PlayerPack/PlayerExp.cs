@@ -35,7 +35,7 @@ namespace PlayerPack
             CurrentLevel++;
             var expExcess = CurrentExp - NextLevelExp;
             CurrentExp = 0;
-            NextLevelExp = levelOneCap + CurrentLevel * CurrentLevel;
+            NextLevelExp = levelOneCap * CurrentLevel + CurrentLevel * CurrentLevel;
 
             var levelUpUiInstance = Instantiate(levelUpUiPrefab, GameUiManager.Instance.GameCanvas, false);
             levelUpUiInstance.GetComponent<LevelUpUi>().Setup();

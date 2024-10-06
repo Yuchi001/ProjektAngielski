@@ -15,8 +15,10 @@ MonoBehaviour:
   characterName: Debug
   characterSprite: {fileID: -1228116626, guid: 9c82e02e413a1b04c8702c3ad74a5a4e, type: 3}
   maxHp: 999
-  maxWeaponsInEq: 999
-  startingWeapon: {fileID: 11400000, guid: 71d2c73bdd56966438036bb9f5b3b98a, type: 2}
+  maxWeaponsInEq: 2
+  maxDashStacks: 10
+  startingWeapon: {fileID: 11400000, guid: baf37a98bde60e24bbfa2aafade6c601, type: 2}
   movementSpeed: 3
   walkingAnim: {fileID: 7400000, guid: 3b4933883a3c0b84a9206ace12c522d7, type: 2}
   idleAnim: {fileID: 7400000, guid: 3b4933883a3c0b84a9206ace12c522d7, type: 2}
+  characterColor: {r: 0, g: 0, b: 0, a: 0}

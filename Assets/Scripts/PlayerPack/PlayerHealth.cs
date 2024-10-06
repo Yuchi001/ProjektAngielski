@@ -6,6 +6,7 @@ using PlayerPack.SO;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
+using WeaponPack.Other;
 
 namespace PlayerPack
 {
@@ -69,6 +70,20 @@ namespace PlayerPack
             PlayerManager.Instance.ManagePlayerDeath();
             
             base.OnDie(destroyObj);
+        }
+        
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (!other.TryGetComponent(out Projectile projectile)) return;
+            
+            projectile.ManageHit(gameObject);
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            if (!other.gameObject.TryGetComponent(out Projectile projectile)) return;
+            
+            projectile.ManageHit(gameObject);
         }
     }
 }

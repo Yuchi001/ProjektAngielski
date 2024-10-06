@@ -30,7 +30,7 @@ namespace PlayerPack.PlayerMovementPack
         {
             foreach (var key in new List<KeyCode>(_buttonsActive.Keys))
             {
-                _buttonsActive[key] = true;
+                _buttonsActive[key] = Input.GetKey(key);
             }
         }
 

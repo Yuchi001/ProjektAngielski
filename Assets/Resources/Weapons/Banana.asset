@@ -61,11 +61,11 @@ MonoBehaviour:
     valueLevels: 3
     valueGrowth: 1
   - statType: 2
-    statValue: -0.2
+    statValue: -0.05
     isPercentage: 1
     canUpgrade: 1
     weaponLevelUpDescription: Banana is slower by <v>
-    valueLevels: 3
+    valueLevels: 2
     valueGrowth: -0.05
   - statType: 15
     statValue: 0.2

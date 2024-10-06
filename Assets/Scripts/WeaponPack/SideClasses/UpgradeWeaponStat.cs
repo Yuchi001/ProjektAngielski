@@ -72,6 +72,7 @@ namespace WeaponPack.SideClasses
             {
                 valueGrowth = current.valueGrowth,
                 valueLevels = current.valueLevels,
+                statValue = newVal,
                 weaponLevelUpDescription = current.weaponLevelUpDescription,
             };
         }

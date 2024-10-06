@@ -337,27 +337,7 @@ namespace WeaponPack.Other
             projectileSprite.sprite = _sprites[_currentIndex];
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            ManageHit(other.gameObject);
-        }
-
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            ManageHit(other.gameObject);
-        }
-
-        private void OnTriggerStay2D(Collider2D other)
-        {
-            ManageCollisionStay(other.gameObject);
-        }
-
-        private void OnCollisionStay2D(Collision2D other)
-        {
-            ManageCollisionStay(other.gameObject);
-        }
-
-        private void ManageCollisionStay(GameObject hitObj)
+        public void ManageCollisionStay(GameObject hitObj)
         {
             if (!hitObj.CompareTag(_targetTag)) return;
             
@@ -369,7 +349,7 @@ namespace WeaponPack.Other
             _onCollisionStay?.Invoke(hitObj, this);
         }
 
-        private void ManageHit(GameObject hitObj)
+        public void ManageHit(GameObject hitObj)
         {
             if (!hitObj.CompareTag(_targetTag)) return;
             

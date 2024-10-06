@@ -10,6 +10,7 @@ using PlayerPack;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
+using WeaponPack.Other;
 using Random = UnityEngine.Random;
 
 namespace EnemyPack
@@ -27,6 +28,8 @@ namespace EnemyPack
         [SerializeField] private Rigidbody2D rb2d;
         [SerializeField] private Animator animator;
         public override int CurrentHealth => _currentHealth;
+
+        private Collider2D Collider2D => GetComponent<Collider2D>();
         
         private SoEnemy _enemy;
         private Transform _target;
@@ -34,6 +37,8 @@ namespace EnemyPack
 
         private Vector3 _desiredDir;
         private Vector2 _desiredPos;
+
+        public bool _toMerge = false;
 
         private static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
         private static Vector2 PlayerPos => PlayerManager.Instance.transform.position;
@@ -44,12 +49,18 @@ namespace EnemyPack
         
         private int _currentHealth;
         private int MaxHealth => Mathf.CeilToInt(_enemy.MaxHealth * _enemySpawner.EnemiesHpScale);
-        
+
+        private float _playerSpeed = 0;
         private float AttackRange => attackRange * _enemy.BodyScale;
         private float _collisionTimer = 0;
         private float Mass => Mathf.Pow(_enemy.BodyScale, 2);
-        private float MovementSpeed => Slowed ? _enemy.MovementSpeed / 2f : _enemy.MovementSpeed;
-        
+
+        private float RawMovementSpeed =>
+            _enemy.PlayerSpeed ? _playerSpeed + _enemy.MovementSpeed : _enemy.MovementSpeed;
+        private float MovementSpeed => Slowed ? RawMovementSpeed / 2f : RawMovementSpeed;
+
+        private EnemyLogic mergeParent;
+        private int mergeCount = 1;
         
         public void Setup(SoEnemy enemy, Transform target, EnemySpawner enemySpawner)
         {
@@ -63,7 +74,9 @@ namespace EnemyPack
             
             _currentHealth = MaxHealth;
 
-            GetComponent<Collider2D>().isTrigger = _enemy.EnemyState != EEnemyState.Chase;
+            _playerSpeed = PlayerManager.Instance.PickedCharacter.MovementSpeed;
+
+            Collider2D.isTrigger = _enemy.EnemyState != EEnemyState.Chase || _enemy.IsHeavy;
             
             var aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
             var anims = new List<KeyValuePair<AnimationClip, AnimationClip>>();
@@ -79,7 +92,8 @@ namespace EnemyPack
         
         protected override void OnUpdate()
         {
-            switch (_enemy.EnemyState)
+            if (mergeParent) Merge();
+            else switch (_enemy.EnemyState)
             {
                 case EEnemyState.Chase:
                     Chase();
@@ -104,14 +118,13 @@ namespace EnemyPack
                 rb2d.velocity = Vector2.zero;
                 return;
             }
-            
-            if (_isBeingPushed) return;
-            
-            switch (_enemy.EnemyState)
+
+            if (mergeParent) transform.position = Vector2.MoveTowards(transform.position, mergeParent.transform.position, MovementSpeed * 1.5f);
+            else if (!_isBeingPushed) switch (_enemy.EnemyState)
             {
                 case EEnemyState.Chase:
                     if (_target == null) return;
-                    rb2d.velocity = _desiredDir * MovementSpeed;
+                    rb2d.velocity = _desiredDir * (MovementSpeed * 1.5f);
                     break;
                 case EEnemyState.Patrol:
                     rb2d.velocity = _desiredDir * MovementSpeed;
@@ -151,6 +164,33 @@ namespace EnemyPack
             _desiredDir = dir;
         }
 
+        private void Merge()
+        {
+            if (!mergeParent) {
+                Collider2D.isTrigger = false;
+                _toMerge = false;
+                return;
+            }
+
+            if (Vector2.Distance(transform.position, mergeParent.transform.position) > 0.05f) return;
+            
+            mergeParent.MergeParent(mergeCount);
+            Destroy(gameObject);
+        }
+
+        private void SetMerge(EnemyLogic enemyLogic)
+        {
+            _toMerge = true;
+            mergeParent = enemyLogic;
+            Collider2D.isTrigger = true;
+        }
+
+        private void MergeParent(int childMergeCount)
+        {
+            transform.localScale += Vector3.one * (0.25f * childMergeCount);
+            _currentHealth += _enemy.MaxHealth * childMergeCount;
+        }
+
         private void ManagePlayerCollision()
         {
             _collisionTimer += Time.deltaTime;
@@ -165,7 +205,7 @@ namespace EnemyPack
         
         public void PushEnemy(Vector2 force, float time)
         {
-            if (_isBeingPushed) return;
+            if (_isBeingPushed || mergeParent) return;
             
             rb2d.AddForce(force, ForceMode2D.Impulse);
             _isBeingPushed = true;
@@ -212,6 +252,49 @@ namespace EnemyPack
             GetComponent<Collider2D>().enabled = false;
             
             base.OnDie();
+        }
+        
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            CheckEnemyCollision(other.gameObject);
+            
+            if (!other.TryGetComponent(out Projectile projectile)) return;
+            
+            projectile.ManageHit(gameObject);
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            CheckEnemyCollision(other.gameObject);
+
+            if (!other.gameObject.TryGetComponent(out Projectile projectile)) return;
+            
+            projectile.ManageHit(gameObject);
+        }
+
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            if (!other.TryGetComponent(out Projectile projectile)) return;
+            
+            projectile.ManageCollisionStay(gameObject);
+        }
+
+        private void OnCollisionStay2D(Collision2D other)
+        {
+            if (!other.gameObject.TryGetComponent(out Projectile projectile)) return;
+            
+            projectile.ManageCollisionStay(gameObject);
+        }
+
+        private void CheckEnemyCollision(GameObject hitObj)
+        {
+            if (_toMerge) return;
+            
+            if (!hitObj.TryGetComponent(out EnemyLogic enemyLogic)) return;
+
+            if (enemyLogic._enemy.name != _enemy.name) return;
+
+            enemyLogic.SetMerge(this);
         }
     }
 }

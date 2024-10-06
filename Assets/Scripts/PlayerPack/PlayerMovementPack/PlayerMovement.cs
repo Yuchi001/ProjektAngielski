@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using PlayerPack.SO;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PlayerPack.PlayerMovementPack
 {
@@ -16,15 +18,20 @@ namespace PlayerPack.PlayerMovementPack
         [SerializeField] private Animator animator;
         private SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
         private PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
+        private int MaxDashStacks => PickedCharacter.MaxDashStacks;
 
         private bool _lookingRight;
 
         private bool _dash = false;
         private float _dashTimer = 0;
+        private float _dashingTimer = 0;
+        public int CurrentDashStacks { get; private set; } = 0;
         
-        private void Awake()
+        private void Start()
         {
             animator.speed = animationSpeed;
+            _dashTimer = dashCooldown;
+            CurrentDashStacks = MaxDashStacks;
             _buttonsActive = new Dictionary<KeyCode, bool>
             {
                 { UpBind, false },
@@ -32,6 +39,10 @@ namespace PlayerPack.PlayerMovementPack
                 { DownBind, false },
                 { RightBind, false },
             };
+        }
+        public float GetDashProgress()
+        {
+            return _dashTimer / dashCooldown;
         }
 
         protected void Update()
@@ -57,22 +68,37 @@ namespace PlayerPack.PlayerMovementPack
 
         private void ManageDash()
         {
-            _dashTimer += Time.deltaTime;
             if (_dash)
             {
-                if (_dashTimer < dashTime) return;
+                var sr = new GameObject("dashGhost", typeof(SpriteRenderer));
+                sr.GetComponent<SpriteRenderer>().sprite = PickedCharacter.CharacterSprite;
+                sr.transform.rotation = transform.GetChild(1).rotation;
+                sr.transform.position = transform.position;
+                Destroy(sr.gameObject, 0.1f);
+                
+                _dashingTimer += Time.deltaTime;
+                if (_dashingTimer < dashTime) return;
                 
                 _dash = false;
                 PlayerHealth.Invincible = false;
                 rb2d.velocity /= dashForceMultiplier;
-                _dashTimer = 0;
+                _dashingTimer = 0;
                 return;
             }
 
-            if (!Input.GetKey(KeyCode.Space) || _dashTimer < dashCooldown) return;
+            if (CurrentDashStacks <= MaxDashStacks) _dashTimer += Time.deltaTime;
             
-            _dashTimer = 0;
+            if (_dashTimer >= dashCooldown)
+            {
+                CurrentDashStacks += CurrentDashStacks < MaxDashStacks ? 1 : 0;
+                _dashTimer = 0;
+            }
+
+            if (!Input.GetKeyDown(KeyCode.LeftControl) || CurrentDashStacks == 0) return;
+
+            if (CurrentDashStacks == MaxDashStacks) _dashTimer = 0;
             _dash = true;
+            CurrentDashStacks--;
             rb2d.velocity = rb2d.velocity.normalized * dashForceMultiplier;
             PlayerHealth.Invincible = true;
         }
