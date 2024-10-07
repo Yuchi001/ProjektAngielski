@@ -1,4 +1,5 @@
 ﻿using System;
+using Managers;
 using PlayerPack;
 using PlayerPack.PlayerMovementPack;
 using TMPro;
@@ -31,7 +32,7 @@ namespace UI
             var scale = _selected ? 1.1f : 1;
             transform.localScale = new Vector3(scale, scale, scale);
 
-            if (!_selected || !Input.GetKeyDown(KeyCode.Space)) return;
+            if (!_selected || !Input.GetKeyDown(GameManager.AcceptBind)) return;
             
             OnClick();
         }

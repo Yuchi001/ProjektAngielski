@@ -57,7 +57,9 @@ namespace EnemyPack
 
         private float RawMovementSpeed =>
             _enemy.PlayerSpeed ? _playerSpeed + _enemy.MovementSpeed : _enemy.MovementSpeed;
-        private float MovementSpeed => Slowed ? RawMovementSpeed / 2f : RawMovementSpeed;
+
+        private float RawCappedMovementSpeed => RawMovementSpeed > 3.5f ? 3.5f : RawMovementSpeed;
+        private float MovementSpeed => Slowed ? RawCappedMovementSpeed / 2f : RawCappedMovementSpeed;
 
         private EnemyLogic mergeParent;
         private int mergeCount = 1;
@@ -139,13 +141,7 @@ namespace EnemyPack
             var currentPos = (Vector2)transform.position;
             if (Vector2.Distance(currentPos, _desiredPos) <= 0.1f)
             {
-                var boundsX = GameManager.Instance.BoundaryX;
-                var boundsY = GameManager.Instance.BoundaryY;
-
-                var randomX = Random.Range(-boundsX, boundsX + 0.1f);
-                var randomY = Random.Range(-boundsY, boundsY + 0.1f);
-
-                _desiredPos = new Vector2(randomX, randomY);
+                _desiredPos = GameManager.Instance.MapGenerator.GetRandomPos();
             }
             
             var dir = _desiredPos - currentPos;

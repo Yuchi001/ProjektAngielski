@@ -1,17 +1,17 @@
-﻿using System;
-using Managers;
+﻿using Managers;
 using Managers.Enums;
 using Other;
 using PlayerPack.SO;
 using UI;
 using UnityEngine;
-using UnityEngine.UI;
 using WeaponPack.Other;
 
 namespace PlayerPack
 {
     public class PlayerHealth : CanBeDamaged
     {
+        [SerializeField] private float zoneCheckPerSec = 4;
+        [SerializeField] private float healPerSec = 0.1f;
         [SerializeField] private GameObject healParticles;
         [SerializeField] private GameObject damageIndicator;
 
@@ -19,6 +19,9 @@ namespace PlayerPack
         public override int CurrentHealth => _currentHealth;
         
         private int _currentHealth = 0;
+
+        private float _zoneTimer = 0;
+        private float _healTimer = 0;
 
         public bool Invincible { get; set; } = false;
 
@@ -34,7 +37,29 @@ namespace PlayerPack
 
         protected override void OnUpdate()
         {
+            ManageZone();
+            ManageAutoHeal();
+        }
+
+        private void ManageAutoHeal()
+        {
+            if (_currentHealth >= MaxHealth) return;
             
+            _healTimer += Time.deltaTime;
+            if (_healTimer < 1f / healPerSec) return;
+            _healTimer = 0;
+            
+            Heal(MaxHealth / 10);
+        }
+
+        private void ManageZone()
+        {
+            _zoneTimer += Time.deltaTime;
+            if (_zoneTimer < 1f / zoneCheckPerSec) return;
+
+            _zoneTimer = 0;
+            var inBounds = GameManager.Instance.MapGenerator.ContainsEntity(transform.position);
+            if (!inBounds) GetDamaged(MaxHealth / 10);
         }
 
         public override void GetDamaged(int value, Color? color = null)

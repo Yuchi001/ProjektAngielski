@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Managers;
 using PlayerPack.SO;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -34,10 +35,10 @@ namespace PlayerPack.PlayerMovementPack
             CurrentDashStacks = MaxDashStacks;
             _buttonsActive = new Dictionary<KeyCode, bool>
             {
-                { UpBind, false },
-                { LeftBind, false },
-                { DownBind, false },
-                { RightBind, false },
+                { GameManager.UpBind, false },
+                { GameManager.LeftBind, false },
+                { GameManager.DownBind, false },
+                { GameManager.RightBind, false },
             };
         }
         public float GetDashProgress()
@@ -94,7 +95,7 @@ namespace PlayerPack.PlayerMovementPack
                 _dashTimer = 0;
             }
 
-            if (!Input.GetKeyDown(KeyCode.LeftControl) || CurrentDashStacks == 0) return;
+            if (!Input.GetKeyDown(GameManager.DeclineBind) || CurrentDashStacks == 0) return;
 
             if (CurrentDashStacks == MaxDashStacks) _dashTimer = 0;
             _dash = true;

@@ -26,7 +26,7 @@ namespace UI
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(GameManager.UpBind))
             {
                 AudioManager.Instance.PlaySound(ESoundType.ButtonClick);
                 _currentIndex--;
@@ -35,7 +35,7 @@ namespace UI
                 UpdateButtonScale();
             }
             
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(GameManager.DownBind))
             {
                 AudioManager.Instance.PlaySound(ESoundType.ButtonClick);
                 _currentIndex++;
@@ -44,7 +44,7 @@ namespace UI
                 UpdateButtonScale();
             }
 
-            if (!Input.GetKeyDown(KeyCode.Space)) return;
+            if (!Input.GetKeyDown(GameManager.AcceptBind)) return;
 
             buttons[_currentIndex].onClickEvent?.Invoke();
         }

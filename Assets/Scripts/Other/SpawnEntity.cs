@@ -42,7 +42,7 @@ namespace Other
         public SpawnEntity Setup(GameObject entity)
         {
             _entityToSpawn = entity;
-            transform.position = GetRandomPos();
+            transform.position = GameManager.Instance.MapGenerator.GetRandomPos();
             return this;
         }
 
@@ -75,19 +75,6 @@ namespace Other
         }
 
         #endregion
-
-        private Vector2 GetRandomPos()
-        {
-            var pos = Vector2.zero;
-            
-            var boundsX = GameManager.Instance.BoundaryX;
-            var boundsY = GameManager.Instance.BoundaryY;
-
-            pos.x += Random.Range(-boundsX, boundsX + 0.1f);
-            pos.y += Random.Range(-boundsY, boundsY + 0.1f);
-            
-            return pos;
-        }
 
         private void Update()
         {

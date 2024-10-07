@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using EnemyPack.SO;
 using ExpPackage.Enums;
@@ -33,8 +34,10 @@ namespace EnemyPack
         protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * enemySpawnRate);
         public int DeadEnemies { get; set; } = 0;
         
-        private void Start()
+        private IEnumerator Start()
         {
+            yield return new WaitUntil(() => GameManager.Instance.MapGenerator != null);
+            
             DeadEnemies = 0;
 
             _allEnemies = Resources.LoadAll<SoEnemy>("Enemies").Select(Instantiate).ToList();

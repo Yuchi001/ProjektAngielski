@@ -63,7 +63,7 @@ namespace UI
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(GameManager.AcceptBind))
             {
                 AudioManager.Instance.PlaySound(ESoundType.ButtonClick);
                 GameManager.Instance.StartRun(_availableCharacters[_currentIndex]);
@@ -72,21 +72,21 @@ namespace UI
             // just in case _currentIndex will be out of range, this code is shit ikr?
             var current = _currentIndex;
             
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(GameManager.LeftBind))
             {
                 AudioManager.Instance.PlaySound(ESoundType.ButtonClick);
                 _currentIndex--;
                 if (_currentIndex < 0) _currentIndex = _availableCharacters.Count - 1;
             }
             
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(GameManager.RightBind))
             {
                 AudioManager.Instance.PlaySound(ESoundType.ButtonClick);
                 _currentIndex++;
                 if (_currentIndex >= _availableCharacters.Count) _currentIndex = 0;
             }
             
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(GameManager.DownBind))
             {
                 AudioManager.Instance.PlaySound(ESoundType.ButtonClick);
                 _currentIndex += RowLength;
@@ -94,7 +94,7 @@ namespace UI
                 if (_currentIndex < 0) _currentIndex = current;
             }
             
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(GameManager.UpBind))
             {
                 AudioManager.Instance.PlaySound(ESoundType.ButtonClick);
                 _currentIndex -= RowLength;

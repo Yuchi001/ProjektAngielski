@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Managers;
 using PlayerPack;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,14 +42,14 @@ namespace UI
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(GameManager.UpBind))
             {
                 _pickedWeaponIndex--;
                 if (_pickedWeaponIndex < 0) _pickedWeaponIndex = _weaponsCount - 1;
                 OnSelect?.Invoke(_pickedWeaponIndex);
             }
             
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(GameManager.DownBind))
             {
                 _pickedWeaponIndex++;
                 if (_pickedWeaponIndex >= _weaponsCount) _pickedWeaponIndex = 0;

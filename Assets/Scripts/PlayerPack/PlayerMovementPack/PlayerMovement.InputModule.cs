@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 
 namespace PlayerPack.PlayerMovementPack
@@ -6,20 +7,16 @@ namespace PlayerPack.PlayerMovementPack
     public partial class PlayerMovement
     {
         private Dictionary<KeyCode, bool> _buttonsActive;
-        private static KeyCode UpBind => KeyCode.W;
-        private static KeyCode DownBind => KeyCode.S;
-        private static KeyCode LeftBind => KeyCode.A;
-        private static KeyCode RightBind => KeyCode.D;
         
         private Vector2 GetVelocity()
         {
             var movement = Vector2.zero;
 
-            CheckKey(UpBind, DownBind);
-            CheckKey(LeftBind, RightBind);
+            CheckKey(GameManager.UpBind, GameManager.DownBind);
+            CheckKey(GameManager.LeftBind, GameManager.RightBind);
 
-            movement.x = _buttonsActive[RightBind] ? 1 : (_buttonsActive[LeftBind] ? -1 : 0);
-            movement.y = _buttonsActive[UpBind] ? 1 : (_buttonsActive[DownBind] ? -1 : 0);
+            movement.x = _buttonsActive[GameManager.RightBind] ? 1 : (_buttonsActive[GameManager.LeftBind] ? -1 : 0);
+            movement.y = _buttonsActive[GameManager.UpBind] ? 1 : (_buttonsActive[GameManager.DownBind] ? -1 : 0);
 
             if(movement == Vector2.zero) return Vector2.zero;
             
