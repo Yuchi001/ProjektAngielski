@@ -8,12 +8,15 @@ namespace MapGeneratorPack
     {
         [SerializeField] private float tileLength;
         [SerializeField] private Vector2Int scalingMinMax;
+        [SerializeField] private Vector2Int scalingMinMaxStartingZone;
         [SerializeField] private GameObject saveZone;
 
         private SpriteRenderer _spriteRenderer;
 
         public void Setup(Zone parentZone)
         {
+            var isNotStarting = parentZone != null;
+            
             _spriteRenderer = saveZone.GetComponent<SpriteRenderer>();
             var random = new Vector2
             {
@@ -22,8 +25,12 @@ namespace MapGeneratorPack
             };
             random *= tileLength;
 
-            transform.position = parentZone?.GetRandomPos() ?? Vector2.zero;
-            transform.localScale = random;
+            transform.position = isNotStarting ? parentZone.GetRandomPos() : Vector2.zero;
+            transform.localScale = isNotStarting  ? random : new Vector2
+            {
+                x = Random.Range(scalingMinMaxStartingZone.x, scalingMinMaxStartingZone.y + 1),
+                y = Random.Range(scalingMinMaxStartingZone.x, scalingMinMaxStartingZone.y + 1)
+            };
         }
 
         public Vector2 GetRandomPos()

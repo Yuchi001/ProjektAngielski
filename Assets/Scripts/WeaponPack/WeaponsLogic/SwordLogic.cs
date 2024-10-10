@@ -14,8 +14,8 @@ namespace WeaponPack.WeaponsLogic
         [SerializeField] private GameObject projectilePrefab;
 
         private const string HitEnemyCountName = "HitCount";
-
-        private float MaxEnemiesToHit => GetStatValue(EWeaponStat.MaxPiercedEnemies) ?? 0;
+        
+        private float MaxRange => GetStatValue(EWeaponStat.ProjectileRange) ?? 0;
         
         protected override bool UseWeapon()
         {
@@ -23,16 +23,18 @@ namespace WeaponPack.WeaponsLogic
             var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = UtilsMethods.FindTarget(transform.position, targetedEnemies);
+                var target = UtilsMethods.FindTarget(targetedEnemies);
                 if (target == null) continue;
 
                 spawnedProjectiles++;
                 
                 var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
                 var projectileScript = projectile.GetComponent<Projectile>();
+
+                var enemyPos = target.transform.position;
                 
                 projectileScript.Setup(Damage, Speed)
-                    .SetDirection(target.transform.position)
+                    .SetDirection(enemyPos)
                     .SetSprite(projectileSprite)
                     .SetSpriteRotation(45)
                     .SetDontDestroyOnHit()
@@ -40,7 +42,9 @@ namespace WeaponPack.WeaponsLogic
                     .SetNewCustomValue(HitEnemyCountName)
                     .SetOnHitAction(OnHit)
                     .SetScale(0.4f)
+                    .SetRange(MaxRange)
                     .SetLightColor(Color.clear)
+                    .SetOutOfRangeBehaviour(OnOutOfRange)
                     .SetReady();
                 
                 targetedEnemies.Add(target.GetInstanceID());
@@ -52,26 +56,38 @@ namespace WeaponPack.WeaponsLogic
         private void OnHit(GameObject onHit, Projectile projectile)
         {
             var count = projectile.GetCustomValue(HitEnemyCountName);
-            
-            if (count >= MaxEnemiesToHit)
-            {
-                Destroy(projectile.gameObject);
-                return;
-            }
-
             count++;
-            onHit.GetComponent<EnemyLogic>().GetDamaged(GetModifiedDamage((int)count));
+            onHit.GetComponent<EnemyLogic>().GetDamaged(Damage * (int)count);
             projectile.SetCustomValue(HitEnemyCountName, count);
         }
 
-        private int GetModifiedDamage(int count)
+        private void OnOutOfRange(Projectile projectile)
         {
-            var result = Damage;
-            for (var i = 1; i < count; i++)
-            {
-                result *= 2;
-            }
-            return result;
+            var newProjectile = Instantiate(projectilePrefab, projectile.transform.position, Quaternion.identity);
+            var newProjectileScript = newProjectile.GetComponent<Projectile>();
+            
+            newProjectileScript.Setup(Damage, Speed * 2)
+                .SetTarget(PlayerTransform)
+                .SetDirection(PlayerPos, 0, true)
+                .SetSpriteRotation(225)
+                .SetSprite(projectileSprite)
+                .SetDontDestroyOnHit()
+                .SetDisableDamageOnHit()
+                .SetScale(0.4f)
+                .SetLightColor(Color.clear)
+                .SetUpdate(ProjectileUpdate)
+                .SetReady();
+            
+            Destroy(projectile.gameObject);
+        }
+        
+        private void ProjectileUpdate(Projectile projectile)
+        {
+            var projectilePos = projectile.transform.position;
+            var playerPos = PlayerTransform.position;
+            if (Vector2.Distance(projectilePos, playerPos) > 0.1f) return;
+            
+            Destroy(projectile.gameObject);
         }
     }
 }

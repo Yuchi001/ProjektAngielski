@@ -100,6 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileLength: 1
   scalingMinMax: {x: 3, y: 6}
+  scalingMinMaxStartingZone: {x: 5, y: 7}
   saveZone: {fileID: 5079176135378971073}
 --- !u!331 &1463491675460620186
 SpriteMask:

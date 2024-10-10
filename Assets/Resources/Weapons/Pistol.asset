@@ -21,7 +21,7 @@ MonoBehaviour:
   maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
-    statValue: 1
+    statValue: 3
     isPercentage: 0
     canUpgrade: 1
   - statType: 1

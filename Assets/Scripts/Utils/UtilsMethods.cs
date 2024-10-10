@@ -87,12 +87,12 @@ namespace Utils
             return string.Join(separator, values);
         }
         
-        public static EnemyLogic FindTarget(List<string> usedTargets = null)
+        public static EnemyLogic FindTarget(List<int> usedTargets = null)
         {
-            usedTargets = usedTargets ?? new List<string>();
+            usedTargets = usedTargets ?? new List<int>();
             
             var enemies = Object.FindObjectsOfType<EnemyLogic>().ToList();
-            enemies = enemies.Where(e => !usedTargets.Contains(e.name)).ToList();
+            enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
             if (enemies.Count == 0) return null;
 
             var randomIndex = Random.Range(0, enemies.Count);
