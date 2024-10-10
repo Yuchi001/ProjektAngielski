@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Managers;
 using PlayerPack;
 using PlayerPack.PlayerMovementPack;
@@ -44,8 +45,35 @@ namespace UI
             _levelUpUiGameObject = levelUpUiGameObject;
             weapon.GenerateNextLevelStats();
             weaponDescriptionField.text = PlayerWeaponry.GetWeaponDescription(weapon);
-            enchantmentLevelField.text = $"Lvl {weapon.GetNextLevelEnchantmentLevel()}";
+            enchantmentLevelField.text = ArabicToRoman(weapon.GetNextLevelEnchantmentLevel());
             weaponImage.sprite = weapon.WeaponSprite;
+        }
+
+        private string ArabicToRoman(int input)
+        {
+            var numberPairList = new List<(int arabic, char roman)>()
+            {
+                (arabic: 10, roman: 'X'),
+                (arabic: 5, roman: 'V'),
+                (arabic: 1, roman: 'I')
+            };
+            var roman = "";
+
+            foreach (var numberPair in numberPairList)
+            {
+                while (input - numberPair.arabic >= 0)
+                {
+                    input -= numberPair.arabic;
+                    roman += numberPair.roman;
+                }
+ 
+                if (input + 1 != numberPair.arabic || numberPair.arabic == 1) continue;
+
+                roman += $"I{numberPair.roman}";
+                break;
+            }
+
+            return roman;
         }
 
         public void OnClick()

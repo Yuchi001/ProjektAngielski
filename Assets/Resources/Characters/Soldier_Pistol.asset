@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Rick the Soldier
   characterSprite: {fileID: 1494473444, guid: 4bd6c6e84fa1f7243958426dba45b8c3, type: 3}
-  maxHp: 100
+  maxHp: 90
   maxWeaponsInEq: 4
-  maxDashStacks: 3
+  maxDashStacks: 2
   startingWeapon: {fileID: 11400000, guid: 5e66022bca6ab6141ae261e06b2d3aa7, type: 2}
   movementSpeed: 3.5
   walkingAnim: {fileID: 7400000, guid: 0d0b0e488b7407e42ad83378291f6997, type: 2}

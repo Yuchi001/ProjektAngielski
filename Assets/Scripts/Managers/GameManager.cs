@@ -67,6 +67,8 @@ namespace Managers
            AudioManager.Instance.SetTheme(EThemeType.Main1);
            
            waveManager.BeginSpawn();
+
+           Time.timeScale = 1;
        }
     }
 }

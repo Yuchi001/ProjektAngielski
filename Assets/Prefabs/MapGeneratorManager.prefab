@@ -46,5 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistance: 5
   zonePrefab: {fileID: 5079176135378971073, guid: 8f6c0a21b2df7074f9249caa1d2094ea, type: 3}
-  zonesPerSecond: 0.2
+  zonesPerSecond: 0.1
   checkPlayerDistancePerSecond: 0.5

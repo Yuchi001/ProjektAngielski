@@ -48,6 +48,8 @@ namespace PlayerPack.PlayerMovementPack
 
         protected void Update()
         {
+            if(Time.timeScale == 0) return;
+            
             if (PlayerHealth.Dead) rb2d.velocity = Vector2.zero;
             else ManageMovement();
         }
@@ -84,6 +86,7 @@ namespace PlayerPack.PlayerMovementPack
                 PlayerHealth.Invincible = false;
                 rb2d.velocity /= dashForceMultiplier;
                 _dashingTimer = 0;
+                ResetKeys();
                 return;
             }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Managers;
 using Managers.Enums;
@@ -14,25 +13,14 @@ namespace UI
     {
         [SerializeField] private Image pickedCharacterImage;
         [SerializeField] private TextMeshProUGUI pickedCharacterName;
-        [SerializeField] private TextMeshProUGUI pickedCharacterWeaponDescription;
-        [SerializeField] private TextMeshProUGUI pickedCharacterWeaponName;
-        [SerializeField] private TextMeshProUGUI pickedCharacterWeaponCount;
-        [SerializeField] private TextMeshProUGUI pickedCharacterMs;
-        [SerializeField] private TextMeshProUGUI pickedCharacterHp;
         [SerializeField] private Image pickedCharacterWeaponImage;
-        [SerializeField] private RectTransform slotContainer;
-        [SerializeField] private GameObject characterSlotPrefab;
 
-        private int RowLength
-        {
-            get
-            {
-                var availableCount = _availableCharacters.Count;
-                var rowLength = slotContainer.GetComponent<GridLayoutGroup>().constraintCount;
-                return availableCount >= rowLength ? rowLength : availableCount;
-            }
-        }
+        [SerializeField] private Image rightArrow;
+        [SerializeField] private Image leftArrow;
 
+        [SerializeField] private Sprite _emptySprite;
+        [SerializeField] private List<StatDisplay> _statDisplays = new();
+        
         private List<SoCharacter> _availableCharacters;
 
         public delegate void PickCharacterDelegate(string characterName);
@@ -44,20 +32,11 @@ namespace UI
         {
             AudioManager.Instance.SetTheme(EThemeType.Menu1);
             
-            var allCharacters = Resources.LoadAll<SoCharacter>("Characters").Select(Instantiate).ToList();
+            var allCharacters = new List<SoCharacter>(Resources.LoadAll<SoCharacter>("Characters").Select(Instantiate).ToList());
             // todo: show only available characters
             _availableCharacters = allCharacters; // .Where(c => c.CharacterName != "Debug").ToList();
             
-            foreach (var character in allCharacters)
-            {
-                var characterSlotInstance = Instantiate(characterSlotPrefab, slotContainer, false);
-                var characterSlotScript = characterSlotInstance.GetComponent<CharacterSlotUi>();
-                if(_availableCharacters.Contains(character)) characterSlotScript.Setup(character);
-                else characterSlotScript.Setup();
-            }
-            
-            LayoutRebuilder.ForceRebuildLayoutImmediate(slotContainer);
-            
+            leftArrow.color = Color.clear;
             PickCharacter();
         }
 
@@ -69,37 +48,30 @@ namespace UI
                 GameManager.Instance.StartRun(_availableCharacters[_currentIndex]);
             }
 
-            // just in case _currentIndex will be out of range, this code is shit ikr?
-            var current = _currentIndex;
-            
+            if (_availableCharacters.Count <= 1) return;
+
             if (Input.GetKeyDown(GameManager.LeftBind))
             {
                 AudioManager.Instance.PlaySound(ESoundType.ButtonClick);
                 _currentIndex--;
-                if (_currentIndex < 0) _currentIndex = _availableCharacters.Count - 1;
+                rightArrow.color = Color.white;
+                if (_currentIndex < 1)
+                {
+                    _currentIndex = 0;
+                    leftArrow.color = Color.clear;
+                }
             }
             
             if (Input.GetKeyDown(GameManager.RightBind))
             {
                 AudioManager.Instance.PlaySound(ESoundType.ButtonClick);
                 _currentIndex++;
-                if (_currentIndex >= _availableCharacters.Count) _currentIndex = 0;
-            }
-            
-            if (Input.GetKeyDown(GameManager.DownBind))
-            {
-                AudioManager.Instance.PlaySound(ESoundType.ButtonClick);
-                _currentIndex += RowLength;
-                if (_currentIndex >= _availableCharacters.Count) _currentIndex = current - RowLength;
-                if (_currentIndex < 0) _currentIndex = current;
-            }
-            
-            if (Input.GetKeyDown(GameManager.UpBind))
-            {
-                AudioManager.Instance.PlaySound(ESoundType.ButtonClick);
-                _currentIndex -= RowLength;
-                if (_currentIndex < 0) _currentIndex = current + RowLength;
-                if (_currentIndex >= _availableCharacters.Count) _currentIndex = current;
+                leftArrow.color = Color.white;
+                if (_currentIndex + 1 >= _availableCharacters.Count)
+                {
+                    _currentIndex = _availableCharacters.Count - 1;
+                    rightArrow.color = Color.clear;
+                }
             }
             
             PickCharacter();
@@ -110,14 +82,55 @@ namespace UI
             var pickedCharacter = _availableCharacters[_currentIndex];
             pickedCharacterImage.sprite = pickedCharacter.CharacterSprite;
             pickedCharacterName.text = pickedCharacter.CharacterName;
-            pickedCharacterWeaponDescription.text = pickedCharacter.StartingWeapon.WeaponDescription;
-            pickedCharacterWeaponName.text = $"{pickedCharacter.StartingWeapon.WeaponName}";
             pickedCharacterWeaponImage.sprite = pickedCharacter.StartingWeapon.WeaponSprite;
-            pickedCharacterHp.text = $"<sprite name=hp> {pickedCharacter.MaxHp.ToString()}";
-            pickedCharacterMs.text = $"<sprite name=ms2> {pickedCharacter.MovementSpeed.ToString()}";
-            pickedCharacterWeaponCount.text = $"<sprite name=wc> {pickedCharacter.MaxWeaponsInEq.ToString()}";
+
+            var values = new List<float>()
+            {
+                pickedCharacter.MaxHp,
+                pickedCharacter.MovementSpeed,
+                pickedCharacter.MaxWeaponsInEq,
+                pickedCharacter.MaxDashStacks,
+            };
+            
+            for (var i = 0; i < _statDisplays.Count; i++)
+            {
+                var statDisplay = _statDisplays[i];
+                var displayValue = statDisplay.GetActiveImagesCount(values[i], i == 1 ? 2f : 0);
+                var images = statDisplay.GetImages();
+                for (var j = 0; j < images.Count; j++)
+                {
+                    images[j].sprite = j < displayValue ? statDisplay.ActiveSprite : _emptySprite;
+                }
+            }
             
             OnPickCharacter?.Invoke(pickedCharacter.CharacterName);
+        }
+    }
+
+    [System.Serializable]
+    public class StatDisplay
+    {
+        [SerializeField] private Sprite activeSprite;
+        [SerializeField] private Transform container;
+        [SerializeField] private float step;
+
+        public Sprite ActiveSprite => activeSprite;
+
+        public List<Image> GetImages()
+        {
+            var list = new List<Image>();
+            foreach (Transform child in container)
+            {
+                if(!child.TryGetComponent(out Image img)) continue;
+                list.Add(img);
+            }
+
+            return list;
+        }
+
+        public int GetActiveImagesCount(float value, float minValue = 0)
+        {
+            return (int)((value - minValue) / step);
         }
     }
 }
