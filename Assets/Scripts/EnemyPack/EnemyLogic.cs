@@ -48,7 +48,7 @@ namespace EnemyPack
         private bool _isBeingPushed = false;
         
         private int _currentHealth;
-        private int MaxHealth => Mathf.CeilToInt(_enemy.MaxHealth * _enemySpawner.EnemiesHpScale);
+        public override int MaxHealth => Mathf.CeilToInt(_enemy.MaxHealth * _enemySpawner.EnemiesHpScale);
 
         private float _playerSpeed = 0;
         private float AttackRange => attackRange * _enemy.BodyScale;
@@ -217,7 +217,6 @@ namespace EnemyPack
         public override void GetDamaged(int value, Color? color = null)
         {
             base.GetDamaged(value, color);
-            
             
             AudioManager.Instance.PlaySound(ESoundType.EnemyHurt);
             

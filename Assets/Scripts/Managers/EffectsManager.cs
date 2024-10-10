@@ -122,12 +122,12 @@ namespace Managers
                     var poisonParticlesInstance = Instantiate(poisonParticles, entityPos, Quaternion.identity);
                     Destroy(poisonParticlesInstance, 2f);
                     if (poisonDamage > _canBeDamaged.CurrentHealth + 1) poisonDamage = _canBeDamaged.CurrentHealth - 1;
-                    _canBeDamaged.GetDamaged(poisonDamage, effectStatus.Value.effectColor);
+                    _canBeDamaged.GetDamaged(poisonDamage + _canBeDamaged.MaxHealth / 50, effectStatus.Value.effectColor);
                     break;
                 case EEffectType.Burn:
                     var burnParticlesInstance = Instantiate(burnParticles, entityPos, Quaternion.identity);
                     Destroy(burnParticlesInstance, 2f);
-                    _canBeDamaged.GetDamaged(burnDamage, effectStatus.Value.effectColor);
+                    _canBeDamaged.GetDamaged(burnDamage + _canBeDamaged.MaxHealth / 100, effectStatus.Value.effectColor);
                     break;
             }
         }

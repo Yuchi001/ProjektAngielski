@@ -15,7 +15,7 @@ namespace PlayerPack
         [SerializeField] private GameObject healParticles;
         [SerializeField] private GameObject damageIndicator;
 
-        public int MaxHealth => PickedCharacter.MaxHp;
+        public override int MaxHealth => PickedCharacter.MaxHp;
         public override int CurrentHealth => _currentHealth;
         
         private int _currentHealth = 0;

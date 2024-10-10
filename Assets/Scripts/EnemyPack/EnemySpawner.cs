@@ -15,11 +15,13 @@ namespace EnemyPack
 {
     public class EnemySpawner : SpawnerBase
     {
+        [SerializeField] private float enemiesHpScaleMultiplierPerKill = 0.001f;
         [SerializeField] private float enemiesHpScale = 1;
         [SerializeField] private int maxEnemiesCount = 300;
         [SerializeField] private GameObject enemyPrefab;
         [Space(10)]
         [SerializeField] private AnimationCurve enemySpawnRateCurve;
+        [SerializeField] private float enemySpawnRateMultiplierPerKill = 0.001f;
         [SerializeField] private float enemySpawnRate;
         [Space(10)]
         [SerializeField, Tooltip("In seconds")] private int maximumDifficultyTimeCap = 3600;
@@ -29,10 +31,11 @@ namespace EnemyPack
         private List<SoEnemy> _allEnemies = new();
         
         private float _difficultyTimer = 0;
-        
-        public float EnemiesHpScale => enemiesHpScale;
-        protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * enemySpawnRate);
+
         public int DeadEnemies { get; set; } = 0;
+        private float EnemySpawnRate => enemySpawnRate + 1f * enemySpawnRateMultiplierPerKill * DeadEnemies;
+        protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * EnemySpawnRate);
+        public float EnemiesHpScale => enemiesHpScale + 1f * DeadEnemies * enemiesHpScaleMultiplierPerKill;
         
         private IEnumerator Start()
         {
