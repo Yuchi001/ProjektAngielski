@@ -2,8 +2,9 @@
 {
     public enum EEnemyState
     {
+        Follow,
         Chase,
 		Patrol,
-		DontMove
+		StandAndShoot
     }
 }

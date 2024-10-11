@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using EnemyPack;
+using EnemyPack.CustomEnemyLogic;
 using Unity.VisualScripting;
 using UnityEngine;
 using Utils;

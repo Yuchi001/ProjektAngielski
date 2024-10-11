@@ -1,4 +1,5 @@
 ﻿using EnemyPack;
+using EnemyPack.CustomEnemyLogic;
 using PlayerPack;
 using UnityEngine;
 using WeaponPack.Enums;

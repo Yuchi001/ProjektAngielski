@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using EnemyPack;
+using EnemyPack.CustomEnemyLogic;
 using PlayerPack;
 using UnityEngine;
 using Utils;

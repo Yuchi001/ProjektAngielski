@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using EnemyPack;
+using EnemyPack.CustomEnemyLogic;
 using EnemyPack.SO;
 using Other.Enums;
 using Unity.VisualScripting;
@@ -9,7 +10,6 @@ using UnityEngine.Serialization;
 using Utils;
 using WeaponPack.Enums;
 using WeaponPack.Other;
-using EnemyLogic = EnemyPack.EnemyLogic;
 
 namespace WeaponPack.WeaponsLogic
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using EnemyPack;
+using EnemyPack.CustomEnemyLogic;
 using Managers;
 using Managers.Other;
 using Other.Enums;

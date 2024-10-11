@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
   m_Name: WhipOfVoid
   m_EditorClassIdentifier: 
-  weaponName: Frost whip
+  weaponName: Whip of Void
   weaponDescription: Slash thru enemies dealing light damage, and stuning them
   weaponSprite: {fileID: 21300000, guid: b802ac4065c72644d861c2987ee056ee, type: 3}
   weaponColor: {r: 0.25354183, g: 0, b: 0.5764706, a: 1}
@@ -61,8 +61,8 @@ MonoBehaviour:
     isPercentage: 0
     canUpgrade: 1
     weaponLevelUpDescription: Gain <v> damage
-    valueLevels: 0
-    valueGrowth: 0
+    valueLevels: 5
+    valueGrowth: 1
   - statType: 5
     statValue: 0.05
     isPercentage: 1

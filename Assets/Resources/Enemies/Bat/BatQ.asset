@@ -20,5 +20,3 @@ MonoBehaviour:
   isHorde: 0
   isHeavy: 0
   enemyState: 0
-  actionCooldown: 0
-  enemyAdditionalLogic: {fileID: 0}

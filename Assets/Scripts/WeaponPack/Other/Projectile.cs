@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using EnemyPack;
+using EnemyPack.CustomEnemyLogic;
 using EnemyPack.SO;
 using Managers;
 using Managers.Other;

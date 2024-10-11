@@ -51,7 +51,7 @@ MonoBehaviour:
     isPercentage: 1
     canUpgrade: 1
     weaponLevelUpDescription: Gain <v> cooldown reduction
-    valueLevels: 5
+    valueLevels: 3
     valueGrowth: -0.1
   - statType: 1
     statValue: 3

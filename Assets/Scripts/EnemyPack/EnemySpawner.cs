@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using EnemyPack.CustomEnemyLogic;
 using EnemyPack.SO;
 using ExpPackage.Enums;
 using Managers;

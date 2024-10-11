@@ -11,7 +11,6 @@ namespace PlayerPack
     public class PlayerHealth : CanBeDamaged
     {
         [SerializeField] private float zoneCheckPerSec = 4;
-        [SerializeField] private float healPerSec = 0.1f;
         [SerializeField] private GameObject healParticles;
         [SerializeField] private GameObject damageIndicator;
 
@@ -21,7 +20,6 @@ namespace PlayerPack
         private int _currentHealth = 0;
 
         private float _zoneTimer = 0;
-        private float _healTimer = 0;
 
         public bool Invincible { get; set; } = false;
 
@@ -38,18 +36,6 @@ namespace PlayerPack
         protected override void OnUpdate()
         {
             ManageZone();
-            ManageAutoHeal();
-        }
-
-        private void ManageAutoHeal()
-        {
-            if (_currentHealth >= MaxHealth) return;
-            
-            _healTimer += Time.deltaTime;
-            if (_healTimer < 1f / healPerSec) return;
-            _healTimer = 0;
-            
-            Heal(MaxHealth / 10);
         }
 
         private void ManageZone()

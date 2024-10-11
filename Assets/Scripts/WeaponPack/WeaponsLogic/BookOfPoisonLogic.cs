@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EnemyPack;
+using EnemyPack.CustomEnemyLogic;
 using Other.Enums;
 using UnityEngine;
 using WeaponPack.Enums;

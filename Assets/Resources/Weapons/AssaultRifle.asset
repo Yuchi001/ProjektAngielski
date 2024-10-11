@@ -79,7 +79,7 @@ MonoBehaviour:
     canUpgrade: 1
     weaponLevelUpDescription: Weapon becomes <v> more accurate
     valueLevels: 3
-    valueGrowth: -0.2
+    valueGrowth: -0.05
   - statType: 15
     statValue: 0.2
     isPercentage: 1

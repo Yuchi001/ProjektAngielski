@@ -10,7 +10,7 @@ namespace PlayerPack
 {
     public class PlayerWeaponry : MonoBehaviour
     {
-        private List<WeaponLogicBase> _currentWeapons = new();
+        private readonly List<WeaponLogicBase> _currentWeapons = new();
         private List<SoWeapon> _allWeapons = new();
 
         public delegate void WeaponAddDelegate(WeaponLogicBase weaponLogicBase);
