@@ -68,7 +68,7 @@ MonoBehaviour:
     valueGrowth: 1
   - statType: 5
     statValue: 0.1
-    isPercentage: 0
+    isPercentage: 1
     canUpgrade: 1
     weaponLevelUpDescription: Axes are <v> larger
     valueLevels: 2

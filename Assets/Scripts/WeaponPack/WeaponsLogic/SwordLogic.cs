@@ -15,7 +15,7 @@ namespace WeaponPack.WeaponsLogic
         [SerializeField] private GameObject projectilePrefab;
 
         private const string HitEnemyCountName = "HitCount";
-        
+
         private float MaxRange => GetStatValue(EWeaponStat.ProjectileRange) ?? 0;
         
         protected override bool UseWeapon()
@@ -39,6 +39,7 @@ namespace WeaponPack.WeaponsLogic
                     .SetSprite(projectileSprite)
                     .SetSpriteRotation(45)
                     .SetDontDestroyOnHit()
+                    .SetUpdate(ProjectileUpdate)
                     .SetDisableDamageOnHit()
                     .SetNewCustomValue(HitEnemyCountName)
                     .SetOnHitAction(OnHit)
@@ -76,19 +77,29 @@ namespace WeaponPack.WeaponsLogic
                 .SetDisableDamageOnHit()
                 .SetScale(0.4f)
                 .SetLightColor(Color.clear)
-                .SetUpdate(ProjectileUpdate)
+                .SetUpdate(BackProjectileUpdate)
                 .SetReady();
+            
+            Destroy(projectile.gameObject);
+        }
+        
+        private void BackProjectileUpdate(Projectile projectile)
+        {
+            var projectilePos = projectile.transform.position;
+            var playerPos = PlayerTransform.position;
+
+            projectile.SetDirection(PlayerPos, 0, true)
+                .SetStaticSpriteRotation(225);
+            
+            if (Vector2.Distance(projectilePos, playerPos) > 0.1f) return;
             
             Destroy(projectile.gameObject);
         }
         
         private void ProjectileUpdate(Projectile projectile)
         {
-            var projectilePos = projectile.transform.position;
-            var playerPos = PlayerTransform.position;
-            if (Vector2.Distance(projectilePos, playerPos) > 0.1f) return;
-            
-            Destroy(projectile.gameObject);
+            var angleToPlayer = UtilsMethods.GetAngleToObject(projectile.transform, PlayerPos);
+            projectile.SetStaticSpriteRotation(angleToPlayer);
         }
     }
 }

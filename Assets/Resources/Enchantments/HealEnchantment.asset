@@ -15,3 +15,4 @@ MonoBehaviour:
   enchantmentName: Heal
   enchantmentSprite: {fileID: 21300000, guid: b596927cb5273b0409cc077695c5698e, type: 3}
   enchantmentLogicPrefab: {fileID: 1975207615251916696, guid: a6102f3c79065ab4181cc4aa9dd6db5e, type: 3}
+  hasCooldown: 1

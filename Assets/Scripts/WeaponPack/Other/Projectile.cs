@@ -229,6 +229,14 @@ namespace WeaponPack.Other
             return this;
         }
         
+        public Projectile SetStaticSpriteRotation(float angle)
+        {
+            var newRot = projectileSprite.transform.rotation;
+            newRot.z = angle;
+            projectileSprite.transform.rotation = newRot;
+            return this;
+        }
+        
         public Projectile SetPushForce(float force)
         {
             _pushForce = force;

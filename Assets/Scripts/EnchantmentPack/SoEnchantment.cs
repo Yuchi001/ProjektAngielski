@@ -8,10 +8,14 @@ namespace EnchantmentPack
     {
         [SerializeField] private string enchantmentName;
         [SerializeField] private Sprite enchantmentSprite;
+        [SerializeField, Tooltip("Leave empty if don't needed")] private Sprite enchantmentActiveSprite;
         [SerializeField] private GameObject enchantmentLogicPrefab;
+        [SerializeField] private bool hasCooldown;
 
         public string EnchantmentName => enchantmentName;
         public Sprite EnchantmentSprite => enchantmentSprite;
+        public Sprite EnchantmentActiveSprite => enchantmentActiveSprite;
         public GameObject EnchantmentLogicPrefab => enchantmentLogicPrefab;
+        public bool HasCooldown => hasCooldown;
     }
 }
