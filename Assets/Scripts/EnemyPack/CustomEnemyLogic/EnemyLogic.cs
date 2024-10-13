@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using EnchantmentPack.Enchantments;
+using EnchantmentPack.Enums;
 using EnemyPack.Enums;
 using EnemyPack.SO;
 using ExpPackage;
@@ -9,6 +11,7 @@ using Managers;
 using Managers.Enums;
 using Other;
 using PlayerPack;
+using PlayerPack.PlayerMovementPack;
 using UI;
 using UnityEngine;
 using WeaponPack.Other;
@@ -59,6 +62,9 @@ namespace EnemyPack.CustomEnemyLogic
 
         private EnemyLogic mergeParent;
         private int mergeCount = 1;
+
+        private PlayerEnchantmentManager PlayerEnchantmentManager =>
+            PlayerManager.Instance.PlayerEnchantmentManager;
         
         public void Setup(SoEnemy enemy, Transform target, EnemySpawner enemySpawner)
         {
@@ -74,7 +80,7 @@ namespace EnemyPack.CustomEnemyLogic
 
             _playerSpeed = PlayerManager.Instance.PickedCharacter.MovementSpeed;
 
-            Collider2D.isTrigger = _enemy.EnemyState != EEnemyState.Chase || _enemy.IsHeavy;
+            Collider2D.isTrigger = (_enemy.EnemyState != EEnemyState.Chase && _enemy.EnemyState != EEnemyState.StandAndShoot) || _enemy.IsHeavy;
             
             var aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
             var anims = aoc.animationClips.Select(a => new KeyValuePair<AnimationClip, AnimationClip>(a, _enemy.WalkingAnimationClip)).ToList();
@@ -176,12 +182,14 @@ namespace EnemyPack.CustomEnemyLogic
 
         private void ManagePlayerCollision()
         {
+            var inDistance = Vector2.Distance(PlayerPos, transform.position) < AttackRange;
             _collisionTimer += Time.deltaTime;
             
+            if (!inDistance) return;
+            ManagePlayerDashCollision();
+
             if (_collisionTimer < 1f / attacksPerSecond) return;
-
-            if (Vector2.Distance(PlayerPos, transform.position) >= AttackRange) return;
-
+            
             switch (_enemy.EnemyState)
             {
                 case EEnemyState.Chase:
@@ -199,10 +207,18 @@ namespace EnemyPack.CustomEnemyLogic
             _collisionTimer = 0;
             PlayerHealth.GetDamaged(attackDamage);
         }
+
+        private void ManagePlayerDashCollision()
+        {
+            if (!PlayerEnchantmentManager.Has(EEnchantmentName.DashKill) || !PlayerManager.Instance.PlayerMovement.Dash) return;
+
+            if ((float)CurrentHealth / MaxHealth > DashKill.healthPercentage) return;
+            GetDamaged(9999);
+        }
         
         public void PushEnemy(Vector2 force, float time)
         {
-            if (_isBeingPushed || mergeParent) return;
+            if (_isBeingPushed || mergeParent || _enemy.EnemyState == EEnemyState.StandAndShoot) return;
             
             rb2d.AddForce(force, ForceMode2D.Impulse);
             _isBeingPushed = true;
@@ -218,6 +234,9 @@ namespace EnemyPack.CustomEnemyLogic
         public override void GetDamaged(int value, Color? color = null)
         {
             base.GetDamaged(value, color);
+
+            if (Stuned && PlayerEnchantmentManager.Has(EEnchantmentName.StunDoubleDamage)) 
+                value *= 2;
             
             AudioManager.Instance.PlaySound(ESoundType.EnemyHurt);
             

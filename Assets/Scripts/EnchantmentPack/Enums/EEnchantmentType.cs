@@ -2,7 +2,8 @@
 {
     public enum EEnchantmentType
     {
-        Passive,
-        Cooldown,
+        None,
+        Stack,
+        Cooldown
     }
 }

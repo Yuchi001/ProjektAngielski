@@ -22,8 +22,8 @@ namespace PlayerPack.PlayerMovementPack
         private int MaxDashStacks => PickedCharacter.MaxDashStacks;
 
         private bool _lookingRight;
-
-        private bool _dash = false;
+        
+        public bool Dash { get; private set; } = false;
         private float _dashTimer = 0;
         private float _dashingTimer = 0;
         public int CurrentDashStacks { get; private set; } = 0;
@@ -57,7 +57,7 @@ namespace PlayerPack.PlayerMovementPack
         private void ManageMovement()
         {
             ManageDash();
-            if (_dash) return;
+            if (Dash) return;
             
             var velocity = GetVelocity();
             rb2d.velocity = velocity;
@@ -71,7 +71,7 @@ namespace PlayerPack.PlayerMovementPack
 
         private void ManageDash()
         {
-            if (_dash)
+            if (Dash)
             {
                 var sr = new GameObject("dashGhost", typeof(SpriteRenderer));
                 sr.GetComponent<SpriteRenderer>().sprite = PickedCharacter.CharacterSprite;
@@ -82,7 +82,7 @@ namespace PlayerPack.PlayerMovementPack
                 _dashingTimer += Time.deltaTime;
                 if (_dashingTimer < dashTime) return;
                 
-                _dash = false;
+                Dash = false;
                 PlayerHealth.Invincible = false;
                 rb2d.velocity /= dashForceMultiplier;
                 _dashingTimer = 0;
@@ -98,10 +98,10 @@ namespace PlayerPack.PlayerMovementPack
                 _dashTimer = 0;
             }
 
-            if (!Input.GetKeyDown(GameManager.DeclineBind) || CurrentDashStacks == 0) return;
+            if (!Input.GetKeyDown(GameManager.DeclineBind) || CurrentDashStacks == 0 || rb2d.velocity == Vector2.zero) return;
 
             if (CurrentDashStacks == MaxDashStacks) _dashTimer = 0;
-            _dash = true;
+            Dash = true;
             CurrentDashStacks--;
             rb2d.velocity = rb2d.velocity.normalized * dashForceMultiplier;
             PlayerHealth.Invincible = true;

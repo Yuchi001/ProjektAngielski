@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1705b1defe84a9293fd13b12cf52100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  betterGemEnchantmentName: Better Exp
 --- !u!50 &1743729601478481784
 Rigidbody2D:
   serializedVersion: 4

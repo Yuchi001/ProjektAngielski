@@ -1,6 +1,10 @@
-﻿using Managers;
+﻿using EnchantmentPack.Enchantments;
+using EnchantmentPack.Enums;
+using EnemyPack.CustomEnemyLogic;
+using Managers;
 using Managers.Enums;
 using Other;
+using PlayerPack.PlayerMovementPack;
 using PlayerPack.SO;
 using UI;
 using UnityEngine;
@@ -24,8 +28,12 @@ namespace PlayerPack
         public bool Invincible { get; set; } = false;
 
         public delegate void PlayerDamagedDelegate();
-        public static event PlayerDamagedDelegate OnPlayerDamaged; 
-        
+        public static event PlayerDamagedDelegate OnPlayerDamaged;
+
+        private static PlayerEnchantmentManager PlayerEnchantmentManager =>
+            PlayerManager.Instance.PlayerEnchantmentManager;
+        private static PlayerMovement PlayerMovement =>
+            PlayerManager.Instance.PlayerMovement;
         private static SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
 
         private void OnEnable()

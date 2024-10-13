@@ -23,14 +23,15 @@ namespace EnemyPack.CustomEnemyLogic
         {
             _shootTimer += Time.deltaTime;
             if (_shootTimer < 1f / bulletsPerSec) return;
-            
+
+            _shootTimer = 0;
             var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
             var projectileScript = projectile.GetComponent<Projectile>();
 
             projectileScript.Setup(bulletDamage, bulletSpeed)
                 .SetSprite(projectileSprites, 5, 4)
                 .SetLightColor(Color.red)
-                .SetTargetTag(playerTagName, enemyProjectileLayerMask)
+                .SetTargetTag(playerTagName, 7)
                 .SetDirection(PlayerManager.Instance.transform.position)
                 .SetReady();
         }

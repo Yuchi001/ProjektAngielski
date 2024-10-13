@@ -61,8 +61,12 @@ MonoBehaviour:
   - effectType: 3
     effectStatusSprite: {fileID: 21300000, guid: f69166c5d08a66845b4d72c6dc8938de, type: 3}
     effectColor: {r: 0, g: 0.5172882, b: 1, a: 1}
+  - effectType: 4
+    effectStatusSprite: {fileID: 21300000, guid: cbd4b91085b2e8a4299ba0310d229b1e, type: 3}
+    effectColor: {r: 1, g: 1, b: 1, a: 1}
   poisonDamage: 5
   burnDamage: 3
+  bleedDamage: 1
   effectResolveRate: 2
   poisonParticles: {fileID: 4510686599989819007, guid: 8689277780798524cbe676bd4cb79031, type: 3}
   burnParticles: {fileID: 4335675135845145051, guid: 89c0086434b47224d8bcbcdbcd0eb1c3, type: 3}

@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EnchantmentPack.Enums;
 using Other;
 using Other.Enums;
+using PlayerPack;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -17,6 +20,7 @@ namespace Managers
 
         [SerializeField] private int poisonDamage = 10;
         [SerializeField] private int burnDamage = 5;
+        [SerializeField] private int bleedDamage = 1;
         
         [FormerlySerializedAs("damageRate")] [SerializeField] private int effectResolveRate = 2;
         
@@ -28,6 +32,9 @@ namespace Managers
         
         private readonly List<EffectInfo> _effectList = new();
         private readonly List<EffectActiveObjects> _effectSpawnedObjects = new();
+
+        private static PlayerEnchantmentManager PlayerEnchantmentManager =>
+            PlayerManager.Instance.PlayerEnchantmentManager;
         
         public bool Stuned { get; private set; }
         public bool Slowed { get; private set; }
@@ -83,24 +90,42 @@ namespace Managers
                     break;
             }
 
+            var stacks = 0;
             var effect = _effectList.FirstOrDefault(e => e.effectType == effectType);
             if (effect != null)
             {
+                stacks = effect.stacks;
                 Destroy(effect.spawnedStatus);
                 _effectList.Remove(effect);
             }
+
+            stacks++;
             
             var status = Instantiate(statusImagePrefab, statusListHolder.position, Quaternion.identity, statusListHolder);
             var effectSprite = _effectStatusList.FirstOrDefault(s => s.effectType == effectType).effectStatusSprite;
             status.GetComponent<Image>().sprite = effectSprite;
+            var statusStacks = status.GetComponentInChildren<TextMeshProUGUI>();
+            var stackable = Stackable(effect);
+            statusStacks.gameObject.SetActive(stackable);
+            if(Stackable(effect))
+                statusStacks.text = $"x{stacks}";
+            
             _effectListQueue.Add(new EffectInfo
             {
                 effectType = effectType, 
                 time = time,
                 spawnedStatus = status,
+                stacks = stacks,
             });
             
             LayoutRebuilder.ForceRebuildLayoutImmediate(statusListHolder);
+        }
+
+        private static bool Stackable(EffectInfo effectInfo)
+        {
+            if (effectInfo == null) return false;
+
+            return (effectInfo.effectType == EEffectType.Bleed || PlayerEnchantmentManager.Has(EEnchantmentName.PoisonCanStack)) && effectInfo.stacks > 1;
         }
 
         private EffectStatus? GetEffectStatus(EEffectType effectType)
@@ -121,14 +146,23 @@ namespace Managers
                     if(_canBeDamaged.CurrentHealth == 1) break;
                     var poisonParticlesInstance = Instantiate(poisonParticles, entityPos, Quaternion.identity);
                     Destroy(poisonParticlesInstance, 2f);
-                    var calculatedPoisonDamage = poisonDamage + _canBeDamaged.MaxHealth / 50;
-                    if (calculatedPoisonDamage > _canBeDamaged.CurrentHealth + 1) poisonDamage = _canBeDamaged.CurrentHealth - 1;
+                    var poisonDamageWithStacks = PlayerEnchantmentManager.Has(EEnchantmentName.PoisonCanStack)
+                        ? poisonDamage * effectInfo.stacks
+                        : poisonDamage;
+                    var calculatedPoisonDamage = poisonDamageWithStacks + _canBeDamaged.MaxHealth / 50;
+                    if (calculatedPoisonDamage > _canBeDamaged.CurrentHealth + 1) calculatedPoisonDamage = _canBeDamaged.CurrentHealth - 1;
                     _canBeDamaged.GetDamaged(calculatedPoisonDamage, effectStatus.Value.effectColor);
                     break;
                 case EEffectType.Burn:
                     var burnParticlesInstance = Instantiate(burnParticles, entityPos, Quaternion.identity);
                     Destroy(burnParticlesInstance, 2f);
                     _canBeDamaged.GetDamaged(burnDamage + _canBeDamaged.MaxHealth / 100, effectStatus.Value.effectColor);
+                    break;
+                case EEffectType.Bleed:
+                    var calculatedBleedDamage = bleedDamage * effectInfo.stacks;
+                    if (PlayerEnchantmentManager.Has(EEnchantmentName.BleedStacking))
+                        calculatedBleedDamage += PlayerEnchantmentManager.GetStacks(EEnchantmentName.BleedStacking);
+                    _canBeDamaged.GetDamaged(calculatedBleedDamage, effectStatus.Value.effectColor);
                     break;
             }
         }
@@ -191,6 +225,7 @@ namespace Managers
     {
         public EEffectType effectType;
         public float time;
+        public int stacks;
         public GameObject spawnedStatus;
     }
 

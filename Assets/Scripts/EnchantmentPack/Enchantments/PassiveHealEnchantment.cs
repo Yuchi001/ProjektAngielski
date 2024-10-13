@@ -42,7 +42,7 @@ namespace EnchantmentPack.Enchantments
 
         public override string GetDescriptionText()
         {
-            return $"Heals player for {(int)(healingFactor * 100)}% each {(1 / healPerSec):0.0} seconds.";
+            return $"Restores {(int)(healingFactor * 100)}% max health each {(1 / healPerSec):0.0} seconds.";
         }
     }
 }

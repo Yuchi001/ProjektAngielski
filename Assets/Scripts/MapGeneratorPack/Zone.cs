@@ -1,4 +1,5 @@
 ﻿using System;
+using EnchantmentPack;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -10,6 +11,10 @@ namespace MapGeneratorPack
         [SerializeField] private Vector2Int scalingMinMax;
         [SerializeField] private Vector2Int scalingMinMaxStartingZone;
         [SerializeField] private GameObject saveZone;
+        
+        // TODO: This is experimental, please consider deletion
+        [SerializeField] private GameObject chestPrefab;
+        [SerializeField] private SoEnchantment healEnchantment;
 
         private SpriteRenderer _spriteRenderer;
 
@@ -31,6 +36,11 @@ namespace MapGeneratorPack
                 x = Random.Range(scalingMinMaxStartingZone.x, scalingMinMaxStartingZone.y + 1),
                 y = Random.Range(scalingMinMaxStartingZone.x, scalingMinMaxStartingZone.y + 1)
             };
+
+            if (isNotStarting) return;
+
+            var chest = Instantiate(chestPrefab, GetRandomPos(), Quaternion.identity);
+            chest.GetComponent<ChestEnchant>().Setup(healEnchantment);
         }
 
         public Vector2 GetRandomPos()

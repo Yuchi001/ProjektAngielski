@@ -4,6 +4,7 @@ using System.Globalization;
 using EnemyPack;
 using EnemyPack.CustomEnemyLogic;
 using EnemyPack.SO;
+using JetBrains.Annotations;
 using Managers;
 using Managers.Other;
 using Other;
@@ -344,6 +345,11 @@ namespace WeaponPack.Other
             if (_currentIndex >= _sprites.Count) _currentIndex = 0;
 
             projectileSprite.sprite = _sprites[_currentIndex];
+        }
+
+        public SpriteRenderer GetSpriteRenderer()
+        {
+            return projectileSprite;
         }
 
         public void ManageCollisionStay(GameObject hitObj)

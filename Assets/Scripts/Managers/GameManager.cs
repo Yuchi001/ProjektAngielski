@@ -1,4 +1,5 @@
-﻿using MainCameraPack;
+﻿using EnemyPack;
+using MainCameraPack;
 using Managers.Enums;
 using MapGeneratorPack;
 using PlayerPack;
@@ -35,7 +36,7 @@ namespace Managers
 
        [SerializeField] private WaveManager waveManager;
        [SerializeField] private GameUiManager gameUiManager;
-
+       
        #region Prefabs
 
        [Header("Public prefabs")] 
@@ -46,6 +47,7 @@ namespace Managers
        #endregion
        public PlayerManager CurrentPlayer { get; private set; }
        public MapGenerator MapGenerator { get; private set; }
+       public WaveManager WaveManager => waveManager;
 
        private void Init()
        {

@@ -10,8 +10,10 @@ namespace MapGeneratorPack
 {
     public class MapGenerator : MonoBehaviour
     {
+        [SerializeField] private float chestSpawnChance = 10f;
         [SerializeField] private float maxDistance = 5;
         [SerializeField] private GameObject zonePrefab;
+        [SerializeField] private GameObject chestPrefab;
         [SerializeField] private float zonesPerSecond = 0.1f;
         [SerializeField] private float checkPlayerDistancePerSecond = 0.5f;
         
@@ -24,11 +26,7 @@ namespace MapGeneratorPack
 
         private List<Zone> CloseZones
         {
-            get
-            {
-                if (_currentZones == null) _currentZones = GetCloseZone();
-                return _currentZones;
-            }
+            get { return _currentZones ??= GetCloseZone(); }
             set => _currentZones = value;
         }
         private List<Zone> _currentZones = null;
@@ -62,6 +60,10 @@ namespace MapGeneratorPack
             {
                 SpawnZone();
                 _zoneSpawnTimer = 0;
+
+                if (Random.Range(0f, 101f) > chestSpawnChance) return;
+                
+                Instantiate(chestPrefab, _zones[Random.Range(0, _zones.Count)].GetRandomPos(), Quaternion.identity);
             }
         }
 

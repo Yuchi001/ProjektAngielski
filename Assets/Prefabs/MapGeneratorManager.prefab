@@ -44,7 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 009314380f6646cfbb575f9b19b05fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chestSpawnChance: 5
   maxDistance: 5
   zonePrefab: {fileID: 5079176135378971073, guid: 8f6c0a21b2df7074f9249caa1d2094ea, type: 3}
+  chestPrefab: {fileID: 5759039174522805506, guid: 646f26181d67ff14abee17021a95429c, type: 3}
   zonesPerSecond: 0.1
   checkPlayerDistancePerSecond: 0.5

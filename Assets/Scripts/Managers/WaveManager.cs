@@ -14,6 +14,8 @@ namespace Managers
 
         private EnemySpawner _enemySpawner;
 
+        public EnemySpawner EnemySpawner => _enemySpawner;
+
         private void Awake()
         {
             var enemySpawner = spawners.FirstOrDefault(s => s.GetType() == typeof(EnemySpawner));

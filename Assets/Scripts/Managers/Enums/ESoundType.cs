@@ -11,5 +11,6 @@
         PlayerDeath,
         PlayerHurt,
         Note,
+        Chest,
     }
 }

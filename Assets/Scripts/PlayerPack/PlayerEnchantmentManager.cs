@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EnchantmentPack;
+using EnchantmentPack.Enums;
+using EnchantmentPack.Interfaces;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,53 +12,34 @@ namespace PlayerPack
     {
         private readonly List<EnchantmentBase> _currentEnchantments = new();
         private List<SoEnchantment> _allEnchantments = new();
-
-        private readonly List<string> _usedEnchantments = new();
-
+        
         public delegate void EnchantmentAddDelegate(EnchantmentBase enchantment);
         public static event EnchantmentAddDelegate OnEnchantmentAdd;
         
         private void Awake()
         {
             _allEnchantments = Resources.LoadAll<SoEnchantment>("Enchantments").Select(Instantiate).ToList();
-            PlayerManager.OnPlayerReady += OnPlayerReady;
         }
-
-        private void OnDisable()
-        {
-            PlayerManager.OnPlayerReady -= OnPlayerReady;
-        }
-
-        private void OnPlayerReady()
-        {
-            // TODO: Tutaj na razie na sztywno dodaje heal, ale powinnismy dodawac tutaj liste brana z GameManager
-            var startingEnchantments = _allEnchantments.Where(e => e.EnchantmentName == "Heal").ToList();
-
-            foreach (var enchantment in startingEnchantments)
-            {
-                AddEnchantment(enchantment);
-            }
-        }
-
-        public void AddEnchantment(SoEnchantment enchantmentToAdd)
+        
+        public EnchantmentBase AddEnchantment(SoEnchantment enchantmentToAdd)
         {
             var alreadyIn = _currentEnchantments.Any(e => e.Is(enchantmentToAdd));
-            if (alreadyIn) return;
+            if (alreadyIn) return null;
 
-            _usedEnchantments.Add(enchantmentToAdd.EnchantmentName);
             var enchantmentLogicObj = Instantiate(enchantmentToAdd.EnchantmentLogicPrefab, transform, true);
             var enchantmentLogic = enchantmentLogicObj.GetComponent<EnchantmentBase>();
             enchantmentLogic.Setup(enchantmentToAdd);
             _currentEnchantments.Add(enchantmentLogic);
             
             OnEnchantmentAdd?.Invoke(enchantmentLogic);
+
+            return enchantmentLogic;
         }
 
         public IEnumerable<SoEnchantment> GetRandomEnchantmentList(int count)
         {
             var enchantments = new List<SoEnchantment>();
-            var enchantmentPool =
-                new List<SoEnchantment>(_allEnchantments.Where(e => !_usedEnchantments.Contains(e.EnchantmentName)));
+            var enchantmentPool = _allEnchantments;
 
             for (var i = 0; i < count; i++)
             {
@@ -71,6 +52,18 @@ namespace PlayerPack
             }
 
             return enchantments;
+        }
+
+        public bool Has(EEnchantmentName enchantmentName)
+        {
+            return _currentEnchantments.Any(e => e.Get().EnchantmentName == enchantmentName);
+        }
+
+        public int GetStacks(EEnchantmentName enchantmentName)
+        {
+            var enchantmentBase = _currentEnchantments.FirstOrDefault(e => e.Get().EnchantmentName == enchantmentName);
+
+            return enchantmentBase == default ? 0 : ((IStackEnchantment)enchantmentBase).Stacks;
         }
     }
 }

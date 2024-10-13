@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using EnchantmentPack.Enums;
 using ExpPackage.Enums;
 using Managers;
 using Managers.Enums;
@@ -17,7 +18,12 @@ namespace ExpPackage
         [SerializeField] private float range;
         [SerializeField] private float animTime;
         [SerializeField] private List<ExpGemInfo> expAmountPair = new();
+        [SerializeField] private List<ExpGemInfo> betterGemAmountPair = new();
         private static Vector3 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
+
+        private static PlayerEnchantmentManager PlayerEnchantmentManager =>
+            PlayerManager.Instance.PlayerEnchantmentManager;
+        
         private int expAmount = 0;
 
         private float _timer = 0;
@@ -34,7 +40,10 @@ namespace ExpPackage
 
         private void Setup(EExpGemType gemType)
         {
-            var pair = expAmountPair.FirstOrDefault(e => e.gemType == gemType);
+            var gemList = PlayerEnchantmentManager.Has(EEnchantmentName.BetterExp)
+                ? betterGemAmountPair
+                : expAmountPair;
+            var pair = gemList.FirstOrDefault(e => e.gemType == gemType);
             if (pair == null) return;
 
             expAmount = pair.expAmount;

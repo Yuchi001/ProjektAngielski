@@ -6,9 +6,11 @@ using EnemyPack.SO;
 using ExpPackage.Enums;
 using Managers;
 using Managers.Base;
+using Managers.Enums;
 using Other;
 using Other.Enums;
 using PlayerPack;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -49,8 +51,10 @@ namespace EnemyPack
 
         protected override void Update()
         {
-            _difficultyTimer += Time.deltaTime;
             base.Update();
+
+            if (_state == ESpawnerState.Stop) return;
+            _difficultyTimer += Time.deltaTime;
         }
 
         protected override void SpawnLogic()
@@ -93,6 +97,16 @@ namespace EnemyPack
 
         private void SetupEnemy(GameObject enemyObj, SoEnemy enemy)
         {
+            var enemyScript = enemyObj.GetComponent<EnemyLogic>();
+            var scale = enemy.BodyScale;
+            enemyObj.transform.localScale = new Vector3(scale, scale, scale);
+            
+            enemyScript.Setup(enemy, PlayerManager.transform, this);
+        }
+
+        public void SpawnEnemy(SoEnemy enemy, Vector2 position)
+        {
+            var enemyObj = Instantiate(enemyPrefab, position, Quaternion.identity);
             var enemyScript = enemyObj.GetComponent<EnemyLogic>();
             var scale = enemy.BodyScale;
             enemyObj.transform.localScale = new Vector3(scale, scale, scale);

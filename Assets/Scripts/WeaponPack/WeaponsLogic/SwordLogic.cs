@@ -24,7 +24,7 @@ namespace WeaponPack.WeaponsLogic
             var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = UtilsMethods.FindTarget(targetedEnemies);
+                var target = UtilsMethods.FindTarget(transform.position, targetedEnemies);
                 if (target == null) continue;
 
                 spawnedProjectiles++;
@@ -68,7 +68,7 @@ namespace WeaponPack.WeaponsLogic
             var newProjectile = Instantiate(projectilePrefab, projectile.transform.position, Quaternion.identity);
             var newProjectileScript = newProjectile.GetComponent<Projectile>();
             
-            newProjectileScript.Setup(Damage, Speed * 2)
+            newProjectileScript.Setup(Damage, Speed)
                 .SetTarget(PlayerTransform)
                 .SetDirection(PlayerPos, 0, true)
                 .SetSpriteRotation(225)
@@ -87,19 +87,21 @@ namespace WeaponPack.WeaponsLogic
         {
             var projectilePos = projectile.transform.position;
             var playerPos = PlayerTransform.position;
-
-            projectile.SetDirection(PlayerPos, 0, true)
-                .SetStaticSpriteRotation(225);
             
-            if (Vector2.Distance(projectilePos, playerPos) > 0.1f) return;
+            var sr = projectile.GetSpriteRenderer().transform;
+            UtilsMethods.LookAtObj(sr, PlayerPos);
+            sr.Rotate(0,0, 225);
+            
+            if (Vector2.Distance(projectilePos, playerPos) > 0.5f) return;
             
             Destroy(projectile.gameObject);
         }
         
         private void ProjectileUpdate(Projectile projectile)
         {
-            var angleToPlayer = UtilsMethods.GetAngleToObject(projectile.transform, PlayerPos);
-            projectile.SetStaticSpriteRotation(angleToPlayer);
+            var sr = projectile.GetSpriteRenderer().transform;
+            UtilsMethods.LookAtObj(sr, PlayerPos);
+            sr.Rotate(0,0, 45);
         }
     }
 }
