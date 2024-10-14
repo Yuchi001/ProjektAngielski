@@ -35,7 +35,7 @@ namespace EnchantmentPack.Enchantments
             if (_timer < 1f / parameters[EValueKey.Rate]) return;
 
             _timer = 0;
-            PlayerHealth.Heal((int)(PlayerHealth.MaxHealth * parameters[EValueKey.Value]));
+            PlayerHealth.Heal((int)(PlayerHealth.MaxHealth * parameters[EValueKey.Percentage]));
         }
     }
 }
