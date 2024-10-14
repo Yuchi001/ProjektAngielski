@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1975207615251916696}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.862572, y: -3.7308125, z: -0.83403486}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,6 +44,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e947efc6394694a51be14a9dfccb38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enchantment: {fileID: 11400000, guid: 36ae133c3b7706148af34a085a455430, type: 2}
-  healingFactor: 0.1
-  healPerSec: 0.1

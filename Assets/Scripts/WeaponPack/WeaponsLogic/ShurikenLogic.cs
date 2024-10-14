@@ -1,4 +1,5 @@
-﻿using Other.Enums;
+﻿using System.Collections;
+using Other.Enums;
 using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
@@ -13,13 +14,17 @@ namespace WeaponPack.WeaponsLogic
         [SerializeField] private GameObject projectilePrefab;
         protected override bool UseWeapon()
         {
-            var spawned = 0;
+            StartCoroutine(ThrowShurikens());
+            return UtilsMethods.FindTarget(transform.position);
+        }
+
+        private IEnumerator ThrowShurikens()
+        {
             for (var i = 0; i < ProjectileCount; i++)
             {
                 var target = UtilsMethods.FindTarget(transform.position);
                 if (target == null) continue;
 
-                spawned++;
                 var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
                 var projectileScript = projectile.GetComponent<Projectile>();
                 
@@ -31,9 +36,8 @@ namespace WeaponPack.WeaponsLogic
                     .SetLightColor(Color.clear)
                     .SetEffect(EEffectType.Bleed, 999)
                     .SetReady();
+                yield return new WaitForSeconds(0.1f);
             }
-
-            return spawned > 0;
         }
     }
 }

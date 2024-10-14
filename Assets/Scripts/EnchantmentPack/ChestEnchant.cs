@@ -72,19 +72,11 @@ namespace EnchantmentPack
                 return;
             }
             
-            var added = PlayerManager.Instance.PlayerEnchantmentManager.AddEnchantment(enchant);
-            if (added == null)
-            {
-                EnemySpawner.SpawnEnemy(mimic, transform.position);
-                Destroy(gameObject);
-                return;
-            }
-            
             Destroy(gameObject, openedChestLifeTime);
             Time.timeScale = 0;
             
             var enchantmentMenuObj = Instantiate(enchantmentMenuPrefab, GameUiManager.Instance.GameCanvas, false);
-            enchantmentMenuObj.GetComponent<EnchantmentUI>().Setup(added);
+            enchantmentMenuObj.GetComponent<EnchantmentUI>().Setup(enchant);
 
             var particles = Instantiate(confettiParticles, transform.position, quaternion.identity);
             Destroy(particles, 5);

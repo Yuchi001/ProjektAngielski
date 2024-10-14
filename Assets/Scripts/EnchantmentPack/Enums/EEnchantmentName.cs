@@ -9,5 +9,6 @@
         PoisonCanStack,
         DashKill,
         PoisonShare,
+        ExplodingDash,
     }
 }

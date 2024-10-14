@@ -219,6 +219,11 @@ namespace Managers
             _effectList.ForEach(ResolveEffect);
             _effectListQueue.Clear();
         }
+        
+        public bool HasEffect(EEffectType effectType)
+        {
+            return _effectList.Any(e => e.effectType == effectType);
+        }
     }
     
     public class EffectInfo

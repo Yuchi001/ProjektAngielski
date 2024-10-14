@@ -18,9 +18,9 @@ namespace EnchantmentPack
         private IStackEnchantment _stackEnchantment;
         private ICooldownEnchantment _cooldownEnchantment;
         
-        public void Setup(EnchantmentBase enchantmentBase)
+        public void Setup(SoEnchantment enchantmentData, EnchantmentBase logic)
         {
-            _enchantmentData = enchantmentBase.Get();
+            _enchantmentData = enchantmentData;
             enchantmentImage.sprite = _enchantmentData.EnchantmentSprite;
             enchantmentImage.fillAmount = 1;
             
@@ -29,10 +29,10 @@ namespace EnchantmentPack
                 case EEnchantmentType.None:
                     break;
                 case EEnchantmentType.Stack:
-                    _stackEnchantment = enchantmentBase.GetComponent<IStackEnchantment>();
+                    _stackEnchantment = logic.GetComponent<IStackEnchantment>();
                     break;
                 case EEnchantmentType.Cooldown:
-                    _cooldownEnchantment = enchantmentBase.GetComponent<ICooldownEnchantment>();
+                    _cooldownEnchantment = logic.GetComponent<ICooldownEnchantment>();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

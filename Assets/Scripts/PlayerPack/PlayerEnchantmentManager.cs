@@ -10,30 +10,26 @@ namespace PlayerPack
 {
     public class PlayerEnchantmentManager : MonoBehaviour
     {
-        private readonly List<EnchantmentBase> _currentEnchantments = new();
+        private readonly Dictionary<EEnchantmentName, EnchantmentBase> _currentEnchantments = new();
         private List<SoEnchantment> _allEnchantments = new();
-        
-        public delegate void EnchantmentAddDelegate(EnchantmentBase enchantment);
-        public static event EnchantmentAddDelegate OnEnchantmentAdd;
+
+        public delegate void AddEnchantmentDelegate(SoEnchantment enchantment, EnchantmentBase logic);
+        public static event AddEnchantmentDelegate OnAddEnchantment;
         
         private void Awake()
         {
             _allEnchantments = Resources.LoadAll<SoEnchantment>("Enchantments").Select(Instantiate).ToList();
         }
         
-        public EnchantmentBase AddEnchantment(SoEnchantment enchantmentToAdd)
+        public void AddEnchantment(SoEnchantment enchantmentToAdd)
         {
-            var alreadyIn = _currentEnchantments.Any(e => e.Is(enchantmentToAdd));
-            if (alreadyIn) return null;
+            var alreadyIn = _currentEnchantments.ContainsKey(enchantmentToAdd.EnchantmentName);
+            if (alreadyIn) return;
 
-            var enchantmentLogicObj = Instantiate(enchantmentToAdd.EnchantmentLogicPrefab, transform, true);
-            var enchantmentLogic = enchantmentLogicObj.GetComponent<EnchantmentBase>();
-            enchantmentLogic.Setup(enchantmentToAdd);
-            _currentEnchantments.Add(enchantmentLogic);
+            var enchantmentLogic = enchantmentToAdd.Setup(transform);
+            _currentEnchantments.Add(enchantmentToAdd.EnchantmentName, enchantmentLogic);
             
-            OnEnchantmentAdd?.Invoke(enchantmentLogic);
-
-            return enchantmentLogic;
+            OnAddEnchantment?.Invoke(enchantmentToAdd, enchantmentLogic);
         }
 
         public IEnumerable<SoEnchantment> GetRandomEnchantmentList(int count)
@@ -56,14 +52,14 @@ namespace PlayerPack
 
         public bool Has(EEnchantmentName enchantmentName)
         {
-            return _currentEnchantments.Any(e => e.Get().EnchantmentName == enchantmentName);
+            return _currentEnchantments.ContainsKey(enchantmentName);
         }
 
         public int GetStacks(EEnchantmentName enchantmentName)
         {
-            var enchantmentBase = _currentEnchantments.FirstOrDefault(e => e.Get().EnchantmentName == enchantmentName);
+            if (!_currentEnchantments.TryGetValue(enchantmentName, out var value)) return -1;
 
-            return enchantmentBase == default ? 0 : ((IStackEnchantment)enchantmentBase).Stacks;
+            return value is IStackEnchantment enchantment ? enchantment.Stacks : -1;
         }
     }
 }

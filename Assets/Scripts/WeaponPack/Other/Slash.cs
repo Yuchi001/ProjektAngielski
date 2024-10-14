@@ -60,7 +60,8 @@ namespace WeaponPack.Other
             var bounds = spriteRender.bounds;
             
             var newPos = transform.position;
-            var lookingRight = UtilsMethods.FindTarget(PlayerPos).transform.position.x > PlayerPos.x;
+            var target = UtilsMethods.FindTarget(PlayerPos);
+            var lookingRight = target == null || target.transform.position.x > PlayerPos.x;
             var mod = lookingRight ? 1 : -1;
             var offset = mod * bounds.size.x / 2;
 
@@ -74,9 +75,9 @@ namespace WeaponPack.Other
             bottomLeft.x += offset;
             
             var targets = Physics2D.OverlapAreaAll(topRight, bottomLeft);
-            foreach (var target in targets)
+            foreach (var t in targets)
             {
-                if(!target.TryGetComponent<EnemyLogic>(out var enemy)) continue;
+                if(!t.TryGetComponent<EnemyLogic>(out var enemy)) continue;
                 
                 enemy.PushEnemy(Vector2.right * (mod * _pushForce), 0.3f);
                 enemy.GetDamaged(_damage);

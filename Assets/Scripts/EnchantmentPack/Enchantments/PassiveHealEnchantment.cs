@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using EnchantmentPack.Enums;
 using EnchantmentPack.Interfaces;
 using PlayerPack;
 using UnityEngine;
@@ -8,10 +9,7 @@ namespace EnchantmentPack.Enchantments
 {
     public class PassiveHealEnchantment : EnchantmentBase, ICooldownEnchantment
     {
-        [SerializeField] private float healingFactor = 0.1f;
-        [SerializeField] private float healPerSec = 0.1f;
-
-        public float MaxCooldown => 1f / healPerSec;
+        public float MaxCooldown => 1f / parameters[EValueKey.Percentage];
 
         public float CurrentTime => _timer / MaxCooldown;
 
@@ -34,15 +32,10 @@ namespace EnchantmentPack.Enchantments
             if (IsActive) return;
 
             _timer += Time.deltaTime;
-            if (_timer < 1f / healPerSec) return;
+            if (_timer < 1f / parameters[EValueKey.Rate]) return;
 
             _timer = 0;
-            PlayerHealth.Heal((int)(PlayerHealth.MaxHealth * healingFactor));
-        }
-
-        public override string GetDescriptionText()
-        {
-            return $"Restores {(int)(healingFactor * 100)}% max health each {(1 / healPerSec):0.0} seconds.";
+            PlayerHealth.Heal((int)(PlayerHealth.MaxHealth * parameters[EValueKey.Value]));
         }
     }
 }

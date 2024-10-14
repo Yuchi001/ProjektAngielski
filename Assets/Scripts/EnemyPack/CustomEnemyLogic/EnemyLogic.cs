@@ -10,6 +10,7 @@ using ExpPackage;
 using Managers;
 using Managers.Enums;
 using Other;
+using Other.Enums;
 using PlayerPack;
 using PlayerPack.PlayerMovementPack;
 using UI;
@@ -65,6 +66,9 @@ namespace EnemyPack.CustomEnemyLogic
 
         private PlayerEnchantmentManager PlayerEnchantmentManager =>
             PlayerManager.Instance.PlayerEnchantmentManager;
+
+        private Dictionary<EEnchantmentName, Dictionary<EValueKey, float>> EnchantmentsValueDict =>
+            GameManager.Instance.EnchantmentValueDictionary;
         
         public void Setup(SoEnemy enemy, Transform target, EnemySpawner enemySpawner)
         {
@@ -212,7 +216,8 @@ namespace EnemyPack.CustomEnemyLogic
         {
             if (!PlayerEnchantmentManager.Has(EEnchantmentName.DashKill) || !PlayerManager.Instance.PlayerMovement.Dash) return;
 
-            if ((float)CurrentHealth / MaxHealth > DashKill.healthPercentage) return;
+            var dashKillParams = EnchantmentsValueDict[EEnchantmentName.DashKill];
+            if ((float)CurrentHealth / MaxHealth > dashKillParams[EValueKey.Percentage]) return;
             GetDamaged(9999);
         }
         
@@ -235,12 +240,13 @@ namespace EnemyPack.CustomEnemyLogic
         {
             base.GetDamaged(value, color);
 
-            if (Stuned && PlayerEnchantmentManager.Has(EEnchantmentName.StunDoubleDamage)) 
+            var isCrit = Stuned && PlayerEnchantmentManager.Has(EEnchantmentName.StunDoubleDamage); 
+            if (isCrit) 
                 value *= 2;
             
             AudioManager.Instance.PlaySound(ESoundType.EnemyHurt);
             
-            DamageIndicator.SpawnDamageIndicator(transform.position, damageIndicatorPrefab, value);
+            DamageIndicator.SpawnDamageIndicator(transform.position, damageIndicatorPrefab, value, isCrit);
             _currentHealth = Mathf.Clamp(_currentHealth - value, 0, MaxHealth);
             
             EnemyHealthBar.UpdateHealthBar(_currentHealth, MaxHealth);
@@ -255,7 +261,7 @@ namespace EnemyPack.CustomEnemyLogic
             rb2d.velocity = Vector2.zero;
             GetComponent<Collider2D>().enabled = false;
 
-            _enemySpawner.DeadEnemies++;
+            _enemySpawner.IncrementDeadEnemies(this);
             
             base.OnDie();
         }

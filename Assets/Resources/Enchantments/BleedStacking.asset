@@ -17,3 +17,10 @@ MonoBehaviour:
   enchantmentLogicPrefab: {fileID: 4925466707660706771, guid: e5663be2bc3ac8f4cb7f917d0f9bbe72, type: 3}
   enchantmentName: 3
   enchantmentType: 1
+  parameters:
+  - key: 1
+    value: 100
+    descriptionKey: <v>
+    asFloat: 0
+  description: Get 1 stack for every <v> enemies killed. Gain 1 bleed damage for
+    each stack.

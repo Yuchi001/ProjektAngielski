@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
+using EnchantmentPack.Enchantments;
+using EnchantmentPack.Enums;
+using EnemyPack;
+using EnemyPack.CustomEnemyLogic;
 using Managers;
+using Other.Enums;
 using PlayerPack.SO;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -19,6 +24,7 @@ namespace PlayerPack.PlayerMovementPack
         [SerializeField] private Animator animator;
         private SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
         private PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
+        private EnemySpawner EnemySpawner => GameManager.Instance.WaveManager.EnemySpawner;
         private int MaxDashStacks => PickedCharacter.MaxDashStacks;
 
         private bool _lookingRight;
@@ -27,6 +33,9 @@ namespace PlayerPack.PlayerMovementPack
         private float _dashTimer = 0;
         private float _dashingTimer = 0;
         public int CurrentDashStacks { get; private set; } = 0;
+
+        public delegate void PlayerDashEndDelegate();
+        public static event PlayerDashEndDelegate OnPlayerDashEnd;
         
         private void Start()
         {
@@ -87,7 +96,7 @@ namespace PlayerPack.PlayerMovementPack
                 rb2d.velocity /= dashForceMultiplier;
                 _dashingTimer = 0;
                 ResetKeys();
-                return;
+                OnPlayerDashEnd?.Invoke();
             }
 
             if (CurrentDashStacks <= MaxDashStacks) _dashTimer += Time.deltaTime;

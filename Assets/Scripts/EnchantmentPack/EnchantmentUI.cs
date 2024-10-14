@@ -13,11 +13,13 @@ namespace EnchantmentPack
         [SerializeField] private TextMeshProUGUI enchantDescription;
         [SerializeField] private Image enchantImage;
 
-        public void Setup(EnchantmentBase pickedEnchant)
+        private SoEnchantment _pickedEnchantment;
+
+        public void Setup(SoEnchantment pickedEnchant)
         {
-            var data = pickedEnchant.Get();
-            enchantDescription.text = pickedEnchant.GetDescriptionText();
-            enchantImage.sprite = data.EnchantmentSprite;
+            _pickedEnchantment = pickedEnchant;
+            enchantDescription.text = pickedEnchant.GetDescription();
+            enchantImage.sprite = pickedEnchant.EnchantmentSprite;
         }
 
         private void Update()
@@ -26,6 +28,7 @@ namespace EnchantmentPack
             
             AudioManager.Instance.PlaySound(ESoundType.ButtonClick);
             Time.timeScale = 1;
+            PlayerManager.Instance.PlayerEnchantmentManager.AddEnchantment(_pickedEnchantment);
             PlayerManager.Instance.PlayerMovement.ResetKeys();
             Destroy(gameObject);
         }

@@ -12,18 +12,18 @@ namespace EnchantmentPack
         
         private void Awake()
         {
-            PlayerEnchantmentManager.OnEnchantmentAdd += AddEnchantment;
+            PlayerEnchantmentManager.OnAddEnchantment += AddEnchantment;
         }
 
         private void OnDisable()
         {
-            PlayerEnchantmentManager.OnEnchantmentAdd -= AddEnchantment;
+            PlayerEnchantmentManager.OnAddEnchantment -= AddEnchantment;
         }
 
-        private void AddEnchantment(EnchantmentBase enchantment)
+        private void AddEnchantment(SoEnchantment enchantment, EnchantmentBase logic)
         {
             var slotObj = Instantiate(displayEnchantmentSlotPrefab, slotContainer, false);
-            slotObj.GetComponent<DisplayEnchantmentSlotUI>().Setup(enchantment);
+            slotObj.GetComponent<DisplayEnchantmentSlotUI>().Setup(enchantment, logic);
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(slotContainer);
         }

@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07a7043ef3a343f08ad94c3c142bb93b, type: 3}
   m_Name: BetterExp
   m_EditorClassIdentifier: 
-  enchantmentName: Better Exp
   enchantmentSprite: {fileID: 21300000, guid: 089baa1944ea0a34592ba0d9ad7bb77d, type: 3}
   enchantmentActiveSprite: {fileID: 0}
-  enchantmentLogicPrefab: {fileID: 7690949697749206745, guid: 12a1beebc3bd79e42bc6910a00d2a09d, type: 3}
-  hasCooldown: 0
+  enchantmentLogicPrefab: {fileID: 0}
+  enchantmentName: 0
+  enchantmentType: 0
+  parameters: []
+  description: Enhances power of exp gems.

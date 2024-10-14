@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using Managers;
-using Managers.Other;
 using Other.Enums;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Other
 {
@@ -20,7 +15,7 @@ namespace Other
         private Material _spriteMaterial;
         
         private Coroutine _currentCoroutine = null;
-        private EffectsManager _effectsManager;
+        protected EffectsManager _effectsManager;
 
         public bool Dead { get; private set; }
         
@@ -50,6 +45,11 @@ namespace Other
         public virtual void AddEffect(EffectInfo effectInfo)
         {
             _effectsManager.AddEffect(effectInfo.effectType, effectInfo.time);
+        }
+
+        public bool HasEffect(EEffectType effectType)
+        {
+            return _effectsManager.HasEffect(effectType);
         }
 
         protected abstract void OnUpdate();

@@ -35,7 +35,17 @@ namespace EnemyPack
         
         private float _difficultyTimer = 0;
 
-        public int DeadEnemies { get; set; } = 0;
+        public delegate void EnemyDieDelegate(EnemyLogic enemyLogic);
+        public static event EnemyDieDelegate OnEnemyDie; 
+ 
+        public int DeadEnemies { get; private set; }
+
+        public void IncrementDeadEnemies(EnemyLogic enemyLogic)
+        {
+            OnEnemyDie?.Invoke(enemyLogic);
+            DeadEnemies++;
+        }
+
         private float EnemySpawnRate => enemySpawnRate + 1f * enemySpawnRateMultiplierPerKill * DeadEnemies;
         protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * EnemySpawnRate);
         public float EnemiesHpScale => enemiesHpScale + 1f * DeadEnemies * enemiesHpScaleMultiplierPerKill;

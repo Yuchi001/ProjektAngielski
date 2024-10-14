@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enchantmentSprite: {fileID: 21300000, guid: e8d89fc540f51764286f911b1c21e619, type: 3}
   enchantmentActiveSprite: {fileID: 0}
-  enchantmentLogicPrefab: {fileID: 6691122952069026150, guid: b6a35f639b457dc468d8f36c834a2c2c, type: 3}
+  enchantmentLogicPrefab: {fileID: 0}
   enchantmentName: 5
   enchantmentType: 0
+  parameters:
+  - key: 5
+    value: 0.25
+    descriptionKey: <p>
+  description: Dashing through enemies with health lower than <p> kills them.
