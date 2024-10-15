@@ -1,4 +1,6 @@
-﻿using EnchantmentPack.Enchantments;
+﻿using System;
+using System.Collections;
+using EnchantmentPack.Enchantments;
 using EnchantmentPack.Enums;
 using EnemyPack.CustomEnemyLogic;
 using Managers;
@@ -32,9 +34,25 @@ namespace PlayerPack
 
         private static PlayerEnchantmentManager PlayerEnchantmentManager =>
             PlayerManager.Instance.PlayerEnchantmentManager;
-        private static PlayerMovement PlayerMovement =>
-            PlayerManager.Instance.PlayerMovement;
         private static SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
+
+        public delegate void PlayerHealDelegate(int value);
+        public static event PlayerHealDelegate OnPlayerHeal;
+
+        public delegate void PlayerReviveDelegate();
+        public static event PlayerReviveDelegate OnPlayerRevive;
+
+        private void Awake()
+        {
+            StartCoroutine(StartingInvincible());
+        }
+
+        private IEnumerator StartingInvincible()
+        {
+            Invincible = true;
+            yield return new WaitForSeconds(0.5f);
+            Invincible = false;
+        }
 
         private void OnEnable()
         {
@@ -71,9 +89,10 @@ namespace PlayerPack
             if(_currentHealth <= 0) OnDie(false);
         }
 
-        public void Heal(int value)
+        public void Heal(int value, ESoundType soundType = ESoundType.Heal)
         {
-            AudioManager.Instance.PlaySound(ESoundType.Heal);
+            OnPlayerHeal?.Invoke(value);
+            AudioManager.Instance.PlaySound(soundType);
             DamageIndicator.SpawnDamageIndicator(transform.position, damageIndicator, value, false);
             
             var particles = Instantiate(healParticles, transform.position, Quaternion.identity);
@@ -85,6 +104,13 @@ namespace PlayerPack
 
         public override void OnDie(bool destroyObj = true)
         {
+            if (PlayerEnchantmentManager.Ready(EEnchantmentName.Revive))
+            {
+                OnPlayerRevive?.Invoke();
+                Heal(MaxHealth / 2);
+                return;
+            }
+            
             AudioManager.Instance.PlaySound(ESoundType.PlayerDeath);
             PlayerManager.Instance.ManagePlayerDeath();
             

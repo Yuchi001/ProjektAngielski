@@ -103,7 +103,7 @@ MonoBehaviour:
   scalingMinMaxStartingZone: {x: 5, y: 7}
   saveZone: {fileID: 5079176135378971073}
   chestPrefab: {fileID: 5759039174522805506, guid: 646f26181d67ff14abee17021a95429c, type: 3}
-  healEnchantment: {fileID: 11400000, guid: b4556a614282ff845a95e6807d3cc67b, type: 2}
+  healEnchantment: {fileID: 11400000, guid: 423a407c2f2fde74aa87fd9d7ff1ca47, type: 2}
 --- !u!331 &1463491675460620186
 SpriteMask:
   m_ObjectHideFlags: 0

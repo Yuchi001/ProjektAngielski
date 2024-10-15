@@ -62,5 +62,12 @@ namespace PlayerPack
 
             return value is IStackEnchantment enchantment ? enchantment.Stacks : -1;
         }
+        public bool Ready(EEnchantmentName enchantmentName)
+        {
+            if (!_currentEnchantments.TryGetValue(enchantmentName, out var value)) return false;
+
+            return value is ICooldownEnchantment cooldownEnchantment && cooldownEnchantment.Ready();
+        }
+        
     }
 }

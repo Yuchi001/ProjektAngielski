@@ -9,7 +9,7 @@ namespace EnchantmentPack.Enchantments
 {
     public class PassiveHealEnchantment : EnchantmentBase, ICooldownEnchantment
     {
-        public float MaxCooldown => 1f / parameters[EValueKey.Percentage];
+        public float MaxCooldown => 1f / parameters[EValueKey.Rate];
 
         public float CurrentTime => _timer / MaxCooldown;
 

@@ -44,6 +44,7 @@ namespace Other
 
         public virtual void AddEffect(EffectInfo effectInfo)
         {
+            if (_effectsManager == null) return;
             _effectsManager.AddEffect(effectInfo.effectType, effectInfo.time);
         }
 
@@ -59,6 +60,11 @@ namespace Other
             flashColor ??= Color.white;
             _currentCoroutine ??= StartCoroutine(DamageAnim(flashColor.Value));
 
+            SpawnBlood();
+        }
+
+        public void SpawnBlood()
+        {
             if (bloodParticles == null) return;
 
             var particles = Instantiate(bloodParticles, transform.position, Quaternion.identity);

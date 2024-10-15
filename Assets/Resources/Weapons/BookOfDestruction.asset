@@ -23,7 +23,7 @@ MonoBehaviour:
   maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
-    statValue: 60
+    statValue: 10
     isPercentage: 0
     canUpgrade: 1
   - statType: 1
@@ -43,7 +43,7 @@ MonoBehaviour:
     isPercentage: 0
     canUpgrade: 1
   - statType: 6
-    statValue: 4
+    statValue: 2.5
     isPercentage: 0
     canUpgrade: 1
   weaponUpgradeStats:
@@ -53,13 +53,13 @@ MonoBehaviour:
     canUpgrade: 1
     weaponLevelUpDescription: Gain <v> cooldown reduction
     valueLevels: 5
-    valueGrowth: -0.05
+    valueGrowth: -0.01
   - statType: 11
     statValue: 0.1
     isPercentage: 1
     canUpgrade: 1
     weaponLevelUpDescription: Gain <v> chance for enemy to drop exp gem
-    valueLevels: 4
+    valueLevels: 5
     valueGrowth: 0.05
   - statType: 6
     statValue: 0.1

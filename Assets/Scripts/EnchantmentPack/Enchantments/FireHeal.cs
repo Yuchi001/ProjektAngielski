@@ -4,36 +4,36 @@ using EnemyPack.CustomEnemyLogic;
 using Managers;
 using Managers.Enums;
 using Other.Enums;
+using PlayerPack;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
 using UnityEngine;
 
 namespace EnchantmentPack.Enchantments
 {
-    public class PoisonShare : EnchantmentBase
+    public class FireHeal : EnchantmentBase
     {
         private void Awake()
         {
-            EnemySpawner.OnEnemyDie += TriggerPoisonSpread;
+            PlayerHealth.OnPlayerHeal += TriggerFireHeal;
         }
 
         private void OnDisable()
         {
-            EnemySpawner.OnEnemyDie -= TriggerPoisonSpread;
+            PlayerHealth.OnPlayerHeal -= TriggerFireHeal;
         }
 
-        private void TriggerPoisonSpread(EnemyLogic enemyLogic)
+        private void TriggerFireHeal(int value)
         {
-            if (!enemyLogic.HasEffect(EEffectType.Poison)) return;
-
-            var position = enemyLogic.transform.position;
+            var position = PlayerManager.Instance.transform.position;
             var range = parameters[EValueKey.Range];
             var results = new Collider2D[50];
+            var damage = parameters[EValueKey.Damage];
             
-            AudioManager.Instance.PlaySound(ESoundType.PoisonShare);
+            AudioManager.Instance.PlaySound(ESoundType.BananaBoom);
             Physics2D.OverlapCircleNonAlloc(position, range, results);
             SpecialEffectManager.Instance.SpawnExplosion(ESpecialEffectType.ExplosionMedium,
-                position, range).SetColor(Color.green);
+                position, range).SetColor(Color.red);
             
             foreach (var hit in results)
             {
@@ -42,9 +42,11 @@ namespace EnchantmentPack.Enchantments
                 
                 enemy.AddEffect(new EffectInfo
                 {
-                    effectType = EEffectType.Poison,
+                    effectType = EEffectType.Burn,
                     time = parameters[EValueKey.Time],
                 });
+                
+                enemy.GetDamaged((int)damage);
             }
         }
     }

@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using EnchantmentPack.Enums;
 using EnemyPack;
 using EnemyPack.CustomEnemyLogic;
+using Managers;
+using Other.Enums;
 using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
@@ -33,7 +36,7 @@ namespace WeaponPack.WeaponsLogic
                 var projectileScript = projectile.GetComponent<Projectile>();
 
                 var enemyPos = target.transform.position;
-                
+
                 projectileScript.Setup(Damage, Speed)
                     .SetDirection(enemyPos)
                     .SetSprite(projectileSprite)
@@ -46,8 +49,15 @@ namespace WeaponPack.WeaponsLogic
                     .SetScale(0.4f)
                     .SetRange(MaxRange)
                     .SetLightColor(Color.clear)
-                    .SetOutOfRangeBehaviour(OnOutOfRange)
-                    .SetReady();
+                    .SetOutOfRangeBehaviour(OnOutOfRange);
+                
+                if (PlayerEnchantmentManager.Has(EEnchantmentName.Sharpness))
+                {
+                    var parameters = GameManager.Instance.EnchantmentValueDictionary[EEnchantmentName.Sharpness];
+                    if (Random.Range(0f, 1f) <= parameters[EValueKey.Percentage]) projectileScript.SetEffect(EEffectType.Bleed, 9999);
+                }
+                
+                projectileScript.SetReady();
                 
                 targetedEnemies.Add(target.GetInstanceID());
             }

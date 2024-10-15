@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using EnchantmentPack.Enums;
+using Managers;
+using Other.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Utils;
@@ -37,8 +40,15 @@ namespace WeaponPack.WeaponsLogic
                     .SetPushForce(PushForce)
                     .SetScale(ProjectileScale)
                     .SetRotationSpeed(-rotationSpeedModifier * Speed)
-                    .SetLightColor(Color.clear)
-                    .SetReady();
+                    .SetLightColor(Color.clear);
+
+                if (PlayerEnchantmentManager.Has(EEnchantmentName.Sharpness))
+                {
+                    var parameters = GameManager.Instance.EnchantmentValueDictionary[EEnchantmentName.Sharpness];
+                    if (Random.Range(0f, 1f) <= parameters[EValueKey.Percentage]) projectileScript.SetEffect(EEffectType.Bleed, 9999);
+                }
+                
+                projectileScript.SetReady();
             }
 
             return spawnedProjectiles > 0;

@@ -21,7 +21,6 @@ namespace EnchantmentPack
         
         public Sprite EnchantmentSprite => enchantmentSprite;
         public Sprite EnchantmentActiveSprite => enchantmentActiveSprite;
-        public GameObject EnchantmentLogicPrefab => enchantmentLogicPrefab;
         public EEnchantmentName EnchantmentName => enchantmentName;
         public EEnchantmentType EEnchantmentType => enchantmentType;
         public IEnumerable<EnchantmentParam> EnchantmentParams => parameters;

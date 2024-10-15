@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07a7043ef3a343f08ad94c3c142bb93b, type: 3}
+  m_Name: ReviveEnchantment
+  m_EditorClassIdentifier: 
+  enchantmentSprite: {fileID: 21300000, guid: d361cf67359fbd643b4daa328097964d, type: 3}
+  enchantmentActiveSprite: {fileID: 0}
+  enchantmentLogicPrefab: {fileID: 4325170456131024473, guid: 9965561708674a84f80158b77070adc3, type: 3}
+  enchantmentName: 12
+  enchantmentType: 2
+  parameters:
+  - key: 2
+    value: 120
+    descriptionKey: <p>
+  description: Uppon death, revives player with half their hp, cooldown equal to
+    <p> seconds.

@@ -28,7 +28,7 @@ namespace ExpPackage
 
         private float _timer = 0;
 
-        private EGemState _gemState = EGemState.Default;
+        private EPickableState _pickableState = EPickableState.Default;
         private Vector2 startPosition;
         
         public static void SpawnExpGem(GameObject expGemPrefab, Vector3 position, EExpGemType expGemType)
@@ -55,14 +55,14 @@ namespace ExpPackage
         {
             if (PlayerManager.Instance == null) return;
 
-            switch (_gemState)
+            switch (_pickableState)
             {
-                case EGemState.Default:
+                case EPickableState.Default:
                     if (Vector2.Distance(transform.position, PlayerPos) > range) return;
 
-                    _gemState = EGemState.PickingUpPhase;
+                    _pickableState = EPickableState.PickingUpPhase;
                     return;
-                case EGemState.PickingUpPhase:
+                case EPickableState.PickingUpPhase:
                     _timer += Time.deltaTime;
                     var remainingTime = Mathf.Clamp01(_timer / animTime);
 
@@ -72,13 +72,13 @@ namespace ExpPackage
                     
                     AudioManager.Instance.PlaySound(ESoundType.PickUpGem);
 
-                    _gemState = EGemState.PickedUp;
+                    _pickableState = EPickableState.PickedUp;
                     
                     var playerExp = PlayerManager.Instance.PlayerExp;
                     playerExp.GainExp(expAmount);
                     Destroy(gameObject);
                     return;
-                case EGemState.PickedUp: return;
+                case EPickableState.PickedUp: return;
                 default: return;
             }
         }
@@ -88,7 +88,7 @@ namespace ExpPackage
             Gizmos.DrawWireSphere(transform.position, range);
         }
 
-        private enum EGemState
+        public enum EPickableState
         {
             Default,
             PickingUpPhase,

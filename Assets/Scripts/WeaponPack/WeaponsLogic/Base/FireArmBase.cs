@@ -57,7 +57,7 @@ namespace WeaponPack.WeaponsLogic.Base
             Physics2D.OverlapCircleNonAlloc(position, range, results);
 
             AudioManager.Instance.PlaySound(ESoundType.BulletExplode);
-            SpecialEffectManager.Instance.SpawnExplosion(ESpecialEffectType.ExplosionSmall, position, range);
+            SpecialEffectManager.Instance.SpawnExplosion(ESpecialEffectType.ExplosionMedium, position, range);
 
             var damage = Mathf.CeilToInt(Damage * parameters[EValueKey.Percentage]);
             

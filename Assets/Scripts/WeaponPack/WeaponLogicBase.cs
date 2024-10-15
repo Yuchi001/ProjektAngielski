@@ -29,6 +29,7 @@ namespace WeaponPack
         protected Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
         protected Transform PlayerTransform => GameManager.Instance.CurrentPlayer.transform;
 
+        public float TimerScaled => 1 - CurrentTimer / Cooldown;
         public float Cooldown => GetStatValue(EWeaponStat.CooldownReduction) ?? 1;
         private float _timer = 0;
 

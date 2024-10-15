@@ -34,7 +34,7 @@ namespace UI
             var displaySeconds = _weaponLogicBase.Cooldown - _weaponLogicBase.CurrentTimer;
             timerTextField.gameObject.SetActive(displaySeconds > 0.3f);
             timerTextField.text = _weaponLogicBase.Cooldown > 0.3f ? $"{displaySeconds:0.0}" : "Max.";
-            fillImage.fillAmount = _weaponLogicBase.Cooldown > 0.3f ? 1 - _weaponLogicBase.CurrentTimer / _weaponLogicBase.Cooldown : 1;
+            fillImage.fillAmount = _weaponLogicBase.Cooldown > 0.3f ? _weaponLogicBase.TimerScaled : 1;
             levelTextField.text = $"{_weaponLogicBase.Level + 1} Lvl";
         }
     }

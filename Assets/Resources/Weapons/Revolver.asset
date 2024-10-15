@@ -10,81 +10,60 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
-  m_Name: AssaultRifle
+  m_Name: Revolver
   m_EditorClassIdentifier: 
-  weaponName: Assault rifle
-  weaponDescription: Fire many bullets dealing light damage
-  weaponSprite: {fileID: 21300000, guid: 77af35722b5983046b7c502d2e5fedf2, type: 3}
-  weaponColor: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
+  weaponName: Revolver
+  weaponDescription: Shoot 6 bullets at a targeted enemy dealing medium damage
+  weaponSprite: {fileID: 21300000, guid: 12d0f103fcd827b4e80b1ced452037e0, type: 3}
+  weaponColor: {r: 0.2735849, g: 0.15321194, b: 0.09678712, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 4604547026064372186, guid: 51b8214004e8c9246a98ad9ae5463170, type: 3}
   weaponCategory: 2
   maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
-    statValue: 4
+    statValue: 5
     isPercentage: 0
     canUpgrade: 1
   - statType: 1
-    statValue: 4
+    statValue: 12
     isPercentage: 0
     canUpgrade: 1
   - statType: 2
-    statValue: 9
+    statValue: 10
     isPercentage: 0
-    canUpgrade: 1
+    canUpgrade: 0
   - statType: 3
-    statValue: 20
+    statValue: 6
     isPercentage: 0
-    canUpgrade: 1
+    canUpgrade: 0
   - statType: 9
-    statValue: 1
+    statValue: 0.1
     isPercentage: 0
-    canUpgrade: 1
+    canUpgrade: 0
   - statType: 15
-    statValue: 2
+    statValue: 3
     isPercentage: 0
     canUpgrade: 1
   weaponUpgradeStats:
   - statType: 0
-    statValue: -0.1
+    statValue: -0.05
     isPercentage: 1
     canUpgrade: 1
     weaponLevelUpDescription: Reload <v> faster
-    valueLevels: 5
+    valueLevels: 4
     valueGrowth: -0.05
   - statType: 1
-    statValue: 1
+    statValue: 3
     isPercentage: 0
     canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> damage per bullet
-    valueLevels: 3
-    valueGrowth: 1
-  - statType: 2
-    statValue: 0.05
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Bullets are <v> faster
-    valueLevels: 2
-    valueGrowth: 0.1
-  - statType: 3
-    statValue: 5
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> clip capacity
+    weaponLevelUpDescription: Gain <v> damage
     valueLevels: 5
     valueGrowth: 1
-  - statType: 9
-    statValue: -0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Weapon becomes <v> more accurate
-    valueLevels: 3
-    valueGrowth: -0.05
   - statType: 15
-    statValue: 0.1
+    statValue: 0.2
     isPercentage: 1
     canUpgrade: 1
-    weaponLevelUpDescription: Bullets push enemies <v> harder
+    weaponLevelUpDescription: Bullets push <v> stronger
     valueLevels: 3
-    valueGrowth: 0.05
+    valueGrowth: 0.1

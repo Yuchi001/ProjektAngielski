@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2741600552658080531
+--- !u!1 &3614948398447991663
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6618128268950143771}
-  - component: {fileID: 7065327400010066191}
+  - component: {fileID: 7562970149007948295}
+  - component: {fileID: -3939341508843860100}
   m_Layer: 0
-  m_Name: PoisonShare
+  m_Name: ExplosiveDashBehaviour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6618128268950143771
+--- !u!4 &7562970149007948295
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2741600552658080531}
+  m_GameObject: {fileID: 3614948398447991663}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,15 +32,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7065327400010066191
+--- !u!114 &-3939341508843860100
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2741600552658080531}
+  m_GameObject: {fileID: 3614948398447991663}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8349b6d113746c7ae664b9a2b6f8911, type: 3}
+  m_Script: {fileID: 11500000, guid: ae82983fa849470d8aa2a782687dceeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boomParticles: {fileID: 8669169835032094286, guid: 5303bde51d3035645bbe88895ab0355c, type: 3}

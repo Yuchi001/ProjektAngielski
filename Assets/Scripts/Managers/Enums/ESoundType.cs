@@ -14,6 +14,7 @@
         Chest,
         PoisonShare,
         BulletExplode,
-        PowerUp
+        PowerUp,
+        HealOrb
     }
 }

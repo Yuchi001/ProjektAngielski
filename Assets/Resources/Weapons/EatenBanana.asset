@@ -35,11 +35,11 @@ MonoBehaviour:
     isPercentage: 0
     canUpgrade: 0
   - statType: 1
-    statValue: 25
+    statValue: 30
     isPercentage: 0
     canUpgrade: 1
   - statType: 6
-    statValue: 1
+    statValue: 2
     isPercentage: 0
     canUpgrade: 1
   weaponUpgradeStats:
