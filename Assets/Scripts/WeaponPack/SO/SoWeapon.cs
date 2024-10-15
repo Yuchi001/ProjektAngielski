@@ -15,6 +15,7 @@ namespace WeaponPack.SO
         [SerializeField] private Color weaponColor;
         [SerializeField] private bool oneTimeSpawnLogic;
         [SerializeField] private GameObject weaponLogicPrefab;
+        [SerializeField] private EWeaponCategory weaponCategory;
         
         [SerializeField] private int maxLevelPrize = 3;
 
@@ -27,6 +28,7 @@ namespace WeaponPack.SO
         public string WeaponDescription => weaponDescription;
         public bool OneTimeSpawnLogic => oneTimeSpawnLogic;
         public Color WeaponColor => weaponColor;
+        public EWeaponCategory WeaponCategory => weaponCategory;
         public GameObject WeaponLogicPrefab => weaponLogicPrefab;
         public Sprite WeaponSprite => weaponSprite;
         public List<WeaponStatPair> WeaponStartingStats => weaponStartingStats;

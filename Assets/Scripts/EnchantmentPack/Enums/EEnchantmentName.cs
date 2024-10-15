@@ -10,5 +10,11 @@
         DashKill,
         PoisonShare,
         ExplodingDash,
+        BetterBooks,
+        ExplosiveBullets,
+        FireHeal,
+        HealingOrb,
+        Revive,
+        Sharpness,
     }
 }

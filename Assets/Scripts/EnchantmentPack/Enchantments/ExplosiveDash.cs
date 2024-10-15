@@ -3,8 +3,11 @@ using EnchantmentPack.Enums;
 using EnemyPack;
 using EnemyPack.CustomEnemyLogic;
 using Managers;
+using Managers.Enums;
 using PlayerPack;
 using PlayerPack.PlayerMovementPack;
+using SpecialEffectPack;
+using SpecialEffectPack.Enums;
 using UnityEngine;
 
 namespace EnchantmentPack.Enchantments
@@ -28,7 +31,11 @@ namespace EnchantmentPack.Enchantments
         {
             var results = new Collider2D[50];
             var playerPos = PlayerManager.Instance.transform.position;
-            Physics2D.OverlapCircleNonAlloc(playerPos, parameters[EValueKey.Range], results);
+            var range = parameters[EValueKey.Range];
+            Physics2D.OverlapCircleNonAlloc(playerPos, range, results);
+
+            AudioManager.Instance.PlaySound(ESoundType.BananaBoom);
+            SpecialEffectManager.Instance.SpawnExplosion(ESpecialEffectType.ExplosionMedium, playerPos, range);
 
             var particles = Instantiate(boomParticles, playerPos, Quaternion.identity);
             Destroy(particles, 2f);

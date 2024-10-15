@@ -22,7 +22,7 @@ MonoBehaviour:
     value: 30
     descriptionKey: <d>
   - key: 4
-    value: 1.5
+    value: 1
     descriptionKey: <r>
   description: After performing a dash, create an explosion that deals <d> damage
     to enemies within a range of <r>, scaling with difficulty progression.

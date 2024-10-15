@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EnchantmentPack;
 using EnchantmentPack.Enums;
@@ -47,7 +48,7 @@ namespace PlayerPack
                 enchantmentPool.RemoveAt(randomIndex);
             }
 
-            return enchantments;
+            return enchantments.Any(e => _currentEnchantments.ContainsKey(e.EnchantmentName)) ? new List<SoEnchantment>() : enchantments;
         }
 
         public bool Has(EEnchantmentName enchantmentName)

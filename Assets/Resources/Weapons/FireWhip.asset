@@ -19,6 +19,7 @@ MonoBehaviour:
   weaponColor: {r: 0.8301887, g: 0.23719569, b: 0, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 6078984998771875696, guid: 3768018983a5cd54d8f0d828fbc0fd18, type: 3}
+  weaponCategory: 5
   maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0

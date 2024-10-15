@@ -18,6 +18,7 @@ namespace WeaponPack.Editor
         private SerializedProperty weaponColor;
         private SerializedProperty oneTimeSpawnLogic;
         private SerializedProperty weaponLogicPrefab;
+        private SerializedProperty weaponCategory;
         private SerializedProperty maxLevelPrize;
         private SerializedProperty weaponStartingStats;
 
@@ -31,6 +32,7 @@ namespace WeaponPack.Editor
             weaponColor = serializedObject.FindProperty("weaponColor"); 
             oneTimeSpawnLogic = serializedObject.FindProperty("oneTimeSpawnLogic");
             weaponLogicPrefab = serializedObject.FindProperty("weaponLogicPrefab");
+            weaponCategory = serializedObject.FindProperty("weaponCategory");
             maxLevelPrize = serializedObject.FindProperty("maxLevelPrize");
             weaponStartingStats = serializedObject.FindProperty("weaponStartingStats");
             _soWeapon = target as SoWeapon;
@@ -46,6 +48,7 @@ namespace WeaponPack.Editor
             EditorGUILayout.PropertyField(weaponColor);
             EditorGUILayout.PropertyField(oneTimeSpawnLogic);
             EditorGUILayout.PropertyField(weaponLogicPrefab);
+            EditorGUILayout.PropertyField(weaponCategory);
             EditorGUILayout.PropertyField(maxLevelPrize);
             EditorGUILayout.PropertyField(weaponStartingStats);
 

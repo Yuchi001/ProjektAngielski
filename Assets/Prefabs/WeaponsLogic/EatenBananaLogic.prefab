@@ -47,3 +47,4 @@ MonoBehaviour:
   projectilePrefab: {fileID: 1996234102917140788, guid: 2413cf475826b9446be16fe3e8393093, type: 3}
   projectileSprite: {fileID: 21300000, guid: 7063d4d2e2af26a4398573b700a3b47e, type: 3}
   boomParticles: {fileID: 8669169835032094286, guid: 5303bde51d3035645bbe88895ab0355c, type: 3}
+  explosionEffectPrefab: {fileID: 7856944979272311960, guid: 98c08ae0666986942b50edabdc022130, type: 3}

@@ -23,7 +23,9 @@ namespace WeaponPack
         protected float Speed => _realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.ProjectileSpeed)!.StatValue;
         protected int ProjectileCount => (int)_realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.ProjectilesCount)!.StatValue;
         protected float PushForce => _realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.PushForce)!.StatValue;
-        
+
+        protected PlayerEnchantmentManager PlayerEnchantmentManager =>
+            GameManager.Instance.CurrentPlayer.PlayerEnchantmentManager;
         protected Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
         protected Transform PlayerTransform => GameManager.Instance.CurrentPlayer.transform;
 

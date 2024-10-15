@@ -4,8 +4,11 @@ using EnchantmentPack.Enums;
 using EnemyPack;
 using EnemyPack.CustomEnemyLogic;
 using Managers;
+using Managers.Enums;
 using Other.Enums;
 using PlayerPack;
+using SpecialEffectPack;
+using SpecialEffectPack.Enums;
 using UnityEngine;
 
 namespace EnchantmentPack.Enchantments
@@ -25,9 +28,14 @@ namespace EnchantmentPack.Enchantments
         private void TriggerPoisonSpread(EnemyLogic enemyLogic)
         {
             if (!enemyLogic.HasEffect(EEffectType.Poison)) return;
-            
+
+            var range = parameters[EValueKey.Range];
             var results = new Collider2D[50];
-            Physics2D.OverlapCircleNonAlloc(PlayerManager.Instance.transform.position, parameters[EValueKey.Range], results);
+            
+            AudioManager.Instance.PlaySound(ESoundType.PoisonShare);
+            Physics2D.OverlapCircleNonAlloc(PlayerManager.Instance.transform.position, range, results);
+            SpecialEffectManager.Instance.SpawnExplosion(ESpecialEffectType.ExplosionMedium,
+                enemyLogic.transform.position, range).SetColor(Color.green);
             
             foreach (var hit in results)
             {
