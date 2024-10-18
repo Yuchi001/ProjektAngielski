@@ -17,6 +17,9 @@ namespace PlayerPack
         public delegate void AddEnchantmentDelegate(SoEnchantment enchantment, EnchantmentBase logic);
         public static event AddEnchantmentDelegate OnAddEnchantment;
         
+        public delegate void RemoveEnchantmentDelegate(EEnchantmentName enchantmentName);
+        public static event RemoveEnchantmentDelegate OnRemoveEnchantment;
+        
         private void Awake()
         {
             _allEnchantments = Resources.LoadAll<SoEnchantment>("Enchantments").Select(Instantiate).ToList();
@@ -33,6 +36,11 @@ namespace PlayerPack
             OnAddEnchantment?.Invoke(enchantmentToAdd, enchantmentLogic);
         }
 
+        /// <summary>
+        /// Get random enchantment list.
+        /// </summary>
+        /// <param name="count">How long enchantment list should be</param>
+        /// <returns>List of unique enchantments. In case of any errors, return empty list.</returns>
         public IEnumerable<SoEnchantment> GetRandomEnchantmentList(int count)
         {
             var enchantments = new List<SoEnchantment>();
@@ -44,13 +52,31 @@ namespace PlayerPack
 
                 var randomIndex = Random.Range(0, enchantmentPool.Count);
                 var randomEnchantment = enchantmentPool[randomIndex];
-                if (_currentEnchantments.ContainsKey(randomEnchantment.EnchantmentName))
-                    return new List<SoEnchantment>();
+
+                var foundInCurrent = _currentEnchantments.ContainsKey(randomEnchantment.EnchantmentName);
+                if (foundInCurrent) return new List<SoEnchantment>();
+                
+                if (randomEnchantment.HasRequirement)
+                {
+                    var requirementValid = _currentEnchantments.ContainsKey(randomEnchantment.Requirement);
+                    if (requirementValid) RemoveEnchantment(randomEnchantment.Requirement);
+                    else return new List<SoEnchantment>();
+                }
+                
                 enchantments.Add(randomEnchantment);
                 enchantmentPool.RemoveAt(randomIndex);
             }
 
             return enchantments;
+        }
+
+        private void RemoveEnchantment(EEnchantmentName enchantmentName)
+        {
+            // We are only destroying logic prefab, because we still need information
+            // that this enchantment was used, thats why it stays in dictionary 
+            Destroy(_currentEnchantments[enchantmentName]);
+            // This will be likely used only by ui
+            OnRemoveEnchantment?.Invoke(enchantmentName);
         }
 
         public bool Has(EEnchantmentName enchantmentName)

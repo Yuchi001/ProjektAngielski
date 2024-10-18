@@ -15,7 +15,8 @@ MonoBehaviour:
   enchantmentSprite: {fileID: 21300000, guid: 997a98a39653c4749bb0a86962e57e9f, type: 3}
   enchantmentActiveSprite: {fileID: 0}
   enchantmentLogicPrefab: {fileID: 0}
-  enchantmentName: 4
+  enchantmentName: 5
   enchantmentType: 0
   parameters: []
   description: Poison effect can be now stacked.
+  requirement: 0

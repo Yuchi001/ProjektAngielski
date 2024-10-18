@@ -13,21 +13,22 @@ namespace EnchantmentPack
     public class SoEnchantment : ScriptableObject
     {
         [SerializeField] private Sprite enchantmentSprite;
-        [SerializeField, Tooltip("Leave empty if don't needed")] private Sprite enchantmentActiveSprite;
+        [SerializeField, Tooltip("Optional")] private Sprite enchantmentActiveSprite;
         [SerializeField] private GameObject enchantmentLogicPrefab;
         [SerializeField] private EEnchantmentName enchantmentName;
         [SerializeField] private EEnchantmentType enchantmentType;
         [SerializeField] private List<EnchantmentParam> parameters;
         [SerializeField, TextArea(5, 5)] private string description;
-        [SerializeField, Tooltip("Leave empty if don't need")] private List<SoEnchantment> upgrades = new();
-        [SerializeField] private bool canBeRolled = true;
+        [SerializeField, Tooltip("Optional")] private EEnchantmentName requirement = EEnchantmentName.None;
         
         public Sprite EnchantmentSprite => enchantmentSprite;
         public Sprite EnchantmentActiveSprite => enchantmentActiveSprite;
         public EEnchantmentName EnchantmentName => enchantmentName;
         public EEnchantmentType EEnchantmentType => enchantmentType;
         public IEnumerable<EnchantmentParam> EnchantmentParams => parameters;
-
+        public EEnchantmentName Requirement => requirement;
+        public bool HasRequirement => Requirement != EEnchantmentName.None;
+        
         public string GetDescription()
         {
             return parameters.Aggregate(description, (current, param) => current.Replace(param.DescriptionKey, GetParamFormat(param)));

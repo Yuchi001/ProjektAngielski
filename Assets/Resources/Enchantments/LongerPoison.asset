@@ -15,10 +15,11 @@ MonoBehaviour:
   enchantmentSprite: {fileID: 21300000, guid: 0e3d4d4875e5bd344b5eb046f202c1c9, type: 3}
   enchantmentActiveSprite: {fileID: 0}
   enchantmentLogicPrefab: {fileID: 0}
-  enchantmentName: 17
+  enchantmentName: 18
   enchantmentType: 0
   parameters:
   - key: 5
     value: 0.35
     descriptionKey: <p>
   description: Poison last <p> longer.
+  requirement: 0

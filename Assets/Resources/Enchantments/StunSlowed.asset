@@ -15,7 +15,8 @@ MonoBehaviour:
   enchantmentSprite: {fileID: 21300000, guid: 0e5fb1d410c7d314886cd1ee14d80a63, type: 3}
   enchantmentActiveSprite: {fileID: 0}
   enchantmentLogicPrefab: {fileID: 0}
-  enchantmentName: 18
+  enchantmentName: 19
   enchantmentType: 0
   parameters: []
   description: Stun slowed enemy uppon slowing them.
+  requirement: 0

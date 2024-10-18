@@ -15,7 +15,8 @@ MonoBehaviour:
   enchantmentSprite: {fileID: 21300000, guid: 02d9787d7b4a5ff458b64b9cea34c60b, type: 3}
   enchantmentActiveSprite: {fileID: 0}
   enchantmentLogicPrefab: {fileID: 0}
-  enchantmentName: 20
+  enchantmentName: 21
   enchantmentType: 0
   parameters: []
   description: When upgrading weapon, bigger chance for good stats.
+  requirement: 0

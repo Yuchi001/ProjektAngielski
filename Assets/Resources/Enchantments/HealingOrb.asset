@@ -15,7 +15,7 @@ MonoBehaviour:
   enchantmentSprite: {fileID: 21300000, guid: 93d67a08886efbb44a4da2e870a61cd1, type: 3}
   enchantmentActiveSprite: {fileID: 0}
   enchantmentLogicPrefab: {fileID: 7513936284854194893, guid: 73df337269979f2448283f24072a62cf, type: 3}
-  enchantmentName: 11
+  enchantmentName: 12
   enchantmentType: 0
   parameters:
   - key: 5
@@ -26,3 +26,4 @@ MonoBehaviour:
     descriptionKey: <v>
   description: Upon an enemy's death, there is a <p> chance to drop a healing orb,
     which restores <v> life to the player upon contact.
+  requirement: 0

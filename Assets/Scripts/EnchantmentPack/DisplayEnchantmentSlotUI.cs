@@ -17,6 +17,8 @@ namespace EnchantmentPack
 
         private IStackEnchantment _stackEnchantment;
         private ICooldownEnchantment _cooldownEnchantment;
+
+        public SoEnchantment Enchantment => _enchantmentData;
         
         public void Setup(SoEnchantment enchantmentData, EnchantmentBase logic)
         {

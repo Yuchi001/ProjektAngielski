@@ -15,7 +15,7 @@ MonoBehaviour:
   enchantmentSprite: {fileID: 21300000, guid: af52530875a5282448d654665f5203b3, type: 3}
   enchantmentActiveSprite: {fileID: 0}
   enchantmentLogicPrefab: {fileID: 2741600552658080531, guid: 214c7588f3b963043baa3ad54acf681f, type: 3}
-  enchantmentName: 6
+  enchantmentName: 7
   enchantmentType: 0
   parameters:
   - key: 4
@@ -26,3 +26,4 @@ MonoBehaviour:
     descriptionKey: <t>
   description: When the poisoned enemy dies, all enemies within a range of <r> are
     poisoned for <t> seconds.
+  requirement: 0

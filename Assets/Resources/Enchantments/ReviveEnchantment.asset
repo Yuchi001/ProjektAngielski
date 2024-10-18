@@ -15,7 +15,7 @@ MonoBehaviour:
   enchantmentSprite: {fileID: 21300000, guid: d361cf67359fbd643b4daa328097964d, type: 3}
   enchantmentActiveSprite: {fileID: 0}
   enchantmentLogicPrefab: {fileID: 4325170456131024473, guid: 9965561708674a84f80158b77070adc3, type: 3}
-  enchantmentName: 12
+  enchantmentName: 13
   enchantmentType: 2
   parameters:
   - key: 2
@@ -23,3 +23,4 @@ MonoBehaviour:
     descriptionKey: <p>
   description: Uppon death, revives player with half their hp, cooldown equal to
     <p> seconds.
+  requirement: 0

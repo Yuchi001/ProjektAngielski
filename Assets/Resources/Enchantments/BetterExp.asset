@@ -15,7 +15,8 @@ MonoBehaviour:
   enchantmentSprite: {fileID: 21300000, guid: 089baa1944ea0a34592ba0d9ad7bb77d, type: 3}
   enchantmentActiveSprite: {fileID: 0}
   enchantmentLogicPrefab: {fileID: 0}
-  enchantmentName: 0
+  enchantmentName: 1
   enchantmentType: 0
   parameters: []
   description: Enhances power of exp gems.
+  requirement: 0

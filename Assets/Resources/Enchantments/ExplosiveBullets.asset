@@ -15,7 +15,7 @@ MonoBehaviour:
   enchantmentSprite: {fileID: 21300000, guid: 85a064748fb4e4f48accd3ccc8b17a57, type: 3}
   enchantmentActiveSprite: {fileID: 0}
   enchantmentLogicPrefab: {fileID: 0}
-  enchantmentName: 9
+  enchantmentName: 10
   enchantmentType: 0
   parameters:
   - key: 4
@@ -26,3 +26,4 @@ MonoBehaviour:
     descriptionKey: <p>
   description: Bullets now explode on hit, dealing <p> bullet damage to all enemies
     within <r> range.
+  requirement: 0

@@ -15,7 +15,8 @@ MonoBehaviour:
   enchantmentSprite: {fileID: 21300000, guid: feb1a14c27ac46b47a9cf0fef3959b27, type: 3}
   enchantmentActiveSprite: {fileID: 0}
   enchantmentLogicPrefab: {fileID: 0}
-  enchantmentName: 2
+  enchantmentName: 3
   enchantmentType: 0
   parameters: []
   description: Stuned enemies take double damage.
+  requirement: 0

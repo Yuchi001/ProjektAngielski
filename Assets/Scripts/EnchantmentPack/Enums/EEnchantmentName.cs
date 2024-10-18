@@ -2,6 +2,7 @@
 {
     public enum EEnchantmentName
     {
+        None,
         BetterExp,
         PassiveHeal,
         StunDoubleDamage,

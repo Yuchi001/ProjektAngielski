@@ -15,7 +15,7 @@ MonoBehaviour:
   enchantmentSprite: {fileID: 21300000, guid: b596927cb5273b0409cc077695c5698e, type: 3}
   enchantmentActiveSprite: {fileID: 0}
   enchantmentLogicPrefab: {fileID: 1975207615251916696, guid: a6102f3c79065ab4181cc4aa9dd6db5e, type: 3}
-  enchantmentName: 1
+  enchantmentName: 2
   enchantmentType: 2
   parameters:
   - key: 5
@@ -25,3 +25,4 @@ MonoBehaviour:
     value: 0.1
     descriptionKey: <r>
   description: Restores <p> of the player's maximum health every <r> seconds.
+  requirement: 0

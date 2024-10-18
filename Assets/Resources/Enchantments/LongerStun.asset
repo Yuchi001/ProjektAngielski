@@ -15,10 +15,11 @@ MonoBehaviour:
   enchantmentSprite: {fileID: 21300000, guid: e6b0f603066ec1e4f9eb6bef3248a5b9, type: 3}
   enchantmentActiveSprite: {fileID: 0}
   enchantmentLogicPrefab: {fileID: 0}
-  enchantmentName: 16
+  enchantmentName: 17
   enchantmentType: 0
   parameters:
   - key: 5
     value: 0.5
     descriptionKey: <p>
   description: Stuns last <p> longer.
+  requirement: 0
