@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using EnchantmentPack.Enums;
+using PlayerPack;
 using UnityEngine;
 using WeaponPack.Enums;
 using WeaponPack.SideClasses;
@@ -8,6 +10,8 @@ namespace WeaponPack.SideClasses
     [System.Serializable]
     public class UpgradeWeaponStat : WeaponStatPair
     {
+        private PlayerEnchantmentManager PlayerEnchantmentManager => PlayerManager.Instance.PlayerEnchantmentManager;
+        
         [TextArea, SerializeField] private string weaponLevelUpDescription;
         [SerializeField] private int valueLevels;
         [SerializeField] private float valueGrowth;
@@ -38,25 +42,33 @@ namespace WeaponPack.SideClasses
 
         public (float value, int level) GetLeveledStatValue()
         {
-            var weightSum = 0;
-            var level = 0;
-            var valueWeightPair = new List<(int weight, float value)>();
-            for (var i = 1; i <= valueLevels; i++)
+            (float v, int l) GetVal()
             {
-                var weight = 100 / i;
-                weightSum += weight;
-                valueWeightPair.Add((weight, statValue + valueGrowth * (i - 1)));
+                var weightSum = 0;
+                var level = 0;
+                var valueWeightPair = new List<(int weight, float value)>();
+                for (var i = 1; i <= valueLevels; i++)
+                {
+                    var weight = 100 / i;
+                    weightSum += weight;
+                    valueWeightPair.Add((weight, statValue + valueGrowth * (i - 1)));
+                }
+
+                var randomNumber = Random.Range(0, weightSum);
+                foreach (var pair in valueWeightPair)
+                {
+                    level++;
+                    if (randomNumber <= pair.weight) return (pair.value, level);
+                    randomNumber -= pair.weight;
+                }
+                return (0,0);
             }
 
-            var randomNumber = Random.Range(0, weightSum);
-            foreach (var pair in valueWeightPair)
-            {
-                level++;
-                if (randomNumber <= pair.weight) return (pair.value, level);
-                randomNumber -= pair.weight;
-            }
+            var value1 = GetVal();
+            if (!PlayerEnchantmentManager.Has(EEnchantmentName.Luck)) return value1;
 
-            return (0,0);
+            var value2 = GetVal();
+            return value1.v > value2.v ? value1 : value2;
         }
         
         public string GetDescription(float value)

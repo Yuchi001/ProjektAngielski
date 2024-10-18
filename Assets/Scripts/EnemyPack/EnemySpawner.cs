@@ -48,7 +48,7 @@ namespace EnemyPack
 
         private float EnemySpawnRate => enemySpawnRate + 1f * enemySpawnRateMultiplierPerKill * DeadEnemies;
         protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * EnemySpawnRate);
-        public float EnemiesHpScale => enemiesHpScale + 1f * DeadEnemies * enemiesHpScaleMultiplierPerKill;
+        public float EnemiesHpScale => enemiesHpScale + Mathf.Pow(1f * DeadEnemies * enemiesHpScaleMultiplierPerKill, 2);
         
         private IEnumerator Start()
         {

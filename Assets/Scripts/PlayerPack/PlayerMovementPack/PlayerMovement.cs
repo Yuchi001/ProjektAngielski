@@ -25,7 +25,8 @@ namespace PlayerPack.PlayerMovementPack
         private SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
         private PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
         private EnemySpawner EnemySpawner => GameManager.Instance.WaveManager.EnemySpawner;
-        private int MaxDashStacks => PickedCharacter.MaxDashStacks;
+        public int MaxDashStacks => PickedCharacter.MaxDashStacks + _additionalDashStacks;
+        private int _additionalDashStacks = 0;
 
         private bool _lookingRight;
         
@@ -36,6 +37,9 @@ namespace PlayerPack.PlayerMovementPack
 
         public delegate void PlayerDashEndDelegate();
         public static event PlayerDashEndDelegate OnPlayerDashEnd;
+
+        public delegate void PlayerDashIncrement(int value);
+        public static event PlayerDashIncrement OnPlayerDashIncrement;
         
         private void Start()
         {
@@ -53,6 +57,12 @@ namespace PlayerPack.PlayerMovementPack
         public float GetDashProgress()
         {
             return _dashTimer / dashCooldown;
+        }
+
+        public void AddDashStack(int value = 1)
+        {
+            _additionalDashStacks += value;
+            OnPlayerDashIncrement?.Invoke(value);
         }
 
         protected void Update()

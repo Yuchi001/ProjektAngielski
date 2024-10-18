@@ -16,5 +16,15 @@
         HealingOrb,
         Revive,
         Sharpness,
+        HealField,
+        LongerBurn,
+        LongerStun,
+        LongerPoison,
+        StunSlowed,
+        Rage,
+        Luck,
+        AdditionalDash,
+        AdditionalDash1,
+        AdditionalDash2
     }
 }

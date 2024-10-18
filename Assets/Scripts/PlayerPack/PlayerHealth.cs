@@ -93,7 +93,7 @@ namespace PlayerPack
         {
             OnPlayerHeal?.Invoke(value);
             AudioManager.Instance.PlaySound(soundType);
-            DamageIndicator.SpawnDamageIndicator(transform.position, damageIndicator, value, false);
+            DamageIndicator.SpawnDamageIndicator(transform.position, damageIndicator, value, false, false);
             
             var particles = Instantiate(healParticles, transform.position, Quaternion.identity);
             Destroy(particles, 1f);

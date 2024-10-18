@@ -15,6 +15,7 @@ namespace EnchantmentPack
 {
     public class ChestEnchant : MonoBehaviour
     {
+        [SerializeField] private SoEnchantment debugEnchantment;
         [SerializeField] private SoEnemy mimic;
         [SerializeField] private float openRange = 0.5f;
         [SerializeField] private GameObject chestPopup;
@@ -43,6 +44,12 @@ namespace EnchantmentPack
             chestPopup.SetActive(false);
             lightObj.SetActive(false);
             SpriteRenderer.sprite = openedChestSprite;
+
+            if (debugEnchantment != null)
+            {
+                Debug.LogError("DEBUG OPTION ENABLED FOR CHEST DROP");
+                return debugEnchantment;
+            }
 
             if (_preparedEnchantment != null) return _preparedEnchantment;
             

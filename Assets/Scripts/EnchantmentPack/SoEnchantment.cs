@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using EnchantmentPack.Enums;
+using EnchantmentPack.Interfaces;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -18,6 +19,8 @@ namespace EnchantmentPack
         [SerializeField] private EEnchantmentType enchantmentType;
         [SerializeField] private List<EnchantmentParam> parameters;
         [SerializeField, TextArea(5, 5)] private string description;
+        [SerializeField, Tooltip("Leave empty if don't need")] private List<SoEnchantment> upgrades = new();
+        [SerializeField] private bool canBeRolled = true;
         
         public Sprite EnchantmentSprite => enchantmentSprite;
         public Sprite EnchantmentActiveSprite => enchantmentActiveSprite;
@@ -41,7 +44,7 @@ namespace EnchantmentPack
                 EValueKey.Time => isFloat ? $"{param.Value:0.0}sec" : paramInt.ToString(),
                 EValueKey.Rate => isFloat ? $"{(1f / param.Value):0.0}" : paramInt.ToString(),
                 EValueKey.Range => isFloat ? $"{param.Value:0.0}" : paramInt.ToString(),
-                EValueKey.Percentage => $"{(int)(param.Value * 100)}%",
+                EValueKey.Percentage => $"{Mathf.CeilToInt(param.Value * 100)}%",
                 _ => throw new ArgumentOutOfRangeException()
             };
         }

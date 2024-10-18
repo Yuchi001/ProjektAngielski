@@ -27,7 +27,7 @@ namespace UI
         
         private static PlayerExp PlayerExp => PlayerManager.Instance.PlayerExp;
         private static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
-        private static int PlayerMaxDashStacks => PlayerManager.Instance.PickedCharacter.MaxDashStacks;
+        private static int PlayerMaxDashStacks => PlayerManager.Instance.PlayerMovement.MaxDashStacks;
         private static int CurrentPlayerDashStacks => PlayerManager.Instance.PlayerMovement.CurrentDashStacks;
         private static float DashProgress => PlayerManager.Instance.PlayerMovement.GetDashProgress();
         
@@ -37,11 +37,13 @@ namespace UI
         private void Awake()
         {
             PlayerManager.OnPlayerReady += Setup;
+            PlayerMovement.OnPlayerDashIncrement += UpdateDashStacks;
         }
 
         private void OnDisable()
         {
             PlayerManager.OnPlayerReady -= Setup;
+            PlayerMovement.OnPlayerDashIncrement -= UpdateDashStacks;
         }
 
         private void Setup()
@@ -59,6 +61,16 @@ namespace UI
                 _spawnedDashStacks.Add(obj);
                 obj.fillAmount = 1;
             }
+        }
+
+        private void UpdateDashStacks(int value)
+        {
+            for (var i = 0; i < value; i++)
+            {
+                var obj = Instantiate(dashStack, dashStackHolder.transform).GetComponent<Image>();
+                _spawnedDashStacks.Add(obj);
+            }
+            LayoutRebuilder.ForceRebuildLayoutImmediate(dashStackHolder.GetComponent<RectTransform>());
         }
 
         private void Update()

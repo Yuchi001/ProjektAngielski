@@ -35,6 +35,9 @@ namespace Managers
 
         private static PlayerEnchantmentManager PlayerEnchantmentManager =>
             PlayerManager.Instance.PlayerEnchantmentManager;
+
+        private static Dictionary<EEnchantmentName, Dictionary<EValueKey, float>> EnchantmentValueDictionary =>
+            GameManager.Instance.EnchantmentValueDictionary;
         
         public bool Stuned { get; private set; }
         public bool Slowed { get; private set; }
@@ -77,8 +80,17 @@ namespace Managers
             {
                 case EEffectType.Stun:
                     Stuned = true;
+                    if (!PlayerEnchantmentManager.Has(EEnchantmentName.LongerStun)) break;
+                    time *= EnchantmentValueDictionary[EEnchantmentName.LongerStun][EValueKey.Percentage];
                     break;
                 case EEffectType.Slow:
+                    if (HasEffect(EEffectType.Slow) && PlayerEnchantmentManager.Has(EEnchantmentName.StunSlowed))
+                    {
+                        AddEffect(EEffectType.Stun, time);
+                        RemoveEffect(EEffectType.Slow);
+                        break;
+                    }
+                    
                     var slowParticlesInstance = Instantiate(slowParticles, _canBeDamaged.transform.position,
                         Quaternion.identity, _canBeDamaged.transform);
                     _effectSpawnedObjects.Add(new EffectActiveObjects
@@ -87,6 +99,14 @@ namespace Managers
                         spawnedObjects = new List<GameObject>{slowParticlesInstance},
                     });
                     Slowed = true;
+                    break;
+                case EEffectType.Burn:
+                    if (!PlayerEnchantmentManager.Has(EEnchantmentName.LongerBurn)) break;
+                    time *= EnchantmentValueDictionary[EEnchantmentName.LongerBurn][EValueKey.Percentage];
+                    break;
+                case EEffectType.Poison:
+                    if (!PlayerEnchantmentManager.Has(EEnchantmentName.LongerPoison)) break;
+                    time *= EnchantmentValueDictionary[EEnchantmentName.LongerPoison][EValueKey.Percentage];
                     break;
             }
 

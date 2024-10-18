@@ -43,12 +43,14 @@ namespace PlayerPack
                 if (enchantmentPool.Count == 0) break;
 
                 var randomIndex = Random.Range(0, enchantmentPool.Count);
-                var pickedEnchantment = Instantiate(enchantmentPool[randomIndex]);
-                enchantments.Add(pickedEnchantment);
+                var randomEnchantment = enchantmentPool[randomIndex];
+                if (_currentEnchantments.ContainsKey(randomEnchantment.EnchantmentName))
+                    return new List<SoEnchantment>();
+                enchantments.Add(randomEnchantment);
                 enchantmentPool.RemoveAt(randomIndex);
             }
 
-            return enchantments.Any(e => _currentEnchantments.ContainsKey(e.EnchantmentName)) ? new List<SoEnchantment>() : enchantments;
+            return enchantments;
         }
 
         public bool Has(EEnchantmentName enchantmentName)

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnchantmentPack.Enums;
 using EnemyPack;
 using EnemyPack.CustomEnemyLogic;
+using Managers;
 using Other.Enums;
 using UnityEngine;
 using WeaponPack.Enums;
@@ -70,6 +72,13 @@ namespace WeaponPack.WeaponsLogic
             var enemyScript = enemy.GetComponent<EnemyLogic>();
             enemyScript.GetDamaged(Damage);
             projectile.SetCustomValue(DamageRateName, 0);
+        }
+        
+        protected override float CustomCooldownModifier()
+        {
+            var stacks = PlayerEnchantmentManager.GetStacks(EEnchantmentName.BetterBooks);
+            if (stacks <= 0) return base.CustomCooldownModifier();
+            return 1 + GameManager.Instance.EnchantmentValueDictionary[EEnchantmentName.BetterBooks][EValueKey.Percentage] * stacks;
         }
     }
 }

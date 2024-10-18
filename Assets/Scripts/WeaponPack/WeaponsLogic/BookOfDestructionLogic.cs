@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using EnchantmentPack.Enums;
 using EnemyPack.CustomEnemyLogic;
 using Managers;
 using Managers.Enums;
@@ -59,6 +60,13 @@ namespace WeaponPack.WeaponsLogic
         public float GetRange()
         {
             return Range;
+        }
+        
+        protected override float CustomCooldownModifier()
+        {
+            var stacks = PlayerEnchantmentManager.GetStacks(EEnchantmentName.BetterBooks);
+            if (stacks <= 0) return base.CustomCooldownModifier();
+            return 1 + GameManager.Instance.EnchantmentValueDictionary[EEnchantmentName.BetterBooks][EValueKey.Percentage] * stacks;
         }
     }
 }

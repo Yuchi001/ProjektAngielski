@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07a7043ef3a343f08ad94c3c142bb93b, type: 3}
-  m_Name: DashKill
+  m_Name: BetterBooks
   m_EditorClassIdentifier: 
-  enchantmentSprite: {fileID: 21300000, guid: e8d89fc540f51764286f911b1c21e619, type: 3}
+  enchantmentSprite: {fileID: 21300000, guid: 86b5e4e4f620d874aa6e312f4dea9170, type: 3}
   enchantmentActiveSprite: {fileID: 0}
-  enchantmentLogicPrefab: {fileID: 0}
-  enchantmentName: 5
-  enchantmentType: 0
+  enchantmentLogicPrefab: {fileID: 7296680806693222488, guid: bc4faf6a964a6024695094a6b804c97f, type: 3}
+  enchantmentName: 8
+  enchantmentType: 1
   parameters:
   - key: 5
-    value: 0.5
+    value: 0.01
     descriptionKey: <p>
-  description: Dashing through enemies with health lower than <p> kills them.
+  description: Gain stack each time you add/upgrade weapon. Gain <p> cooldown reduction
+    for books for each stacks.

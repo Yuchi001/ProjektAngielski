@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07a7043ef3a343f08ad94c3c142bb93b, type: 3}
-  m_Name: DashKill
+  m_Name: LongerBurn
   m_EditorClassIdentifier: 
-  enchantmentSprite: {fileID: 21300000, guid: e8d89fc540f51764286f911b1c21e619, type: 3}
+  enchantmentSprite: {fileID: 21300000, guid: 5f3a8ba67a005ad42b3e6ad97ad4a1f6, type: 3}
   enchantmentActiveSprite: {fileID: 0}
   enchantmentLogicPrefab: {fileID: 0}
-  enchantmentName: 5
+  enchantmentName: 15
   enchantmentType: 0
   parameters:
   - key: 5
-    value: 0.5
+    value: 0.2
     descriptionKey: <p>
-  description: Dashing through enemies with health lower than <p> kills them.
+  description: Burn last <p> longer.

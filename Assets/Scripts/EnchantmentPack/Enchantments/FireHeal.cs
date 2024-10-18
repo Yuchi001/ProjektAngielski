@@ -28,7 +28,6 @@ namespace EnchantmentPack.Enchantments
             var position = PlayerManager.Instance.transform.position;
             var range = parameters[EValueKey.Range];
             var results = new Collider2D[50];
-            var damage = parameters[EValueKey.Damage];
             
             AudioManager.Instance.PlaySound(ESoundType.BananaBoom);
             Physics2D.OverlapCircleNonAlloc(position, range, results);
@@ -46,7 +45,7 @@ namespace EnchantmentPack.Enchantments
                     time = parameters[EValueKey.Time],
                 });
                 
-                enemy.GetDamaged((int)damage);
+                enemy.GetDamaged(Mathf.CeilToInt(value * parameters[EValueKey.Percentage]));
             }
         }
     }

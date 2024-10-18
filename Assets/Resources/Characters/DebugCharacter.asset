@@ -17,7 +17,7 @@ MonoBehaviour:
   maxHp: 999
   maxWeaponsInEq: 2
   maxDashStacks: 10
-  startingWeapon: {fileID: 11400000, guid: 4673578fe660b3f4d969fc5314acb66f, type: 2}
+  startingWeapon: {fileID: 11400000, guid: 205ded1fcfc6fae49ae6c29c1c55fa0e, type: 2}
   movementSpeed: 3
   walkingAnim: {fileID: 7400000, guid: 3b4933883a3c0b84a9206ace12c522d7, type: 2}
   idleAnim: {fileID: 7400000, guid: 3b4933883a3c0b84a9206ace12c522d7, type: 2}

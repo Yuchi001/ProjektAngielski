@@ -21,11 +21,12 @@ MonoBehaviour:
   - key: 4
     value: 1.5
     descriptionKey: <r>
-  - key: 0
-    value: 10
-    descriptionKey: <d>
+  - key: 5
+    value: 0.5
+    descriptionKey: <p>
   - key: 2
     value: 10
     descriptionKey: <t>
   description: Upon healing, unleash a wave of fire within a range of <r>, dealing
-    <d> damage to all enemies in the area and setting them ablaze for <t> seconds.
+    <p> healed value as damage to all enemies in the area and setting them ablaze
+    for <t> seconds.

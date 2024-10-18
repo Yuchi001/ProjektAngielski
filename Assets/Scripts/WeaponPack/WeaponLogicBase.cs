@@ -19,7 +19,7 @@ namespace WeaponPack
 
         private List<WeaponStatPair> _realWeaponStats = new();
 
-        protected int Damage => (int)_realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.Damage)!.StatValue;
+        public int Damage => (int)_realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.Damage)!.StatValue;
         protected float Speed => _realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.ProjectileSpeed)!.StatValue;
         protected int ProjectileCount => (int)_realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.ProjectilesCount)!.StatValue;
         protected float PushForce => _realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.PushForce)!.StatValue;
@@ -30,7 +30,12 @@ namespace WeaponPack
         protected Transform PlayerTransform => GameManager.Instance.CurrentPlayer.transform;
 
         public float TimerScaled => 1 - CurrentTimer / Cooldown;
-        public float Cooldown => GetStatValue(EWeaponStat.CooldownReduction) ?? 1;
+
+        protected virtual float CustomCooldownModifier()
+        {
+            return 1; 
+        }
+        public float Cooldown => (GetStatValue(EWeaponStat.CooldownReduction) ?? 1) * CustomCooldownModifier();
         private float _timer = 0;
 
         private int _level = 0;

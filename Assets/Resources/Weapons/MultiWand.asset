@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MultiWand
   m_EditorClassIdentifier: 
   weaponName: Multi wand
-  weaponDescription: Fire 4 projectiles in each direction dealing medium damage
+  weaponDescription: Fire 8 projectiles in each direction dealing medium damage
   weaponSprite: {fileID: 21300000, guid: 5cffaf3ab50366648acc8e28da5bd84f, type: 3}
   weaponColor: {r: 0.2277284, g: 0, b: 0.33962262, a: 1}
   oneTimeSpawnLogic: 0
