@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: PoisonousWhip
   m_EditorClassIdentifier: 
   weaponName: Poisonous whip
-  weaponDescription: Slash thru enemies dealing very light damage, pushing them away
-    and poisoning them
+  weaponDescription: Slash through enemies dealing very light damage, pushing them
+    away and poisoning them
   weaponSprite: {fileID: 21300000, guid: 30a6ce95fb90d8540a13f493696b2f9f, type: 3}
   weaponColor: {r: 0.14738339, g: 0.33962262, b: 0, a: 1}
   oneTimeSpawnLogic: 0

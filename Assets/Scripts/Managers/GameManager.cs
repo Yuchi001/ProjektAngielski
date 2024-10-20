@@ -53,17 +53,10 @@ namespace Managers
        public MapGenerator MapGenerator { get; private set; }
        public WaveManager WaveManager => waveManager;
        public EnemySpawner EnemySpawner => waveManager.EnemySpawner;
-       public Dictionary<EEnchantmentName, Dictionary<EValueKey, float>> EnchantmentValueDictionary { get; } = new();
        
        private void Init()
        {
            LeanTween.init(1000000, 1000000);
-           var enchantments = Resources.LoadAll<SoEnchantment>("Enchantments").Select(Instantiate).ToList();
-           foreach (var enchantment in enchantments)
-           {
-               var enchantmentParams = enchantment.EnchantmentParams.ToDictionary(param => param.Key, param => param.Value);
-               EnchantmentValueDictionary.Add(enchantment.EnchantmentName, enchantmentParams);
-           }
        }
 
        public void StartRun(SoCharacter pickedCharacter)

@@ -21,8 +21,8 @@ namespace ExpPackage
         [SerializeField] private List<ExpGemInfo> betterGemAmountPair = new();
         private static Vector3 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
 
-        private static PlayerEnchantmentManager PlayerEnchantmentManager =>
-            PlayerManager.Instance.PlayerEnchantmentManager;
+        private static PlayerEnchantments PlayerEnchantments =>
+            PlayerManager.Instance.PlayerEnchantments;
         
         private int expAmount = 0;
 
@@ -40,7 +40,7 @@ namespace ExpPackage
 
         private void Setup(EExpGemType gemType)
         {
-            var gemList = PlayerEnchantmentManager.Has(EEnchantmentName.BetterExp)
+            var gemList = PlayerEnchantments.Has(EEnchantmentName.BetterExp)
                 ? betterGemAmountPair
                 : expAmountPair;
             var pair = gemList.FirstOrDefault(e => e.gemType == gemType);

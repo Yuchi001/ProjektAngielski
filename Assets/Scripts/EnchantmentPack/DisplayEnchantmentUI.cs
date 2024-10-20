@@ -12,20 +12,20 @@ namespace EnchantmentPack
         [SerializeField] private GameObject displayEnchantmentSlotPrefab;
         [SerializeField] private RectTransform slotContainer;
 
-        private Dictionary<EEnchantmentName, DisplayEnchantmentSlotUI> _enchantments = new();
+        private readonly Dictionary<EEnchantmentName, DisplayEnchantmentSlotUI> _enchantments = new();
 
         private int? queuedSlotIndex = null;
         
         private void Awake()
         {
-            PlayerEnchantmentManager.OnAddEnchantment += AddEnchantment;
-            PlayerEnchantmentManager.OnRemoveEnchantment += RemoveEnchantment;
+            PlayerEnchantments.OnAddEnchantment += AddEnchantment;
+            PlayerEnchantments.OnRemoveEnchantment += RemoveEnchantment;
         }
 
         private void OnDisable()
         {
-            PlayerEnchantmentManager.OnAddEnchantment -= AddEnchantment;
-            PlayerEnchantmentManager.OnRemoveEnchantment -= RemoveEnchantment;
+            PlayerEnchantments.OnAddEnchantment -= AddEnchantment;
+            PlayerEnchantments.OnRemoveEnchantment -= RemoveEnchantment;
         }
 
         private void RemoveEnchantment(EEnchantmentName enchantmentName)
@@ -37,8 +37,10 @@ namespace EnchantmentPack
                 queuedSlotIndex = child.GetComponentIndex();
             }
             
-            Destroy(_enchantments[enchantmentName]);
+            Destroy(_enchantments[enchantmentName].gameObject);
             _enchantments.Remove(enchantmentName);
+            
+            LayoutRebuilder.ForceRebuildLayoutImmediate(slotContainer);
         }
 
         private void AddEnchantment(SoEnchantment enchantment, EnchantmentBase logic)
@@ -49,7 +51,7 @@ namespace EnchantmentPack
 
             if (queuedSlotIndex.HasValue)
             {
-                slotObj.transform.SetSiblingIndex(queuedSlotIndex.Value);
+                slotObj.transform.SetSiblingIndex(queuedSlotIndex.Value - 1);
                 queuedSlotIndex = null;
             }
 

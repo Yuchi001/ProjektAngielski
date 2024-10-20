@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: FireWhip
   m_EditorClassIdentifier: 
   weaponName: Fire whip
-  weaponDescription: Slash thru enemies dealing very light damage, pushing them away
-    and burning them
+  weaponDescription: Slash through enemies dealing very light damage, pushing them
+    away and burning them
   weaponSprite: {fileID: 21300000, guid: d1f0ab461ea70f34fb782d625a73c834, type: 3}
   weaponColor: {r: 0.8301887, g: 0.23719569, b: 0, a: 1}
   oneTimeSpawnLogic: 0

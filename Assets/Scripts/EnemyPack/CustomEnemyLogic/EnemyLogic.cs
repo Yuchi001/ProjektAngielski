@@ -11,6 +11,7 @@ using Managers;
 using Managers.Enums;
 using Other;
 using Other.Enums;
+using Other.Interfaces;
 using PlayerPack;
 using PlayerPack.PlayerMovementPack;
 using UI;
@@ -64,11 +65,7 @@ namespace EnemyPack.CustomEnemyLogic
         private EnemyLogic mergeParent;
         private int mergeCount = 1;
 
-        private PlayerEnchantmentManager PlayerEnchantmentManager =>
-            PlayerManager.Instance.PlayerEnchantmentManager;
-
-        private Dictionary<EEnchantmentName, Dictionary<EValueKey, float>> EnchantmentsValueDict =>
-            GameManager.Instance.EnchantmentValueDictionary;
+        private static PlayerEnchantments PlayerEnchantments => PlayerManager.Instance.PlayerEnchantments;
         
         public void Setup(SoEnemy enemy, Transform target, EnemySpawner enemySpawner)
         {
@@ -214,10 +211,10 @@ namespace EnemyPack.CustomEnemyLogic
 
         private void ManagePlayerDashCollision()
         {
-            if (!PlayerEnchantmentManager.Has(EEnchantmentName.DashKill) || !PlayerManager.Instance.PlayerMovement.Dash) return;
+            if (!PlayerEnchantments.Has(EEnchantmentName.DashKill) || !PlayerManager.Instance.PlayerMovement.Dash) return;
 
-            var dashKillParams = EnchantmentsValueDict[EEnchantmentName.DashKill];
-            if ((float)CurrentHealth / MaxHealth > dashKillParams[EValueKey.Percentage]) return;
+            var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.DashKill, EValueKey.Percentage);
+            if ((float)CurrentHealth / MaxHealth > percentage) return;
             GetDamaged(9999);
         }
         
@@ -240,7 +237,7 @@ namespace EnemyPack.CustomEnemyLogic
         {
             base.GetDamaged(value, color);
 
-            var isCrit = Stuned && PlayerEnchantmentManager.Has(EEnchantmentName.StunDoubleDamage); 
+            var isCrit = Stuned && PlayerEnchantments.Has(EEnchantmentName.StunDoubleDamage); 
             if (isCrit) 
                 value *= 2;
             
@@ -279,32 +276,34 @@ namespace EnemyPack.CustomEnemyLogic
         {
             CheckEnemyCollision(other.gameObject);
             
-            if (!other.TryGetComponent(out Projectile projectile)) return;
+            if (other.TryGetComponent(out Projectile projectile))
+                projectile.ManageHit(gameObject);
             
-            projectile.ManageHit(gameObject);
+            if (other.TryGetComponent(out IDamageEnemy damageEnemy)) 
+                damageEnemy.TriggerDamage(this);
         }
 
         private void OnCollisionEnter2D(Collision2D other)
         {
             CheckEnemyCollision(other.gameObject);
 
-            if (!other.gameObject.TryGetComponent(out Projectile projectile)) return;
+            if (other.gameObject.TryGetComponent(out Projectile projectile))
+                projectile.ManageHit(gameObject);
             
-            projectile.ManageHit(gameObject);
+            if (!other.gameObject.TryGetComponent(out IDamageEnemy damageEnemy)) 
+                damageEnemy.TriggerDamage(this);
         }
 
         private void OnTriggerStay2D(Collider2D other)
         {
-            if (!other.TryGetComponent(out Projectile projectile)) return;
-            
-            projectile.ManageCollisionStay(gameObject);
+            if (other.TryGetComponent(out Projectile projectile)) 
+                projectile.ManageCollisionStay(gameObject);
         }
 
         private void OnCollisionStay2D(Collision2D other)
         {
-            if (!other.gameObject.TryGetComponent(out Projectile projectile)) return;
-            
-            projectile.ManageCollisionStay(gameObject);
+            if (other.gameObject.TryGetComponent(out Projectile projectile)) 
+                projectile.ManageCollisionStay(gameObject);
         }
 
         private void CheckEnemyCollision(GameObject hitObj)

@@ -67,6 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5308d3e132ad3ce4db5bdb0ac4880ae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dashParticlesPrefab: {fileID: 579749480111824306, guid: 548788d2cc302f443ab0c04259d1bfeb, type: 3}
   rb2d: {fileID: 1743729601478481784}
   playerSpriteTransform: {fileID: 8191276423356007028}
   animationSpeed: 0.5
@@ -165,7 +166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1705b1defe84a9293fd13b12cf52100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  betterGemEnchantmentName: Better Exp
 --- !u!50 &1743729601478481784
 Rigidbody2D:
   serializedVersion: 4

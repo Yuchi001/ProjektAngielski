@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Whip
   m_EditorClassIdentifier: 
   weaponName: Whip
-  weaponDescription: Slash thru enemies dealing medium damage, pushing them away
+  weaponDescription: Slash through enemies dealing medium damage, pushing them away
   weaponSprite: {fileID: 21300000, guid: 669397b95aecfc14082162e948abe7c5, type: 3}
   weaponColor: {r: 0.4433962, g: 0.29073438, b: 0.14431292, a: 1}
   oneTimeSpawnLogic: 0

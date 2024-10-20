@@ -16,11 +16,7 @@ namespace WeaponPack.WeaponsLogic
         public float Range => GetStatValue(EWeaponStat.ProjectileRange) ?? 0;
         public float DamageRate => (GetStatValue(EWeaponStat.DamageRate) ?? 0) * CustomRateModifier();
         public float EffectDuration => GetStatValue(EWeaponStat.EffectDuration) ?? 0;
-
-        private void LateUpdate()
-        {
-            //Debug.Log(DamageRate);
-        }
+        
 
         protected override bool UseWeapon()
         {
@@ -36,9 +32,10 @@ namespace WeaponPack.WeaponsLogic
         
         private float CustomRateModifier()
         {
-            var stacks = PlayerEnchantmentManager.GetStacks(EEnchantmentName.BetterBooks);
+            var stacks = PlayerEnchantments.GetStacks(EEnchantmentName.BetterBooks);
             if (stacks <= 0) return base.CustomCooldownModifier();
-            return 1 + GameManager.Instance.EnchantmentValueDictionary[EEnchantmentName.BetterBooks][EValueKey.Percentage] * stacks;
+            var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.BetterBooks, EValueKey.Percentage);
+            return 1 + percentage * stacks;
         }
     }
 }

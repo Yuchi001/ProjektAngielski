@@ -76,9 +76,10 @@ namespace WeaponPack.WeaponsLogic
         
         protected override float CustomCooldownModifier()
         {
-            var stacks = PlayerEnchantmentManager.GetStacks(EEnchantmentName.BetterBooks);
+            var stacks = PlayerEnchantments.GetStacks(EEnchantmentName.BetterBooks);
             if (stacks <= 0) return base.CustomCooldownModifier();
-            return 1 + GameManager.Instance.EnchantmentValueDictionary[EEnchantmentName.BetterBooks][EValueKey.Percentage] * stacks;
+            var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.BetterBooks, EValueKey.Percentage);
+            return 1 + percentage * stacks;
         }
     }
 }

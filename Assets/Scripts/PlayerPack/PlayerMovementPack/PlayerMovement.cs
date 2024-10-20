@@ -15,6 +15,7 @@ namespace PlayerPack.PlayerMovementPack
     [RequireComponent(typeof(PlayerHealth))]
     public partial class PlayerMovement : MonoBehaviour
     {
+        [SerializeField] private GameObject dashParticlesPrefab;
         [SerializeField] private Rigidbody2D rb2d;
         [SerializeField] private Transform playerSpriteTransform;
         [SerializeField] private float animationSpeed = 0.5f;
@@ -27,6 +28,8 @@ namespace PlayerPack.PlayerMovementPack
         private EnemySpawner EnemySpawner => GameManager.Instance.WaveManager.EnemySpawner;
         public int MaxDashStacks => PickedCharacter.MaxDashStacks + _additionalDashStacks;
         private int _additionalDashStacks = 0;
+
+        private float _additionalMovementSpeed = 0;
 
         private bool _lookingRight;
         
@@ -63,6 +66,15 @@ namespace PlayerPack.PlayerMovementPack
         {
             _additionalDashStacks += value;
             OnPlayerDashIncrement?.Invoke(value);
+        }
+
+        /// <summary>
+        /// Modifies current maxSpeed by given value;
+        /// </summary>
+        /// <param name="percentage">Percentage in format ranging from 0.0 -? 0% to 1.0 -> 100%</param>
+        public void ModifySpeedByPercentage(float percentage)
+        {
+            _additionalMovementSpeed += PickedCharacter.MovementSpeed * percentage;
         }
 
         protected void Update()
@@ -120,6 +132,9 @@ namespace PlayerPack.PlayerMovementPack
             if (!Input.GetKeyDown(GameManager.DeclineBind) || CurrentDashStacks == 0 || rb2d.velocity == Vector2.zero) return;
 
             if (CurrentDashStacks == MaxDashStacks) _dashTimer = 0;
+
+            var particles = Instantiate(dashParticlesPrefab, transform.position, Quaternion.identity);
+            Destroy(particles, 2f);
             Dash = true;
             CurrentDashStacks--;
             rb2d.velocity = rb2d.velocity.normalized * dashForceMultiplier;

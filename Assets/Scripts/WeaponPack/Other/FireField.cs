@@ -4,6 +4,7 @@ using EnemyPack.CustomEnemyLogic;
 using Managers;
 using Managers.Enums;
 using Other.Enums;
+using Other.Interfaces;
 using PlayerPack;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
@@ -13,23 +14,13 @@ using WeaponPack.WeaponsLogic;
 
 namespace WeaponPack.Other
 {
-    public class FireField : MonoBehaviour
+    public class FireField : MonoBehaviour, IDamageEnemy
     {
         [SerializeField] private float rangeScaler;
             
         private BookOfFireLogic _bookOfFireLogic;
         private Transform particles => transform.GetChild(0);
-
-        private Vector2 Position
-        {
-            get
-            {
-                var pp = PlayerManager.Instance.transform.position;
-                pp.y -= 0.2f;
-                return pp;
-            }
-        }
-
+        
         private float _timer = 0;
 
         public void Setup(BookOfFireLogic bookOfFireLogic)
@@ -45,7 +36,7 @@ namespace WeaponPack.Other
             var vectorScale = Vector2.one * scale;
             transform.localScale = vectorScale;
             particles.transform.localScale = vectorScale;
-            transform.position = Position;
+            transform.position = PlayerManager.Instance.transform.position;
             _timer += Time.deltaTime;
 
             if (_timer < 1f / _bookOfFireLogic.DamageRate) return;
@@ -74,10 +65,20 @@ namespace WeaponPack.Other
                 });
             }
         }
-        
+
         private void OnDrawGizmos()
         {
             Gizmos.DrawWireSphere(transform.position, rangeScaler);
+        }
+
+        public void TriggerDamage(EnemyLogic enemy)
+        {
+            enemy.GetDamaged(_bookOfFireLogic.Damage);
+            enemy.AddEffect(new EffectInfo
+            {
+                effectType = EEffectType.Burn,
+                time = _bookOfFireLogic.EffectDuration,
+            });
         }
     }
 }

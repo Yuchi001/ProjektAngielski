@@ -33,11 +33,8 @@ namespace Managers
         private readonly List<EffectInfo> _effectList = new();
         private readonly List<EffectActiveObjects> _effectSpawnedObjects = new();
 
-        private static PlayerEnchantmentManager PlayerEnchantmentManager =>
-            PlayerManager.Instance.PlayerEnchantmentManager;
-
-        private static Dictionary<EEnchantmentName, Dictionary<EValueKey, float>> EnchantmentValueDictionary =>
-            GameManager.Instance.EnchantmentValueDictionary;
+        private static PlayerEnchantments PlayerEnchantments =>
+            PlayerManager.Instance.PlayerEnchantments;
         
         public bool Stuned { get; private set; }
         public bool Slowed { get; private set; }
@@ -80,11 +77,13 @@ namespace Managers
             {
                 case EEffectType.Stun:
                     Stuned = true;
-                    if (!PlayerEnchantmentManager.Has(EEnchantmentName.LongerStun)) break;
-                    time *= EnchantmentValueDictionary[EEnchantmentName.LongerStun][EValueKey.Percentage];
+                    if (!PlayerEnchantments.Has(EEnchantmentName.LongerStun)) break;
+                    var stunPercentage =
+                        PlayerEnchantments.GetParamValue(EEnchantmentName.LongerStun, EValueKey.Percentage);
+                    time *= 1 + stunPercentage;
                     break;
                 case EEffectType.Slow:
-                    if (HasEffect(EEffectType.Slow) && PlayerEnchantmentManager.Has(EEnchantmentName.StunSlowed))
+                    if (HasEffect(EEffectType.Slow) && PlayerEnchantments.Has(EEnchantmentName.StunSlowed))
                     {
                         AddEffect(EEffectType.Stun, time);
                         RemoveEffect(EEffectType.Slow);
@@ -101,12 +100,16 @@ namespace Managers
                     Slowed = true;
                     break;
                 case EEffectType.Burn:
-                    if (!PlayerEnchantmentManager.Has(EEnchantmentName.LongerBurn)) break;
-                    time *= EnchantmentValueDictionary[EEnchantmentName.LongerBurn][EValueKey.Percentage];
+                    if (!PlayerEnchantments.Has(EEnchantmentName.LongerBurn)) break;
+                    var burnPercentage =
+                        PlayerEnchantments.GetParamValue(EEnchantmentName.LongerBurn, EValueKey.Percentage);
+                    time *= 1 + burnPercentage;
                     break;
                 case EEffectType.Poison:
-                    if (!PlayerEnchantmentManager.Has(EEnchantmentName.LongerPoison)) break;
-                    time *= EnchantmentValueDictionary[EEnchantmentName.LongerPoison][EValueKey.Percentage];
+                    if (!PlayerEnchantments.Has(EEnchantmentName.LongerPoison)) break;
+                    var poisonPercentage =
+                        PlayerEnchantments.GetParamValue(EEnchantmentName.LongerPoison, EValueKey.Percentage);
+                    time *= 1 + poisonPercentage;
                     break;
             }
 
@@ -145,7 +148,7 @@ namespace Managers
         {
             if (effectInfo == null) return false;
 
-            return (effectInfo.effectType == EEffectType.Bleed || PlayerEnchantmentManager.Has(EEnchantmentName.PoisonCanStack)) && effectInfo.stacks > 1;
+            return (effectInfo.effectType == EEffectType.Bleed || PlayerEnchantments.Has(EEnchantmentName.PoisonCanStack)) && effectInfo.stacks > 1;
         }
 
         private EffectStatus? GetEffectStatus(EEffectType effectType)
@@ -166,7 +169,7 @@ namespace Managers
                     if(_canBeDamaged.CurrentHealth == 1) break;
                     var poisonParticlesInstance = Instantiate(poisonParticles, entityPos, Quaternion.identity);
                     Destroy(poisonParticlesInstance, 2f);
-                    var poisonDamageWithStacks = PlayerEnchantmentManager.Has(EEnchantmentName.PoisonCanStack)
+                    var poisonDamageWithStacks = PlayerEnchantments.Has(EEnchantmentName.PoisonCanStack)
                         ? poisonDamage * effectInfo.stacks
                         : poisonDamage;
                     var calculatedPoisonDamage = poisonDamageWithStacks + _canBeDamaged.MaxHealth / 50;
@@ -180,8 +183,8 @@ namespace Managers
                     break;
                 case EEffectType.Bleed:
                     var calculatedBleedDamage = bleedDamage * effectInfo.stacks;
-                    if (PlayerEnchantmentManager.Has(EEnchantmentName.BleedStacking))
-                        calculatedBleedDamage += PlayerEnchantmentManager.GetStacks(EEnchantmentName.BleedStacking);
+                    if (PlayerEnchantments.Has(EEnchantmentName.BleedStacking))
+                        calculatedBleedDamage += PlayerEnchantments.GetStacks(EEnchantmentName.BleedStacking);
                     _canBeDamaged.GetDamaged(calculatedBleedDamage, effectStatus.Value.effectColor);
                     break;
             }

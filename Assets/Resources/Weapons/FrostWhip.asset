@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: FrostWhip
   m_EditorClassIdentifier: 
   weaponName: Frost whip
-  weaponDescription: Slash thru enemies dealing light damage, pushing them away and
-    slowing them up.
+  weaponDescription: Slash through enemies dealing light damage, pushing them away
+    and slowing them up.
   weaponSprite: {fileID: 21300000, guid: fab9fe5e2c7262c4188ff0889ef942bd, type: 3}
   weaponColor: {r: 0, g: 0.124172136, b: 0.5754717, a: 1}
   oneTimeSpawnLogic: 0

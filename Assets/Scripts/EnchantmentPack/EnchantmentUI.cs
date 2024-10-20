@@ -28,7 +28,7 @@ namespace EnchantmentPack
             
             AudioManager.Instance.PlaySound(ESoundType.PowerUp);
             Time.timeScale = 1;
-            PlayerManager.Instance.PlayerEnchantmentManager.AddEnchantment(_pickedEnchantment);
+            PlayerManager.Instance.PlayerEnchantments.AddEnchantment(_pickedEnchantment);
             PlayerManager.Instance.PlayerMovement.ResetKeys();
             Destroy(gameObject);
         }

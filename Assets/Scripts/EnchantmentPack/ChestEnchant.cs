@@ -53,7 +53,7 @@ namespace EnchantmentPack
 
             if (_preparedEnchantment != null) return _preparedEnchantment;
             
-            var list = PlayerManager.Instance.PlayerEnchantmentManager.GetRandomEnchantmentList(1);
+            var list = PlayerManager.Instance.PlayerEnchantments.GetRandomEnchantmentList(1);
 
             var soEnchantments = list as SoEnchantment[] ?? list.ToArray();
             return !soEnchantments.Any() ? null : soEnchantments[0];

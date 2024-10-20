@@ -26,6 +26,12 @@
         Luck,
         AdditionalDash,
         AdditionalDash1,
-        AdditionalDash2
+        AdditionalDash2,
+        BetterHeal,
+        BetterHeal1,
+        BetterHeal2,
+        Speed,
+        Speed1,
+        Speed2
     }
 }

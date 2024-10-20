@@ -42,7 +42,7 @@ namespace WeaponPack.WeaponsLogic.Base
                 .SetTrail(trailTime)
                 .SetPushForce(PushForce);
             
-            if (PlayerEnchantmentManager.Has(EEnchantmentName.ExplosiveBullets))
+            if (PlayerEnchantments.Has(EEnchantmentName.ExplosiveBullets))
                 projectileScript.SetOnHitAction(OnHitAction);
 
             return projectileScript;
@@ -52,14 +52,14 @@ namespace WeaponPack.WeaponsLogic.Base
         {
             var position = hitObj.transform.position;
             var results = new Collider2D[50];
-            var parameters = GameManager.Instance.EnchantmentValueDictionary[EEnchantmentName.ExplosiveBullets];
-            var range = parameters[EValueKey.Range];
+            var range = PlayerEnchantments.GetParamValue(EEnchantmentName.ExplosiveBullets, EValueKey.Range);
             Physics2D.OverlapCircleNonAlloc(position, range, results);
 
             AudioManager.Instance.PlaySound(ESoundType.BulletExplode);
             SpecialEffectManager.Instance.SpawnExplosion(ESpecialEffectType.ExplosionMedium, position, range);
 
-            var damage = Mathf.CeilToInt(Damage * parameters[EValueKey.Percentage]);
+            var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.ExplosiveBullets, EValueKey.Percentage);
+            var damage = Mathf.CeilToInt(Damage * percentage);
             
             foreach (var hit in results)
             {

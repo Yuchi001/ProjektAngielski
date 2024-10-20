@@ -42,10 +42,10 @@ namespace WeaponPack.WeaponsLogic
                     .SetRotationSpeed(-rotationSpeedModifier * Speed)
                     .SetLightColor(Color.clear);
 
-                if (PlayerEnchantmentManager.Has(EEnchantmentName.Sharpness))
+                if (PlayerEnchantments.Has(EEnchantmentName.Sharpness))
                 {
-                    var parameters = GameManager.Instance.EnchantmentValueDictionary[EEnchantmentName.Sharpness];
-                    if (Random.Range(0f, 1f) <= parameters[EValueKey.Percentage]) projectileScript.SetEffect(EEffectType.Bleed, 9999);
+                    var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.Sharpness, EValueKey.Percentage);
+                    if (Random.Range(0f, 1f) <= percentage) projectileScript.SetEffect(EEffectType.Bleed, 9999);
                 }
                 
                 projectileScript.SetReady();

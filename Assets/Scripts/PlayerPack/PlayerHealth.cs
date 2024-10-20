@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using EnchantmentPack.Enchantments;
 using EnchantmentPack.Enums;
 using EnemyPack.CustomEnemyLogic;
@@ -32,8 +33,8 @@ namespace PlayerPack
         public delegate void PlayerDamagedDelegate();
         public static event PlayerDamagedDelegate OnPlayerDamaged;
 
-        private static PlayerEnchantmentManager PlayerEnchantmentManager =>
-            PlayerManager.Instance.PlayerEnchantmentManager;
+        private static PlayerEnchantments PlayerEnchantments =>
+            PlayerManager.Instance.PlayerEnchantments;
         private static SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
 
         public delegate void PlayerHealDelegate(int value);
@@ -91,6 +92,19 @@ namespace PlayerPack
 
         public void Heal(int value, ESoundType soundType = ESoundType.Heal)
         {
+            // dont change sequence of this array it needs to be sorted like this
+            var betterHealLevelArr = new List<EEnchantmentName>
+            {
+                EEnchantmentName.BetterHeal2,
+                EEnchantmentName.BetterHeal1,
+                EEnchantmentName.BetterHeal,
+            };
+            foreach (var enchantment in betterHealLevelArr)
+            {
+                if (!PlayerEnchantments.Has(enchantment)) continue;
+                value = Mathf.CeilToInt(value * (1 + PlayerEnchantments.GetParamValue(enchantment, EValueKey.Percentage)));
+            }
+            
             OnPlayerHeal?.Invoke(value);
             AudioManager.Instance.PlaySound(soundType);
             DamageIndicator.SpawnDamageIndicator(transform.position, damageIndicator, value, false, false);
@@ -104,7 +118,7 @@ namespace PlayerPack
 
         public override void OnDie(bool destroyObj = true)
         {
-            if (PlayerEnchantmentManager.Ready(EEnchantmentName.Revive))
+            if (PlayerEnchantments.Ready(EEnchantmentName.Revive))
             {
                 OnPlayerRevive?.Invoke();
                 Heal(MaxHealth / 2);

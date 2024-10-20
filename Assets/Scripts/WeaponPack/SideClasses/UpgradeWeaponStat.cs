@@ -10,7 +10,7 @@ namespace WeaponPack.SideClasses
     [System.Serializable]
     public class UpgradeWeaponStat : WeaponStatPair
     {
-        private PlayerEnchantmentManager PlayerEnchantmentManager => PlayerManager.Instance.PlayerEnchantmentManager;
+        private PlayerEnchantments PlayerEnchantments => PlayerManager.Instance.PlayerEnchantments;
         
         [TextArea, SerializeField] private string weaponLevelUpDescription;
         [SerializeField] private int valueLevels;
@@ -65,7 +65,7 @@ namespace WeaponPack.SideClasses
             }
 
             var value1 = GetVal();
-            if (!PlayerEnchantmentManager.Has(EEnchantmentName.Luck)) return value1;
+            if (!PlayerEnchantments.Has(EEnchantmentName.Luck)) return value1;
 
             var value2 = GetVal();
             return value1.v > value2.v ? value1 : value2;

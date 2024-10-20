@@ -20,7 +20,7 @@ namespace PlayerPack.PlayerMovementPack
 
             if(movement == Vector2.zero) return Vector2.zero;
             
-            return movement * PickedCharacter.MovementSpeed;
+            return movement * (PickedCharacter.MovementSpeed + _additionalMovementSpeed);
         }
 
         public void ResetKeys()

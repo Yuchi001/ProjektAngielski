@@ -32,7 +32,7 @@ namespace PlayerPack
         public PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
         public PlayerWeaponry PlayerWeaponry => GetComponent<PlayerWeaponry>();
         public PlayerMovement PlayerMovement => GetComponent<PlayerMovement>();
-        public PlayerEnchantmentManager PlayerEnchantmentManager => GetComponent<PlayerEnchantmentManager>();
+        public PlayerEnchantments PlayerEnchantments => GetComponent<PlayerEnchantments>();
 
         public delegate void PlayerDeathDelegate();
         public static event PlayerDeathDelegate OnPlayerDeath;
