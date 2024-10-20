@@ -13,41 +13,57 @@ MonoBehaviour:
   m_Name: DruidWand
   m_EditorClassIdentifier: 
   weaponName: Druid Wand
-  weaponDescription: Release healing force pushing back all enemies around you and
-    healing you by 2 hp
+  weaponDescription: Release healing force pushing back all enemies around and healing
+    you
   weaponSprite: {fileID: 21300000, guid: 68bbb5ab5f030c44c9fd2d53e83b2967, type: 3}
   weaponColor: {r: 0.10250047, g: 0.6320754, b: 0, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 589373902128888167, guid: 563b15410869fd24585034598c62ed1b, type: 3}
+  weaponCategory: 4
+  maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
     statValue: 3
     isPercentage: 0
+    canUpgrade: 1
   - statType: 14
     statValue: 2
     isPercentage: 0
+    canUpgrade: 1
   - statType: 15
     statValue: 7
     isPercentage: 0
+    canUpgrade: 1
   - statType: 6
     statValue: 3
     isPercentage: 0
+    canUpgrade: 1
   weaponUpgradeStats:
-  - weaponLevelUpDescription: Gain 5% cooldown reduction, 10% blast range
-    levelStats:
-    - statType: 0
-      statValue: -0.05
-      isPercentage: 1
-    - statType: 6
-      statValue: 0.1
-      isPercentage: 1
-  - weaponLevelUpDescription: Gain 2 hp more on heal
-    levelStats:
-    - statType: 14
-      statValue: 1
-      isPercentage: 0
-  - weaponLevelUpDescription: 10% stronger push
-    levelStats:
-    - statType: 15
-      statValue: 0.1
-      isPercentage: 1
+  - statType: 0
+    statValue: -0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> cooldown reduction
+    valueLevels: 3
+    valueGrowth: -0.05
+  - statType: 14
+    statValue: 1
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Heal <v> more hp
+    valueLevels: 6
+    valueGrowth: 1
+  - statType: 15
+    statValue: 0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Push force stronger by <v>
+    valueLevels: 6
+    valueGrowth: 0.05
+  - statType: 6
+    statValue: 0.2
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Blast range bigger by <v>
+    valueLevels: 3
+    valueGrowth: 0.05

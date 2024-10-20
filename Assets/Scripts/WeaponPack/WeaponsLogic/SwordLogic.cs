@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
+using EnchantmentPack.Enums;
 using EnemyPack;
+using EnemyPack.CustomEnemyLogic;
+using Managers;
+using Other.Enums;
 using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
@@ -15,62 +19,99 @@ namespace WeaponPack.WeaponsLogic
 
         private const string HitEnemyCountName = "HitCount";
 
-        private float MaxEnemiesToHit => GetStatValue(EWeaponStat.MaxPiercedEnemies) ?? 0;
+        private float MaxRange => GetStatValue(EWeaponStat.ProjectileRange) ?? 0;
         
-        protected override void UseWeapon()
+        protected override bool UseWeapon()
         {
             var targetedEnemies = new List<int>();
+            var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
+                var target = UtilsMethods.FindTarget(transform.position, targetedEnemies);
+                if (target == null) continue;
+
+                spawnedProjectiles++;
+                
                 var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
                 var projectileScript = projectile.GetComponent<Projectile>();
 
-                var target = UtilsMethods.FindTarget(transform.position, targetedEnemies);
-                if (target == null)
-                {
-                    Destroy(projectile);
-                    continue;
-                }
-                
+                var enemyPos = target.transform.position;
+
                 projectileScript.Setup(Damage, Speed)
-                    .SetDirection(target.transform.position)
+                    .SetDirection(enemyPos)
                     .SetSprite(projectileSprite)
                     .SetSpriteRotation(45)
                     .SetDontDestroyOnHit()
+                    .SetUpdate(ProjectileUpdate)
                     .SetDisableDamageOnHit()
                     .SetNewCustomValue(HitEnemyCountName)
                     .SetOnHitAction(OnHit)
                     .SetScale(0.4f)
+                    .SetRange(MaxRange)
                     .SetLightColor(Color.clear)
-                    .SetReady();
+                    .SetOutOfRangeBehaviour(OnOutOfRange);
+                
+                if (PlayerEnchantments.Has(EEnchantmentName.Sharpness))
+                {
+                    var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.Sharpness, EValueKey.Percentage);
+                    if (Random.Range(0f, 1f) <= percentage) projectileScript.SetEffect(EEffectType.Bleed, 9999);
+                }
+                
+                projectileScript.SetReady();
                 
                 targetedEnemies.Add(target.GetInstanceID());
             }
+
+            return spawnedProjectiles > 0;
         }
 
         private void OnHit(GameObject onHit, Projectile projectile)
         {
             var count = projectile.GetCustomValue(HitEnemyCountName);
-            
-            if (count >= MaxEnemiesToHit)
-            {
-                Destroy(projectile.gameObject);
-                return;
-            }
-
             count++;
-            onHit.GetComponent<EnemyLogic>().GetDamaged(GetModifiedDamage((int)count));
+            onHit.GetComponent<EnemyLogic>().GetDamaged(Damage * (int)count);
             projectile.SetCustomValue(HitEnemyCountName, count);
         }
 
-        private int GetModifiedDamage(int count)
+        private void OnOutOfRange(Projectile projectile)
         {
-            var result = Damage;
-            for (var i = 1; i < count; i++)
-            {
-                result *= 2;
-            }
-            return result;
+            var newProjectile = Instantiate(projectilePrefab, projectile.transform.position, Quaternion.identity);
+            var newProjectileScript = newProjectile.GetComponent<Projectile>();
+            
+            newProjectileScript.Setup(Damage, Speed)
+                .SetTarget(PlayerTransform)
+                .SetDirection(PlayerPos, 0, true)
+                .SetSpriteRotation(225)
+                .SetSprite(projectileSprite)
+                .SetDontDestroyOnHit()
+                .SetDisableDamageOnHit()
+                .SetScale(0.4f)
+                .SetLightColor(Color.clear)
+                .SetUpdate(BackProjectileUpdate)
+                .SetReady();
+            
+            Destroy(projectile.gameObject);
+        }
+        
+        private void BackProjectileUpdate(Projectile projectile)
+        {
+            var projectilePos = projectile.transform.position;
+            var playerPos = PlayerTransform.position;
+            
+            var sr = projectile.GetSpriteRenderer().transform;
+            UtilsMethods.LookAtObj(sr, PlayerPos);
+            sr.Rotate(0,0, 225);
+            
+            if (Vector2.Distance(projectilePos, playerPos) > 0.5f) return;
+            
+            Destroy(projectile.gameObject);
+        }
+        
+        private void ProjectileUpdate(Projectile projectile)
+        {
+            var sr = projectile.GetSpriteRenderer().transform;
+            UtilsMethods.LookAtObj(sr, PlayerPos);
+            sr.Rotate(0,0, 45);
         }
     }
 }

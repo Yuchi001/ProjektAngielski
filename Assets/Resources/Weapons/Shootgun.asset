@@ -19,60 +19,59 @@ MonoBehaviour:
   weaponColor: {r: 0.6886792, g: 0.1949092, b: 0, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 9148830630957801830, guid: 5b5a0a9938fbf404baac1f0738963d25, type: 3}
+  weaponCategory: 2
+  maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
     statValue: 4
     isPercentage: 0
+    canUpgrade: 1
   - statType: 1
-    statValue: 6
+    statValue: 2
     isPercentage: 0
+    canUpgrade: 1
   - statType: 2
     statValue: 6
     isPercentage: 0
+    canUpgrade: 0
   - statType: 3
     statValue: 6
     isPercentage: 0
+    canUpgrade: 1
   - statType: 9
     statValue: 1
     isPercentage: 0
+    canUpgrade: 0
   - statType: 15
     statValue: 5
     isPercentage: 0
+    canUpgrade: 1
   weaponUpgradeStats:
-  - weaponLevelUpDescription: Faster reaload by 10%, smaller spread
-    levelStats:
-    - statType: 0
-      statValue: -0.1
-      isPercentage: 1
-    - statType: 9
-      statValue: -0.1
-      isPercentage: 1
-  - weaponLevelUpDescription: Gain 1 more damage per shot, 1 more shot
-    levelStats:
-    - statType: 1
-      statValue: 1
-      isPercentage: 0
-    - statType: 3
-      statValue: 1
-      isPercentage: 0
-  - weaponLevelUpDescription: Gain 2 damage per shot, gain 20% more push force
-    levelStats:
-    - statType: 1
-      statValue: 2
-      isPercentage: 0
-    - statType: 15
-      statValue: 0.2
-      isPercentage: 1
-  - weaponLevelUpDescription: Get 1 more shot
-    levelStats:
-    - statType: 3
-      statValue: 1
-      isPercentage: 0
-  - weaponLevelUpDescription: Spread smaller by 20%, gain 1 shot
-    levelStats:
-    - statType: 3
-      statValue: 1
-      isPercentage: 0
-    - statType: 9
-      statValue: -0.2
-      isPercentage: 1
+  - statType: 0
+    statValue: -0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Reload <v> faster
+    valueLevels: 5
+    valueGrowth: -0.05
+  - statType: 1
+    statValue: 1
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> damage per pellet
+    valueLevels: 3
+    valueGrowth: 1
+  - statType: 3
+    statValue: 1
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> damage per pellet
+    valueLevels: 4
+    valueGrowth: 1
+  - statType: 15
+    statValue: 0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> push force
+    valueLevels: 5
+    valueGrowth: 0.05

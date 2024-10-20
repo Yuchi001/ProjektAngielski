@@ -13,20 +13,25 @@ namespace WeaponPack.WeaponsLogic
 
         private float Duration => GetStatValue(EWeaponStat.Duration) ?? 0;
         private float Scale => GetStatValue(EWeaponStat.ProjectileScale) ?? 1;
+        private float DamageRate => GetStatValue(EWeaponStat.DamageRate) ?? 1;
         
-        protected override void UseWeapon()
+        protected override bool UseWeapon()
         {
+            var target = UtilsMethods.FindTarget();
+
+            if (target == null) return false;
+            
             var spawnedProjectile = Instantiate(lineRendererProjectilePrefab, transform.position, Quaternion.identity);
             var laserScript = spawnedProjectile.GetComponent<Laser>();
             
-            var target = UtilsMethods.FindTarget();
-            
-            laserScript.Setup()
-                .SetTarget(target)
+            laserScript.Setup(Damage, DamageRate)
+                .SetTargetPosition(target.transform.position)
                 .SetDuration(Duration)
                 .SetAnimTime(animTime)
                 .SetMaxScale(Scale)
                 .Ready();
+
+            return true;
         }
     }
 }

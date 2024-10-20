@@ -1,4 +1,6 @@
-﻿using ExpPackage.Enums;
+﻿using EnemyPack.CustomEnemyLogic;
+using EnemyPack.Enums;
+using ExpPackage.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -14,26 +16,14 @@ namespace EnemyPack.SO
         [SerializeField] private EExpGemType expGemType;
         [SerializeField] private bool isHorde;
         [SerializeField] private bool isHeavy;
-
-        [FormerlySerializedAs("enemyActionCooldown")] [SerializeField] private float actionCooldown;
-        [SerializeField] private GameObject enemyAdditionalLogic = null;
-
+        [SerializeField] private EEnemyState enemyState;
         public float BodyScale => bodyScale;
         public bool IsHorde => isHorde;
         public AnimationClip WalkingAnimationClip => walkingAnimationClip;
         public int MaxHealth => maxHealth;
         public float MovementSpeed => movementSpeed;
         public EExpGemType ExpGemType => expGemType;
-        public float ActionCooldown => actionCooldown;
         public bool IsHeavy => isHeavy;
-        public void SpawnEnemyLogic(EnemyLogic enemyLogic)
-        {
-            if (enemyAdditionalLogic == null) return;
-
-            var enemyActionScript =
-                Instantiate(enemyAdditionalLogic, enemyLogic.transform.position, Quaternion.identity,
-                    enemyLogic.transform).GetComponent<EnemyAction>();
-            enemyActionScript.Setup(enemyLogic, this);
-        }
+        public EEnemyState EnemyState => enemyState;
     }
 }

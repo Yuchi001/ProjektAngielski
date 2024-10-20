@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using EnemyPack;
+using EnemyPack.CustomEnemyLogic;
 using EnemyPack.SO;
+using JetBrains.Annotations;
+using Managers;
+using Managers.Other;
 using Other;
+using Other.Enums;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Utils;
@@ -24,6 +29,9 @@ namespace WeaponPack.Other
         private Transform _target;
         private GameObject _flightParticles;
         private GameObject _onHitParticles;
+
+        private bool _destroyOnContactWithWall = true;
+        public bool DestroyOnContactWithWall => _destroyOnContactWithWall;
 
         private float _onHitParticlesScale = 1;
         private int _damage;
@@ -46,6 +54,8 @@ namespace WeaponPack.Other
         private bool _ready = false;
 
         private Vector2 _startDistance;
+
+        private EffectInfo _effectInfo = null;
 
         private Action<GameObject, Projectile> _onCollisionStay = null;
         private Action<GameObject, Projectile> _onHit = null;
@@ -90,6 +100,12 @@ namespace WeaponPack.Other
             return this;
         }
 
+        public Projectile SetDisableDestroyOnContactWithWall()
+        {
+            _destroyOnContactWithWall = false;
+            return this;
+        }
+
         public Projectile SetNewCustomValue(string id, float value = 0)
         {
             _customValues.Add(id, value);
@@ -126,6 +142,16 @@ namespace WeaponPack.Other
             return this;
         }
 
+        public Projectile SetEffect(EEffectType effectType, float time)
+        {
+            _effectInfo = new EffectInfo
+            {
+                effectType = effectType,
+                time = time,
+            };
+            return this;
+        }
+
         public Projectile SetRotationSpeed(float speed)
         {
             _rotationSpeed = speed;
@@ -137,6 +163,13 @@ namespace WeaponPack.Other
             projectileSprite.sprite = sprite;
             projectileSprite.transform.localScale = new Vector3(spriteScale, spriteScale, 0);
             if (sprite == null) projectileSprite.enabled = false;
+            return this;
+        }
+
+        public Projectile SetSortingLayer(string sortingLayerName, int index = 0)
+        {
+            projectileSprite.sortingLayerName = sortingLayerName;
+            projectileSprite.sortingOrder = index;
             return this;
         }
         
@@ -194,6 +227,14 @@ namespace WeaponPack.Other
         public Projectile SetSpriteRotation(float angle)
         {
             projectileSprite.transform.Rotate(0, 0, angle);
+            return this;
+        }
+        
+        public Projectile SetStaticSpriteRotation(float angle)
+        {
+            var newRot = projectileSprite.transform.rotation;
+            newRot.z = angle;
+            projectileSprite.transform.rotation = newRot;
             return this;
         }
         
@@ -306,27 +347,12 @@ namespace WeaponPack.Other
             projectileSprite.sprite = _sprites[_currentIndex];
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        public SpriteRenderer GetSpriteRenderer()
         {
-            ManageHit(other.gameObject);
+            return projectileSprite;
         }
 
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            ManageHit(other.gameObject);
-        }
-
-        private void OnTriggerStay2D(Collider2D other)
-        {
-            ManageCollisionStay(other.gameObject);
-        }
-
-        private void OnCollisionStay2D(Collision2D other)
-        {
-            ManageCollisionStay(other.gameObject);
-        }
-
-        private void ManageCollisionStay(GameObject hitObj)
+        public void ManageCollisionStay(GameObject hitObj)
         {
             if (!hitObj.CompareTag(_targetTag)) return;
             
@@ -338,7 +364,7 @@ namespace WeaponPack.Other
             _onCollisionStay?.Invoke(hitObj, this);
         }
 
-        private void ManageHit(GameObject hitObj)
+        public void ManageHit(GameObject hitObj)
         {
             if (!hitObj.CompareTag(_targetTag)) return;
             
@@ -348,6 +374,8 @@ namespace WeaponPack.Other
             if (!isHit) return;
             
             _onHit?.Invoke(hitObj, this);
+            
+            if (_effectInfo != null) hitEntity.AddEffect(_effectInfo);
             
             TryPush(hitEntity, hitObj);
 

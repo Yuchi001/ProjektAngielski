@@ -13,44 +13,61 @@ MonoBehaviour:
   m_Name: IceWand
   m_EditorClassIdentifier: 
   weaponName: Ice wand
-  weaponDescription: Fire for projectiles that targets the closest targets in range,
-    dealing light damage
+  weaponDescription: Fire projectiles that targets the closest enemies in range,
+    dealing light damage and slowing them up
   weaponSprite: {fileID: 21300000, guid: bda977de6e362264fa803dc9557325f0, type: 3}
   weaponColor: {r: 0, g: 0.04509096, b: 0.61635214, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 2453183114215846659, guid: 7cf16a8bd57bbe44ebfb481c79f37527, type: 3}
+  weaponCategory: 4
+  maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
     statValue: 2
     isPercentage: 0
+    canUpgrade: 1
   - statType: 1
-    statValue: 5
+    statValue: 1
     isPercentage: 0
+    canUpgrade: 1
   - statType: 2
     statValue: 14
     isPercentage: 0
+    canUpgrade: 0
   - statType: 3
-    statValue: 4
+    statValue: 8
     isPercentage: 0
+    canUpgrade: 1
+  - statType: 16
+    statValue: 3
+    isPercentage: 0
+    canUpgrade: 1
   weaponUpgradeStats:
-  - weaponLevelUpDescription: Additional 2 damage, 10% faster attack
-    levelStats:
-    - statType: 1
-      statValue: 2
-      isPercentage: 0
-    - statType: 0
-      statValue: -0.1
-      isPercentage: 1
-  - weaponLevelUpDescription: Additional 2 damage, projectiles fly faster
-    levelStats:
-    - statType: 2
-      statValue: 0.5
-      isPercentage: 0
-    - statType: 1
-      statValue: 2
-      isPercentage: 0
-  - weaponLevelUpDescription: Increase projectiles by 1
-    levelStats:
-    - statType: 3
-      statValue: 1
-      isPercentage: 0
+  - statType: 0
+    statValue: -0.05
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: 'Gain <v> cooldown reduction '
+    valueLevels: 5
+    valueGrowth: -0.01
+  - statType: 1
+    statValue: 1
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> damage
+    valueLevels: 1
+    valueGrowth: 1
+  - statType: 3
+    statValue: 1
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> more projectiles
+    valueLevels: 3
+    valueGrowth: 1
+  - statType: 16
+    statValue: 0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Slow lasts <v> longer
+    valueLevels: 5
+    valueGrowth: 0.05

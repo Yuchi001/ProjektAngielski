@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using PlayerPack;
 using UnityEngine;
+using WeaponPack.SO;
 
 namespace WeaponPack.Other
 {
@@ -74,9 +75,9 @@ namespace WeaponPack.Other
             fieldSprite.sprite = _sprites[_currentIndex];
         }
 
-        private void OnResetStats(string weaponName)
+        private void OnResetStats(SoWeapon weapon)
         {
-            if (weaponName != _weaponName) return;
+            if (weapon.WeaponName != _weaponName) return;
             
             Destroy(gameObject);
         }

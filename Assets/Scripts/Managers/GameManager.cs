@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using EnchantmentPack;
+using EnchantmentPack.Enums;
+using EnemyPack;
+using MainCameraPack;
 using Managers.Enums;
+using MapGeneratorPack;
 using PlayerPack;
 using PlayerPack.SO;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Managers
 {
@@ -23,19 +27,33 @@ namespace Managers
        }
        
        #endregion
-
-       [SerializeField] private GameObject deathUi;
+       
+       public static KeyCode UpBind => KeyCode.W;
+       public static KeyCode DownBind => KeyCode.S;
+       public static KeyCode LeftBind => KeyCode.A;
+       public static KeyCode RightBind => KeyCode.D;
+       public static KeyCode AcceptBind => KeyCode.O;
+       public static KeyCode DeclineBind => KeyCode.K;
+       
        [SerializeField] private GameObject playerPrefab;
        [SerializeField] private MainCamera mainCamera;
-       [SerializeField] private Transform worldCanvas;
-       [SerializeField] private Transform mainCanvas;
 
-       [SerializeField] private Transform menuCanvas;
+       [SerializeField] private WaveManager waveManager;
+       [SerializeField] private GameUiManager gameUiManager;
+       
+       #region Prefabs
 
-       public Transform WorldCanvas => worldCanvas;
-       public Transform MainCanvas => mainCanvas;
+       [Header("Public prefabs")] 
+       [SerializeField] private GameObject spawnEntityPrefab;
+       [SerializeField] private GameObject mapGenerator;
+       public GameObject SpawnEntityPrefab => spawnEntityPrefab;
+
+       #endregion
        public PlayerManager CurrentPlayer { get; private set; }
-
+       public MapGenerator MapGenerator { get; private set; }
+       public WaveManager WaveManager => waveManager;
+       public EnemySpawner EnemySpawner => waveManager.EnemySpawner;
+       
        private void Init()
        {
            LeanTween.init(1000000, 1000000);
@@ -43,31 +61,21 @@ namespace Managers
 
        public void StartRun(SoCharacter pickedCharacter)
        {
+           MapGenerator = Instantiate(mapGenerator).GetComponent<MapGenerator>();
+           
+           gameUiManager.BeginPlay();
+           
            var playerObj = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
            CurrentPlayer = playerObj.GetComponent<PlayerManager>();
-           
-           foreach (Transform child in transform)
-           {
-               child.gameObject.SetActive(true);
-           }
-           
-           menuCanvas.gameObject.SetActive(false);
-           
            CurrentPlayer.Setup(pickedCharacter);
            
            mainCamera.Setup(playerObj);
            
            AudioManager.Instance.SetTheme(EThemeType.Main1);
-       }
-
-       public void OnPlayerDeath()
-       {
-           foreach (Transform child in transform)
-           {
-               child.gameObject.SetActive(false);
-           }
            
-           deathUi.SetActive(true);
+           waveManager.BeginSpawn();
+
+           Time.timeScale = 1;
        }
     }
 }

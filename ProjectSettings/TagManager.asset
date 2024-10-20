@@ -14,7 +14,7 @@ TagManager:
   - UI
   - Player
   - EnemyProjectile
-  - 
+  - Enemy
   - 
   - 
   - 
@@ -48,8 +48,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Walls
+    uniqueID: 2865024721
+    locked: 0
   - name: Unlit
     uniqueID: 3926174571
+    locked: 0
+  - name: DeadZone
+    uniqueID: 2941917819
     locked: 0
   - name: UI
     uniqueID: 2400487259

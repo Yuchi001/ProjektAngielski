@@ -18,3 +18,5 @@ MonoBehaviour:
   movementSpeed: 1
   expGemType: 4
   isHorde: 0
+  isHeavy: 0
+  enemyState: 0

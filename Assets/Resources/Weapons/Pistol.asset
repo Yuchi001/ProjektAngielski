@@ -18,44 +18,66 @@ MonoBehaviour:
   weaponColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 4604547026064372186, guid: 51b8214004e8c9246a98ad9ae5463170, type: 3}
+  weaponCategory: 2
+  maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
-    statValue: 1
+    statValue: 3
     isPercentage: 0
+    canUpgrade: 1
   - statType: 1
-    statValue: 12
+    statValue: 6
     isPercentage: 0
+    canUpgrade: 1
   - statType: 2
     statValue: 10
     isPercentage: 0
+    canUpgrade: 0
   - statType: 3
     statValue: 7
     isPercentage: 0
+    canUpgrade: 1
   - statType: 9
     statValue: 0.5
     isPercentage: 0
+    canUpgrade: 1
   - statType: 15
     statValue: 3
     isPercentage: 0
+    canUpgrade: 1
   weaponUpgradeStats:
-  - weaponLevelUpDescription: Gain 3 damage
-    levelStats:
-    - statType: 1
-      statValue: 3
-      isPercentage: 0
-  - weaponLevelUpDescription: Gain 10% accuracy, increase magazine capacity by 1
-    levelStats:
-    - statType: 9
-      statValue: -0.1
-      isPercentage: 1
-    - statType: 3
-      statValue: 1
-      isPercentage: 0
-  - weaponLevelUpDescription: Gain 40% accuracy, bullets pushes enemies 20% further
-    levelStats:
-    - statType: 9
-      statValue: -0.4
-      isPercentage: 1
-    - statType: 15
-      statValue: 0.2
-      isPercentage: 1
+  - statType: 0
+    statValue: -0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Reload <v> faster
+    valueLevels: 4
+    valueGrowth: -0.05
+  - statType: 1
+    statValue: 3
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> damage
+    valueLevels: 5
+    valueGrowth: 1
+  - statType: 3
+    statValue: 2
+    isPercentage: 0
+    canUpgrade: 1
+    weaponLevelUpDescription: Calip hold <v> more bullets
+    valueLevels: 3
+    valueGrowth: 1
+  - statType: 9
+    statValue: -0.1
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Gain <v> accuracy
+    valueLevels: 2
+    valueGrowth: -0.05
+  - statType: 15
+    statValue: 0.2
+    isPercentage: 1
+    canUpgrade: 1
+    weaponLevelUpDescription: Bullets push <v> stronger
+    valueLevels: 3
+    valueGrowth: 0.1

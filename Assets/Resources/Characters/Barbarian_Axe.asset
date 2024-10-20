@@ -15,8 +15,10 @@ MonoBehaviour:
   characterName: Glen the Barbarian
   characterSprite: {fileID: -640157379, guid: 8b26b37991f5de24d99cebe888d19e3c, type: 3}
   maxHp: 150
-  maxWeaponsInEq: 4
+  maxWeaponsInEq: 2
+  maxDashStacks: 1
   startingWeapon: {fileID: 11400000, guid: b4dd1940f3f5d6646bfadd7058601535, type: 2}
-  movementSpeed: 2.3
+  movementSpeed: 2.5
   walkingAnim: {fileID: 7400000, guid: 6bf83049b6af3bf40b8652637d1854c8, type: 2}
   idleAnim: {fileID: 7400000, guid: 21da6c17136672546ad89c3832a2d9fa, type: 2}
+  characterColor: {r: 0.63529414, g: 0.5058824, b: 0.19215688, a: 1}

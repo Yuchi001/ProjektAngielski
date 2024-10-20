@@ -19,5 +19,6 @@ namespace WeaponPack.Enums
         DamageRate,
         HealValue,
         PushForce,
+        EffectDuration,
     }
 }

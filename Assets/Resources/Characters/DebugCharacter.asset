@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: DebugCharacter
   m_EditorClassIdentifier: 
   characterName: Debug
-  characterSprite: {fileID: -1228116626, guid: 9c82e02e413a1b04c8702c3ad74a5a4e, type: 3}
+  characterSprite: {fileID: 21848188, guid: a27a0f283b0f76a409ed919119e9fcd0, type: 3}
   maxHp: 999
-  maxWeaponsInEq: 999
-  startingWeapon: {fileID: 11400000, guid: e8c616d0f5ff4a84486199d84bee0c78, type: 2}
+  maxWeaponsInEq: 2
+  maxDashStacks: 10
+  startingWeapon: {fileID: 11400000, guid: 205ded1fcfc6fae49ae6c29c1c55fa0e, type: 2}
   movementSpeed: 3
   walkingAnim: {fileID: 7400000, guid: 3b4933883a3c0b84a9206ace12c522d7, type: 2}
   idleAnim: {fileID: 7400000, guid: 3b4933883a3c0b84a9206ace12c522d7, type: 2}
+  characterColor: {r: 0, g: 0, b: 0, a: 0}

@@ -10,13 +10,13 @@ namespace PlayerPack
 {
     public class PlayerWeaponry : MonoBehaviour
     {
-        private List<WeaponLogicBase> _currentWeapons = new();
+        private readonly List<WeaponLogicBase> _currentWeapons = new();
         private List<SoWeapon> _allWeapons = new();
 
         public delegate void WeaponAddDelegate(WeaponLogicBase weaponLogicBase);
         public static event WeaponAddDelegate OnWeaponAdd;
 
-        public delegate void WeaponLevelUpDelegate(string weaponName);
+        public delegate void WeaponLevelUpDelegate(SoWeapon weapon);
         public static event WeaponLevelUpDelegate OnWeaponLevelUp;
 
         private void Awake()
@@ -29,7 +29,7 @@ namespace PlayerPack
             var weapon = _currentWeapons.FirstOrDefault(w => w.Weapon.WeaponName == weaponToAdd.WeaponName);
             if (weapon != default)
             {
-                OnWeaponLevelUp?.Invoke(weaponToAdd.WeaponName);
+                OnWeaponLevelUp?.Invoke(weaponToAdd);
                 return;
             }
             
@@ -46,10 +46,9 @@ namespace PlayerPack
         {
             var currentWeapon = _currentWeapons.FirstOrDefault(w => w.Weapon.WeaponName == weapon.WeaponName);
             if (currentWeapon == default) return "<color=red>NEW!</color> " + weapon.WeaponDescription;
-
-            var weaponUpgradeStats = currentWeapon.Weapon.WeaponUpgradeStats;
+            
             var level = currentWeapon.Level;
-            return $"<color=green>Next level {level + 2}:</color> " + weaponUpgradeStats[level % weaponUpgradeStats.Count].weaponLevelUpDescription;
+            return $"<color=green>Next level {level + 2}:</color> " + weapon.GetNextLevelDescription();
         }
 
         public IEnumerable<SoWeapon> GetRandomWeapons(int count)
@@ -67,7 +66,8 @@ namespace PlayerPack
                 if (weaponPool.Count == 0) break;
                 
                 var randomIndex = Random.Range(0, weaponPool.Count);
-                weapons.Add(weaponPool[randomIndex]);
+                var pickedWeapon = Instantiate(weaponPool[randomIndex]);
+                weapons.Add(pickedWeapon);
                 weaponPool.RemoveAt(randomIndex);
             }
             

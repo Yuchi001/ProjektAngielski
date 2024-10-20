@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using EnchantmentPack.Enums;
+using Managers;
+using Other.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Utils;
@@ -15,20 +18,19 @@ namespace WeaponPack.WeaponsLogic
 
         private float ProjectileScale => GetStatValue(EWeaponStat.ProjectileScale) ?? 0;
         
-        protected override void UseWeapon()
+        protected override bool UseWeapon()
         {
             var targetedEnemies = new List<int>();
+            var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
+                var target = UtilsMethods.FindTarget(transform.position, targetedEnemies);
+                if (target == null) continue;
+
+                spawnedProjectiles++;
+                
                 var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
                 var projectileScript = projectile.GetComponent<Projectile>();
-
-                var target = UtilsMethods.FindTarget(transform.position, targetedEnemies);
-                if (target == null)
-                {
-                    Destroy(projectile);
-                    continue;
-                }
                 
                 targetedEnemies.Add(target.GetInstanceID());
                 projectileScript.Setup(Damage, Speed)
@@ -38,9 +40,18 @@ namespace WeaponPack.WeaponsLogic
                     .SetPushForce(PushForce)
                     .SetScale(ProjectileScale)
                     .SetRotationSpeed(-rotationSpeedModifier * Speed)
-                    .SetLightColor(Color.clear)
-                    .SetReady();
+                    .SetLightColor(Color.clear);
+
+                if (PlayerEnchantments.Has(EEnchantmentName.Sharpness))
+                {
+                    var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.Sharpness, EValueKey.Percentage);
+                    if (Random.Range(0f, 1f) <= percentage) projectileScript.SetEffect(EEffectType.Bleed, 9999);
+                }
+                
+                projectileScript.SetReady();
             }
+
+            return spawnedProjectiles > 0;
         }
     }
 }

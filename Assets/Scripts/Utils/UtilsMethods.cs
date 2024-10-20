@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EnemyPack;
+using EnemyPack.CustomEnemyLogic;
 using UnityEngine;
 
 namespace Utils
@@ -57,9 +58,20 @@ namespace Utils
             var enemies = Object.FindObjectsOfType<EnemyLogic>().ToList();
             enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
             if (enemies.Count == 0) return null;
+
+            var left = new List<EnemyLogic>();
+            var right = new List<EnemyLogic>();
+            foreach (var enemy in enemies)
+            {
+                var isLeft = enemy.transform.position.x < position.x;
+                if (isLeft) left.Add(enemy);
+                else right.Add(enemy);
+            }
+
+            var biggestGroup = left.Count > right.Count ? left : right;
             
             var (pickedEnemy, smallestDistance) = (enemies[0], Vector2.Distance(position, enemies[0].transform.position));
-            foreach (var enemy in enemies)
+            foreach (var enemy in biggestGroup)
             {
                 var distance = Vector2.Distance(position, enemy.transform.position);
                 if (distance > smallestDistance) continue;
@@ -71,12 +83,17 @@ namespace Utils
             return pickedEnemy;
         }
         
-        public static EnemyLogic FindTarget(List<string> usedTargets = null)
+        public static string StringJoin(this IEnumerable<string> values, string separator)
         {
-            usedTargets = usedTargets ?? new List<string>();
+            return string.Join(separator, values);
+        }
+        
+        public static EnemyLogic FindTarget(List<int> usedTargets = null)
+        {
+            usedTargets = usedTargets ?? new List<int>();
             
             var enemies = Object.FindObjectsOfType<EnemyLogic>().ToList();
-            enemies = enemies.Where(e => !usedTargets.Contains(e.name)).ToList();
+            enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
             if (enemies.Count == 0) return null;
 
             var randomIndex = Random.Range(0, enemies.Count);

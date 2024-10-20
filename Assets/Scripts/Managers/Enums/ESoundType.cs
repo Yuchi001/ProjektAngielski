@@ -11,5 +11,10 @@
         PlayerDeath,
         PlayerHurt,
         Note,
+        Chest,
+        PoisonShare,
+        BulletExplode,
+        PowerUp,
+        HealOrb
     }
 }

@@ -1,4 +1,5 @@
 ﻿using EnemyPack;
+using EnemyPack.CustomEnemyLogic;
 using PlayerPack;
 using UnityEngine;
 using WeaponPack.Enums;
@@ -10,7 +11,7 @@ namespace WeaponPack.WeaponsLogic
         private float Range => GetStatValue(EWeaponStat.BlastRange) ?? 0;
         private float HealValue => GetStatValue(EWeaponStat.HealValue) ?? 0;
         
-        protected override void UseWeapon()
+        protected override bool UseWeapon()
         {
             var colliders = Physics2D.OverlapCircleAll(PlayerPos, Range);
             foreach (var collider in colliders)
@@ -23,6 +24,8 @@ namespace WeaponPack.WeaponsLogic
             }
             
             PlayerManager.Instance.PlayerHealth.Heal((int)HealValue);
+
+            return true;
         }
     }
 }

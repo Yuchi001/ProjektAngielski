@@ -16,20 +16,19 @@ namespace WeaponPack.WeaponsLogic
 
         private float Range => GetStatValue(EWeaponStat.ProjectileRange) ?? 2;
         
-        protected override void UseWeapon()
+        protected override bool UseWeapon()
         {
             var targetedEnemies = new List<int>();
+            var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
+                var target = UtilsMethods.FindTarget(transform.position, targetedEnemies);
+                if (target == null) continue;
+
+                spawnedProjectiles++;
+                
                 var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
                 var projectileScript = projectile.GetComponent<Projectile>();
-
-                var target = UtilsMethods.FindTarget(transform.position, targetedEnemies);
-                if (target == null)
-                {
-                    Destroy(projectile);
-                    continue;
-                }
                 
                 targetedEnemies.Add(target.GetInstanceID());
                 projectileScript.Setup(Damage, Speed)
@@ -44,6 +43,8 @@ namespace WeaponPack.WeaponsLogic
                     .SetLightColor(Color.clear)
                     .SetReady();
             }
+
+            return spawnedProjectiles > 0;
         }
 
         private void OutOfRangeBehaviour(Projectile projectile)

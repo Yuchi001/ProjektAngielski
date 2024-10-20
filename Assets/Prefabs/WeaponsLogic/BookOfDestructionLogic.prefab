@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 638d038edac64c29b5b8f0a806c031f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destructionCirclePrefab: {fileID: 3702896327343364409, guid: 0f1892a06e1675348899c4ffabf9d128, type: 3}
