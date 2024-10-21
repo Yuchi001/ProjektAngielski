@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using EnemyPack;
 using EnemyPack.CustomEnemyLogic;
 using EnemyPack.SO;
+using Managers;
+using Managers.Enums;
 using Other.Enums;
+using SpecialEffectPack;
+using SpecialEffectPack.Enums;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -64,8 +68,13 @@ namespace WeaponPack.WeaponsLogic
         private IEnumerator BoomCoroutine(GameObject impactEnemy, float range, int damage)
         {
             var enemyInstanceId = impactEnemy.GetComponent<EnemyLogic>().GetInstanceID();
-            var hitObjects = Physics2D.OverlapCircleAll(impactEnemy.transform.position, range);
-            foreach (var hitCollider in hitObjects)
+            var results = new Collider2D[50];
+            var position = impactEnemy.transform.position;
+            Physics2D.OverlapCircleNonAlloc(position, range, results);
+            SpecialEffectManager.Instance
+                .SpawnExplosion(ESpecialEffectType.ExplosionMedium, position, range);
+            AudioManager.Instance.PlaySound(ESoundType.BananaBoom);
+            foreach (var hitCollider in results)
             {
                 if(hitCollider == null) continue;
                 

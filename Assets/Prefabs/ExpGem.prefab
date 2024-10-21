@@ -191,13 +191,13 @@ MonoBehaviour:
     expAmount: 5
     gemSprite: {fileID: 21300000, guid: 1b25e537638a4994699205a9f3f25919, type: 3}
   - gemType: 2
-    expAmount: 25
+    expAmount: 10
     gemSprite: {fileID: 21300000, guid: 7df4d466fa6dd5f4da6a693fbf9e8966, type: 3}
   - gemType: 3
-    expAmount: 50
+    expAmount: 20
     gemSprite: {fileID: 21300000, guid: e47a00f9b0f0bdb4b984e4038feefa6b, type: 3}
   - gemType: 4
-    expAmount: 100
+    expAmount: 40
     gemSprite: {fileID: 21300000, guid: d5d27dbf8dd139440a1da9cd3efafcdd, type: 3}
   betterGemAmountPair:
   - gemType: 0
@@ -207,11 +207,11 @@ MonoBehaviour:
     expAmount: 7
     gemSprite: {fileID: 21300000, guid: 89d142240c3d8c4408bd84fc5d026e63, type: 3}
   - gemType: 2
-    expAmount: 30
+    expAmount: 15
     gemSprite: {fileID: 21300000, guid: d62c3bbccb988e743944167cc4ea8233, type: 3}
   - gemType: 3
-    expAmount: 65
+    expAmount: 30
     gemSprite: {fileID: 21300000, guid: 220e3becb2c378b4bab1d6ce7b03ca89, type: 3}
   - gemType: 4
-    expAmount: 125
+    expAmount: 60
     gemSprite: {fileID: 21300000, guid: caaccbc1182d3504c98dd85911e5d90c, type: 3}

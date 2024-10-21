@@ -43,6 +43,8 @@ namespace EnemyPack
             private set => _spawnedEnemies = value;
         }
 
+        public int ShootingEnemiesCount { get; private set; } = 0;
+
         private List<EnemyLogic> _spawnedEnemies = new();
 
         private float _difficultyTimer = 0;
@@ -52,10 +54,11 @@ namespace EnemyPack
  
         public int DeadEnemies { get; private set; }
 
-        public void IncrementDeadEnemies(EnemyLogic enemyLogic)
+        public void IncrementDeadEnemies(EnemyLogic enemyLogic, SoEnemy enemy)
         {
             OnEnemyDie?.Invoke(enemyLogic);
             DeadEnemies++;
+            if (enemy.CanShoot) ShootingEnemiesCount--;
         }
 
         private float EnemySpawnRate => enemySpawnRate + 1f * enemySpawnRateMultiplierPerKill * DeadEnemies;
@@ -125,6 +128,7 @@ namespace EnemyPack
             
             enemyScript.Setup(enemy, PlayerManager.transform, this);
             SpawnedEnemies.Add(enemyScript);
+            if (enemy.CanShoot) ShootingEnemiesCount++;
         }
 
         public void SpawnEnemy(SoEnemy enemy, Vector2 position)
@@ -136,6 +140,7 @@ namespace EnemyPack
             
             enemyScript.Setup(enemy, PlayerManager.transform, this);
             SpawnedEnemies.Add(enemyScript);
+            if (enemy.CanShoot) ShootingEnemiesCount++;
         }
     }
 

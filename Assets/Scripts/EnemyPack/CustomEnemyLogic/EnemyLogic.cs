@@ -138,7 +138,9 @@ namespace EnemyPack.CustomEnemyLogic
         private void UpdateShootBehaviour()
         {
             _shootTimer += Time.deltaTime;
-            if (_shootTimer < 1f / bulletsPerSec) return;
+            var count = _enemySpawner.ShootingEnemiesCount;
+            if (count <= 0) count = 1;
+            if (_shootTimer < count / bulletsPerSec) return;
 
             _shootTimer = 0;
             var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
@@ -284,8 +286,6 @@ namespace EnemyPack.CustomEnemyLogic
             _target = null;
             rb2d.velocity = Vector2.zero;
             GetComponent<Collider2D>().enabled = false;
-
-            _enemySpawner.IncrementDeadEnemies(this);
             
             base.OnDie();
         }
@@ -342,6 +342,11 @@ namespace EnemyPack.CustomEnemyLogic
             if (enemyLogic._enemy.name != _enemy.name) return;
 
             enemyLogic.SetMerge(this);
+        }
+
+        private void OnDisable()
+        {
+            _enemySpawner.IncrementDeadEnemies(this, _enemy);
         }
     }
 }
