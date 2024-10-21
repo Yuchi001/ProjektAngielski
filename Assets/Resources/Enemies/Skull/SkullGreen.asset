@@ -16,10 +16,8 @@ MonoBehaviour:
   maxHealth: 2
   bodyScale: 1
   movementSpeed: 2
-  playerSpeed: 0
   expGemType: 0
   isHorde: 0
   isHeavy: 0
   enemyState: 0
-  actionCooldown: 0
-  enemyAdditionalLogic: {fileID: 0}
+  canShoot: 1

@@ -20,11 +20,10 @@ namespace WeaponPack.WeaponsLogic
         
         protected override bool UseWeapon()
         {
-            var targetedEnemies = new List<int>();
             var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = UtilsMethods.FindTarget(transform.position, targetedEnemies);
+                var target = UtilsMethods.FindTargetInBiggestGroup(transform.position);
                 if (target == null) continue;
 
                 spawnedProjectiles++;
@@ -32,7 +31,6 @@ namespace WeaponPack.WeaponsLogic
                 var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
                 var projectileScript = projectile.GetComponent<Projectile>();
                 
-                targetedEnemies.Add(target.GetInstanceID());
                 projectileScript.Setup(Damage, Speed)
                     .SetDirection(target.transform.position)
                     .SetDontDestroyOnHit()

@@ -20,3 +20,4 @@ MonoBehaviour:
   isHorde: 0
   isHeavy: 0
   enemyState: 2
+  canShoot: 1

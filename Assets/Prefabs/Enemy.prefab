@@ -191,7 +191,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 1996234102917140788, guid: 2413cf475826b9446be16fe3e8393093, type: 3}
   bulletDamage: 5
   bulletSpeed: 2
-  bulletsPerSec: 0.1
+  bulletsPerSec: 1
 --- !u!50 &2884553101495344094
 Rigidbody2D:
   serializedVersion: 4

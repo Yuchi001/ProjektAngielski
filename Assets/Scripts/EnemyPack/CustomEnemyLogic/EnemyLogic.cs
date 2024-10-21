@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using EnchantmentPack.Enchantments;
 using EnchantmentPack.Enums;
 using EnemyPack.Enums;
 using EnemyPack.SO;
@@ -10,10 +9,8 @@ using ExpPackage;
 using Managers;
 using Managers.Enums;
 using Other;
-using Other.Enums;
 using Other.Interfaces;
 using PlayerPack;
-using PlayerPack.PlayerMovementPack;
 using UI;
 using UnityEngine;
 using WeaponPack.Other;
@@ -32,6 +29,18 @@ namespace EnemyPack.CustomEnemyLogic
         [SerializeField] private Transform bodyTransform;
         [SerializeField] private Rigidbody2D rb2d;
         [SerializeField] private Animator animator;
+        
+        [Header("Shoot")] 
+        [SerializeField] private string playerTagName;
+        [SerializeField] private LayerMask enemyProjectileLayerMask;
+        [SerializeField] private List<Sprite> projectileSprites;
+        [SerializeField] private GameObject projectilePrefab;
+        [SerializeField] private int bulletDamage;
+        [SerializeField] private float bulletSpeed;
+        [SerializeField] private float bulletsPerSec;
+        
+        private float _shootTimer = 0;
+
         public override int CurrentHealth => _currentHealth;
 
         private Collider2D Collider2D => GetComponent<Collider2D>();
@@ -81,7 +90,7 @@ namespace EnemyPack.CustomEnemyLogic
 
             _playerSpeed = PlayerManager.Instance.PickedCharacter.MovementSpeed;
 
-            Collider2D.isTrigger = (_enemy.EnemyState != EEnemyState.Chase && _enemy.EnemyState != EEnemyState.StandAndShoot) || _enemy.IsHeavy;
+            Collider2D.isTrigger = (_enemy.EnemyState != EEnemyState.Chase && _enemy.EnemyState != EEnemyState.Stand) || _enemy.IsHeavy;
             
             var aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
             var anims = aoc.animationClips.Select(a => new KeyValuePair<AnimationClip, AnimationClip>(a, _enemy.WalkingAnimationClip)).ToList();
@@ -105,10 +114,11 @@ namespace EnemyPack.CustomEnemyLogic
                 case EEnemyState.Patrol:
                     UpdatePatrolBehaviour();
                     break;
-                case EEnemyState.StandAndShoot:
-                    UpdateStandAndShootBehaviour();
+                case EEnemyState.Stand:
                     break;
             }
+            
+            if (_enemy.CanShoot) UpdateShootBehaviour();
 
             ManagePlayerCollision();
             EnemyHealthBar.ManageHealthBar();
@@ -119,10 +129,29 @@ namespace EnemyPack.CustomEnemyLogic
             return _enemy.EnemyState switch
             {
                 EEnemyState.Chase => ChaseSpeed,
-                EEnemyState.StandAndShoot => 0,
+                EEnemyState.Stand => 0,
                 EEnemyState.Follow => MovementSpeed,
                 _ => MovementSpeed
             };
+        }
+
+        private void UpdateShootBehaviour()
+        {
+            _shootTimer += Time.deltaTime;
+            var count = _enemySpawner.ShootingEnemiesCount;
+            if (count <= 0) count = 1;
+            if (_shootTimer < count / bulletsPerSec) return;
+
+            _shootTimer = 0;
+            var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            var projectileScript = projectile.GetComponent<Projectile>();
+
+            projectileScript.Setup(bulletDamage, bulletSpeed)
+                .SetSprite(projectileSprites, 5, 4)
+                .SetLightColor(Color.red)
+                .SetTargetTag(playerTagName, 7)
+                .SetDirection(PlayerManager.Instance.transform.position)
+                .SetReady();
         }
 
         private void FixedUpdate()
@@ -148,7 +177,7 @@ namespace EnemyPack.CustomEnemyLogic
                 case EEnemyState.Patrol:
                     FixedUpdatePatrolBehaviour();
                     break;
-                case EEnemyState.StandAndShoot:
+                case EEnemyState.Stand:
                     break;
             }
         }
@@ -200,7 +229,7 @@ namespace EnemyPack.CustomEnemyLogic
                     break;
                 case EEnemyState.Patrol:
                     break;
-                case EEnemyState.StandAndShoot:
+                case EEnemyState.Stand:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -220,7 +249,7 @@ namespace EnemyPack.CustomEnemyLogic
         
         public void PushEnemy(Vector2 force, float time)
         {
-            if (_isBeingPushed || mergeParent || _enemy.EnemyState == EEnemyState.StandAndShoot) return;
+            if (_isBeingPushed || mergeParent || _enemy.EnemyState == EEnemyState.Stand) return;
             
             rb2d.AddForce(force, ForceMode2D.Impulse);
             _isBeingPushed = true;
@@ -257,8 +286,6 @@ namespace EnemyPack.CustomEnemyLogic
             _target = null;
             rb2d.velocity = Vector2.zero;
             GetComponent<Collider2D>().enabled = false;
-
-            _enemySpawner.IncrementDeadEnemies(this);
             
             base.OnDie();
         }
@@ -290,7 +317,7 @@ namespace EnemyPack.CustomEnemyLogic
             if (other.gameObject.TryGetComponent(out Projectile projectile))
                 projectile.ManageHit(gameObject);
             
-            if (!other.gameObject.TryGetComponent(out IDamageEnemy damageEnemy)) 
+            if (other.gameObject.TryGetComponent(out IDamageEnemy damageEnemy)) 
                 damageEnemy.TriggerDamage(this);
         }
 
@@ -315,6 +342,11 @@ namespace EnemyPack.CustomEnemyLogic
             if (enemyLogic._enemy.name != _enemy.name) return;
 
             enemyLogic.SetMerge(this);
+        }
+
+        private void OnDisable()
+        {
+            _enemySpawner.IncrementDeadEnemies(this, _enemy);
         }
     }
 }

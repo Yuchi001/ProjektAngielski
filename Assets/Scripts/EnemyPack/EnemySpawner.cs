@@ -29,10 +29,24 @@ namespace EnemyPack
         [Space(10)]
         [SerializeField, Tooltip("In seconds")] private int maximumDifficultyTimeCap = 3600;
         [SerializeField] private List<GemRarityTuple> gemRarityList;
-        private PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
+        private static PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
 
         private List<SoEnemy> _allEnemies = new();
-        
+
+        public List<EnemyLogic> SpawnedEnemies
+        {
+            get
+            {
+                _spawnedEnemies.RemoveAll(e => e == null);
+                return _spawnedEnemies;
+            }
+            private set => _spawnedEnemies = value;
+        }
+
+        public int ShootingEnemiesCount { get; private set; } = 0;
+
+        private List<EnemyLogic> _spawnedEnemies = new();
+
         private float _difficultyTimer = 0;
 
         public delegate void EnemyDieDelegate(EnemyLogic enemyLogic);
@@ -40,10 +54,11 @@ namespace EnemyPack
  
         public int DeadEnemies { get; private set; }
 
-        public void IncrementDeadEnemies(EnemyLogic enemyLogic)
+        public void IncrementDeadEnemies(EnemyLogic enemyLogic, SoEnemy enemy)
         {
             OnEnemyDie?.Invoke(enemyLogic);
             DeadEnemies++;
+            if (enemy.CanShoot) ShootingEnemiesCount--;
         }
 
         private float EnemySpawnRate => enemySpawnRate + 1f * enemySpawnRateMultiplierPerKill * DeadEnemies;
@@ -112,6 +127,8 @@ namespace EnemyPack
             enemyObj.transform.localScale = new Vector3(scale, scale, scale);
             
             enemyScript.Setup(enemy, PlayerManager.transform, this);
+            SpawnedEnemies.Add(enemyScript);
+            if (enemy.CanShoot) ShootingEnemiesCount++;
         }
 
         public void SpawnEnemy(SoEnemy enemy, Vector2 position)
@@ -122,6 +139,8 @@ namespace EnemyPack
             enemyObj.transform.localScale = new Vector3(scale, scale, scale);
             
             enemyScript.Setup(enemy, PlayerManager.transform, this);
+            SpawnedEnemies.Add(enemyScript);
+            if (enemy.CanShoot) ShootingEnemiesCount++;
         }
     }
 

@@ -5,6 +5,6 @@
         Follow,
         Chase,
 		Patrol,
-		StandAndShoot
+		Stand
     }
 }

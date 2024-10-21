@@ -17,7 +17,7 @@ namespace WeaponPack.WeaponsLogic
         
         protected override bool UseWeapon()
         {
-            var target = UtilsMethods.FindTarget();
+            var target = UtilsMethods.FindFurthestTarget(PlayerPos);
 
             if (target == null) return false;
             
