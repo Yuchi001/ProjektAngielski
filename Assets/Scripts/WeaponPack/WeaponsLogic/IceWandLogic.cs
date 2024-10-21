@@ -23,7 +23,7 @@ namespace WeaponPack.WeaponsLogic
             var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = UtilsMethods.FindTarget(transform.position, targetedEnemies);
+                var target = UtilsMethods.FindNearestTarget(transform.position, targetedEnemies);
                 if (target == null) continue;
 
                 spawnedProjectiles++;

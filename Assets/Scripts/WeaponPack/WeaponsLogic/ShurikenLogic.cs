@@ -15,14 +15,14 @@ namespace WeaponPack.WeaponsLogic
         protected override bool UseWeapon()
         {
             StartCoroutine(ThrowShurikens());
-            return UtilsMethods.FindTarget(transform.position);
+            return UtilsMethods.FindNearestTarget(transform.position);
         }
 
         private IEnumerator ThrowShurikens()
         {
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = UtilsMethods.FindTarget(transform.position);
+                var target = UtilsMethods.FindNearestTarget(transform.position);
                 if (target == null) continue;
 
                 var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);

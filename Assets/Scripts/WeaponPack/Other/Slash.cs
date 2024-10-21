@@ -60,7 +60,7 @@ namespace WeaponPack.Other
             var bounds = spriteRender.bounds;
             
             var newPos = transform.position;
-            var target = UtilsMethods.FindTarget(PlayerPos);
+            var target = UtilsMethods.FindTargetInBiggestGroup(PlayerPos, baseScale.x, baseScale.y);
             var lookingRight = target == null || target.transform.position.x > PlayerPos.x;
             var mod = lookingRight ? 1 : -1;
             var offset = mod * bounds.size.x / 2;

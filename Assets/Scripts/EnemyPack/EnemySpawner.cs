@@ -29,10 +29,22 @@ namespace EnemyPack
         [Space(10)]
         [SerializeField, Tooltip("In seconds")] private int maximumDifficultyTimeCap = 3600;
         [SerializeField] private List<GemRarityTuple> gemRarityList;
-        private PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
+        private static PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
 
         private List<SoEnemy> _allEnemies = new();
-        
+
+        public List<EnemyLogic> SpawnedEnemies
+        {
+            get
+            {
+                _spawnedEnemies.RemoveAll(e => e == null);
+                return _spawnedEnemies;
+            }
+            private set => _spawnedEnemies = value;
+        }
+
+        private List<EnemyLogic> _spawnedEnemies = new();
+
         private float _difficultyTimer = 0;
 
         public delegate void EnemyDieDelegate(EnemyLogic enemyLogic);
@@ -112,6 +124,7 @@ namespace EnemyPack
             enemyObj.transform.localScale = new Vector3(scale, scale, scale);
             
             enemyScript.Setup(enemy, PlayerManager.transform, this);
+            SpawnedEnemies.Add(enemyScript);
         }
 
         public void SpawnEnemy(SoEnemy enemy, Vector2 position)
@@ -122,6 +135,7 @@ namespace EnemyPack
             enemyObj.transform.localScale = new Vector3(scale, scale, scale);
             
             enemyScript.Setup(enemy, PlayerManager.transform, this);
+            SpawnedEnemies.Add(enemyScript);
         }
     }
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EnemyPack;
 using EnemyPack.CustomEnemyLogic;
+using Managers;
 using UnityEngine;
 
 namespace Utils
@@ -45,25 +45,60 @@ namespace Utils
             return isRad ? angleRad - Mathf.Deg2Rad * 90 : (180 / Mathf.PI) * angleRad - 90;
         }
 
-        public static T RandomClamp<T>(T val1, T val2)
-        {
-            var random = Random.Range(0, 2);
-            return random == 0 ? val1 : val2;
-        }
-        
-        public static EnemyLogic FindTarget(Vector2 position, List<int> usedTargets = null)
+        public static EnemyLogic FindNearestTarget(Vector2 position, List<int> usedTargets = null)
         {
             usedTargets ??= new List<int>();
             
-            var enemies = Object.FindObjectsOfType<EnemyLogic>().ToList();
+            var enemies = GameManager.Instance.EnemySpawner.SpawnedEnemies;
             enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
+            if (enemies.Count == 0) return null;
+
+            var (pickedEnemy, smallestDistance) = (enemies[0], Vector2.Distance(position, enemies[0].transform.position));
+            foreach (var enemy in enemies)
+            {
+                var distance = Vector2.Distance(position, enemy.transform.position);
+                if (distance > smallestDistance) continue;
+
+                pickedEnemy = enemy;
+                smallestDistance = distance;
+            }
+
+            return pickedEnemy;
+        }
+        
+        public static EnemyLogic FindFurthestTarget(Vector2 position, List<int> usedTargets = null)
+        {
+            usedTargets ??= new List<int>();
+            
+            var enemies = GameManager.Instance.EnemySpawner.SpawnedEnemies;
+            enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
+            if (enemies.Count == 0) return null;
+
+            var (pickedEnemy, farthestDistance) = (enemies[0], Vector2.Distance(position, enemies[0].transform.position));
+            foreach (var enemy in enemies)
+            {
+                var distance = Vector2.Distance(position, enemy.transform.position);
+                if (distance < farthestDistance) continue;
+
+                pickedEnemy = enemy;
+                farthestDistance = distance;
+            }
+
+            return pickedEnemy;
+        }
+        
+        public static EnemyLogic FindTargetInBiggestGroup(Vector2 position, float? xRange = null, float? yRange = null)
+        {
+            var enemies = GameManager.Instance.EnemySpawner.SpawnedEnemies;
             if (enemies.Count == 0) return null;
 
             var left = new List<EnemyLogic>();
             var right = new List<EnemyLogic>();
             foreach (var enemy in enemies)
             {
-                var isLeft = enemy.transform.position.x < position.x;
+                var pos = enemy.transform.position;
+                if(!InRange(pos)) continue;
+                var isLeft = pos.x < position.x;
                 if (isLeft) left.Add(enemy);
                 else right.Add(enemy);
             }
@@ -81,18 +116,22 @@ namespace Utils
             }
 
             return pickedEnemy;
+
+            bool InRange(Vector2 enemyPos)
+            {
+                var inRangeX = !xRange.HasValue ||
+                               (enemyPos.x < position.x + xRange && enemyPos.x > position.x - xRange);
+                var inRangeY = !yRange.HasValue ||
+                               (enemyPos.y < position.y + yRange && enemyPos.y > position.y - yRange);
+                return inRangeX && inRangeY;
+            }
         }
-        
-        public static string StringJoin(this IEnumerable<string> values, string separator)
+
+        public static EnemyLogic FindRandomTarget(List<int> usedTargets = null)
         {
-            return string.Join(separator, values);
-        }
-        
-        public static EnemyLogic FindTarget(List<int> usedTargets = null)
-        {
-            usedTargets = usedTargets ?? new List<int>();
+            usedTargets ??= new List<int>();
             
-            var enemies = Object.FindObjectsOfType<EnemyLogic>().ToList();
+            var enemies = GameManager.Instance.EnemySpawner.SpawnedEnemies;
             enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
             if (enemies.Count == 0) return null;
 

@@ -18,7 +18,7 @@ namespace WeaponPack.WeaponsLogic
         
         protected override bool UseWeapon()
         {
-            var target = UtilsMethods.FindTarget(transform.position);
+            var target = UtilsMethods.FindTargetInBiggestGroup(transform.position);
 
             if (target == null) return false;
             var position = target.transform.position;
