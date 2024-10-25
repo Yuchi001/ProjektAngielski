@@ -12,7 +12,7 @@ namespace EnemyPack.CustomEnemyLogic
         [SerializeField] private float maxChaseSpeed = 3.25f;
 
         private float RawChaseSpeed =>
-            _playerSpeed + _enemy.MovementSpeed >= maxChaseSpeed ? maxChaseSpeed : _playerSpeed + _enemy.MovementSpeed;
+            _playerSpeed - _enemy.MovementSpeed >= maxChaseSpeed ? maxChaseSpeed : _playerSpeed - _enemy.MovementSpeed;
         private float ChaseSpeed => Slowed ? RawChaseSpeed / 2f : RawChaseSpeed;
         
         private void UpdateChaseBehaviour()

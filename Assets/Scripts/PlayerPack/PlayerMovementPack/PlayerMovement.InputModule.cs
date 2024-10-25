@@ -19,6 +19,13 @@ namespace PlayerPack.PlayerMovementPack
             movement.y = _buttonsActive[GameManager.UpBind] ? 1 : (_buttonsActive[GameManager.DownBind] ? -1 : 0);
 
             if(movement == Vector2.zero) return Vector2.zero;
+
+            var absMovement = new Vector2
+            {
+                x = Mathf.Abs(movement.x),
+                y = Mathf.Abs(movement.y)
+            };
+            if (absMovement == Vector2.one) movement /= Mathf.Sqrt(2);
             
             return movement * (PickedCharacter.MovementSpeed + _additionalMovementSpeed);
         }

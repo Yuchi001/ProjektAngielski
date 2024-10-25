@@ -54,16 +54,9 @@ namespace EnemyPack
  
         public int DeadEnemies { get; private set; }
 
-        public void IncrementDeadEnemies(EnemyLogic enemyLogic, SoEnemy enemy)
-        {
-            OnEnemyDie?.Invoke(enemyLogic);
-            DeadEnemies++;
-            if (enemy.CanShoot) ShootingEnemiesCount--;
-        }
-
         private float EnemySpawnRate => enemySpawnRate + 1f * enemySpawnRateMultiplierPerKill * DeadEnemies;
         protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * EnemySpawnRate);
-        public float EnemiesHpScale => enemiesHpScale + Mathf.Pow(1f * DeadEnemies * enemiesHpScaleMultiplierPerKill, 2);
+        public float EnemiesHpScale => enemiesHpScale + Mathf.Pow(1f + DeadEnemies * enemiesHpScaleMultiplierPerKill, 2) - 1;
         
         private IEnumerator Start()
         {
@@ -76,10 +69,18 @@ namespace EnemyPack
 
         protected override void Update()
         {
+            Debug.Log(EnemiesHpScale);
             base.Update();
 
             if (_state == ESpawnerState.Stop) return;
             _difficultyTimer += Time.deltaTime;
+        }
+        
+        public void IncrementDeadEnemies(EnemyLogic enemyLogic, SoEnemy enemy)
+        {
+            OnEnemyDie?.Invoke(enemyLogic);
+            DeadEnemies++;
+            if (enemy.CanShoot) ShootingEnemiesCount--;
         }
 
         protected override void SpawnLogic()

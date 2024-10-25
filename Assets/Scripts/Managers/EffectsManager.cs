@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EnchantmentPack.Enums;
 using Other;
@@ -85,6 +86,7 @@ namespace Managers
                 case EEffectType.Slow:
                     if (HasEffect(EEffectType.Slow) && PlayerEnchantments.Has(EEnchantmentName.StunSlowed))
                     {
+                        Debug.Log("Dziala");
                         AddEffect(EEffectType.Stun, time);
                         RemoveEffect(EEffectType.Slow);
                         break;
@@ -130,8 +132,7 @@ namespace Managers
             var statusStacks = status.GetComponentInChildren<TextMeshProUGUI>();
             var stackable = Stackable(effect);
             statusStacks.gameObject.SetActive(stackable);
-            if(Stackable(effect))
-                statusStacks.text = $"x{stacks}";
+            if(stackable) statusStacks.text = $"x{stacks}";
             
             _effectListQueue.Add(new EffectInfo
             {
@@ -148,7 +149,7 @@ namespace Managers
         {
             if (effectInfo == null) return false;
 
-            return (effectInfo.effectType == EEffectType.Bleed || PlayerEnchantments.Has(EEnchantmentName.PoisonCanStack)) && effectInfo.stacks > 1;
+            return (effectInfo.effectType == EEffectType.Bleed || (PlayerEnchantments.Has(EEnchantmentName.PoisonCanStack) && effectInfo.effectType == EEffectType.Poison)) && effectInfo.stacks > 1;
         }
 
         private EffectStatus? GetEffectStatus(EEffectType effectType)
@@ -190,7 +191,7 @@ namespace Managers
             }
         }
 
-        public void RemoveEffect(EEffectType effectType)
+        private void RemoveEffect(EEffectType effectType)
         {
             if(!_ready) return;
             

@@ -10,7 +10,6 @@ namespace EnchantmentPack.Interfaces
 
         public bool Ready()
         {
-            Debug.Log(CurrentTime);
             return CurrentTime >= 1;
         }
     }
