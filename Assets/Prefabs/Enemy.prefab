@@ -169,7 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c0c27440e14c7c8dd535aec69f659a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectsManagerPrefab: {fileID: 5507701522975418714, guid: 4c9a2a4ac12990747a42ba4d1b85e84a, type: 3}
   bloodParticles: {fileID: 7968732843853793858, guid: c5673512605494643b11f243bc5e09dd, type: 3}
   spriteRenderer: {fileID: 4733844501563839803}
   stunDuration: 3
