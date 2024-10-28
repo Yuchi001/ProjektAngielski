@@ -47,13 +47,22 @@ namespace Managers
 
         public void Setup(CanBeDamaged canBeDamaged)
         {
+            Stuned = false;
+            Slowed = false;
+
+            _timer = 0;
+            
             _canBeDamaged = canBeDamaged;
             _ready = canBeDamaged != null;
             
-            _effectListQueue.Clear();
-            _effectList.Clear();
+            _effectListQueue.ForEach(e => Destroy(e.spawnedStatus));
+            _effectList.ForEach(e => Destroy(e.spawnedStatus));
             _effectSpawnedObjects.ForEach(e => e.spawnedObjects.ForEach(Destroy));
-
+            
+            _effectList.Clear();
+            _effectSpawnedObjects.Clear();
+            _effectListQueue.Clear();
+            
             var spriteRender = canBeDamaged.SpriteRenderer;
             var bounds = spriteRender.bounds;
             

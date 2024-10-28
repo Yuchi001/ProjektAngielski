@@ -31,6 +31,7 @@ namespace Other
         protected void CanBeDamagedSetup()
         {
             Dead = false;
+            _currentCoroutine = null;
             _spriteMaterial = spriteRenderer.material;
             _spriteMaterial.SetColor("_FlashColor", Color.white);
             _spriteMaterial.SetFloat("_FlashAmmount", 0);
