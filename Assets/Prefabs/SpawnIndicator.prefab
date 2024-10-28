@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3830590416571300891}
-  - component: {fileID: 3975114582540283474}
   - component: {fileID: 954218030071594815}
+  - component: {fileID: 3975114582540283474}
   - component: {fileID: 6342565791129276501}
   - component: {fileID: 4564842382066300048}
   m_Layer: 0
@@ -35,6 +35,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &954218030071594815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7589941385135539515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08760d9275fe1a44896063b7fe4eec1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnTime: 3
+  _colorPairs:
+  - entityType: 0
+    color: {r: 0.08167672, g: 1, b: 0, a: 1}
+  - entityType: 1
+    color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!212 &3975114582540283474
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -87,26 +105,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &954218030071594815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7589941385135539515}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a79781a980148f396f742ee64d0b9d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxXOffset: 5.5
-  maxYOffset: 3.7
-  spawnTime: 3
-  _colorPairs:
-  - entityType: 0
-    color: {r: 0.1490072, g: 1, b: 0, a: 1}
-  - entityType: 1
-    color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!95 &6342565791129276501
 Animator:
   serializedVersion: 5

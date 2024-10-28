@@ -44,9 +44,7 @@ namespace Managers
        #region Prefabs
 
        [Header("Public prefabs")] 
-       [SerializeField] private GameObject spawnEntityPrefab;
        [SerializeField] private GameObject mapGenerator;
-       public GameObject SpawnEntityPrefab => spawnEntityPrefab;
 
        #endregion
        public PlayerManager CurrentPlayer { get; private set; }

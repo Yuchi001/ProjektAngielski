@@ -1,13 +1,14 @@
 ﻿using EnemyPack.CustomEnemyLogic;
 using EnemyPack.Enums;
 using ExpPackage.Enums;
+using Other;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace EnemyPack.SO
 {
     [CreateAssetMenu(fileName = "new Enemy", menuName = "Custom/Enemy")]
-    public class SoEnemy : ScriptableObject
+    public class SoEnemy : SoEntityBase
     {
         [SerializeField] private AnimationClip walkingAnimationClip;
         [SerializeField] private int maxHealth;

@@ -49,7 +49,7 @@ namespace Utils
         {
             usedTargets ??= new List<int>();
             
-            var enemies = GameManager.Instance.EnemySpawner.SpawnedEnemies;
+            var enemies = GameManager.Instance.EnemySpawner.GetActiveEnemies();
             enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
             if (enemies.Count == 0) return null;
 
@@ -70,7 +70,7 @@ namespace Utils
         {
             usedTargets ??= new List<int>();
             
-            var enemies = GameManager.Instance.EnemySpawner.SpawnedEnemies;
+            var enemies = GameManager.Instance.EnemySpawner.GetActiveEnemies();
             enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
             if (enemies.Count == 0) return null;
 
@@ -89,7 +89,7 @@ namespace Utils
         
         public static EnemyLogic FindTargetInBiggestGroup(Vector2 position, float? xRange = null, float? yRange = null)
         {
-            var enemies = GameManager.Instance.EnemySpawner.SpawnedEnemies;
+            var enemies = GameManager.Instance.EnemySpawner.GetActiveEnemies();
             if (enemies.Count == 0) return null;
 
             var left = new List<EnemyLogic>();
@@ -131,7 +131,7 @@ namespace Utils
         {
             usedTargets ??= new List<int>();
             
-            var enemies = GameManager.Instance.EnemySpawner.SpawnedEnemies;
+            var enemies = GameManager.Instance.EnemySpawner.GetActiveEnemies();
             enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
             if (enemies.Count == 0) return null;
 

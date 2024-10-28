@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Managers;
 using Managers.Base;
+using MarkerPackage;
 using Other;
 using Other.Enums;
 using Other.SO;
 using PlayerPack;
 using UnityEngine;
-using Utils;
 using Random = UnityEngine.Random;
 
 namespace FoodPack
@@ -17,7 +16,8 @@ namespace FoodPack
     {
         [SerializeField] private float foodSpawnChance;
         [SerializeField] private float trySpawnRate;
-        [SerializeField] private GameObject foodPrefab;
+
+        private readonly List<Food> _foodPool = new();
 
         private float _biggestWeight;
         private float _weightSum;
@@ -39,6 +39,8 @@ namespace FoodPack
                 _weightSum += weight;
             }
             _foodWeightList.Sort((a, b) => (int)a.weight - (int)b.weight);
+
+            PreparePool(_foodPool);
         }
 
         protected override void SpawnLogic()
@@ -48,12 +50,14 @@ namespace FoodPack
             var randomPercentage = Random.Range(0, 101);
             if (randomPercentage > foodSpawnChance) return;
 
-            var food = GetRandomFood();
+            var food = GetFromPool(_foodPool);
+            if (food == null) return;
             
-            SpawnEntity.InstantiateSpawnEntity()
-                .Setup(foodPrefab)
-                .SetEntityType(EEntityType.Positive)
-                .SetSpawnAction((foodObj) => foodObj.GetComponent<Food>().Setup(food))
+            var soFood = GetRandomFood();
+            food.SetBusy();
+                
+            MarkerManager.Instance.GetMarkerFromPool(EEntityType.Positive)
+                .Setup(food, soFood)
                 .SetReady();
         }
 

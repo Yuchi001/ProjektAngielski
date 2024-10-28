@@ -1,13 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Managers;
 using Other.Enums;
 using UnityEngine;
 
 namespace Other
 {
-    public abstract class CanBeDamaged : MonoBehaviour
+    public abstract class CanBeDamaged : EntityBase
     {
-        [SerializeField] private GameObject effectsManagerPrefab;
         [SerializeField] private GameObject bloodParticles;
         [SerializeField] private SpriteRenderer spriteRenderer;
 
@@ -15,7 +15,7 @@ namespace Other
         private Material _spriteMaterial;
         
         private Coroutine _currentCoroutine = null;
-        protected EffectsManager _effectsManager;
+        protected EffectsManager _effectsManager => GetComponentInChildren<EffectsManager>();
 
         public bool Dead { get; private set; }
         
@@ -26,18 +26,22 @@ namespace Other
         protected bool Slowed => _effectsManager.Slowed;
 
         public SpriteRenderer SpriteRenderer => spriteRenderer;
-        
-        private void Start()
+
+
+        protected void CanBeDamagedSetup()
         {
             Dead = false;
             _spriteMaterial = spriteRenderer.material;
-            _effectsManager = Instantiate(effectsManagerPrefab, transform).GetComponent<EffectsManager>();
-            _effectsManager.Setup(this);
+            _spriteMaterial.SetColor("_FlashColor", Color.white);
+            _spriteMaterial.SetFloat("_FlashAmmount", 0);
+            if (_effectsManager) _effectsManager.Setup(this);
         }
 
         protected void Update()
         {
-            if (Dead || Stuned) return;
+            if (_effectsManager == null) return;
+            
+            if (Dead || Stuned || !Active) return;
             
             OnUpdate();
         }
@@ -86,7 +90,7 @@ namespace Other
                 transform.localScale = new Vector3(1f - time / _flashTime, 1, 1);
                 yield return new WaitForSeconds(Time.deltaTime);
             }
-            if(destroyObj) Destroy(gameObject);
+            if(destroyObj) DestroyNonAloc();
         }
         
         private IEnumerator DamageAnim(Color flashColor)

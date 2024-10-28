@@ -49,6 +49,10 @@ namespace Managers
         {
             _canBeDamaged = canBeDamaged;
             _ready = canBeDamaged != null;
+            
+            _effectListQueue.Clear();
+            _effectList.Clear();
+            _effectSpawnedObjects.ForEach(e => e.spawnedObjects.ForEach(Destroy));
 
             var spriteRender = canBeDamaged.SpriteRenderer;
             var bounds = spriteRender.bounds;
@@ -86,7 +90,6 @@ namespace Managers
                 case EEffectType.Slow:
                     if (HasEffect(EEffectType.Slow) && PlayerEnchantments.Has(EEnchantmentName.StunSlowed))
                     {
-                        Debug.Log("Dziala");
                         AddEffect(EEffectType.Stun, time);
                         RemoveEffect(EEffectType.Slow);
                         break;

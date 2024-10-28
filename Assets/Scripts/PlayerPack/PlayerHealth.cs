@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using EnchantmentPack.Enchantments;
 using EnchantmentPack.Enums;
-using EnemyPack.CustomEnemyLogic;
 using Managers;
+using Managers.Base;
 using Managers.Enums;
 using Other;
-using PlayerPack.PlayerMovementPack;
 using PlayerPack.SO;
 using UI;
 using UnityEngine;
@@ -46,6 +43,8 @@ namespace PlayerPack
         private void Awake()
         {
             StartCoroutine(StartingInvincible());
+            SpawnNonAloc();
+            CanBeDamagedSetup();
         }
 
         private IEnumerator StartingInvincible()
@@ -143,6 +142,16 @@ namespace PlayerPack
             if (!other.gameObject.TryGetComponent(out Projectile projectile)) return;
             
             projectile.ManageHit(gameObject);
+        }
+
+        public override void Setup(SoEntityBase soData)
+        {
+            // not needed
+        }
+
+        public override void SpawnSetup(SpawnerBase spawner)
+        {
+            // not needed
         }
     }
 }

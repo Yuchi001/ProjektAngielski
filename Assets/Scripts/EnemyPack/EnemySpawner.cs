@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using EnemyPack.CustomEnemyLogic;
@@ -7,6 +8,7 @@ using ExpPackage.Enums;
 using Managers;
 using Managers.Base;
 using Managers.Enums;
+using MarkerPackage;
 using Other;
 using Other.Enums;
 using PlayerPack;
@@ -20,8 +22,6 @@ namespace EnemyPack
     {
         [SerializeField] private float enemiesHpScaleMultiplierPerKill = 0.001f;
         [SerializeField] private float enemiesHpScale = 1;
-        [SerializeField] private int maxEnemiesCount = 300;
-        [SerializeField] private GameObject enemyPrefab;
         [Space(10)]
         [SerializeField] private AnimationCurve enemySpawnRateCurve;
         [SerializeField] private float enemySpawnRateMultiplierPerKill = 0.001f;
@@ -33,31 +33,27 @@ namespace EnemyPack
 
         private List<SoEnemy> _allEnemies = new();
 
-        public List<EnemyLogic> SpawnedEnemies
-        {
-            get
-            {
-                _spawnedEnemies.RemoveAll(e => e == null);
-                return _spawnedEnemies;
-            }
-            private set => _spawnedEnemies = value;
-        }
-
         public int ShootingEnemiesCount { get; private set; } = 0;
-
-        private List<EnemyLogic> _spawnedEnemies = new();
-
+        
         private float _difficultyTimer = 0;
 
         public delegate void EnemyDieDelegate(EnemyLogic enemyLogic);
-        public static event EnemyDieDelegate OnEnemyDie; 
+        public static event EnemyDieDelegate OnEnemyDie;
+
+        private readonly List<EnemyLogic> _enemyPool = new();
  
         public int DeadEnemies { get; private set; }
 
         private float EnemySpawnRate => enemySpawnRate + 1f * enemySpawnRateMultiplierPerKill * DeadEnemies;
         protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * EnemySpawnRate);
         public float EnemiesHpScale => enemiesHpScale + Mathf.Pow(1f + DeadEnemies * enemiesHpScaleMultiplierPerKill, 2) - 1;
-        
+
+
+        private void Awake()
+        {
+            PreparePool(_enemyPool);
+        }
+
         private IEnumerator Start()
         {
             yield return new WaitUntil(() => GameManager.Instance.MapGenerator != null);
@@ -69,7 +65,6 @@ namespace EnemyPack
 
         protected override void Update()
         {
-            Debug.Log(EnemiesHpScale);
             base.Update();
 
             if (_state == ESpawnerState.Stop) return;
@@ -85,15 +80,19 @@ namespace EnemyPack
 
         protected override void SpawnLogic()
         {
-            if (GameObject.FindGameObjectsWithTag("Enemy").Length >= maxEnemiesCount || PlayerManager == null) return;
+            if (PlayerManager == null) return;
+            
+            var enemy = GetFromPool(_enemyPool);
+            if (enemy == null) return;
             
             var enemySo = GetEnemy(false);
+            enemy.SetBusy();
             
-            SpawnEntity.InstantiateSpawnEntity()
-                .Setup(enemyPrefab)
-                .SetEntityType(EEntityType.Negative)
+            if (enemySo.CanShoot) ShootingEnemiesCount++;
+                
+            MarkerManager.Instance.GetMarkerFromPool(EEntityType.Negative)
+                .Setup(enemy, enemySo)
                 .SetScale(enemySo.BodyScale)
-                .SetSpawnAction((spawnedObj) => SetupEnemy(spawnedObj, enemySo))
                 .SetReady();
         }
 
@@ -121,27 +120,21 @@ namespace EnemyPack
             return validEnemies.Count != 0 ? validEnemies[Random.Range(0, validEnemies.Count)] : _allEnemies[0];
         }
 
-        private void SetupEnemy(GameObject enemyObj, SoEnemy enemy)
+        public void SpawnEnemy(SoEnemy enemy, Vector2 position)
         {
-            var enemyScript = enemyObj.GetComponent<EnemyLogic>();
-            var scale = enemy.BodyScale;
-            enemyObj.transform.localScale = new Vector3(scale, scale, scale);
+            var enemyObj = GetFromPool(_enemyPool);
+            if (enemyObj == null) return;
             
-            enemyScript.Setup(enemy, PlayerManager.transform, this);
-            SpawnedEnemies.Add(enemyScript);
+            var enemyScript = enemyObj.As<EnemyLogic>();
+            enemyObj.transform.position = position;
+            
+            enemyScript.Setup(enemy);
             if (enemy.CanShoot) ShootingEnemiesCount++;
         }
 
-        public void SpawnEnemy(SoEnemy enemy, Vector2 position)
+        public List<EnemyLogic> GetActiveEnemies()
         {
-            var enemyObj = Instantiate(enemyPrefab, position, Quaternion.identity);
-            var enemyScript = enemyObj.GetComponent<EnemyLogic>();
-            var scale = enemy.BodyScale;
-            enemyObj.transform.localScale = new Vector3(scale, scale, scale);
-            
-            enemyScript.Setup(enemy, PlayerManager.transform, this);
-            SpawnedEnemies.Add(enemyScript);
-            if (enemy.CanShoot) ShootingEnemiesCount++;
+            return _enemyPool.Where(e => e.Active && e.gameObject.activeInHierarchy).ToList();
         }
     }
 

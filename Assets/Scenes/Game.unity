@@ -426,10 +426,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e399620e61449d7a56c4d85799abebb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingoreFirstXSpawns: 2
+  spawnPrefab: {fileID: 1368974884826559133, guid: 7960d7700917ae84996aff5cf7326ea0, type: 3}
+  poolDefaultSize: 10
+  _waitBeforeSpawn: 1.5
   foodSpawnChance: 5
   trySpawnRate: 1
-  foodPrefab: {fileID: 1368974884826559133, guid: 7960d7700917ae84996aff5cf7326ea0, type: 3}
 --- !u!4 &83292466
 Transform:
   m_ObjectHideFlags: 0
@@ -758,11 +759,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6ad64d905246959d1209eebe50a24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingoreFirstXSpawns: 2
+  spawnPrefab: {fileID: 2320810237440355403, guid: 10c5074b751d15a4a82a2da0f26e89c1, type: 3}
+  poolDefaultSize: 50
+  _waitBeforeSpawn: 1.5
   enemiesHpScaleMultiplierPerKill: 0.001
   enemiesHpScale: 1
   maxEnemiesCount: 1000
-  enemyPrefab: {fileID: 2320810237440355403, guid: 10c5074b751d15a4a82a2da0f26e89c1, type: 3}
   enemySpawnRateCurve:
     serializedVersion: 2
     m_Curve:
@@ -3583,7 +3585,6 @@ MonoBehaviour:
   mainCamera: {fileID: 300432657}
   waveManager: {fileID: 598431559}
   gameUiManager: {fileID: 434654683}
-  spawnEntityPrefab: {fileID: 7589941385135539515, guid: 6418c67410e9f984a8504e9f1972d822, type: 3}
   mapGenerator: {fileID: 347991649789014865, guid: 7b0d013ca9f4b3d4397cbb383f37775b, type: 3}
 --- !u!4 &748811588
 Transform:

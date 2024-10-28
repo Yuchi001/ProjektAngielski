@@ -7,6 +7,7 @@ using EnemyPack.Enums;
 using EnemyPack.SO;
 using ExpPackage;
 using Managers;
+using Managers.Base;
 using Managers.Enums;
 using Other;
 using Other.Interfaces;
@@ -71,24 +72,39 @@ namespace EnemyPack.CustomEnemyLogic
         
         private float MovementSpeed => Slowed ? _enemy.MovementSpeed / 2f : _enemy.MovementSpeed;
 
-        private EnemyLogic mergeParent;
+        private EnemyLogic _mergeParent;
         private int mergeCount = 1;
 
         private static PlayerEnchantments PlayerEnchantments => PlayerManager.Instance.PlayerEnchantments;
         
-        public void Setup(SoEnemy enemy, Transform target, EnemySpawner enemySpawner)
+        public override void Setup(SoEntityBase enemy)
         {
-            _enemySpawner = enemySpawner;
-            _enemy = Instantiate(enemy);
-            _target = target;
+            var player = PlayerManager.Instance;
+            if (player == null) DestroyNonAloc();
 
-            rb2d.mass = enemy.IsHeavy ? 999 : Mass;
+            _mergeParent = null;
+            _toMerge = false;
+
+            _collisionTimer = 0;
+            _isBeingPushed = false;
+
+            mergeCount = 0;
+
+            _enemy = enemy.As<SoEnemy>();
+            _target = player.transform;
+
+            rb2d.mass = _enemy.IsHeavy ? 999 : Mass;
 
             _desiredPos = transform.position;
             
             _currentHealth = MaxHealth;
 
-            _playerSpeed = PlayerManager.Instance.PickedCharacter.MovementSpeed;
+            _playerSpeed = player.PickedCharacter.MovementSpeed;
+
+            Collider2D.enabled = true;
+
+            var scale = _enemy.BodyScale;
+            transform.localScale = new Vector3(scale,scale,scale);
 
             Collider2D.isTrigger = (_enemy.EnemyState != EEnemyState.Chase && _enemy.EnemyState != EEnemyState.Stand) || _enemy.IsHeavy;
             
@@ -97,12 +113,21 @@ namespace EnemyPack.CustomEnemyLogic
             aoc.ApplyOverrides(anims);
             animator.runtimeAnimatorController = aoc;
             
+            CanBeDamagedSetup();
+            
             EnemyHealthBar.Setup(SpriteRenderer);
+            
+            SpawnNonAloc();
+        }
+
+        public override void SpawnSetup(SpawnerBase spawnerBase)
+        {
+            _enemySpawner = spawnerBase.As<EnemySpawner>();
         }
         
         protected override void OnUpdate()
         {
-            if (mergeParent) Merge();
+            if (_mergeParent) Merge();
             else switch (_enemy.EnemyState)
             {
                 case EEnemyState.Chase:
@@ -156,6 +181,8 @@ namespace EnemyPack.CustomEnemyLogic
 
         private void FixedUpdate()
         {
+            if (!Active) return;
+            
             animator.speed = Stuned ? 0 : Slowed ? 0.5f : 1;
             rb2d.mass = Stuned ? 999 : Slowed ? Mass * 2 : Mass;
             
@@ -165,7 +192,7 @@ namespace EnemyPack.CustomEnemyLogic
                 return;
             }
 
-            if (mergeParent) transform.position = Vector2.MoveTowards(transform.position, mergeParent.transform.position, GetMovementSpeed() * 1.5f);
+            if (_mergeParent) transform.position = Vector2.MoveTowards(transform.position, _mergeParent.transform.position, GetMovementSpeed() * 1.5f);
             else if (!_isBeingPushed) switch (_enemy.EnemyState)
             {
                 case EEnemyState.Chase:
@@ -184,22 +211,22 @@ namespace EnemyPack.CustomEnemyLogic
 
         private void Merge()
         {
-            if (!mergeParent) {
+            if (!_mergeParent) {
                 Collider2D.isTrigger = false;
                 _toMerge = false;
                 return;
             }
 
-            if (Vector2.Distance(transform.position, mergeParent.transform.position) > 0.05f) return;
+            if (Vector2.Distance(transform.position, _mergeParent.transform.position) > 0.05f) return;
             
-            mergeParent.MergeParent(mergeCount);
-            Destroy(gameObject);
+            _mergeParent.MergeParent(mergeCount);
+            DestroyNonAloc();
         }
 
         private void SetMerge(EnemyLogic enemyLogic)
         {
             _toMerge = true;
-            mergeParent = enemyLogic;
+            _mergeParent = enemyLogic;
             Collider2D.isTrigger = true;
         }
 
@@ -249,7 +276,7 @@ namespace EnemyPack.CustomEnemyLogic
         
         public void PushEnemy(Vector2 force, float time)
         {
-            if (_isBeingPushed || mergeParent || _enemy.EnemyState == EEnemyState.Stand) return;
+            if (_isBeingPushed || _mergeParent || _enemy.EnemyState == EEnemyState.Stand) return;
             
             rb2d.AddForce(force, ForceMode2D.Impulse);
             _isBeingPushed = true;
@@ -285,7 +312,7 @@ namespace EnemyPack.CustomEnemyLogic
             ExpGem.SpawnExpGem(expGemPrefab, transform.position, _enemy.ExpGemType);
             _target = null;
             rb2d.velocity = Vector2.zero;
-            GetComponent<Collider2D>().enabled = false;
+            Collider2D.enabled = false;
             
             base.OnDie();
         }
@@ -294,7 +321,7 @@ namespace EnemyPack.CustomEnemyLogic
         {
             _target = null;
             rb2d.velocity = Vector2.zero;
-            GetComponent<Collider2D>().enabled = false;
+            Collider2D.enabled = false;
             
             base.OnDie();
         }
