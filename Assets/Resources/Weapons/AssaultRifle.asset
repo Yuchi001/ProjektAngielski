@@ -15,76 +15,19 @@ MonoBehaviour:
   weaponName: Assault rifle
   weaponDescription: Fire many bullets dealing light damage
   weaponSprite: {fileID: 21300000, guid: 77af35722b5983046b7c502d2e5fedf2, type: 3}
-  weaponColor: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 4604547026064372186, guid: 51b8214004e8c9246a98ad9ae5463170, type: 3}
   weaponCategory: 2
-  maxLevelPrize: 3
   weaponStartingStats:
-  - statType: 0
-    statValue: 4
+  - statType: 14
+    statValue: 0
     isPercentage: 0
     canUpgrade: 1
-  - statType: 1
-    statValue: 4
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 2
-    statValue: 9
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 3
-    statValue: 20
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 9
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 15
-    statValue: 2
-    isPercentage: 0
-    canUpgrade: 1
-  weaponUpgradeStats:
-  - statType: 0
-    statValue: -0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Reload <v> faster
-    valueLevels: 5
-    valueGrowth: -0.05
-  - statType: 1
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> damage per bullet
-    valueLevels: 3
-    valueGrowth: 1
-  - statType: 2
-    statValue: 0.05
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Bullets are <v> faster
-    valueLevels: 2
-    valueGrowth: 0.1
-  - statType: 3
-    statValue: 5
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> clip capacity
-    valueLevels: 5
-    valueGrowth: 1
-  - statType: 9
-    statValue: -0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Weapon becomes <v> more accurate
-    valueLevels: 3
-    valueGrowth: -0.05
-  - statType: 15
-    statValue: 0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Bullets push enemies <v> harder
-    valueLevels: 3
-    valueGrowth: 0.05
+  weaponTieredStats:
+    _pairs:
+    - _type: 0
+      _stats: []
+    - _type: 1
+      _stats: []
+    - _type: 2
+      _stats: []

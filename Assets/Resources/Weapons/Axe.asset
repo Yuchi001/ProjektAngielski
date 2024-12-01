@@ -15,11 +15,9 @@ MonoBehaviour:
   weaponName: Axe
   weaponDescription: Throw a huge axe in an enemy direction dealing heavy damage
   weaponSprite: {fileID: 21300000, guid: e775d6639b3ef1940ac1a0a34ca23d9a, type: 3}
-  weaponColor: {r: 0, g: 0.3403601, b: 0.6226415, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 1544064868321799355, guid: 0afe6e8b9009e8c4a960660c2ba5085f, type: 3}
   weaponCategory: 3
-  maxLevelPrize: 3
   weaponStartingStats:
   - statType: 0
     statValue: 6
@@ -45,39 +43,83 @@ MonoBehaviour:
     statValue: 4
     isPercentage: 0
     canUpgrade: 1
-  weaponUpgradeStats:
-  - statType: 0
-    statValue: -0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> cooldown reduction
-    valueLevels: 2
-    valueGrowth: -0.05
-  - statType: 1
-    statValue: 3
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Axes deal <v> more damage
-    valueLevels: 3
-    valueGrowth: 1
-  - statType: 3
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> more axes
-    valueLevels: 1
-    valueGrowth: 1
-  - statType: 5
-    statValue: 0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Axes are <v> larger
-    valueLevels: 2
-    valueGrowth: 0.05
-  - statType: 15
-    statValue: 0.2
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: 'Push force strengthen '
-    valueLevels: 3
-    valueGrowth: 0.1
+  weaponTieredStats:
+    _pairs:
+    - _type: 0
+      _stats:
+      - statType: 0
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 1
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 2
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 0
+      - statType: 3
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 5
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 15
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+    - _type: 1
+      _stats:
+      - statType: 0
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 1
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 2
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 0
+      - statType: 3
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 5
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 15
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+    - _type: 2
+      _stats:
+      - statType: 0
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 1
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 2
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 0
+      - statType: 3
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 5
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 15
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1

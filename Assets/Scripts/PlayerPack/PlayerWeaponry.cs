@@ -42,15 +42,6 @@ namespace PlayerPack
             OnWeaponAdd?.Invoke(weaponLogic);
         }
 
-        public string GetWeaponDescription(SoWeapon weapon)
-        {
-            var currentWeapon = _currentWeapons.FirstOrDefault(w => w.Weapon.WeaponName == weapon.WeaponName);
-            if (currentWeapon == default) return "<color=red>NEW!</color> " + weapon.WeaponDescription;
-            
-            var level = currentWeapon.Level;
-            return $"<color=green>Next level {level + 2}:</color> " + weapon.GetNextLevelDescription();
-        }
-
         public IEnumerable<SoWeapon> GetRandomWeapons(int count)
         {
             var weapons = new List<SoWeapon>();

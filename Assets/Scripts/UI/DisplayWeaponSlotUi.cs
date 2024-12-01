@@ -22,7 +22,7 @@ namespace UI
         {
             _weaponLogicBase = weaponLogicBase;
             weaponImage.sprite = _weaponLogicBase.Weapon.WeaponSprite;
-            frameImage.color = _weaponLogicBase.Weapon.WeaponColor;
+            frameImage.color = Color.white; // TODO: tutaj trza pomyslec jeszcze
 
             _ready = true;
         }

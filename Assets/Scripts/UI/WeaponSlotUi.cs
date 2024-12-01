@@ -43,9 +43,7 @@ namespace UI
             _index = index;
             _weapon = weapon;
             _levelUpUiGameObject = levelUpUiGameObject;
-            weapon.GenerateNextLevelStats();
-            weaponDescriptionField.text = PlayerWeaponry.GetWeaponDescription(weapon);
-            enchantmentLevelField.text = ArabicToRoman(weapon.GetNextLevelEnchantmentLevel());
+            weaponDescriptionField.text = weapon.WeaponDescription;
             weaponImage.sprite = weapon.WeaponSprite;
         }
 

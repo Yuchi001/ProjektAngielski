@@ -6,6 +6,7 @@ using PlayerPack;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using WeaponPack.Enums;
+using WeaponPack.SideClasses;
 using WeaponPack.SO;
 
 namespace WeaponPack
@@ -43,8 +44,7 @@ namespace WeaponPack
         private bool spawned = false;
 
         private List<WeaponStatPair> OngoingStats = new();
-
-
+        
         public float CurrentTimer => _timer;
         
         public void Setup(SoWeapon weapon)
@@ -52,14 +52,8 @@ namespace WeaponPack
             _weapon = Instantiate(weapon);
             OngoingStats = _weapon.WeaponStartingStats;
             _realWeaponStats = _weapon.WeaponStartingStats;
-            PlayerWeaponry.OnWeaponLevelUp += OnLevelUp;
         }
-
-        private void OnDisable()
-        {
-            PlayerWeaponry.OnWeaponLevelUp -= OnLevelUp;
-        }
-
+        
         private void Update()
         {
             _timer += Time.deltaTime;
@@ -70,28 +64,6 @@ namespace WeaponPack
         }
  
         protected abstract bool UseWeapon();
-
-        private void OnLevelUp(SoWeapon weapon)
-        {
-            if (weapon.WeaponName != _weapon.WeaponName) return;
-            
-            IncrementStats(weapon);
-        }
-
-        private void IncrementStats(SoWeapon weapon)
-        {
-            foreach (var stat in weapon.GetNextLevelStats())
-            {
-                var statTuple = OngoingStats.FirstOrDefault(s => s.StatType == stat.StatType);
-                if(statTuple == default) continue;
-
-                if (stat.IsPercentage) statTuple.SetStatValue(statTuple.StatValue * (1 + stat.StatValue));
-                else statTuple.SetStatValue(statTuple.StatValue + stat.StatValue);
-            }
-            _level++;
-
-            spawned = !_weapon.OneTimeSpawnLogic;
-        }
 
         protected float? GetStatValue(EWeaponStat statType)
         {

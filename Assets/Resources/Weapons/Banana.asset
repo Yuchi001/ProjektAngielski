@@ -16,10 +16,9 @@ MonoBehaviour:
   weaponDescription: Throw a banana thru enemies, dealing very light damage. Banana
     always comes back
   weaponSprite: {fileID: 21300000, guid: c920ceccbb8f309418a84f2c2f97ab8d, type: 3}
-  weaponColor: {r: 0.5345911, g: 0.4877812, b: 0, a: 1}
   oneTimeSpawnLogic: 0
   weaponLogicPrefab: {fileID: 2937538197172490658, guid: d6c41f141806b284fa3d9a90abb65612, type: 3}
-  maxLevelPrize: 3
+  weaponCategory: 0
   weaponStartingStats:
   - statType: 0
     statValue: 0.5
@@ -45,32 +44,3 @@ MonoBehaviour:
     statValue: 1
     isPercentage: 0
     canUpgrade: 0
-  weaponUpgradeStats:
-  - statType: 0
-    statValue: -0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> cooldown reduction
-    valueLevels: 3
-    valueGrowth: -0.1
-  - statType: 1
-    statValue: 3
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Banana deals <v> more damage
-    valueLevels: 3
-    valueGrowth: 1
-  - statType: 2
-    statValue: -0.05
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Banana is slower by <v>
-    valueLevels: 2
-    valueGrowth: -0.05
-  - statType: 15
-    statValue: 0.2
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Banana pushed enemies <v> harder
-    valueLevels: 4
-    valueGrowth: 0.2

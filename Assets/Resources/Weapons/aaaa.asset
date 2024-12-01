@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
+  m_Name: aaaa
+  m_EditorClassIdentifier: 
+  weaponName: 
+  weaponDescription: 
+  weaponSprite: {fileID: 0}
+  oneTimeSpawnLogic: 0
+  weaponLogicPrefab: {fileID: 0}
+  weaponCategory: 3
+  weaponStartingStats:
+  - statType: 0
+    statValue: 12
+    isPercentage: 0
+    canUpgrade: 1
+  - statType: 3
+    statValue: 2
+    isPercentage: 0
+    canUpgrade: 1
+  weaponTieredStats:
+    _pairs:
+    - _type: 0
+      _stats:
+      - statType: 0
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 3
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+    - _type: 1
+      _stats:
+      - statType: 0
+        statValue: 0.82
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 3
+        statValue: 0
+        isPercentage: 0
+        canUpgrade: 1
+    - _type: 2
+      _stats:
+      - statType: 0
+        statValue: 9.05
+        isPercentage: 0
+        canUpgrade: 1
+      - statType: 3
+        statValue: 2.72
+        isPercentage: 0
+        canUpgrade: 1
