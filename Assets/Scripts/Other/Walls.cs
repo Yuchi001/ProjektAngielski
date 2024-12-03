@@ -1,6 +1,6 @@
 ﻿using System;
+using ItemPack.WeaponPack.Other;
 using UnityEngine;
-using WeaponPack.Other;
 
 namespace Other
 {

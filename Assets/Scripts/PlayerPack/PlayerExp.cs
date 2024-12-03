@@ -38,7 +38,7 @@ namespace PlayerPack
             NextLevelExp = levelOneCap * CurrentLevel + CurrentLevel * CurrentLevel;
 
             var levelUpUiInstance = Instantiate(levelUpUiPrefab, GameUiManager.Instance.GameCanvas, false);
-            levelUpUiInstance.GetComponent<LevelUpUi>().Setup();
+            //levelUpUiInstance.GetComponent<LevelUpUi>().Setup(); TODO: Refactor
 
             yield return new WaitUntil(() => levelUpUiInstance == null);
             

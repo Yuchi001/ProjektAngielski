@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using EnchantmentPack.Enums;
+using ItemPack.WeaponPack.Other;
 using Managers;
 using Managers.Base;
 using Managers.Enums;
@@ -8,7 +9,6 @@ using Other;
 using PlayerPack.SO;
 using UI;
 using UnityEngine;
-using WeaponPack.Other;
 
 namespace PlayerPack
 {

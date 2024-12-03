@@ -12,57 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
   m_Name: Shuriken
   m_EditorClassIdentifier: 
-  weaponName: Shuriken
-  weaponDescription: Throw a shuriken at nearest enemy,
-  weaponSprite: {fileID: 21300000, guid: b4efbac65d22d8541b1c48b44456283f, type: 3}
-  weaponColor: {r: 0, g: 0, b: 0, a: 1}
+  itemName: 
+  itemDescription: 
+  itemPrice: 0
+  itemWeight: 0
+  itemSprite: {fileID: 0}
   oneTimeSpawnLogic: 0
-  weaponLogicPrefab: {fileID: 1235806491070105639, guid: 23f0552de7c3df544acdd90fe43c86fd, type: 3}
-  weaponCategory: 0
-  maxLevelPrize: 3
-  weaponStartingStats:
-  - statType: 0
-    statValue: 0.5
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 2
-    statValue: 4
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 3
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 1
-    statValue: 2
-    isPercentage: 0
-    canUpgrade: 1
-  weaponUpgradeStats:
-  - statType: 0
-    statValue: -0.05
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> cooldown reduction
-    valueLevels: 2
-    valueGrowth: -0.05
-  - statType: 2
-    statValue: 0.05
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Shurikens fly <v> faster
-    valueLevels: 3
-    valueGrowth: 0.05
-  - statType: 3
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> more shuriken
-    valueLevels: 1
-    valueGrowth: 1
-  - statType: 1
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> damage
-    valueLevels: 2
-    valueGrowth: 1
+  itemPrefab: {fileID: 0}
+  itemTags: 
+  itemType: 0
+  itemScalingPower: []
+  startingStats: []
+  tieredStats:
+    _pairs: []

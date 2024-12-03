@@ -1,8 +1,8 @@
 ﻿using System;
 using EnchantmentPack.Interfaces;
+using ItemPack;
+using ItemPack.SO;
 using PlayerPack;
-using WeaponPack;
-using WeaponPack.SO;
 
 namespace EnchantmentPack.Enchantments
 {
@@ -12,18 +12,22 @@ namespace EnchantmentPack.Enchantments
 
         private void Awake()
         {
-            PlayerWeaponry.OnWeaponLevelUp += OnUpgrade;
-            PlayerWeaponry.OnWeaponAdd += OnAdd;
+            PlayerItemManager.OnItemAdd += OnAdd;
         }
 
-        private void OnUpgrade(SoWeapon weapon)
+        private void OnUpgrade(SoItem item)
         {
             Stacks++;
         }
         
-        private void OnAdd(WeaponLogicBase weapon)
+        private void OnAdd(ItemLogicBase item)
         {
             Stacks++;
+        }
+
+        private void OnDisable()
+        {
+            PlayerItemManager.OnItemAdd -= OnAdd;
         }
     }
 }

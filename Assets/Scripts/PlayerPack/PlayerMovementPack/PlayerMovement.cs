@@ -1,14 +1,7 @@
-using System;
 using System.Collections.Generic;
-using EnchantmentPack.Enchantments;
-using EnchantmentPack.Enums;
-using EnemyPack;
-using EnemyPack.CustomEnemyLogic;
 using Managers;
-using Other.Enums;
 using PlayerPack.SO;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace PlayerPack.PlayerMovementPack
 {
@@ -25,14 +18,12 @@ namespace PlayerPack.PlayerMovementPack
         [SerializeField] private Animator animator;
         private SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
         private PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
-        private EnemySpawner EnemySpawner => GameManager.Instance.WaveManager.EnemySpawner;
-        public int MaxDashStacks => PickedCharacter.MaxDashStacks + _additionalDashStacks;
+        public int MaxDashStacks => Mathf.FloorToInt(PickedCharacter.Dexterity * StaticOptions.DASH_STACK_PER_DEXTERITY_POINT) + _additionalDashStacks;
         private int _additionalDashStacks = 0;
 
         private float _additionalMovementSpeed = 0;
 
         private bool _lookingRight;
-        
         public bool Dash { get; private set; } = false;
         private float _dashTimer = 0;
         private float _dashingTimer = 0;

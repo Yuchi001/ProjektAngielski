@@ -12,77 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
   m_Name: PoisonousWhip
   m_EditorClassIdentifier: 
-  weaponName: Poisonous whip
-  weaponDescription: Slash through enemies dealing very light damage, pushing them
-    away and poisoning them
-  weaponSprite: {fileID: 21300000, guid: 30a6ce95fb90d8540a13f493696b2f9f, type: 3}
-  weaponColor: {r: 0.14738339, g: 0.33962262, b: 0, a: 1}
+  itemName: 
+  itemDescription: 
+  itemPrice: 0
+  itemWeight: 0
+  itemSprite: {fileID: 0}
   oneTimeSpawnLogic: 0
-  weaponLogicPrefab: {fileID: 6078984998771875696, guid: 1e1d7b61cf01f9247b83c3a717ab0b79, type: 3}
-  weaponCategory: 5
-  maxLevelPrize: 3
-  weaponStartingStats:
-  - statType: 0
-    statValue: 4
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 1
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 3
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 0
-  - statType: 2
-    statValue: 0
-    isPercentage: 0
-    canUpgrade: 0
-  - statType: 5
-    statValue: 1.2
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 16
-    statValue: 1.5
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 15
-    statValue: 2
-    isPercentage: 0
-    canUpgrade: 1
-  weaponUpgradeStats:
-  - statType: 0
-    statValue: -0.2
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> cooldown reduction
-    valueLevels: 5
-    valueGrowth: -0.05
-  - statType: 1
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> damage
-    valueLevels: 3
-    valueGrowth: 1
-  - statType: 5
-    statValue: 0.2
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Whip bigger by <v>
-    valueLevels: 5
-    valueGrowth: 0.05
-  - statType: 16
-    statValue: 0.2
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Poison lasts <v> longer
-    valueLevels: 5
-    valueGrowth: 0.05
-  - statType: 15
-    statValue: 0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Push enemies <v> harder
-    valueLevels: 3
-    valueGrowth: 0.05
+  itemPrefab: {fileID: 0}
+  itemTags: 
+  itemType: 0
+  itemScalingPower: []
+  startingStats: []
+  tieredStats:
+    _pairs: []

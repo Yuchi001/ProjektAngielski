@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Managers
 {
+    //TODO: uzupelnic klase
     public class GameUiManager : MonoBehaviour
     {
         [SerializeField] private Transform gameCanvas;
@@ -33,6 +34,8 @@ namespace Managers
 
         private void OnPlayerDeath()
         {
+            return;
+            
             gameCanvas.gameObject.SetActive(false);
             menuCanvas.gameObject.SetActive(false);
             deathCanvas.gameObject.SetActive(true);
@@ -40,6 +43,8 @@ namespace Managers
 
         public void BeginPlay()
         {
+            return;
+            
             worldCanvas.gameObject.SetActive(true);
             gameCanvas.gameObject.SetActive(true);
             menuCanvas.gameObject.SetActive(false);

@@ -12,22 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
   m_Name: AssaultRifle
   m_EditorClassIdentifier: 
-  weaponName: Assault rifle
-  weaponDescription: Fire many bullets dealing light damage
-  weaponSprite: {fileID: 21300000, guid: 77af35722b5983046b7c502d2e5fedf2, type: 3}
+  itemName: 
+  itemDescription: 
+  itemPrice: 0
+  itemWeight: 0
+  itemSprite: {fileID: 0}
   oneTimeSpawnLogic: 0
-  weaponLogicPrefab: {fileID: 4604547026064372186, guid: 51b8214004e8c9246a98ad9ae5463170, type: 3}
-  weaponCategory: 2
-  weaponStartingStats:
-  - statType: 14
-    statValue: 0
-    isPercentage: 0
-    canUpgrade: 1
-  weaponTieredStats:
+  itemPrefab: {fileID: 0}
+  itemTags: 
+  itemType: 0
+  itemScalingPower: []
+  startingStats: []
+  tieredStats:
     _pairs:
-    - _type: 0
+    - _level: 0
       _stats: []
-    - _type: 1
+    - _level: 1
       _stats: []
-    - _type: 2
+    - _level: 2
       _stats: []

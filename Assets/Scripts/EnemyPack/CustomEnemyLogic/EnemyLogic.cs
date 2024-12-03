@@ -6,6 +6,7 @@ using EnchantmentPack.Enums;
 using EnemyPack.Enums;
 using EnemyPack.SO;
 using ExpPackage;
+using ItemPack.WeaponPack.Other;
 using Managers;
 using Managers.Base;
 using Managers.Enums;
@@ -14,7 +15,6 @@ using Other.Interfaces;
 using PlayerPack;
 using UI;
 using UnityEngine;
-using WeaponPack.Other;
 
 namespace EnemyPack.CustomEnemyLogic
 {

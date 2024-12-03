@@ -12,55 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
   m_Name: Sword
   m_EditorClassIdentifier: 
-  weaponName: Sword
-  weaponDescription: Throw a sword that pierces thru enemies dealing more damage
-    for each enemy hit
-  weaponSprite: {fileID: 21300000, guid: 962e9e936d4e0bd42bc6c82ceff146e2, type: 3}
-  weaponColor: {r: 0.26477394, g: 0.38979062, b: 0.4716981, a: 1}
+  itemName: 
+  itemDescription: 
+  itemPrice: 0
+  itemWeight: 0
+  itemSprite: {fileID: 0}
   oneTimeSpawnLogic: 0
-  weaponLogicPrefab: {fileID: 2117946469768778277, guid: 311f0087cefd9f64b88b94b7f70dc9c7, type: 3}
-  weaponCategory: 3
-  maxLevelPrize: 3
-  weaponStartingStats:
-  - statType: 0
-    statValue: 0.75
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 1
-    statValue: 8
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 3
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 0
-  - statType: 4
-    statValue: 1.25
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 2
-    statValue: 10
-    isPercentage: 0
-    canUpgrade: 0
-  weaponUpgradeStats:
-  - statType: 0
-    statValue: -0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> cooldown reduction
-    valueLevels: 3
-    valueGrowth: -0.05
-  - statType: 1
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Sword deals <v> more damage
-    valueLevels: 5
-    valueGrowth: 1
-  - statType: 4
-    statValue: 0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> more range
-    valueLevels: 5
-    valueGrowth: 0.1
+  itemPrefab: {fileID: 0}
+  itemTags: 
+  itemType: 0
+  itemScalingPower: []
+  startingStats: []
+  tieredStats:
+    _pairs: []

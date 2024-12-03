@@ -12,77 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
   m_Name: FireWand
   m_EditorClassIdentifier: 
-  weaponName: Fire wand
-  weaponDescription: Shoot fire ball at enemy dealing heavy damage and creating explosion
-    in hit area, igniting first hit enemy
-  weaponSprite: {fileID: 21300000, guid: bf8e9a357e5be82449202db38beaed22, type: 3}
-  weaponColor: {r: 0.42138356, g: 0.25317696, b: 0, a: 1}
+  itemName: 
+  itemDescription: 
+  itemPrice: 0
+  itemWeight: 0
+  itemSprite: {fileID: 0}
   oneTimeSpawnLogic: 0
-  weaponLogicPrefab: {fileID: 4261295729194090879, guid: d121175665331e7439c184e59110ac7f, type: 3}
-  weaponCategory: 4
-  maxLevelPrize: 3
-  weaponStartingStats:
-  - statType: 0
-    statValue: 4
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 1
-    statValue: 20
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 2
-    statValue: 8
-    isPercentage: 0
-    canUpgrade: 0
-  - statType: 3
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 0
-  - statType: 6
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 7
-    statValue: 5
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 16
-    statValue: 3
-    isPercentage: 0
-    canUpgrade: 1
-  weaponUpgradeStats:
-  - statType: 0
-    statValue: -0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> cooldown reduction
-    valueLevels: 3
-    valueGrowth: -0.05
-  - statType: 1
-    statValue: 5
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> more damage
-    valueLevels: 5
-    valueGrowth: 1
-  - statType: 6
-    statValue: 0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Blast range bigger by <v>
-    valueLevels: 5
-    valueGrowth: 0.05
-  - statType: 7
-    statValue: 2
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> blast damage
-    valueLevels: 6
-    valueGrowth: 1
-  - statType: 16
-    statValue: 0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Burn duration bigger by <v>
-    valueLevels: 4
-    valueGrowth: 0.05
+  itemPrefab: {fileID: 0}
+  itemTags: 
+  itemType: 0
+  itemScalingPower: []
+  startingStats: []
+  tieredStats:
+    _pairs: []

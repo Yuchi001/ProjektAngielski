@@ -12,61 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
   m_Name: BookOfFire
   m_EditorClassIdentifier: 
-  weaponName: Book of Fire
-  weaponDescription: Damage enemies in close range and set them on fire
-  weaponSprite: {fileID: 21300000, guid: 39073e9395287414f953f661c94643a6, type: 3}
-  weaponColor: {r: 1, g: 0.30576408, b: 0, a: 1}
-  oneTimeSpawnLogic: 1
-  weaponLogicPrefab: {fileID: 7653424471918281099, guid: c163af36fa511074984644d31c1216bf, type: 3}
-  weaponCategory: 1
-  maxLevelPrize: 3
-  weaponStartingStats:
-  - statType: 0
-    statValue: 0
-    isPercentage: 0
-    canUpgrade: 0
-  - statType: 1
-    statValue: 5
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 16
-    statValue: 3
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 13
-    statValue: 2
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 4
-    statValue: 0.75
-    isPercentage: 0
-    canUpgrade: 1
-  weaponUpgradeStats:
-  - statType: 1
-    statValue: 2
-    isPercentage: 0
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> damage
-    valueLevels: 4
-    valueGrowth: 1
-  - statType: 16
-    statValue: 0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Gain <v> burn effect duration
-    valueLevels: 5
-    valueGrowth: 0.01
-  - statType: 13
-    statValue: 0.05
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Damage enemies <v> more often
-    valueLevels: 5
-    valueGrowth: 0.01
-  - statType: 4
-    statValue: 0.1
-    isPercentage: 1
-    canUpgrade: 1
-    weaponLevelUpDescription: Burn field around you gets bigger by <v>
-    valueLevels: 5
-    valueGrowth: 0.01
+  itemName: 
+  itemDescription: 
+  itemPrice: 0
+  itemWeight: 0
+  itemSprite: {fileID: 0}
+  oneTimeSpawnLogic: 0
+  itemPrefab: {fileID: 0}
+  itemTags: 
+  itemType: 0
+  itemScalingPower: []
+  startingStats: []
+  tieredStats:
+    _pairs: []

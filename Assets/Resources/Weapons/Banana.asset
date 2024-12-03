@@ -12,35 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
   m_Name: Banana
   m_EditorClassIdentifier: 
-  weaponName: Banana
-  weaponDescription: Throw a banana thru enemies, dealing very light damage. Banana
-    always comes back
-  weaponSprite: {fileID: 21300000, guid: c920ceccbb8f309418a84f2c2f97ab8d, type: 3}
+  itemName: 
+  itemDescription: 
+  itemPrice: 0
+  itemWeight: 0
+  itemSprite: {fileID: 0}
   oneTimeSpawnLogic: 0
-  weaponLogicPrefab: {fileID: 2937538197172490658, guid: d6c41f141806b284fa3d9a90abb65612, type: 3}
-  weaponCategory: 0
-  weaponStartingStats:
-  - statType: 0
-    statValue: 0.5
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 1
-    statValue: 5
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 2
-    statValue: 5
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 5
-    statValue: 2
-    isPercentage: 0
-    canUpgrade: 0
-  - statType: 15
-    statValue: 3
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 3
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 0
+  itemPrefab: {fileID: 0}
+  itemTags: 
+  itemType: 0
+  itemScalingPower: []
+  startingStats: []
+  tieredStats:
+    _pairs: []

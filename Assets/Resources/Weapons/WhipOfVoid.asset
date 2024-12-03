@@ -12,38 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
   m_Name: WhipOfVoid
   m_EditorClassIdentifier: 
-  weaponName: Whip of Void
-  weaponDescription: Slash through enemies dealing light damage, and stuning them
-  weaponSprite: {fileID: 21300000, guid: b802ac4065c72644d861c2987ee056ee, type: 3}
+  itemName: 
+  itemDescription: 
+  itemPrice: 0
+  itemWeight: 0
+  itemSprite: {fileID: 0}
   oneTimeSpawnLogic: 0
-  weaponLogicPrefab: {fileID: 6078984998771875696, guid: fed4dd2a6bbc7914fb2522fa4618b30c, type: 3}
-  weaponCategory: 5
-  weaponStartingStats:
-  - statType: 0
-    statValue: 2.5
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 1
-    statValue: 5
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 3
-    statValue: 1
-    isPercentage: 0
-    canUpgrade: 0
-  - statType: 2
-    statValue: 0
-    isPercentage: 0
-    canUpgrade: 0
-  - statType: 5
-    statValue: 1.2
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 16
-    statValue: 2
-    isPercentage: 0
-    canUpgrade: 1
-  - statType: 15
-    statValue: 0
-    isPercentage: 0
-    canUpgrade: 0
+  itemPrefab: {fileID: 0}
+  itemTags: 
+  itemType: 0
+  itemScalingPower: []
+  startingStats: []
+  tieredStats:
+    _pairs: []

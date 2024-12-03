@@ -30,7 +30,7 @@ namespace PlayerPack
 
         public PlayerExp PlayerExp => GetComponent<PlayerExp>();
         public PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
-        public PlayerWeaponry PlayerWeaponry => GetComponent<PlayerWeaponry>();
+        public PlayerItemManager PlayerItemManager => GetComponent<PlayerItemManager>();
         public PlayerMovement PlayerMovement => GetComponent<PlayerMovement>();
         public PlayerEnchantments PlayerEnchantments => GetComponent<PlayerEnchantments>();
 
@@ -57,7 +57,7 @@ namespace PlayerPack
             aoc.ApplyOverrides(anims);
             animator.runtimeAnimatorController = aoc;
             
-            GetComponent<PlayerWeaponry>().AddWeapon(pickedCharacter.StartingWeapon);
+            GetComponent<PlayerItemManager>().AddItem(pickedCharacter.StartingItem, 0);
             
             OnPlayerReady?.Invoke();
         }
@@ -67,8 +67,8 @@ namespace PlayerPack
             PlayerHealth.enabled = false;
             PlayerExp.enabled = false;
             
-            PlayerWeaponry.DestroyAllWeapons();
-            PlayerWeaponry.enabled = false;
+            PlayerItemManager.DestroyAllItems();
+            PlayerItemManager.enabled = false;
 
             OnPlayerDeath?.Invoke();
         }
