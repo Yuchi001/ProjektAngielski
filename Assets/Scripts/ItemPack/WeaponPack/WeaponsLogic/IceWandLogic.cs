@@ -16,7 +16,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private float animSpeed;
         [SerializeField] private GameObject flightParticles;
 
-        private float EffectDuration => GetStatValue(EWeaponStat.EffectDuration) ?? 0;
+        private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration) ?? 0;
         
         protected override bool Use()
         {

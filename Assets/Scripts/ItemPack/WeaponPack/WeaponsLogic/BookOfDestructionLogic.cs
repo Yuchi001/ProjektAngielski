@@ -17,8 +17,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     public class BookOfDestructionLogic : ItemLogicBase
     {
         [SerializeField] private GameObject destructionCirclePrefab;
-        private float Range => GetStatValue(EWeaponStat.BlastRange) ?? 0;
-        private float DropExpChance => GetStatValue(EWeaponStat.DropExpChance) ?? 0;
+        private float Range => GetStatValue(EItemSelfStatType.BlastRange) ?? 0;
+        private float DropExpChance => GetStatValue(EItemSelfStatType.DropExpChance) ?? 0;
 
         private void Start()
         {

@@ -17,7 +17,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private GameObject boomParticles;
         [SerializeField] private GameObject explosionEffectPrefab;
 
-        private float BlastRange => GetStatValue(EWeaponStat.BlastRange) ?? 0;
+        private float BlastRange => GetStatValue(EItemSelfStatType.BlastRange) ?? 0;
         
         protected override bool Use()
         {

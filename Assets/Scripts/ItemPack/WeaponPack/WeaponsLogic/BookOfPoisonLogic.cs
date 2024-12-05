@@ -17,10 +17,10 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private Sprite fieldSprite;
         [SerializeField] private float minimalFieldDistance = 0.4f;
 
-        private float Duration => GetStatValue(EWeaponStat.Duration) ?? 0;
-        private float Scale => GetStatValue(EWeaponStat.ProjectileScale) ?? 0;
-        private float DamageRate => GetStatValue(EWeaponStat.DamageRate) ?? 1;
-        private float EffectDuration => GetStatValue(EWeaponStat.EffectDuration) ?? 0;
+        private float Duration => GetStatValue(EItemSelfStatType.Duration) ?? 0;
+        private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale) ?? 0;
+        private float DamageRate => GetStatValue(EItemSelfStatType.DamageRate) ?? 1;
+        private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration) ?? 0;
 
         private const string DamageRateName = "DamageRate";
 

@@ -14,11 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Blaise the Mage
   characterSprite: {fileID: 1518198837, guid: c7207e25d42ced9488b624047355cbf9, type: 3}
-  maxHp: 60
-  maxWeaponsInEq: 6
-  maxDashStacks: 3
-  startingWeapon: {fileID: 11400000, guid: 556ec77cd5b0a8c4397abe375561f253, type: 2}
-  movementSpeed: 3.5
   walkingAnim: {fileID: 7400000, guid: c2d50461fea37ad4aa744cad977f0b3c, type: 2}
   idleAnim: {fileID: 7400000, guid: 84d5d3d0bd297454b8ca9c66535e25df, type: 2}
   characterColor: {r: 0.62352943, g: 0.227451, b: 0.19607845, a: 1}
+  stats:
+  - statType: 0
+    statValue: 0
+  - statType: 1
+    statValue: 0
+  - statType: 2
+    statValue: 0
+  - statType: 3
+    statValue: 0
+  - statType: 4
+    statValue: 0
+  - statType: 5
+    statValue: 0
+  - statType: 6
+    statValue: 0
+  - statType: 7
+    statValue: 0
+  - statType: 8
+    statValue: 0
+  startingItem: {fileID: 0}

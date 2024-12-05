@@ -99,7 +99,7 @@ namespace ItemPack.WeaponPack.Editor
             GUILayout.BeginHorizontal();
             _startingStatsFoldout = EditorGUILayout.Foldout(_startingStatsFoldout, "Starting stats");
             
-            EditorGUI.BeginDisabledGroup(_soItem.StartingStats.FirstOrDefault(s => s.StatType == EWeaponStat.None) != default);
+            EditorGUI.BeginDisabledGroup(_soItem.StartingStats.FirstOrDefault(s => s.SelfStatType == EItemSelfStatType.None) != default);
             if (GUILayout.Button("Add new stat")) AddStartingStat();
             EditorGUI.EndDisabledGroup();
             
@@ -111,12 +111,11 @@ namespace ItemPack.WeaponPack.Editor
 
                 foreach (var (stat, index) in _soItem.StartingStats.Select((item, index) => (item, index)))
                 {
-                    var statType = (EWeaponStat)EditorGUILayout.EnumPopup("Stat type", stat.StatType);
-                    EditorGUI.BeginDisabledGroup(statType == EWeaponStat.None);
+                    var statType = (EItemSelfStatType)EditorGUILayout.EnumPopup("Stat type", stat.SelfStatType);
+                    EditorGUI.BeginDisabledGroup(statType == EItemSelfStatType.None);
                     var val = EditorGUILayout.FloatField("Stat value", stat.StatValue);
                     var isPercentage = EditorGUILayout.Toggle("Is percentage", stat.IsPercentage);
                     var canUpgrade = EditorGUILayout.Toggle("Can Upgrade", stat.CanUpgrade);
-                    var statTarget = (EStatTarget)EditorGUILayout.EnumPopup("Stat target", stat.StatTarget);
                     EditorGUI.EndDisabledGroup();
                     
                     if (GUILayout.Button("Remove")) RemoveStartingStat(index);
@@ -126,8 +125,7 @@ namespace ItemPack.WeaponPack.Editor
                             statType,
                             val,
                             isPercentage,
-                            canUpgrade,
-                            statTarget
+                            canUpgrade
                         );
                         editedStartingStats.Add(current);
                     }
@@ -160,20 +158,18 @@ namespace ItemPack.WeaponPack.Editor
                 {
                     foreach (var (value, index) in tieredWeaponStat.Value.Select((item, index) => (item, index)))
                     {
-                        if (value.StatType == EWeaponStat.None) continue;
+                        if (value.SelfStatType == EItemSelfStatType.None) continue;
                         
                         EditorGUILayout.BeginHorizontal();
                         EditorGUI.BeginDisabledGroup(!value.CanUpgrade || tieredWeaponStat.Key == 0);
-                        var val = EditorGUILayout.FloatField(value.StatType.ToString(), value.StatValue);
+                        var val = EditorGUILayout.FloatField(value.SelfStatType.ToString(), value.StatValue);
                         EditorGUI.EndDisabledGroup();
                         EditorGUI.BeginDisabledGroup(true);
                         EditorGUILayout.LabelField($"Calculated value: {value.StatValue + _soItem.StartingStats[index].StatValue}", EditorStyles.whiteMiniLabel);
                         EditorGUI.EndDisabledGroup();
                         EditorGUILayout.EndHorizontal();
 
-                        var updatedWeaponStat = new StatPair(
-                            value.StatType, val, value.IsPercentage, value.CanUpgrade, value.StatTarget
-                        );
+                        var updatedWeaponStat = new StatPair(value.SelfStatType, val, value.IsPercentage, value.CanUpgrade);
                         stats.Add(updatedWeaponStat);
                     }
 
@@ -218,13 +214,13 @@ namespace ItemPack.WeaponPack.Editor
 
             if (currentTieredStats.Any())
             {
-                var dictStatusKeys = currentTieredStats[0].Select(e => e.StatType).ToList();
-                var startingStatusKeys = uniqueItems.Select(e => e.StatType).ToList();
+                var dictStatusKeys = currentTieredStats[0].Select(e => e.SelfStatType).ToList();
+                var startingStatusKeys = uniqueItems.Select(e => e.SelfStatType).ToList();
 
                 var invalidKeys = dictStatusKeys.Except(startingStatusKeys).ToList();
                 
                 currentTieredStats.Keys.ToList()
-                    .ForEach(k => currentTieredStats[k].RemoveAll(e => invalidKeys.Contains(e.StatType)));
+                    .ForEach(k => currentTieredStats[k].RemoveAll(e => invalidKeys.Contains(e.SelfStatType)));
 
                 if (currentTieredStats[1].Count <= 0)
                     currentTieredStats = new Dictionary<int, List<StatPair>>();
@@ -260,12 +256,12 @@ namespace ItemPack.WeaponPack.Editor
         {
             public bool Equals(StatPair x, StatPair y)
             {
-                return x?.StatType == y?.StatType;
+                return x?.SelfStatType == y?.SelfStatType;
             }
 
             public int GetHashCode(StatPair obj)
             {
-                return obj.StatType.GetHashCode();
+                return obj.SelfStatType.GetHashCode();
             }
         }
     }

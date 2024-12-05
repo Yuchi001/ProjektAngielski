@@ -17,7 +17,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         private const string HitEnemyCountName = "HitCount";
 
-        private float MaxRange => GetStatValue(EWeaponStat.ProjectileRange) ?? 0;
+        private float MaxRange => GetStatValue(EItemSelfStatType.ProjectileRange) ?? 0;
         
         protected override bool Use()
         {

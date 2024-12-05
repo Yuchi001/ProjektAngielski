@@ -8,8 +8,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class DruidWandLogic : ItemLogicBase
     {
-        private float Range => GetStatValue(EWeaponStat.BlastRange) ?? 0;
-        private float HealValue => GetStatValue(EWeaponStat.HealValue) ?? 0;
+        private float Range => GetStatValue(EItemSelfStatType.BlastRange) ?? 0;
+        private float HealValue => GetStatValue(EItemSelfStatType.HealValue) ?? 0;
         
         protected override bool Use()
         {

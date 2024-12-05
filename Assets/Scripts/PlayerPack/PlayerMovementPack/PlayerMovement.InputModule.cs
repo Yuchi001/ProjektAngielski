@@ -27,7 +27,7 @@ namespace PlayerPack.PlayerMovementPack
             };
             if (absMovement == Vector2.one) movement /= Mathf.Sqrt(2);
             
-            return movement * (PickedCharacter.MovementSpeed + _additionalMovementSpeed);
+            return movement * (MovementSpeed + _additionalMovementSpeed);
         }
 
         public void ResetKeys()

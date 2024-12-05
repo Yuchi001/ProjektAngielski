@@ -15,7 +15,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private Sprite projectileSprite;
         [FormerlySerializedAs("rotationSpeed")] [SerializeField] private float rotationSpeedModifier;
 
-        private float ProjectileScale => GetStatValue(EWeaponStat.ProjectileScale) ?? 0;
+        private float ProjectileScale => GetStatValue(EItemSelfStatType.ProjectileScale) ?? 0;
         
         protected override bool Use()
         {

@@ -57,9 +57,9 @@ namespace ItemPack.SO
             startingStats = new List<StatPair>(stats);
         }
 
-        public StatPair GetStat(EWeaponStat statType, int level)
+        public StatPair GetStat(EItemSelfStatType statTypeType, int level)
         {
-            var startingStat = StartingStats.FirstOrDefault(s => s.StatType == statType);
+            var startingStat = StartingStats.FirstOrDefault(s => s.SelfStatType == statTypeType);
             if (startingStat == default) return null;
 
             if (level == 0) return new StatPair(startingStat);
@@ -67,7 +67,7 @@ namespace ItemPack.SO
             var contains = TieredStats.Dict.TryGetValue(level, out var stats);
             if (!contains) return null;
 
-            var modifier = stats.FirstOrDefault(s => s.StatType == statType);
+            var modifier = stats.FirstOrDefault(s => s.SelfStatType == statTypeType);
             if (modifier == default) return null;
 
             return new StatPair(startingStat, modifier.StatValue);

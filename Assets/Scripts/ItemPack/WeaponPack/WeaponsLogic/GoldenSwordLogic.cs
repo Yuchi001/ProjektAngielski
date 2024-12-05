@@ -11,9 +11,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private float animTime = 0.1f;
         [SerializeField] private GameObject lineRendererProjectilePrefab;
 
-        private float Duration => GetStatValue(EWeaponStat.Duration) ?? 0;
-        private float Scale => GetStatValue(EWeaponStat.ProjectileScale) ?? 1;
-        private float DamageRate => GetStatValue(EWeaponStat.DamageRate) ?? 1;
+        private float Duration => GetStatValue(EItemSelfStatType.Duration) ?? 0;
+        private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale) ?? 1;
+        private float DamageRate => GetStatValue(EItemSelfStatType.DamageRate) ?? 1;
         
         protected override bool Use()
         {

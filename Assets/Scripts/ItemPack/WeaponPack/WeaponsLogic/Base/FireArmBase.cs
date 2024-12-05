@@ -18,7 +18,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
         [SerializeField] protected GameObject projectilePrefab;
         [SerializeField] protected Sprite projectileSprite;
         
-        private float Accuracy => GetStatValue(EWeaponStat.Accuracy) ?? 1;
+        private float Accuracy => GetStatValue(EItemSelfStatType.Accuracy) ?? 1;
         
         /// <summary>
         /// Base for fire arm bullet, options already set:

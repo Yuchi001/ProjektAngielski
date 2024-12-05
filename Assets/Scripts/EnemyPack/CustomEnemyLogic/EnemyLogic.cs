@@ -13,6 +13,7 @@ using Managers.Enums;
 using Other;
 using Other.Interfaces;
 using PlayerPack;
+using PlayerPack.Enums;
 using UI;
 using UnityEngine;
 
@@ -65,7 +66,8 @@ namespace EnemyPack.CustomEnemyLogic
         private int _currentHealth;
         public override int MaxHealth => Mathf.CeilToInt(_enemy.MaxHealth * _enemySpawner.EnemiesHpScale);
 
-        private float _playerSpeed = 0;
+        private static float PlayerSpeed => PlayerManager.Instance.PlayerStatsManager.GetStat(EPlayerStatType.MovementSpeed);
+
         private float AttackRange => attackRange * _enemy.BodyScale;
         private float _collisionTimer = 0;
         private float Mass => Mathf.Pow(_enemy.BodyScale, 2);
@@ -98,9 +100,7 @@ namespace EnemyPack.CustomEnemyLogic
             _desiredPos = transform.position;
             
             _currentHealth = MaxHealth;
-
-            _playerSpeed = player.PickedCharacter.MovementSpeed;
-
+            
             Collider2D.enabled = true;
 
             var scale = _enemy.BodyScale;
@@ -125,8 +125,12 @@ namespace EnemyPack.CustomEnemyLogic
             _enemySpawner = spawnerBase.As<EnemySpawner>();
         }
         
-        protected override void OnUpdate()
+        public void InvokeUpdate()
         {
+            if (_effectsManager == null) return;
+            
+            if (Dead || Stuned || !Active) return;
+            
             if (_mergeParent) Merge();
             else switch (_enemy.EnemyState)
             {

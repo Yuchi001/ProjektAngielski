@@ -14,11 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Jack the Ninja
   characterSprite: {fileID: 1651108257, guid: 67e9df599967b744693bc60cfdeae1c8, type: 3}
-  maxHp: 30
-  maxWeaponsInEq: 6
-  maxDashStacks: 4
-  startingWeapon: {fileID: 11400000, guid: 4764bd874f96e7f439a0e4d49ab70a5a, type: 2}
-  movementSpeed: 4
   walkingAnim: {fileID: 7400000, guid: e55b73caff741bb4eb6cfc86e9cc3a90, type: 2}
   idleAnim: {fileID: 7400000, guid: 211d9f6b792fdf44496fc71b33c53da2, type: 2}
   characterColor: {r: 0.3301887, g: 0.3301887, b: 0.3301887, a: 1}
+  stats:
+  - statType: 0
+    statValue: 0
+  - statType: 1
+    statValue: 0
+  - statType: 2
+    statValue: 0
+  - statType: 3
+    statValue: 0
+  - statType: 4
+    statValue: 0
+  - statType: 5
+    statValue: 0
+  - statType: 6
+    statValue: 0
+  - statType: 7
+    statValue: 0
+  - statType: 8
+    statValue: 0
+  startingItem: {fileID: 0}

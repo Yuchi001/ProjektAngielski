@@ -1,10 +1,10 @@
 ﻿
 namespace ItemPack.Enums
 {
-    public enum EWeaponStat
+    public enum EItemSelfStatType
     {
         None,
-        CooldownReduction,
+        Cooldown,
         Damage,
         ProjectileSpeed,
         ProjectilesCount,

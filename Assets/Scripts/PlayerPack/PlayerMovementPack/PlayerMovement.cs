@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Managers;
+using PlayerPack.Enums;
 using PlayerPack.SO;
 using UnityEngine;
 
@@ -16,9 +17,11 @@ namespace PlayerPack.PlayerMovementPack
         [SerializeField] private float dashTime = 0.5f;
         [SerializeField] private float dashCooldown = 2f;
         [SerializeField] private Animator animator;
+        private PlayerStatsManager PlayerStatsManager => PlayerManager.Instance.PlayerStatsManager;
         private SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
         private PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
-        public int MaxDashStacks => Mathf.FloorToInt(PickedCharacter.Dexterity * StaticOptions.DASH_STACK_PER_DEXTERITY_POINT) + _additionalDashStacks;
+        private float MovementSpeed => PlayerStatsManager.GetStat(EPlayerStatType.MovementSpeed);
+        public int MaxDashStacks => PlayerStatsManager.GetStatAsInt(EPlayerStatType.DashStacks) + _additionalDashStacks;
         private int _additionalDashStacks = 0;
 
         private float _additionalMovementSpeed = 0;
@@ -65,7 +68,7 @@ namespace PlayerPack.PlayerMovementPack
         /// <param name="percentage">Percentage in format ranging from 0.0 -? 0% to 1.0 -> 100%</param>
         public void ModifySpeedByPercentage(float percentage)
         {
-            _additionalMovementSpeed += PickedCharacter.MovementSpeed * percentage;
+            _additionalMovementSpeed += MovementSpeed * percentage;
         }
 
         protected void Update()

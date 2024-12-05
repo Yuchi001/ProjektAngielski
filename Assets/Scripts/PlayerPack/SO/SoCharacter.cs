@@ -1,39 +1,50 @@
-﻿using ItemPack.SO;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ItemPack.SO;
+using PlayerPack.Enums;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace PlayerPack.SO
 {
     [CreateAssetMenu(fileName = "new Character", menuName = "Custom/Character")]
     public class SoCharacter : ScriptableObject
     {
-        [Header("Other")]
         [SerializeField] private string characterName;
         [SerializeField] private Sprite characterSprite;
         [SerializeField] private AnimationClip walkingAnim;
         [SerializeField] private AnimationClip idleAnim;
         [SerializeField] private Color characterColor;
+        [SerializeField] private List<PlayerStatPair> stats;
         
-        [Header("Stats")]
-        [SerializeField] private int maxHp;
-        [SerializeField] private int armor;
-        [SerializeField] private int strength;
-        [SerializeField] private int intelligence;
-        [SerializeField] private int dexterity;
-        [SerializeField] private int movementSpeed;
         [SerializeField] private SoItem startingItem;
 
         public Color CharacterColor => characterColor;
+        public Dictionary<EPlayerStatType, float> StatDict => stats.ToDictionary(s => s.StatType, s => s.StatValue);
         public string CharacterName => characterName;
         public Sprite CharacterSprite => characterSprite;
-        public int MaxHp => maxHp;
-        public int Armor => armor;
-        public int Strength => strength;
-        public int Intelligence => intelligence;
-        public int Dexterity => dexterity;
-        public int MovementSpeed => movementSpeed;
         public AnimationClip WalkingAnimation => walkingAnim;
         public AnimationClip IdleAnimation => idleAnim;
         public SoItem StartingItem => startingItem;
+
+        public void SetStats(List<PlayerStatPair> stats)
+        {
+            this.stats = stats;
+        }
+
+        [System.Serializable]
+        public class PlayerStatPair
+        {
+            [SerializeField] private EPlayerStatType statType;
+            [SerializeField] private float statValue;
+
+            public EPlayerStatType StatType => statType;
+            public float StatValue => statValue;
+
+            public PlayerStatPair(EPlayerStatType statType, float statValue)
+            {
+                this.statType = statType;
+                this.statValue = statValue;
+            }
+        }
     }
 }

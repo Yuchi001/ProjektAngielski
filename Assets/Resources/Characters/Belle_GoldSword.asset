@@ -14,11 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Belle the Princess
   characterSprite: {fileID: 121923026, guid: e54bf1b55e55cb340a4099683188bd4b, type: 3}
-  maxHp: 60
-  maxWeaponsInEq: 10
-  maxDashStacks: 5
-  startingWeapon: {fileID: 11400000, guid: ccae344795232174684c61e2a799e083, type: 2}
-  movementSpeed: 3.5
   walkingAnim: {fileID: 7400000, guid: 926af4943797d7b47bb3833ffd0b42c0, type: 2}
   idleAnim: {fileID: 7400000, guid: 926af4943797d7b47bb3833ffd0b42c0, type: 2}
   characterColor: {r: 0.5921569, g: 0.06666667, b: 0.47058827, a: 1}
+  stats:
+  - statType: 0
+    statValue: 0
+  - statType: 1
+    statValue: 0
+  - statType: 2
+    statValue: 0
+  - statType: 3
+    statValue: 0
+  - statType: 4
+    statValue: 0
+  - statType: 5
+    statValue: 0
+  - statType: 6
+    statValue: 0
+  - statType: 7
+    statValue: 0
+  - statType: 8
+    statValue: 0
+  startingItem: {fileID: 0}

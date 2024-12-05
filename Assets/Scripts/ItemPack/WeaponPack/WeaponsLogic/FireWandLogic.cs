@@ -21,7 +21,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private GameObject flightParticles;
         [SerializeField] private GameObject onHitParticles;
 
-        private float EffectDuration => GetStatValue(EWeaponStat.EffectDuration) ?? 0;
+        private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration) ?? 0;
         
         protected override bool Use()
         {
@@ -54,8 +54,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         private void OnHitAction(GameObject enemy, Projectile projectile)
         {
-            var range = GetStatValue(EWeaponStat.BlastRange);
-            var damage = GetStatValue(EWeaponStat.BlastDamage);
+            var range = GetStatValue(EItemSelfStatType.BlastRange);
+            var damage = GetStatValue(EItemSelfStatType.BlastDamage);
 
             if (range == null || damage == null) return;
             

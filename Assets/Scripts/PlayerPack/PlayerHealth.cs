@@ -6,6 +6,7 @@ using Managers;
 using Managers.Base;
 using Managers.Enums;
 using Other;
+using PlayerPack.Enums;
 using PlayerPack.SO;
 using UI;
 using UnityEngine;
@@ -18,7 +19,8 @@ namespace PlayerPack
         [SerializeField] private GameObject healParticles;
         [SerializeField] private GameObject damageIndicator;
 
-        public override int MaxHealth => PickedCharacter.MaxHp;
+        private static PlayerStatsManager PlayerStatsManager => PlayerManager.Instance.PlayerStatsManager;
+        public override int MaxHealth => PlayerStatsManager.GetStatAsInt(EPlayerStatType.MaxHealth);
         public override int CurrentHealth => _currentHealth;
         
         private int _currentHealth = 0;
@@ -54,13 +56,17 @@ namespace PlayerPack
             Invincible = false;
         }
 
-        private void OnEnable()
+        IEnumerator Start()
         {
-            _currentHealth = PickedCharacter.MaxHp;
+            yield return new WaitUntil(() => PlayerStatsManager != null);
+            
+            _currentHealth = MaxHealth;
         }
 
-        protected override void OnUpdate()
+        protected void Update()
         {
+            if (Dead || !Active) return;
+            
             ManageZone();
         }
 
@@ -82,7 +88,7 @@ namespace PlayerPack
             
             base.GetDamaged(value, color);
             _currentHealth = Mathf.Clamp(_currentHealth - value, 
-                0, PickedCharacter.MaxHp);
+                0, MaxHealth);
             
             AudioManager.Instance.PlaySound(ESoundType.PlayerHurt);
             
@@ -112,7 +118,7 @@ namespace PlayerPack
             Destroy(particles, 1f);
             
             _currentHealth = Mathf.Clamp(_currentHealth + value, 
-                0, PickedCharacter.MaxHp);
+                0, MaxHealth);
         }
 
         public override void OnDie(bool destroyObj = true)

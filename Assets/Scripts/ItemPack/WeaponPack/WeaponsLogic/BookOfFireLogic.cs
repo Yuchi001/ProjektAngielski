@@ -12,9 +12,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         
         private bool _spawned = false;
 
-        public float Range => GetStatValue(EWeaponStat.ProjectileRange) ?? 0;
-        public float DamageRate => (GetStatValue(EWeaponStat.DamageRate) ?? 0) * CustomRateModifier();
-        public float EffectDuration => GetStatValue(EWeaponStat.EffectDuration) ?? 0;
+        public float Range => GetStatValue(EItemSelfStatType.ProjectileRange) ?? 0;
+        public float DamageRate => (GetStatValue(EItemSelfStatType.DamageRate) ?? 0) * CustomRateModifier();
+        public float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration) ?? 0;
         
 
         protected override bool Use()

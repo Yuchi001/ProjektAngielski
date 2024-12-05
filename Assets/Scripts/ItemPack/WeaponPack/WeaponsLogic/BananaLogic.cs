@@ -13,7 +13,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private float rotationSpeed;
         [SerializeField] private GameObject projectilePrefab;
 
-        private float Range => GetStatValue(EWeaponStat.ProjectileRange) ?? 2;
+        private float Range => GetStatValue(EItemSelfStatType.ProjectileRange) ?? 2;
         
         protected override bool Use()
         {

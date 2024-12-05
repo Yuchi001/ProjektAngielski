@@ -38,15 +38,6 @@ namespace Other
             if (_effectsManager) _effectsManager.Setup(this);
         }
 
-        protected void Update()
-        {
-            if (_effectsManager == null) return;
-            
-            if (Dead || Stuned || !Active) return;
-            
-            OnUpdate();
-        }
-
         public virtual void AddEffect(EffectInfo effectInfo)
         {
             if (_effectsManager == null) return;
@@ -57,9 +48,7 @@ namespace Other
         {
             return _effectsManager.HasEffect(effectType);
         }
-
-        protected abstract void OnUpdate();
-
+        
         public virtual void GetDamaged(int value, Color? flashColor = null)
         {
             flashColor ??= Color.white;

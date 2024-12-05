@@ -40,7 +40,7 @@ namespace MapGeneratorPack
             if (isNotStarting) return;
 
             var chest = Instantiate(chestPrefab, GetRandomPos(), Quaternion.identity);
-            chest.GetComponent<ChestEnchant>().Setup(healEnchantment);
+            chest.GetComponent<LootChest>(); // TODO: setup skrzynki
         }
 
         public Vector2 GetRandomPos()

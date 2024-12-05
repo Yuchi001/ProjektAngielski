@@ -14,11 +14,11 @@ namespace ItemPack
     {
         public int Level { get; private set; } = 0;
         public float TimerScaled => 1 - _timer / Cooldown;
-        public int Damage => (int)_realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.Damage)!.StatValue;
-        protected float Speed => _realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.ProjectileSpeed)!.StatValue;
-        protected int ProjectileCount => (int)_realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.ProjectilesCount)!.StatValue;
-        protected float PushForce => _realWeaponStats.FirstOrDefault(s => s.StatType == EWeaponStat.PushForce)!.StatValue;
-        protected float Cooldown => (GetStatValue(EWeaponStat.CooldownReduction) ?? 1) * CustomCooldownModifier();
+        public int Damage => (int)_realWeaponStats.FirstOrDefault(s => s.SelfStatType == EItemSelfStatType.Damage)!.StatValue;
+        protected float Speed => _realWeaponStats.FirstOrDefault(s => s.SelfStatType == EItemSelfStatType.ProjectileSpeed)!.StatValue;
+        protected int ProjectileCount => (int)_realWeaponStats.FirstOrDefault(s => s.SelfStatType == EItemSelfStatType.ProjectilesCount)!.StatValue;
+        protected float PushForce => _realWeaponStats.FirstOrDefault(s => s.SelfStatType == EItemSelfStatType.PushForce)!.StatValue;
+        protected float Cooldown => (GetStatValue(EItemSelfStatType.Cooldown) ?? 1) * CustomCooldownModifier();
 
         protected static PlayerEnchantments PlayerEnchantments => GameManager.Instance.CurrentPlayer.PlayerEnchantments;
         protected static Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
@@ -53,9 +53,9 @@ namespace ItemPack
  
         protected abstract bool Use();
 
-        protected float? GetStatValue(EWeaponStat statType)
+        protected float? GetStatValue(EItemSelfStatType statTypeType)
         {
-            var stat = _realWeaponStats.FirstOrDefault(s => s.StatType == statType);
+            var stat = _realWeaponStats.FirstOrDefault(s => s.SelfStatType == statTypeType);
             return stat?.StatValue;
         }
         

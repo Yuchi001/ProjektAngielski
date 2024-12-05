@@ -65,8 +65,12 @@ namespace Managers.Base
 
         protected abstract void SpawnLogic();
         
-        protected EntityBase GetFromPool<T>(IEnumerable<T> pool) where T : EntityBase
+        protected EntityBase GetFromPool<T>(List<T> pool) where T : EntityBase
         {
+            var enemy = pool.FirstOrDefault(f => !f.gameObject.activeInHierarchy && !f.Active);
+            if (enemy != default) return enemy;
+            
+            PreparePool(pool);
             return pool.FirstOrDefault(f => !f.gameObject.activeInHierarchy && !f.Active);
         }
 

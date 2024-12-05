@@ -40,6 +40,8 @@ namespace Managers
 
        [SerializeField] private WaveManager waveManager;
        [SerializeField] private GameUiManager gameUiManager;
+
+       [SerializeField] private SoCharacter baseCharacter; // TODO: usun
        
        #region Prefabs
 
@@ -55,6 +57,7 @@ namespace Managers
        private void Init()
        {
            LeanTween.init(100, 100);
+           StartRun(baseCharacter);
        }
 
        public void StartRun(SoCharacter pickedCharacter)

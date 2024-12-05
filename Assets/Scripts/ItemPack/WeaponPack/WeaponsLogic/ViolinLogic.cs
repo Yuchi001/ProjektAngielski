@@ -16,8 +16,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private List<NotePair> noteList = new();
         [SerializeField] private GameObject projectilePrefab;
         
-        private float Accuracy => GetStatValue(EWeaponStat.Accuracy) ?? 1;
-        private float Scale => GetStatValue(EWeaponStat.ProjectileScale) ?? 1;
+        private float Accuracy => GetStatValue(EItemSelfStatType.Accuracy) ?? 1;
+        private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale) ?? 1;
         
         protected override bool Use()
         {

@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 7787685337975628636}
   - component: {fileID: 8513629063015508182}
   - component: {fileID: 8992767131167538181}
-  - component: {fileID: 1848376943485978515}
   - component: {fileID: -711591100249454349}
+  - component: {fileID: -7132315555942854000}
+  - component: {fileID: 1848376943485978515}
   - component: {fileID: 1743729601478481784}
   m_Layer: 6
   m_Name: Player
@@ -87,7 +88,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e0c44a74118499197b21ef0f538e643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectsManagerPrefab: {fileID: 5507701522975418714, guid: 4c9a2a4ac12990747a42ba4d1b85e84a, type: 3}
   bloodParticles: {fileID: 7968732843853793858, guid: c5673512605494643b11f243bc5e09dd, type: 3}
   spriteRenderer: {fileID: 6528374986980264091}
   zoneCheckPerSec: 4
@@ -117,6 +117,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37a3df67aa824a6097309cbbaece6829, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-711591100249454349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330592185322976742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1705b1defe84a9293fd13b12cf52100, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7132315555942854000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330592185322976742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6746e5ca20bf4a67b1567716ed559a54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!58 &1848376943485978515
@@ -154,18 +178,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.04}
   serializedVersion: 2
   m_Radius: 0.1
---- !u!114 &-711591100249454349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330592185322976742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1705b1defe84a9293fd13b12cf52100, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &1743729601478481784
 Rigidbody2D:
   serializedVersion: 4

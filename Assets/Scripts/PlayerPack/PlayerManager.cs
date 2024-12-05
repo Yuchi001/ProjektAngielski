@@ -33,6 +33,7 @@ namespace PlayerPack
         public PlayerItemManager PlayerItemManager => GetComponent<PlayerItemManager>();
         public PlayerMovement PlayerMovement => GetComponent<PlayerMovement>();
         public PlayerEnchantments PlayerEnchantments => GetComponent<PlayerEnchantments>();
+        public PlayerStatsManager PlayerStatsManager => GetComponent<PlayerStatsManager>();
 
         public delegate void PlayerDeathDelegate();
         public static event PlayerDeathDelegate OnPlayerDeath;

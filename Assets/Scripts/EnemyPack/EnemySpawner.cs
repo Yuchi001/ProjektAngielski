@@ -18,6 +18,7 @@ using Random = UnityEngine.Random;
 
 namespace EnemyPack
 {
+    [RequireComponent(typeof(EnemyManager))]
     public class EnemySpawner : SpawnerBase
     {
         [SerializeField] private float enemiesHpScaleMultiplierPerKill = 0.001f;
@@ -47,7 +48,7 @@ namespace EnemyPack
         private float EnemySpawnRate => enemySpawnRate + 1f * enemySpawnRateMultiplierPerKill * DeadEnemies;
         protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * EnemySpawnRate);
         public float EnemiesHpScale => enemiesHpScale + Mathf.Pow(1f + DeadEnemies * enemiesHpScaleMultiplierPerKill, 2) - 1;
-
+        
 
         private void Awake()
         {
@@ -57,6 +58,8 @@ namespace EnemyPack
         private IEnumerator Start()
         {
             yield return new WaitUntil(() => GameManager.Instance.MapGenerator != null);
+            
+            GetComponent<EnemyManager>().Setup(_enemyPool);
             
             DeadEnemies = 0;
 

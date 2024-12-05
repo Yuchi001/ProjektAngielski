@@ -12,8 +12,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private EEffectType effectType;
         [SerializeField] private GameObject slashPrefab;
         
-        private float EffectDuration => GetStatValue(EWeaponStat.EffectDuration) ?? 0;
-        private float ProjectileScale => GetStatValue(EWeaponStat.ProjectileScale) ?? 0;
+        private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration) ?? 0;
+        private float ProjectileScale => GetStatValue(EItemSelfStatType.ProjectileScale) ?? 0;
         
         protected override bool Use()
         {

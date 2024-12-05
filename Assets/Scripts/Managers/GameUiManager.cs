@@ -22,7 +22,7 @@ namespace Managers
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
             
-            menuCanvas.gameObject.SetActive(true);
+            //menuCanvas.gameObject.SetActive(true);
 
             PlayerManager.OnPlayerDeath += OnPlayerDeath;
         }
@@ -34,20 +34,16 @@ namespace Managers
 
         private void OnPlayerDeath()
         {
-            return;
-            
-            gameCanvas.gameObject.SetActive(false);
+            /*gameCanvas.gameObject.SetActive(false);
             menuCanvas.gameObject.SetActive(false);
-            deathCanvas.gameObject.SetActive(true);
+            deathCanvas.gameObject.SetActive(true);*/
         }
 
         public void BeginPlay()
         {
-            return;
-            
-            worldCanvas.gameObject.SetActive(true);
+            /*worldCanvas.gameObject.SetActive(true);
             gameCanvas.gameObject.SetActive(true);
-            menuCanvas.gameObject.SetActive(false);
+            menuCanvas.gameObject.SetActive(false);*/
         }
     }
 }
