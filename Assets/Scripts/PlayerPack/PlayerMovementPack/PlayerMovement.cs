@@ -9,7 +9,6 @@ namespace PlayerPack.PlayerMovementPack
     [RequireComponent(typeof(PlayerHealth))]
     public partial class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private GameObject dashParticlesPrefab;
         [SerializeField] private Rigidbody2D rb2d;
         [SerializeField] private Transform playerSpriteTransform;
         [SerializeField] private float animationSpeed = 0.5f;
@@ -126,9 +125,7 @@ namespace PlayerPack.PlayerMovementPack
             if (!Input.GetKeyDown(GameManager.DeclineBind) || CurrentDashStacks == 0 || rb2d.velocity == Vector2.zero) return;
 
             if (CurrentDashStacks == MaxDashStacks) _dashTimer = 0;
-
-            var particles = Instantiate(dashParticlesPrefab, transform.position, Quaternion.identity);
-            Destroy(particles, 2f);
+            
             Dash = true;
             CurrentDashStacks--;
             rb2d.velocity = rb2d.velocity.normalized * dashForceMultiplier;

@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 4d1e55571c0858f41afb40b4e0e3e0e9, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: a66e86a7c2a10d542ad4c7984d5702c9, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -290,8 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b144299414b84dafbddd7c52d66b0bdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.5
-  minUpdateDelta: 0.01
+  maxUpdateStackDuration: 0.1
 --- !u!1 &192528139
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,7 +482,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4
+  orthographic size: 5
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -938,7 +937,6 @@ MonoBehaviour:
   waveManager: {fileID: 598431559}
   gameUiManager: {fileID: 434654683}
   baseCharacter: {fileID: 11400000, guid: b780849af7f3c624ba1f09cf3ddd7d28, type: 2}
-  mapGenerator: {fileID: 347991649789014865, guid: 7b0d013ca9f4b3d4397cbb383f37775b, type: 3}
 --- !u!4 &748811588
 Transform:
   m_ObjectHideFlags: 0

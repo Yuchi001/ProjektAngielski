@@ -15,8 +15,6 @@ namespace ItemPack.WeaponPack.Other
     {
         [SerializeField] private TrailRenderer trailRenderer;
         [SerializeField] private SpriteRenderer projectileSprite;
-        [SerializeField] private Light2D light2D;
-        [SerializeField] private new Collider2D collider2D;
         [SerializeField] private float maxDistance = 20f;
         
         private readonly List<Sprite> _sprites = new();
@@ -173,12 +171,6 @@ namespace ItemPack.WeaponPack.Other
             _sprites.AddRange(sprites);
             _animSpeed = animSpeed;
             projectileSprite.transform.localScale = new Vector3(spriteScale, spriteScale, 0);
-            return this;
-        }
-
-        public Projectile SetLightColor(Color color)
-        {
-            light2D.color = color;
             return this;
         }
 

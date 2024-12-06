@@ -44,7 +44,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 
                 projectileScript.Setup(Mathf.CeilToInt(Damage * note.damageMultiplier), Speed)
                     .SetDirection(GetDirection(position), checkX: true)
-                    .SetLightColor(Color.clear)
                     .SetSprite(note.noteSprite)
                     .SetSpriteRotation(90)
                     .SetScale(Scale)

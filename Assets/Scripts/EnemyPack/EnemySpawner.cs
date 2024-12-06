@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using EnemyPack.CustomEnemyLogic;
+using EnemyPack.Enums;
 using EnemyPack.SO;
 using ExpPackage.Enums;
 using Managers;
@@ -78,7 +79,7 @@ namespace EnemyPack
         {
             OnEnemyDie?.Invoke(enemyLogic);
             DeadEnemies++;
-            if (enemy.CanShoot) ShootingEnemiesCount--;
+            if (enemy.ShootType != EShootType.None) ShootingEnemiesCount--;
         }
 
         protected override void SpawnLogic()
@@ -91,7 +92,7 @@ namespace EnemyPack
             var enemySo = GetEnemy(false);
             enemy.SetBusy();
             
-            if (enemySo.CanShoot) ShootingEnemiesCount++;
+            if (enemySo.ShootType != EShootType.None) ShootingEnemiesCount++;
                 
             MarkerManager.Instance.GetMarkerFromPool(EEntityType.Negative)
                 .Setup(enemy, enemySo)
@@ -132,7 +133,7 @@ namespace EnemyPack
             enemyObj.transform.position = position;
             
             enemyScript.Setup(enemy);
-            if (enemy.CanShoot) ShootingEnemiesCount++;
+            if (enemy.ShootType != EShootType.None) ShootingEnemiesCount++;
         }
 
         public List<EnemyLogic> GetActiveEnemies()

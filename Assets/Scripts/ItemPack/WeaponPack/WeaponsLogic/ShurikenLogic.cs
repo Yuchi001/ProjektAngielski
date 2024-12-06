@@ -32,7 +32,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                     .SetSprite(projectileSprite)
                     .SetScale(0.3f)
                     .SetRotationSpeed(rotationSpeed)
-                    .SetLightColor(Color.clear)
                     .SetEffect(EEffectType.Bleed, 999)
                     .SetReady();
                 yield return new WaitForSeconds(0.1f);

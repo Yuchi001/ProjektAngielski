@@ -29,16 +29,15 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 
                 var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
                 var projectileScript = projectile.GetComponent<Projectile>();
-                
+
                 projectileScript.Setup(Damage, Speed)
                     .SetDirection(target.transform.position)
                     .SetDontDestroyOnHit()
                     .SetSprite(projectileSprite)
                     .SetPushForce(PushForce)
                     .SetScale(ProjectileScale)
-                    .SetRotationSpeed(-rotationSpeedModifier * Speed)
-                    .SetLightColor(Color.clear);
-
+                    .SetRotationSpeed(-rotationSpeedModifier * Speed);
+                
                 if (PlayerEnchantments.Has(EEnchantmentName.Sharpness))
                 {
                     var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.Sharpness, EValueKey.Percentage);

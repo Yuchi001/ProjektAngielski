@@ -14,7 +14,6 @@ namespace ExpPackage
 {
     public class ExpGem : MonoBehaviour
     {
-        [SerializeField] private Light2D light2D;
         [SerializeField] private float range;
         [SerializeField] private float animTime;
         [SerializeField] private List<ExpGemInfo> expAmountPair = new();

@@ -15,7 +15,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private Sprite projectileSprite;
         [SerializeField] private GameObject boomParticles;
-        [SerializeField] private GameObject explosionEffectPrefab;
 
         private float BlastRange => GetStatValue(EItemSelfStatType.BlastRange) ?? 0;
         
@@ -29,7 +28,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 .SetScale(0.5f)
                 .SetOnHitAction(OnHit)
                 .SetOnHitParticles(boomParticles, BlastRange * 2)
-                .SetLightColor(Color.yellow)
                 .SetReady();
 
             return true;

@@ -16,7 +16,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class FireWandLogic : ItemLogicBase
     {
-        [SerializeField] private Color projectileLightColor;
         [SerializeField] private GameObject projectile;
         [SerializeField] private GameObject flightParticles;
         [SerializeField] private GameObject onHitParticles;
@@ -42,7 +41,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                     .SetOnHitParticles(onHitParticles)
                     .SetOnHitAction(OnHitAction)
                     .SetFlightParticles(flightParticles)
-                    .SetLightColor(projectileLightColor)
                     .SetEffect(EEffectType.Burn, EffectDuration)
                     .SetReady();
                 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Managers.Enums;
-using Managers.Other;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -34,7 +33,7 @@ namespace Managers
 
             var audioSource = new GameObject($"Audio: {soundType}", typeof(AudioSource));
             var audioSourceScript = audioSource.GetComponent<AudioSource>();
-            audioSourceScript.volume = PlayerPrefs.GetFloat(Constants.PlayerPrefSFXVolume, 0.1f);
+            audioSourceScript.volume = PlayerPrefs.GetFloat(StaticOptions.PLAYER_PREF_SFX_VOLUME, 0.1f);
             audioSourceScript.loop = false;
             audioSourceScript.pitch -= Random.Range(-0.1f, 0.1f);
             audioSourceScript.PlayOneShot(clip);
@@ -56,7 +55,7 @@ namespace Managers
             if (clip == null) return;
 
             audioSource.clip = clip;
-            audioSource.volume = PlayerPrefs.GetFloat(Constants.PlayerPrefVolume, 0.3f);
+            audioSource.volume = PlayerPrefs.GetFloat(StaticOptions.PLAYER_PREF_VOLUME, 0.3f);
             audioSource.loop = true;
             audioSource.Play();
         }

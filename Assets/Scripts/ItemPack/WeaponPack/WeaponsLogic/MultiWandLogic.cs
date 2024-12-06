@@ -7,7 +7,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class MultiWandLogic : ItemLogicBase
     {
-        [SerializeField] private Color projectileLightColor;
         [SerializeField] private Sprite projectileSprite;
         [SerializeField] private GameObject projectilePrefab;
         protected override bool Use()
@@ -48,7 +47,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                     projectileScript.Setup(Damage, Speed)
                         .SetSprite(projectileSprite)
                         .SetDirection(rotations[j], currentAngle)
-                        .SetLightColor(projectileLightColor)
                         .SetReady();
                 }
                 

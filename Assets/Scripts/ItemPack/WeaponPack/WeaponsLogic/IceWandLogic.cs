@@ -10,7 +10,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class IceWandLogic : ItemLogicBase
     {
-        [SerializeField] private Color projectileLightColor;
         [SerializeField] private GameObject iceProjectile;
         [SerializeField] private List<Sprite> projectileSprites;
         [SerializeField] private float animSpeed;
@@ -36,7 +35,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                     .SetTarget(target.transform)
                     .SetSprite(projectileSprites, animSpeed)
                     .SetFlightParticles(flightParticles)
-                    .SetLightColor(projectileLightColor)
                     .SetEffect(EEffectType.Slow, EffectDuration)
                     .SetReady();
                 

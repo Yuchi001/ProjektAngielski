@@ -8,9 +8,6 @@ namespace EnemyPack
     public class EnemyManager : MonoBehaviour
     {
         [SerializeField] private float maxUpdateStackDuration = 0.5f;
-        [SerializeField] private float minUpdateDelta = 0.01f;
-
-        private float MaxUpdatePerTick => maxUpdateStackDuration / minUpdateDelta;
         
         private List<EnemyLogic> enemies = new();
         private Stack<EnemyLogic> updateStack = new();
@@ -35,7 +32,7 @@ namespace EnemyPack
 
             var fps = 1.0f / Time.smoothDeltaTime;
             
-            _currentQueueLength = Mathf.CeilToInt(updateStack.Count / fps);
+            _currentQueueLength = Mathf.CeilToInt(updateStack.Count / (fps * maxUpdateStackDuration));
             for (var i = 0; i < _currentQueueLength && updateStack.Count > 0; i++)
             {
                 updateStack.Pop().InvokeUpdate();

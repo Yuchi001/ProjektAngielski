@@ -46,7 +46,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                     .SetOnHitAction(OnHit)
                     .SetScale(0.4f)
                     .SetRange(MaxRange)
-                    .SetLightColor(Color.clear)
                     .SetOutOfRangeBehaviour(OnOutOfRange);
                 
                 if (PlayerEnchantments.Has(EEnchantmentName.Sharpness))
@@ -84,7 +83,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 .SetDontDestroyOnHit()
                 .SetDisableDamageOnHit()
                 .SetScale(0.4f)
-                .SetLightColor(Color.clear)
                 .SetUpdate(BackProjectileUpdate)
                 .SetReady();
             

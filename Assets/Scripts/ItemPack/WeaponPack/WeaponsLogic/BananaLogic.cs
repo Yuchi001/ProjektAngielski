@@ -39,7 +39,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                     .SetRange(Range)
                     .SetPushForce(PushForce)
                     .SetRotationSpeed(rotationSpeed)
-                    .SetLightColor(Color.clear)
                     .SetReady();
             }
 
@@ -57,7 +56,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 .SetDontDestroyOnHit()
                 .SetScale(0.5f)
                 .SetRotationSpeed(rotationSpeed)
-                .SetLightColor(Color.clear)
                 .SetUpdate(ProjectileUpdate)
                 .SetReady();
             

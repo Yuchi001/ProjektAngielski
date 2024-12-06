@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Managers;
-using Managers.Base;
 using Other.Enums;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -14,7 +13,6 @@ namespace Other
         [SerializeField] private List<EntityColorPair> _colorPairs = new();
 
         private SpriteRenderer _spriteRenderer;
-        private Light2D _light2D;
         
         private EntityBase _entity;
         private SoEntityBase _data;
@@ -26,13 +24,11 @@ namespace Other
         public void SpawnSetup(EEntityType entityType)
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
-            _light2D = GetComponent<Light2D>();
             
             var pair = _colorPairs.FirstOrDefault(p => p.entityType == entityType);
             if (pair == default) return;
 
             _spriteRenderer.color = pair.color;
-            _light2D.color = pair.color;
         }
         
         public SpawnMarkedEntity Setup(EntityBase entity, SoEntityBase data)

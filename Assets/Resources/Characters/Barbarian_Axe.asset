@@ -19,7 +19,7 @@ MonoBehaviour:
   characterColor: {r: 0.63529414, g: 0.5058824, b: 0.19215688, a: 1}
   stats:
   - statType: 0
-    statValue: 0
+    statValue: 7.79
   - statType: 1
     statValue: 0
   - statType: 2
@@ -27,7 +27,7 @@ MonoBehaviour:
   - statType: 3
     statValue: 0
   - statType: 4
-    statValue: 0
+    statValue: 1.82
   - statType: 5
     statValue: 0
   - statType: 6

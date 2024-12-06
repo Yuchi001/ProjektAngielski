@@ -38,7 +38,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             projectileScript.Setup(Damage, 0)
                 .SetScale(Scale / 2f)
                 .SetSprite(fieldSprite, Scale * 2)
-                .SetLightColor(Color.clear)
                 .SetLifeTime(Duration)
                 .SetDontDestroyOnHit()
                 .SetNewCustomValue(DamageRateName)

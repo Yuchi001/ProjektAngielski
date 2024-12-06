@@ -18,7 +18,8 @@ namespace EnemyPack.SO
         [SerializeField] private bool isHorde;
         [SerializeField] private bool isHeavy;
         [SerializeField] private EEnemyState enemyState;
-        [SerializeField] private bool canShoot;
+        [SerializeField] private bool scaleShooting;
+        [SerializeField] private EShootType shootType;
         public float BodyScale => bodyScale;
         public bool IsHorde => isHorde;
         public AnimationClip WalkingAnimationClip => walkingAnimationClip;
@@ -27,6 +28,7 @@ namespace EnemyPack.SO
         public EExpGemType ExpGemType => expGemType;
         public bool IsHeavy => isHeavy;
         public EEnemyState EnemyState => enemyState;
-        public bool CanShoot => canShoot;
+        public EShootType ShootType => shootType;
+        public bool ScaleShooting => scaleShooting;
     }
 }

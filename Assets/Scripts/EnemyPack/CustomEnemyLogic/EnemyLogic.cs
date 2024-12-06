@@ -34,9 +34,7 @@ namespace EnemyPack.CustomEnemyLogic
         
         [Header("Shoot")] 
         [SerializeField] private string playerTagName;
-        [SerializeField] private LayerMask enemyProjectileLayerMask;
         [SerializeField] private List<Sprite> projectileSprites;
-        [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private int bulletDamage;
         [SerializeField] private float bulletSpeed;
         [SerializeField] private float bulletsPerSec;
@@ -147,7 +145,7 @@ namespace EnemyPack.CustomEnemyLogic
                     break;
             }
             
-            if (_enemy.CanShoot) UpdateShootBehaviour();
+            if (_enemy.ShootType != EShootType.None) UpdateShootBehaviour();
 
             ManagePlayerCollision();
             EnemyHealthBar.ManageHealthBar();
@@ -169,18 +167,15 @@ namespace EnemyPack.CustomEnemyLogic
             _shootTimer += Time.deltaTime;
             var count = _enemySpawner.ShootingEnemiesCount;
             if (count <= 0) count = 1;
+            count = _enemy.ScaleShooting ? count : 1;
             if (_shootTimer < count / bulletsPerSec) return;
 
             _shootTimer = 0;
-            var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-            var projectileScript = projectile.GetComponent<Projectile>();
-
-            projectileScript.Setup(bulletDamage, bulletSpeed)
-                .SetSprite(projectileSprites, 5, 4)
-                .SetLightColor(Color.red)
-                .SetTargetTag(playerTagName, 7)
-                .SetDirection(PlayerManager.Instance.transform.position)
-                .SetReady();
+            switch (_enemy.ShootType)
+            {
+                case EShootType.OneBullet: ShootOneBullet();
+                    break;
+            }
         }
 
         private void FixedUpdate()

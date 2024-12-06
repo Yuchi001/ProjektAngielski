@@ -37,7 +37,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
 
             projectileScript.Setup(Damage, Speed)
                 .SetDirection(GetDirection(position))
-                .SetLightColor(Color.clear)
                 .SetSprite(projectileSprite)
                 .SetScale(bulletScale)
                 .SetTrail(trailTime)

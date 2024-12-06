@@ -42,13 +42,9 @@ namespace Managers
        [SerializeField] private GameUiManager gameUiManager;
 
        [SerializeField] private SoCharacter baseCharacter; // TODO: usun
+
+       private readonly Dictionary<string, GameObject> _prefabs = new();
        
-       #region Prefabs
-
-       [Header("Public prefabs")] 
-       [SerializeField] private GameObject mapGenerator;
-
-       #endregion
        public PlayerManager CurrentPlayer { get; private set; }
        public MapGenerator MapGenerator { get; private set; }
        public WaveManager WaveManager => waveManager;
@@ -56,13 +52,20 @@ namespace Managers
        
        private void Init()
        {
+           _prefabs.Clear();
+           var prefabs = Resources.LoadAll<GameObject>("Prefabs");
+           foreach (var prefab in prefabs)
+           {
+               _prefabs.Add(prefab.name, prefab);
+           }
+           
            LeanTween.init(100, 100);
            StartRun(baseCharacter);
        }
 
        public void StartRun(SoCharacter pickedCharacter)
        {
-           MapGenerator = Instantiate(mapGenerator).GetComponent<MapGenerator>();
+           MapGenerator = Instantiate(GetPrefab("MapGeneratorManager")).GetComponent<MapGenerator>();
            
            gameUiManager.BeginPlay();
            
@@ -77,6 +80,12 @@ namespace Managers
            waveManager.BeginSpawn();
 
            Time.timeScale = 1;
+       }
+
+       public GameObject GetPrefab(string prefName)
+       {
+           var hasValue = _prefabs.TryGetValue(prefName, out var prefab);
+           return hasValue ? prefab : null;
        }
     }
 }
