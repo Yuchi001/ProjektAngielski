@@ -2,6 +2,7 @@
 using System.Linq;
 using EnemyPack.CustomEnemyLogic;
 using Managers;
+using PoolPack;
 using UnityEngine;
 
 namespace Utils
@@ -63,7 +64,7 @@ namespace Utils
                 smallestDistance = distance;
             }
 
-            return pickedEnemy;
+            return pickedEnemy as EnemyLogic;
         }
         
         public static EnemyLogic FindFurthestTarget(Vector2 position, List<int> usedTargets = null)
@@ -84,7 +85,7 @@ namespace Utils
                 farthestDistance = distance;
             }
 
-            return pickedEnemy;
+            return pickedEnemy as EnemyLogic;
         }
         
         public static EnemyLogic FindTargetInBiggestGroup(Vector2 position, float? xRange = null, float? yRange = null)
@@ -92,8 +93,8 @@ namespace Utils
             var enemies = GameManager.Instance.EnemySpawner.GetActiveEnemies();
             if (enemies.Count == 0) return null;
 
-            var left = new List<EnemyLogic>();
-            var right = new List<EnemyLogic>();
+            var left = new List<PoolObject>();
+            var right = new List<PoolObject>();
             foreach (var enemy in enemies)
             {
                 var pos = enemy.transform.position;
@@ -115,7 +116,7 @@ namespace Utils
                 smallestDistance = distance;
             }
 
-            return pickedEnemy;
+            return pickedEnemy as EnemyLogic;
 
             bool InRange(Vector2 enemyPos)
             {
@@ -137,7 +138,7 @@ namespace Utils
 
             var randomIndex = Random.Range(0, enemies.Count);
             
-            return enemies[randomIndex];
+            return enemies[randomIndex] as EnemyLogic;
         }
     }
 }

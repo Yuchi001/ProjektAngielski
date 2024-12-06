@@ -60,6 +60,11 @@ namespace ItemPack.WeaponPack.Other
 
         private readonly Dictionary<string, float> _customValues = new();
 
+        private void Awake()
+        {
+            
+        }
+
         #region Setup methods
 
         public Projectile Setup(int damage, float speed)

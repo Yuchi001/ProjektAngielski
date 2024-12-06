@@ -25,7 +25,7 @@ namespace PlayerPack
         public void GainExp(int expPoints)
         {
             CurrentExp += expPoints;
-            if (CurrentExp >= NextLevelExp) StartCoroutine(LevelUp());
+            //if (CurrentExp >= NextLevelExp) StartCoroutine(LevelUp());
         }
         
         private IEnumerator LevelUp()

@@ -8,12 +8,12 @@ using EnemyPack.SO;
 using ExpPackage;
 using ItemPack.WeaponPack.Other;
 using Managers;
-using Managers.Base;
 using Managers.Enums;
 using Other;
 using Other.Interfaces;
 using PlayerPack;
 using PlayerPack.Enums;
+using PoolPack;
 using UI;
 using UnityEngine;
 
@@ -76,11 +76,19 @@ namespace EnemyPack.CustomEnemyLogic
         private int mergeCount = 1;
 
         private static PlayerEnchantments PlayerEnchantments => PlayerManager.Instance.PlayerEnchantments;
-        
-        public override void Setup(SoEntityBase enemy)
+
+        public override void OnCreate(PoolManager poolManager)
         {
+            base.OnCreate(poolManager);
+            _enemySpawner = poolManager as EnemySpawner;
+        }
+
+        public override void OnGet(SoEntityBase enemy)
+        {
+            base.OnGet(enemy);
+            
             var player = PlayerManager.Instance;
-            if (player == null) DestroyNonAloc();
+            if (player == null) _enemySpawner.ReleasePoolObject(this);
 
             _mergeParent = null;
             _toMerge = false;
@@ -114,16 +122,9 @@ namespace EnemyPack.CustomEnemyLogic
             CanBeDamagedSetup();
             
             EnemyHealthBar.Setup(SpriteRenderer);
-            
-            SpawnNonAloc();
-        }
-
-        public override void SpawnSetup(SpawnerBase spawnerBase)
-        {
-            _enemySpawner = spawnerBase.As<EnemySpawner>();
         }
         
-        public void InvokeUpdate()
+        public override void InvokeUpdate()
         {
             if (_effectsManager == null) return;
             
@@ -219,7 +220,7 @@ namespace EnemyPack.CustomEnemyLogic
             if (Vector2.Distance(transform.position, _mergeParent.transform.position) > 0.05f) return;
             
             _mergeParent.MergeParent(mergeCount);
-            DestroyNonAloc();
+            _enemySpawner.ReleasePoolObject(this);
         }
 
         private void SetMerge(EnemyLogic enemyLogic)
@@ -306,14 +307,14 @@ namespace EnemyPack.CustomEnemyLogic
             if(_currentHealth <= 0) OnDie();
         }
 
-        public override void OnDie(bool destroyObj = true)
+        public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)
         {
             ExpGem.SpawnExpGem(expGemPrefab, transform.position, _enemy.ExpGemType);
             _target = null;
             rb2d.velocity = Vector2.zero;
             Collider2D.enabled = false;
             
-            base.OnDie();
+            base.OnDie(destroyObj, _enemySpawner);
         }
 
         public void DieWithoutGem()
@@ -372,6 +373,7 @@ namespace EnemyPack.CustomEnemyLogic
 
         private void OnDisable()
         {
+            if (_enemySpawner == null) return;
             _enemySpawner.IncrementDeadEnemies(this, _enemy);
         }
     }

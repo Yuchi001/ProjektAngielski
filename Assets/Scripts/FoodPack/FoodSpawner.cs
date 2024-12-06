@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Managers;
 using Managers.Base;
+using Managers.Other;
 using MarkerPackage;
 using Other;
 using Other.Enums;
 using Other.SO;
 using PlayerPack;
+using PoolPack;
 using UnityEngine;
+using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
 namespace FoodPack
@@ -17,7 +21,7 @@ namespace FoodPack
         [SerializeField] private float foodSpawnChance;
         [SerializeField] private float trySpawnRate;
 
-        private readonly List<Food> _foodPool = new();
+        private ObjectPool<Food> _foodPool;
 
         private float _biggestWeight;
         private float _weightSum;
@@ -39,8 +43,12 @@ namespace FoodPack
                 _weightSum += weight;
             }
             _foodWeightList.Sort((a, b) => (int)a.weight - (int)b.weight);
+        }
 
-            PreparePool(_foodPool);
+        private void Start()
+        {
+            var foodPrefab = GameManager.Instance.GetPrefab(PrefabNames.Food);
+            _foodPool = PoolHelper.CreatePool<Food>(this, foodPrefab, 10);
         }
 
         protected override void SpawnLogic()
@@ -49,19 +57,23 @@ namespace FoodPack
             
             var randomPercentage = Random.Range(0, 101);
             if (randomPercentage > foodSpawnChance) return;
-
-            var food = GetFromPool(_foodPool);
-            if (food == null) return;
-            
-            var soFood = GetRandomFood();
-            food.SetBusy();
                 
             MarkerManager.Instance.GetMarkerFromPool(EEntityType.Positive)
-                .Setup(food, soFood)
+                .Setup(this)
                 .SetReady();
         }
+        
+        public override PoolObject GetPoolObject()
+        {
+            return _foodPool.Get();
+        }
 
-        private SoFood GetRandomFood()
+        public override void ReleasePoolObject(PoolObject poolObject)
+        {
+            _foodPool.Release(poolObject as Food);
+        }
+
+        public override SoEntityBase GetRandomPoolData()
         {
             var randomNumber = Random.Range(0, _weightSum);
             

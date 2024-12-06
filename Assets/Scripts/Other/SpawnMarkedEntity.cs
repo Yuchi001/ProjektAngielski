@@ -2,6 +2,7 @@
 using System.Linq;
 using Managers;
 using Other.Enums;
+using PoolPack;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -13,9 +14,8 @@ namespace Other
         [SerializeField] private List<EntityColorPair> _colorPairs = new();
 
         private SpriteRenderer _spriteRenderer;
-        
-        private EntityBase _entity;
-        private SoEntityBase _data;
+
+        private PoolManager _poolManager;
 
         private float _timer = 0;
         private bool _ready = false;
@@ -31,19 +31,11 @@ namespace Other
             _spriteRenderer.color = pair.color;
         }
         
-        public SpawnMarkedEntity Setup(EntityBase entity, SoEntityBase data)
+        public SpawnMarkedEntity Setup(PoolManager poolManager)
         {
+            _poolManager = poolManager;
             _timer = 0;
-            _entity = entity;
-            _data = data;
             transform.position = GameManager.Instance.MapGenerator.GetRandomPos();
-            return this;
-        }
-
-        public SpawnMarkedEntity SetScale(float scale)
-        {
-            var scaleVector3 = new Vector3(scale, scale, scale);
-            transform.localScale = scaleVector3;
             return this;
         }
 
@@ -61,9 +53,9 @@ namespace Other
             
             _timer += Time.deltaTime;
             if (_timer < spawnTime) return;
-            
-            _entity.Setup(_data);
-            _entity.transform.position = transform.position;
+
+            var poolObj = _poolManager.GetPoolObject();
+            poolObj.transform.position = transform.position;
             
             gameObject.SetActive(false);
             _ready = false;

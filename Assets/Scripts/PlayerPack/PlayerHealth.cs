@@ -8,6 +8,7 @@ using Managers.Enums;
 using Other;
 using PlayerPack.Enums;
 using PlayerPack.SO;
+using PoolPack;
 using UI;
 using UnityEngine;
 
@@ -45,7 +46,6 @@ namespace PlayerPack
         private void Awake()
         {
             StartCoroutine(StartingInvincible());
-            SpawnNonAloc();
             CanBeDamagedSetup();
         }
 
@@ -121,7 +121,7 @@ namespace PlayerPack
                 0, MaxHealth);
         }
 
-        public override void OnDie(bool destroyObj = true)
+        public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)
         {
             if (PlayerEnchantments.Ready(EEnchantmentName.Revive))
             {
@@ -148,16 +148,6 @@ namespace PlayerPack
             if (!other.gameObject.TryGetComponent(out Projectile projectile)) return;
             
             projectile.ManageHit(gameObject);
-        }
-
-        public override void Setup(SoEntityBase soData)
-        {
-            // not needed
-        }
-
-        public override void SpawnSetup(SpawnerBase spawner)
-        {
-            // not needed
         }
     }
 }

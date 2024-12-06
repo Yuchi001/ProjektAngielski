@@ -1,33 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EnemyPack.CustomEnemyLogic;
-using PoolPack;
+using Other;
 using UnityEngine;
+using UnityEngine.Pool;
 
-namespace EnemyPack
+namespace PoolPack
 {
-    public class EnemyManager : MonoBehaviour
+    public abstract class PoolManager : MonoBehaviour
     {
         [SerializeField] private float maxUpdateStackDuration = 0.5f;
-        
-        private List<PoolObject> enemies = new();
-        private Stack<PoolObject> updateStack = new();
+        public List<PoolObject> ActiveObjects { get; } = new();
 
+        public abstract PoolObject GetPoolObject();
+        public abstract void ReleasePoolObject(PoolObject poolObject);
+        public abstract SoEntityBase GetRandomPoolData();
+
+        
+        private Stack<PoolObject> updateStack = new();
         private float _currentQueueLength = 1;
         
-        public void Setup(List<PoolObject> enemies)
+        protected void PrepareQueue()
         {
-            this.enemies = enemies;
-            PrepareQueue();
+            updateStack = new Stack<PoolObject>(ActiveObjects);
         }
 
-        private void PrepareQueue()
-        {
-            var validEnemies = enemies.Where(e => e != default && e.isActiveAndEnabled);
-            updateStack = new Stack<PoolObject>(validEnemies);
-        }
-
-        private void Update()
+        protected void RunUpdatePoolStack()
         {
             if (updateStack.Count == 0) PrepareQueue();
 

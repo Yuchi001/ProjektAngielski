@@ -2,11 +2,12 @@
 using System.Collections;
 using Managers;
 using Other.Enums;
+using PoolPack;
 using UnityEngine;
 
 namespace Other
 {
-    public abstract class CanBeDamaged : EntityBase
+    public abstract class CanBeDamaged : PoolObject
     {
         [SerializeField] private GameObject bloodParticles;
         [SerializeField] private SpriteRenderer spriteRenderer;
@@ -65,22 +66,26 @@ namespace Other
             Destroy(particles, 5f);
         }
 
-        public virtual void OnDie(bool destroyObj = true)
+        public virtual void OnDie(bool destroyObj = true, PoolManager poolManager = null)
         {
             Dead = true;
             _spriteMaterial.SetColor("_FlashColor", Color.red);
             _spriteMaterial.SetFloat("_FlashAmmount", 1);
-            StartCoroutine(Die(destroyObj));
+            StartCoroutine(Die(destroyObj, poolManager));
         }
 
-        private IEnumerator Die(bool destroyObj)
+        private IEnumerator Die(bool destroyObj, PoolManager poolManager)
         {
             for (float time = 0; time < _flashTime; time+=Time.deltaTime)
             {
                 transform.localScale = new Vector3(1f - time / _flashTime, 1, 1);
                 yield return new WaitForSeconds(Time.deltaTime);
             }
-            if(destroyObj) DestroyNonAloc();
+
+            if (!destroyObj) yield break;
+            
+            if (poolManager == null) Destroy(gameObject);
+            else poolManager.ReleasePoolObject(this);
         }
         
         private IEnumerator DamageAnim(Color flashColor)

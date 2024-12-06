@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Managers.Enums;
-using Other;
+using PoolPack;
 using UnityEngine;
 
 namespace Managers.Base
 {
-    public abstract class SpawnerBase : MonoBehaviour
+    public abstract class SpawnerBase : PoolManager
     {
-        [SerializeField] protected GameObject spawnPrefab;
         [SerializeField] protected int poolDefaultSize;
         [SerializeField] private float _waitBeforeSpawn = 1.5f;
         
@@ -19,27 +15,7 @@ namespace Managers.Base
         private float _timer = 0;
 
         private float _waitTimer = 0;
-        private bool _poolReady = false;
         
-        protected void PreparePool<T>(List<T> pool) where T : EntityBase
-        {
-            spawnPrefab.SetActive(false);
-            for (var i = 0; i < poolDefaultSize; i++)
-            {
-                var obj = Instantiate(spawnPrefab);
-                var script = obj.GetComponent<T>();
-                script.SpawnSetup(this);
-                pool.Add(script);
-            }
-
-            _poolReady = true;
-        }
-
-        private void OnDisable()
-        {
-            spawnPrefab.SetActive(true);
-        }
-
         protected virtual void Update()
         {
             if (_waitTimer < _waitBeforeSpawn)
@@ -48,7 +24,7 @@ namespace Managers.Base
                 return;
             }
             
-            if (_state == ESpawnerState.Stop || !_poolReady) return;
+            if (_state == ESpawnerState.Stop) return;
             
             
             _timer += Time.deltaTime;
@@ -64,15 +40,6 @@ namespace Managers.Base
         }
 
         protected abstract void SpawnLogic();
-        
-        protected EntityBase GetFromPool<T>(List<T> pool) where T : EntityBase
-        {
-            var enemy = pool.FirstOrDefault(f => !f.gameObject.activeInHierarchy && !f.Active);
-            if (enemy != default) return enemy;
-            
-            PreparePool(pool);
-            return pool.FirstOrDefault(f => !f.gameObject.activeInHierarchy && !f.Active);
-        }
 
         public T As<T>() where T : SpawnerBase
         {

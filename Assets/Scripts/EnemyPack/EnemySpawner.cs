@@ -9,12 +9,14 @@ using ExpPackage.Enums;
 using Managers;
 using Managers.Base;
 using Managers.Enums;
+using Managers.Other;
 using MarkerPackage;
 using Other;
 using Other.Enums;
 using PlayerPack;
-using Unity.VisualScripting;
+using PoolPack;
 using UnityEngine;
+using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
 namespace EnemyPack
@@ -42,7 +44,7 @@ namespace EnemyPack
         public delegate void EnemyDieDelegate(EnemyLogic enemyLogic);
         public static event EnemyDieDelegate OnEnemyDie;
 
-        private readonly List<EnemyLogic> _enemyPool = new();
+        private ObjectPool<EnemyLogic> _enemyPool;
  
         public int DeadEnemies { get; private set; }
 
@@ -50,25 +52,25 @@ namespace EnemyPack
         protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * EnemySpawnRate);
         public float EnemiesHpScale => enemiesHpScale + Mathf.Pow(1f + DeadEnemies * enemiesHpScaleMultiplierPerKill, 2) - 1;
         
-
-        private void Awake()
-        {
-            PreparePool(_enemyPool);
-        }
-
         private IEnumerator Start()
         {
             yield return new WaitUntil(() => GameManager.Instance.MapGenerator != null);
             
-            GetComponent<EnemyManager>().Setup(_enemyPool);
+            GetComponent<EnemyManager>().Setup(ActiveObjects);
             
             DeadEnemies = 0;
 
             _allEnemies = Resources.LoadAll<SoEnemy>("Enemies").Select(Instantiate).ToList();
+            
+            var enemyPrefab = GameManager.Instance.GetPrefab(PrefabNames.Enemy);
+            _enemyPool = PoolHelper.CreatePool<EnemyLogic>(this, enemyPrefab, poolDefaultSize);
+            PrepareQueue();
         }
 
         protected override void Update()
         {
+            RunUpdatePoolStack();
+            
             base.Update();
 
             if (_state == ESpawnerState.Stop) return;
@@ -84,24 +86,46 @@ namespace EnemyPack
 
         protected override void SpawnLogic()
         {
-            if (PlayerManager == null) return;
+            if (PlayerManager == null || _enemyPool == null) return;
+
+            _enemyPool.Get();
             
-            var enemy = GetFromPool(_enemyPool);
-            if (enemy == null) return;
-            
-            var enemySo = GetEnemy(false);
-            enemy.SetBusy();
-            
-            if (enemySo.ShootType != EShootType.None) ShootingEnemiesCount++;
+            //TODO: tutaj jakos zastapic
+            //if (enemySo.ShootType != EShootType.None) ShootingEnemiesCount++;
                 
             MarkerManager.Instance.GetMarkerFromPool(EEntityType.Negative)
-                .Setup(enemy, enemySo)
-                .SetScale(enemySo.BodyScale)
+                .Setup(this)
                 .SetReady();
         }
 
-        private SoEnemy GetEnemy(bool isHorde)
+        public void SpawnEnemy(SoEnemy enemy, Vector2 position)
         {
+            var enemyObj = _enemyPool.Get();
+            enemyObj.OnGet(enemy);
+            enemyObj.transform.position = position;
+            
+            // TODO: Tutaj tez zastap
+            //if (enemy.ShootType != EShootType.None) ShootingEnemiesCount++;
+        }
+
+        public List<PoolObject> GetActiveEnemies()
+        {
+            return ActiveObjects;
+        }
+
+        public override PoolObject GetPoolObject()
+        {
+            return _enemyPool.Get();
+        }
+
+        public override void ReleasePoolObject(PoolObject poolObject)
+        {
+            _enemyPool.Release(poolObject as EnemyLogic);
+        }
+
+        public override SoEntityBase GetRandomPoolData()
+        {
+            var isHorde = false; // TODO: do usuniecia
             var validEnemies = _allEnemies.Where(e => e.IsHorde == isHorde).ToList();
 
             var sum = gemRarityList.Sum(g => g.weight);
@@ -122,23 +146,6 @@ namespace EnemyPack
             validEnemies = validEnemies.Where(e => e.ExpGemType == pickedGemType).ToList();
             
             return validEnemies.Count != 0 ? validEnemies[Random.Range(0, validEnemies.Count)] : _allEnemies[0];
-        }
-
-        public void SpawnEnemy(SoEnemy enemy, Vector2 position)
-        {
-            var enemyObj = GetFromPool(_enemyPool);
-            if (enemyObj == null) return;
-            
-            var enemyScript = enemyObj.As<EnemyLogic>();
-            enemyObj.transform.position = position;
-            
-            enemyScript.Setup(enemy);
-            if (enemy.ShootType != EShootType.None) ShootingEnemiesCount++;
-        }
-
-        public List<EnemyLogic> GetActiveEnemies()
-        {
-            return _enemyPool.Where(e => e.Active && e.gameObject.activeInHierarchy).ToList();
         }
     }
 
