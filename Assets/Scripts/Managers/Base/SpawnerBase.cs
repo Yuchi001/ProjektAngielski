@@ -7,7 +7,6 @@ namespace Managers.Base
 {
     public abstract class SpawnerBase : PoolManager
     {
-        [SerializeField] protected int poolDefaultSize;
         [SerializeField] private float _waitBeforeSpawn = 1.5f;
         
         protected ESpawnerState _state = ESpawnerState.Stop;

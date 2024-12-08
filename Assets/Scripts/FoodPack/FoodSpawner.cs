@@ -48,7 +48,7 @@ namespace FoodPack
         private void Start()
         {
             var foodPrefab = GameManager.Instance.GetPrefab(PrefabNames.Food);
-            _foodPool = PoolHelper.CreatePool<Food>(this, foodPrefab, 10);
+            _foodPool = PoolHelper.CreatePool<Food>(this, foodPrefab);
         }
 
         protected override void SpawnLogic()
@@ -57,10 +57,9 @@ namespace FoodPack
             
             var randomPercentage = Random.Range(0, 101);
             if (randomPercentage > foodSpawnChance) return;
-                
-            MarkerManager.Instance.GetMarkerFromPool(EEntityType.Positive)
-                .Setup(this)
-                .SetReady();
+
+            var marker = (SpawnMarkedEntity)MarkerManager.Instance.GetPoolObject();
+            marker.SetReady(EEntityType.Positive, this);
         }
         
         public override PoolObject GetPoolObject()

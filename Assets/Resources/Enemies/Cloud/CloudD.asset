@@ -15,10 +15,10 @@ MonoBehaviour:
   walkingAnimationClip: {fileID: 7400000, guid: 25457e4ee241362428365f1a5b313ed3, type: 2}
   maxHealth: 20
   bodyScale: 1.3
-  movementSpeed: -2
+  movementSpeed: 2
   expGemType: 1
   isHorde: 0
   isHeavy: 0
-  enemyState: 1
+  enemyState: 0
   scaleShooting: 0
   shootType: 0

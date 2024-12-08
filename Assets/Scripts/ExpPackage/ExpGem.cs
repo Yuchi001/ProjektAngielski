@@ -6,38 +6,54 @@ using EnchantmentPack.Enums;
 using ExpPackage.Enums;
 using Managers;
 using Managers.Enums;
+using Other;
 using PlayerPack;
+using PoolPack;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 namespace ExpPackage
 {
-    public class ExpGem : MonoBehaviour
+    [RequireComponent(typeof(CircleCollider2D))]
+    public class ExpGem :  PoolObject
     {
         [SerializeField] private float range;
         [SerializeField] private float animTime;
         [SerializeField] private List<ExpGemInfo> expAmountPair = new();
         [SerializeField] private List<ExpGemInfo> betterGemAmountPair = new();
-        private static Vector3 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
-
         private static PlayerEnchantments PlayerEnchantments =>
             PlayerManager.Instance.PlayerEnchantments;
+
+        private static Vector2 PlayerPos => PlayerManager.Instance.transform.position;
         
         private int expAmount = 0;
-
-        private float _timer = 0;
-
+        
         private EPickableState _pickableState = EPickableState.Default;
         private Vector2 startPosition;
         
-        public static void SpawnExpGem(GameObject expGemPrefab, Vector3 position, EExpGemType expGemType)
+        private const string PICK_UP_TIMER = "PICK_UP_TIMER";
+
+        private SpriteRenderer spriteRenderer;
+        private CircleCollider2D circleCollider2D;
+
+        public override void OnCreate(PoolManager poolManager)
         {
-            var expGem = Instantiate(expGemPrefab, position, Quaternion.identity);
-            var expGemScript = expGem.GetComponent<ExpGem>();
-            expGemScript.Setup(expGemType);
+            base.OnCreate(poolManager);
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            circleCollider2D = GetComponent<CircleCollider2D>();
+            circleCollider2D.radius = range;
+            circleCollider2D.isTrigger = true;
         }
 
-        private void Setup(EExpGemType gemType)
+        public override void OnGet(SoEntityBase so)
+        {
+            base.OnGet(so);
+
+            _pickableState = EPickableState.Default;
+            startPosition = Vector2.zero;
+        }
+
+        public void Setup(EExpGemType gemType, Vector2 position)
         {
             var gemList = PlayerEnchantments.Has(EEnchantmentName.BetterExp)
                 ? betterGemAmountPair
@@ -46,42 +62,42 @@ namespace ExpPackage
             if (pair == null) return;
 
             expAmount = pair.expAmount;
-            GetComponent<SpriteRenderer>().sprite = pair.gemSprite;
-            startPosition = transform.position;
+            spriteRenderer.sprite = pair.gemSprite;
+            startPosition = position;
+            transform.position = startPosition;
         }
 
         private void Update()
         {
             if (PlayerManager.Instance == null) return;
 
-            switch (_pickableState)
-            {
-                case EPickableState.Default:
-                    if (Vector2.Distance(transform.position, PlayerPos) > range) return;
+            if (_pickableState != EPickableState.PickingUpPhase) return;
+            
+            var remainingTime = Mathf.Clamp01((float)CheckTimer(PICK_UP_TIMER) / animTime);
 
-                    _pickableState = EPickableState.PickingUpPhase;
-                    return;
-                case EPickableState.PickingUpPhase:
-                    _timer += Time.deltaTime;
-                    var remainingTime = Mathf.Clamp01(_timer / animTime);
+            transform.position = Vector3.Lerp(startPosition, PlayerPos, remainingTime);
+                    
+            if (Vector2.Distance(transform.position, PlayerPos) > 0.1f) return;
+                    
+            AudioManager.Instance.PlaySound(ESoundType.PickUpGem);
 
-                    transform.position = Vector3.Lerp(startPosition, PlayerPos, remainingTime);
+            _pickableState = EPickableState.PickedUp;
                     
-                    if (Vector2.Distance(transform.position, PlayerPos) > 0.1f) return;
-                    
-                    AudioManager.Instance.PlaySound(ESoundType.PickUpGem);
-
-                    _pickableState = EPickableState.PickedUp;
-                    
-                    var playerExp = PlayerManager.Instance.PlayerExp;
-                    playerExp.GainExp(expAmount);
-                    Destroy(gameObject);
-                    return;
-                case EPickableState.PickedUp: return;
-                default: return;
-            }
+            PlayerManager.Instance.PlayerExp.GainExp(expAmount);
+            
+            ExpPool.Instance.ReleasePoolObject(this);
         }
-        
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            Debug.Log(_pickableState);
+            Debug.Log(other.tag);
+            if (_pickableState != EPickableState.Default || !other.CompareTag("Player")) return;
+            
+            _pickableState = EPickableState.PickingUpPhase;
+            SetTimer(PICK_UP_TIMER);
+        }
+
         private void OnDrawGizmos()
         {
             Gizmos.DrawWireSphere(transform.position, range);

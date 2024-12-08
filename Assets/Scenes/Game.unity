@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxUpdateStackDuration: 0.5
-  poolDefaultSize: 10
+  <PoolSize>k__BackingField: 10
   _waitBeforeSpawn: 1.5
   foodSpawnChance: 5
   trySpawnRate: 1
@@ -202,8 +202,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6ad64d905246959d1209eebe50a24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.5
-  poolDefaultSize: 50
+  maxUpdateStackDuration: 0.2
+  <PoolSize>k__BackingField: 100
   _waitBeforeSpawn: 1.5
   enemiesHpScaleMultiplierPerKill: 0.001
   enemiesHpScale: 1
@@ -371,6 +371,52 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 22.343798, y: 25.9, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &288947032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 288947034}
+  - component: {fileID: 288947033}
+  m_Layer: 0
+  m_Name: ExpPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &288947033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288947032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52eb92468dbb4f508b5e0c049243421a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxUpdateStackDuration: 0.1
+  <PoolSize>k__BackingField: 100
+--- !u!4 &288947034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288947032}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.5476403, y: 1.8337805, z: -3.685855}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -981,9 +1027,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a7133b68154c879303020d5013ef22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPassiveMarkers: 10
-  maxNegativeMarkers: 50
-  markerPrefab: {fileID: 7589941385135539515, guid: 6418c67410e9f984a8504e9f1972d822, type: 3}
+  maxUpdateStackDuration: 0.2
+  <PoolSize>k__BackingField: 50
 --- !u!4 &783534116
 Transform:
   m_ObjectHideFlags: 0
@@ -1598,3 +1643,4 @@ SceneRoots:
   - {fileID: 1362227511}
   - {fileID: 1925957712}
   - {fileID: 783534116}
+  - {fileID: 288947034}

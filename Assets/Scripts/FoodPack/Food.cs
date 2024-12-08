@@ -29,15 +29,15 @@ namespace FoodPack
         {
             base.OnCreate(poolManager);
             CircleCollider2D.radius = range;
-            //CircleCollider2D.isTrigger = true;
+            CircleCollider2D.isTrigger = true;
             _foodSpawner = (FoodSpawner)poolManager;
             _food = (SoFood)_foodSpawner.GetRandomPoolData();
             spriteRenderer.sprite = _food.FoodSprite;
         }
 
-        private void OnCollisionEnter2D(Collision2D other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            if (!other.gameObject.CompareTag("Player")) return;
+            if (!other.CompareTag("Player")) return;
             
             PlayerHealth.Heal(_food.SaturationValue);
             _foodSpawner.ReleasePoolObject(this);

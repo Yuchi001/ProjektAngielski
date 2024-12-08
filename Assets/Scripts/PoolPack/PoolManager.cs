@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Other;
 using UnityEngine;
-using UnityEngine.Pool;
 
 namespace PoolPack
 {
     public abstract class PoolManager : MonoBehaviour
     {
         [SerializeField] private float maxUpdateStackDuration = 0.5f;
+        [field: SerializeField, Range(10, 1000)] public int PoolSize { get; protected set; }
         public List<PoolObject> ActiveObjects { get; } = new();
+        
 
         public abstract PoolObject GetPoolObject();
         public abstract void ReleasePoolObject(PoolObject poolObject);

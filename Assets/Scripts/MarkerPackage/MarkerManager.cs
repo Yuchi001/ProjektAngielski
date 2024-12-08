@@ -1,19 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using Managers;
+using Managers.Other;
 using Other;
-using Other.Enums;
-using UnityEngine;
+using PoolPack;
+using UnityEngine.Pool;
 
 namespace MarkerPackage
 {
-    public class MarkerManager : MonoBehaviour
+    public class MarkerManager : PoolManager
     {
-        [SerializeField] private int maxPassiveMarkers = 10;
-        [SerializeField] private int maxNegativeMarkers = 50;
-        [SerializeField] private GameObject markerPrefab;
-
-        private readonly List<SpawnMarkedEntity> _passiveMarkers = new();
-        private readonly List<SpawnMarkedEntity> _negativeMarkers = new();
+        private ObjectPool<SpawnMarkedEntity> _markers;
+        private ObjectPool<SpawnMarkedEntity> _negativeMarkers;
         
         public static MarkerManager Instance { get; private set; }
 
@@ -25,43 +22,30 @@ namespace MarkerPackage
 
         private void Start()
         {
-            markerPrefab.SetActive(false);
+            var markerPrefab = GameManager.Instance.GetPrefab(PrefabNames.SpawnIndicator);
+            _markers = PoolHelper.CreatePool<SpawnMarkedEntity>(this, markerPrefab);
             
-            for (var i = 0; i < maxPassiveMarkers; i++)
-            {
-                var obj = Instantiate(markerPrefab);
-                var marker = obj.GetComponent<SpawnMarkedEntity>();
-                marker.SpawnSetup(EEntityType.Positive);
-                _passiveMarkers.Add(marker);
-            }
-            
-            for (var i = 0; i < maxNegativeMarkers; i++)
-            {
-                var obj = Instantiate(markerPrefab);
-                var marker = obj.GetComponent<SpawnMarkedEntity>();
-                marker.SpawnSetup(EEntityType.Negative);
-                _negativeMarkers.Add(marker);
-            }
-        }
-        
-        private void OnDisable()
-        {
-            markerPrefab.SetActive(true);
+            PrepareQueue();
         }
 
-        public SpawnMarkedEntity GetMarkerFromPool(EEntityType markerType)
+        private void Update()
         {
-            return markerType switch
-            {
-                EEntityType.Positive => GetValidMarker(_passiveMarkers),
-                EEntityType.Negative => GetValidMarker(_negativeMarkers),
-                _ => null
-            };
+            RunUpdatePoolStack();
         }
 
-        private static SpawnMarkedEntity GetValidMarker(IEnumerable<SpawnMarkedEntity> pool)
+        public override PoolObject GetPoolObject()
         {
-            return pool.FirstOrDefault(o => !o.gameObject.activeInHierarchy);
+            return _markers.Get();
+        }
+
+        public override void ReleasePoolObject(PoolObject poolObject)
+        {
+            _markers.Release(poolObject as SpawnMarkedEntity);
+        }
+
+        public override SoEntityBase GetRandomPoolData()
+        {
+            return null; // Not needed
         }
     }
 }

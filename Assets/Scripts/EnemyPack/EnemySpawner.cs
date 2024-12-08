@@ -63,7 +63,7 @@ namespace EnemyPack
             _allEnemies = Resources.LoadAll<SoEnemy>("Enemies").Select(Instantiate).ToList();
             
             var enemyPrefab = GameManager.Instance.GetPrefab(PrefabNames.Enemy);
-            _enemyPool = PoolHelper.CreatePool<EnemyLogic>(this, enemyPrefab, poolDefaultSize);
+            _enemyPool = PoolHelper.CreatePool<EnemyLogic>(this, enemyPrefab);
             PrepareQueue();
         }
 
@@ -87,15 +87,12 @@ namespace EnemyPack
         protected override void SpawnLogic()
         {
             if (PlayerManager == null || _enemyPool == null) return;
-
-            _enemyPool.Get();
             
             //TODO: tutaj jakos zastapic
             //if (enemySo.ShootType != EShootType.None) ShootingEnemiesCount++;
-                
-            MarkerManager.Instance.GetMarkerFromPool(EEntityType.Negative)
-                .Setup(this)
-                .SetReady();
+
+            var marker = (SpawnMarkedEntity)MarkerManager.Instance.GetPoolObject();
+            marker.SetReady(EEntityType.Negative, this);
         }
 
         public void SpawnEnemy(SoEnemy enemy, Vector2 position)

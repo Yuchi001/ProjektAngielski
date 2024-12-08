@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Managers;
+using MarkerPackage;
 using Other.Enums;
 using PoolPack;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 namespace Other
 {
-    public class SpawnMarkedEntity : MonoBehaviour
+    public class SpawnMarkedEntity : PoolObject
     {
         [SerializeField] private float spawnTime;
         [SerializeField] private List<EntityColorPair> _colorPairs = new();
@@ -17,48 +18,45 @@ namespace Other
 
         private PoolManager _poolManager;
 
-        private float _timer = 0;
-        private bool _ready = false;
+        private static readonly string SPAWN_TIMER_ID = "SPAWN_TIMER";
 
         #region Setup methods
-        public void SpawnSetup(EEntityType entityType)
+
+        public override void OnCreate(PoolManager poolManager)
         {
+            base.OnCreate(poolManager);
             _spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
+        public override void OnGet(SoEntityBase so)
+        {
+            base.OnGet(so);
+            
+            transform.position = GameManager.Instance.MapGenerator.GetRandomPos();
+        }
+
+        public void SetReady(EEntityType entityType, PoolManager poolManager)
+        {
+            _poolManager = poolManager;
             
             var pair = _colorPairs.FirstOrDefault(p => p.entityType == entityType);
             if (pair == default) return;
 
             _spriteRenderer.color = pair.color;
-        }
-        
-        public SpawnMarkedEntity Setup(PoolManager poolManager)
-        {
-            _poolManager = poolManager;
-            _timer = 0;
-            transform.position = GameManager.Instance.MapGenerator.GetRandomPos();
-            return this;
-        }
-
-        public void SetReady()
-        {
-            _ready = true;
-            gameObject.SetActive(true);
+            SetTimer(SPAWN_TIMER_ID);
         }
 
         #endregion
 
-        private void Update()
+        public override void InvokeUpdate()
         {
-            if(!_ready) return;
-            
-            _timer += Time.deltaTime;
-            if (_timer < spawnTime) return;
+            if (CheckTimer(SPAWN_TIMER_ID) < spawnTime) return;
 
             var poolObj = _poolManager.GetPoolObject();
             poolObj.transform.position = transform.position;
             
-            gameObject.SetActive(false);
-            _ready = false;
+            MarkerManager.Instance.ReleasePoolObject(this);
+            SetTimer(SPAWN_TIMER_ID);
         }
     }
 

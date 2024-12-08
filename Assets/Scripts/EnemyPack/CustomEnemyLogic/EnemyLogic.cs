@@ -39,8 +39,6 @@ namespace EnemyPack.CustomEnemyLogic
         [SerializeField] private float bulletSpeed;
         [SerializeField] private float bulletsPerSec;
         
-        private float _shootTimer = 0;
-
         public override int CurrentHealth => _currentHealth;
 
         private Collider2D Collider2D => GetComponent<Collider2D>();
@@ -67,13 +65,15 @@ namespace EnemyPack.CustomEnemyLogic
         private static float PlayerSpeed => PlayerManager.Instance.PlayerStatsManager.GetStat(EPlayerStatType.MovementSpeed);
 
         private float AttackRange => attackRange * _enemy.BodyScale;
-        private float _collisionTimer = 0;
         private float Mass => Mathf.Pow(_enemy.BodyScale, 2);
         
         private float MovementSpeed => Slowed ? _enemy.MovementSpeed / 2f : _enemy.MovementSpeed;
 
         private EnemyLogic _mergeParent;
         private int mergeCount = 1;
+
+        private const string COLLISION_TIMER_ID = "COLLISION_TIMER_ID";
+        private const string SHOOT_TIMER_ID = "SHOOT_TIMER_ID";
 
         private static PlayerEnchantments PlayerEnchantments => PlayerManager.Instance.PlayerEnchantments;
 
@@ -93,7 +93,8 @@ namespace EnemyPack.CustomEnemyLogic
             _mergeParent = null;
             _toMerge = false;
 
-            _collisionTimer = 0;
+            SetTimer(COLLISION_TIMER_ID);
+            SetTimer(SHOOT_TIMER_ID);
             _isBeingPushed = false;
 
             mergeCount = 0;
@@ -165,13 +166,12 @@ namespace EnemyPack.CustomEnemyLogic
 
         private void UpdateShootBehaviour()
         {
-            _shootTimer += Time.deltaTime;
             var count = _enemySpawner.ShootingEnemiesCount;
             if (count <= 0) count = 1;
             count = _enemy.ScaleShooting ? count : 1;
-            if (_shootTimer < count / bulletsPerSec) return;
+            if (CheckTimer(SHOOT_TIMER_ID) < count / bulletsPerSec) return;
 
-            _shootTimer = 0;
+            SetTimer(SHOOT_TIMER_ID);
             switch (_enemy.ShootType)
             {
                 case EShootType.OneBullet: ShootOneBullet();
@@ -240,12 +240,11 @@ namespace EnemyPack.CustomEnemyLogic
         private void ManagePlayerCollision()
         {
             var inDistance = Vector2.Distance(PlayerPos, transform.position) < AttackRange;
-            _collisionTimer += Time.deltaTime;
             
             if (!inDistance) return;
             ManagePlayerDashCollision();
 
-            if (_collisionTimer < 1f / attacksPerSecond) return;
+            if (CheckTimer(COLLISION_TIMER_ID) < 1f / attacksPerSecond) return;
             
             switch (_enemy.EnemyState)
             {
@@ -261,7 +260,8 @@ namespace EnemyPack.CustomEnemyLogic
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            _collisionTimer = 0;
+            
+            SetTimer(COLLISION_TIMER_ID);
             PlayerHealth.GetDamaged(attackDamage);
         }
 
@@ -309,7 +309,8 @@ namespace EnemyPack.CustomEnemyLogic
 
         public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)
         {
-            ExpGem.SpawnExpGem(expGemPrefab, transform.position, _enemy.ExpGemType);
+            var gem = (ExpGem)ExpPool.Instance.GetPoolObject();
+            gem.Setup(_enemy.ExpGemType, transform.position);
             _target = null;
             rb2d.velocity = Vector2.zero;
             Collider2D.enabled = false;
