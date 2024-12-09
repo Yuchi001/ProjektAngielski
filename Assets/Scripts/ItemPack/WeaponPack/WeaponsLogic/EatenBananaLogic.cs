@@ -12,7 +12,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class EatenBananaLogic : ItemLogicBase
     {
-        [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private Sprite projectileSprite;
         [SerializeField] private GameObject boomParticles;
 
@@ -20,10 +19,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         
         protected override bool Use()
         {
-            var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
-            var projectileScript = projectile.GetComponent<Projectile>();
+            var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
 
-            projectileScript.Setup(Damage, 0)
+            projectile.Setup(Damage, 0)
                 .SetSprite(projectileSprite)
                 .SetScale(0.5f)
                 .SetOnHitAction(OnHit)

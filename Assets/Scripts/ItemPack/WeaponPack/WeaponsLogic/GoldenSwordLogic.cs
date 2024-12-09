@@ -1,15 +1,17 @@
 ﻿using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
+using Managers;
+using Managers.Other;
 using UnityEngine;
 using Utils;
-using WeaponPack.Enums;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class GoldenSwordLogic : ItemLogicBase
     {
         [SerializeField] private float animTime = 0.1f;
-        [SerializeField] private GameObject lineRendererProjectilePrefab;
+
+        private static Laser LaserProjectile => GameManager.Instance.GetPrefab<Laser>(PrefabNames.LaserProjectile);
 
         private float Duration => GetStatValue(EItemSelfStatType.Duration) ?? 0;
         private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale) ?? 1;
@@ -21,10 +23,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
             if (target == null) return false;
             
-            var spawnedProjectile = Instantiate(lineRendererProjectilePrefab, transform.position, Quaternion.identity);
-            var laserScript = spawnedProjectile.GetComponent<Laser>();
+            var spawnedProjectile = Instantiate(LaserProjectile, transform.position, Quaternion.identity);
             
-            laserScript.Setup(Damage, DamageRate)
+            spawnedProjectile.Setup(Damage, DamageRate)
                 .SetTargetPosition(target.transform.position)
                 .SetDuration(Duration)
                 .SetAnimTime(animTime)

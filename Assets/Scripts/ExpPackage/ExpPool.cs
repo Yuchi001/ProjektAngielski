@@ -28,7 +28,7 @@ namespace ExpPackage
         {
             yield return new WaitUntil(() => GameManager.Instance != null);
             
-            var gemPrefab = GameManager.Instance.GetPrefab(PrefabNames.ExpGem).GetComponent<ExpGem>();
+            var gemPrefab = GameManager.Instance.GetPrefab<ExpGem>(PrefabNames.ExpGem);
             _expGemPool = PoolHelper.CreatePool(this, gemPrefab, false);
             
             PrepareQueue();

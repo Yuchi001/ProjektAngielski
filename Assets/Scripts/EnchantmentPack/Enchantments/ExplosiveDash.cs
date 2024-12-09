@@ -1,6 +1,4 @@
-﻿using System;
-using EnchantmentPack.Enums;
-using EnemyPack;
+﻿using EnchantmentPack.Enums;
 using EnemyPack.CustomEnemyLogic;
 using Managers;
 using Managers.Enums;

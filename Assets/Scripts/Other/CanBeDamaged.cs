@@ -7,6 +7,8 @@ using UnityEngine;
 
 namespace Other
 {
+    
+    //TODO: Refactor
     public abstract class CanBeDamaged : PoolObject
     {
         [SerializeField] private SpriteRenderer spriteRenderer;

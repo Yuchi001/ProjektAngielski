@@ -1,8 +1,9 @@
 ﻿using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
+using Managers;
+using Managers.Other;
 using Other.Enums;
 using UnityEngine;
-using WeaponPack.Enums;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
@@ -10,17 +11,17 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     {
         [SerializeField] private bool useEffect;
         [SerializeField] private EEffectType effectType;
-        [SerializeField] private GameObject slashPrefab;
+
+        private static Slash SlashPrefab => GameManager.Instance.GetPrefab<Slash>(PrefabNames.SlashAttack);
         
         private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration) ?? 0;
         private float ProjectileScale => GetStatValue(EItemSelfStatType.ProjectileScale) ?? 0;
         
         protected override bool Use()
         {
-            var slashObject = Instantiate(slashPrefab, PlayerPos, Quaternion.identity);
-            var slashScript = slashObject.GetComponent<Slash>();
+            var slash = Instantiate(SlashPrefab, PlayerPos, Quaternion.identity);
 
-            slashScript.Setup(Damage, ProjectileScale)
+            slash.Setup(Damage, ProjectileScale)
                 .SetPushForce(PushForce)
                 .SetEffect(useEffect ? effectType : null, EffectDuration)
                 .Ready();

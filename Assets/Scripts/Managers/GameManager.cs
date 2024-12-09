@@ -65,7 +65,7 @@ namespace Managers
 
        public void StartRun(SoCharacter pickedCharacter)
        {
-           MapGenerator = Instantiate(GetPrefab("MapGeneratorManager")).GetComponent<MapGenerator>();
+           MapGenerator = Instantiate(GetPrefab<MapGenerator>("MapGeneratorManager"));
            
            gameUiManager.BeginPlay();
            
@@ -82,6 +82,12 @@ namespace Managers
            Time.timeScale = 1;
        }
 
+       public T GetPrefab<T>(string prefName) where T: class
+       {
+           var hasValue = _prefabs.TryGetValue(prefName, out var prefab);
+           return hasValue ? prefab.GetComponent<T>() : null;
+       }
+       
        public GameObject GetPrefab(string prefName)
        {
            var hasValue = _prefabs.TryGetValue(prefName, out var prefab);

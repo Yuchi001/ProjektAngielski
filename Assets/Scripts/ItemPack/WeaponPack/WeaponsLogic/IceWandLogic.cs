@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
 using ItemPack.Enums;
-using ItemPack.WeaponPack.Other;
 using Other.Enums;
 using UnityEngine;
 using Utils;
-using WeaponPack.Enums;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class IceWandLogic : ItemLogicBase
     {
-        [SerializeField] private GameObject iceProjectile;
         [SerializeField] private List<Sprite> projectileSprites;
         [SerializeField] private float animSpeed;
         [SerializeField] private GameObject flightParticles;
@@ -28,10 +25,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 spawnedProjectiles++;
                 
-                var projectile = Instantiate(iceProjectile, PlayerPos, Quaternion.identity);
-                var projectileScript = projectile.GetComponent<Projectile>();
+                var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
                 
-                projectileScript.Setup(Damage, Speed)
+                projectile.Setup(Damage, Speed)
                     .SetTarget(target.transform)
                     .SetSprite(projectileSprites, animSpeed)
                     .SetFlightParticles(flightParticles)

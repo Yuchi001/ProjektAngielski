@@ -1,5 +1,4 @@
-﻿using System;
-using Managers;
+﻿using Managers;
 using Managers.Other;
 using Other;
 using PoolPack;
@@ -22,7 +21,7 @@ namespace MarkerPackage
 
         private void Start()
         {
-            var markerPrefab = GameManager.Instance.GetPrefab(PrefabNames.SpawnIndicator).GetComponent<SpawnMarkedEntity>();
+            var markerPrefab = GameManager.Instance.GetPrefab<SpawnMarkedEntity>(PrefabNames.SpawnIndicator);
             _markers = PoolHelper.CreatePool(this, markerPrefab, false);
             
             PrepareQueue();

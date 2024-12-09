@@ -7,7 +7,6 @@ using Managers.Enums;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
 using UnityEngine;
-using WeaponPack.Enums;
 
 namespace ItemPack.WeaponPack.WeaponsLogic.Base
 {
@@ -15,7 +14,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
     {
         [SerializeField] protected float bulletScale = 0.2f;
         [SerializeField] protected float trailTime = 0.2f;
-        [SerializeField] protected GameObject projectilePrefab;
         [SerializeField] protected Sprite projectileSprite;
         
         private float Accuracy => GetStatValue(EItemSelfStatType.Accuracy) ?? 1;
@@ -32,10 +30,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
         /// <returns></returns>
         protected Projectile SpawnProjectile(Vector2 position)
         {
-            var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
-            var projectileScript = projectile.GetComponent<Projectile>();
+            var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
 
-            projectileScript.Setup(Damage, Speed)
+            projectile.Setup(Damage, Speed)
                 .SetDirection(GetDirection(position))
                 .SetSprite(projectileSprite)
                 .SetScale(bulletScale)
@@ -43,9 +40,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
                 .SetPushForce(PushForce);
             
             if (PlayerEnchantments.Has(EEnchantmentName.ExplosiveBullets))
-                projectileScript.SetOnHitAction(OnHitAction);
+                projectile.SetOnHitAction(OnHitAction);
 
-            return projectileScript;
+            return projectile;
         }
 
         private void OnHitAction(GameObject hitObj, Projectile projectile)

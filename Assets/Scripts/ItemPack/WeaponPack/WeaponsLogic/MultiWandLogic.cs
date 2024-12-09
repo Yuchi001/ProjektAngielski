@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using ItemPack.WeaponPack.Other;
 using UnityEngine;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
@@ -8,7 +7,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     public class MultiWandLogic : ItemLogicBase
     {
         [SerializeField] private Sprite projectileSprite;
-        [SerializeField] private GameObject projectilePrefab;
         protected override bool Use()
         {
             StartCoroutine(SpawnParticles());
@@ -41,10 +39,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 
                 for (var j = 0; j < rotCount; j++)
                 {
-                    var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
-                    var projectileScript = projectile.GetComponent<Projectile>();
+                    var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
                     
-                    projectileScript.Setup(Damage, Speed)
+                    projectile.Setup(Damage, Speed)
                         .SetSprite(projectileSprite)
                         .SetDirection(rotations[j], currentAngle)
                         .SetReady();

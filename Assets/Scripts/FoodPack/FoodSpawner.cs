@@ -47,7 +47,7 @@ namespace FoodPack
 
         private void Start()
         {
-            var foodPrefab = GameManager.Instance.GetPrefab(PrefabNames.Food).GetComponent<Food>();
+            var foodPrefab = GameManager.Instance.GetPrefab<Food>(PrefabNames.Food);
             _foodPool = PoolHelper.CreatePool(this, foodPrefab, true);
         }
 

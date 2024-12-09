@@ -10,13 +10,11 @@ using SpecialEffectPack;
 using SpecialEffectPack.Enums;
 using UnityEngine;
 using Utils;
-using WeaponPack.Enums;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class FireWandLogic : ItemLogicBase
     {
-        [SerializeField] private GameObject projectile;
         [SerializeField] private GameObject flightParticles;
         [SerializeField] private GameObject onHitParticles;
 
@@ -33,10 +31,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 spawnedProjectiles++;
                 
-                var projectile = Instantiate(this.projectile, PlayerPos, Quaternion.identity);
-                var projectileScript = projectile.GetComponent<Projectile>();
+                var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
                 
-                projectileScript.Setup(Damage, Speed)
+                projectile.Setup(Damage, Speed)
                     .SetTarget(target.transform)
                     .SetOnHitParticles(onHitParticles)
                     .SetOnHitAction(OnHitAction)
@@ -66,8 +63,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var results = new Collider2D[50];
             var position = impactEnemy.transform.position;
             Physics2D.OverlapCircleNonAlloc(position, range, results);
-            SpecialEffectManager.Instance
-                .SpawnExplosion(ESpecialEffectType.ExplosionMedium, position, range);
+            SpecialEffectManager.Instance.SpawnExplosion(ESpecialEffectType.ExplosionMedium, position, range);
             AudioManager.Instance.PlaySound(ESoundType.BananaBoom);
             foreach (var hitCollider in results)
             {

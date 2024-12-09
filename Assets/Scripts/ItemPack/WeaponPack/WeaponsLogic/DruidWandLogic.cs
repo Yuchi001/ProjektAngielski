@@ -2,7 +2,6 @@
 using ItemPack.Enums;
 using PlayerPack;
 using UnityEngine;
-using WeaponPack.Enums;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
@@ -13,10 +12,11 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         
         protected override bool Use()
         {
-            var colliders = Physics2D.OverlapCircleAll(PlayerPos, Range);
-            foreach (var collider in colliders)
+            var results = new Collider2D[20];
+            Physics2D.OverlapCircleNonAlloc(PlayerPos, Range, results);
+            foreach (var hit in results)
             {
-                if(!collider.TryGetComponent(out EnemyLogic enemyLogic)) continue;
+                if(!hit.TryGetComponent(out EnemyLogic enemyLogic)) continue;
 
                 var diff = enemyLogic.transform.position - (Vector3)PlayerPos;
                 diff = diff.normalized;

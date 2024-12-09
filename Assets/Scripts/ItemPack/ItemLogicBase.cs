@@ -2,8 +2,10 @@
 using System.Linq;
 using ItemPack.Enums;
 using ItemPack.SO;
+using ItemPack.WeaponPack.Other;
 using ItemPack.WeaponPack.SideClasses;
 using Managers;
+using Managers.Other;
 using PlayerPack;
 using UnityEngine;
 using WeaponPack.Enums;
@@ -23,7 +25,7 @@ namespace ItemPack
         protected static PlayerEnchantments PlayerEnchantments => GameManager.Instance.CurrentPlayer.PlayerEnchantments;
         protected static Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
         protected static Transform PlayerTransform => GameManager.Instance.CurrentPlayer.transform;
-        
+        protected Projectile Projectile => GameManager.Instance.GetPrefab<Projectile>(PrefabNames.Projectile);
         public SoItem Item => _item;
         private SoItem _item;
 

@@ -12,7 +12,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class BookOfPoisonLogic : ItemLogicBase
     {
-        [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private GameObject fieldParticles;
         [SerializeField] private Sprite fieldSprite;
         [SerializeField] private float minimalFieldDistance = 0.4f;
@@ -24,7 +23,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         private const string DamageRateName = "DamageRate";
 
-        private readonly List<GameObject> _poisonFields = new();
+        private readonly List<Projectile> _poisonFields = new();
         
         protected override bool Use()
         {
@@ -32,10 +31,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
             if (_poisonFields.FirstOrDefault(go => IsTooClose(go.transform.position))) return false;
             
-            var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
-            var projectileScript = projectile.GetComponent<Projectile>();
+            var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
 
-            projectileScript.Setup(Damage, 0)
+            projectile.Setup(Damage, 0)
                 .SetScale(Scale / 2f)
                 .SetSprite(fieldSprite, Scale * 2)
                 .SetLifeTime(Duration)

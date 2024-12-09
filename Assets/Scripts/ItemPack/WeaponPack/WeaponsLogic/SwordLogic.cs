@@ -6,14 +6,12 @@ using ItemPack.WeaponPack.Other;
 using Other.Enums;
 using UnityEngine;
 using Utils;
-using WeaponPack.Enums;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class SwordLogic : ItemLogicBase
     {
         [SerializeField] private Sprite projectileSprite;
-        [SerializeField] private GameObject projectilePrefab;
 
         private const string HitEnemyCountName = "HitCount";
 
@@ -30,12 +28,11 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 spawnedProjectiles++;
                 
-                var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
-                var projectileScript = projectile.GetComponent<Projectile>();
+                var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
 
                 var enemyPos = target.transform.position;
 
-                projectileScript.Setup(Damage, Speed)
+                projectile.Setup(Damage, Speed)
                     .SetDirection(enemyPos)
                     .SetSprite(projectileSprite)
                     .SetSpriteRotation(45)
@@ -51,10 +48,10 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 if (PlayerEnchantments.Has(EEnchantmentName.Sharpness))
                 {
                     var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.Sharpness, EValueKey.Percentage);
-                    if (Random.Range(0f, 1f) <= percentage) projectileScript.SetEffect(EEffectType.Bleed, 9999);
+                    if (Random.Range(0f, 1f) <= percentage) projectile.SetEffect(EEffectType.Bleed, 9999);
                 }
                 
-                projectileScript.SetReady();
+                projectile.SetReady();
                 
                 targetedEnemies.Add(target.GetInstanceID());
             }
@@ -72,10 +69,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         private void OnOutOfRange(Projectile projectile)
         {
-            var newProjectile = Instantiate(projectilePrefab, projectile.transform.position, Quaternion.identity);
-            var newProjectileScript = newProjectile.GetComponent<Projectile>();
+            var newProjectile = Instantiate(Projectile, projectile.transform.position, Quaternion.identity);
             
-            newProjectileScript.Setup(Damage, Speed)
+            newProjectile.Setup(Damage, Speed)
                 .SetTarget(PlayerTransform)
                 .SetDirection(PlayerPos, 0, true)
                 .SetSpriteRotation(225)

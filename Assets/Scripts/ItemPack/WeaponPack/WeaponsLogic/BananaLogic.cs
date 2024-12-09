@@ -11,7 +11,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     {
         [SerializeField] private Sprite projectileSprite;
         [SerializeField] private float rotationSpeed;
-        [SerializeField] private GameObject projectilePrefab;
 
         private float Range => GetStatValue(EItemSelfStatType.ProjectileRange) ?? 2;
         
@@ -26,11 +25,10 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 spawnedProjectiles++;
                 
-                var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
-                var projectileScript = projectile.GetComponent<Projectile>();
+                var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
                 
                 targetedEnemies.Add(target.GetInstanceID());
-                projectileScript.Setup(Damage, Speed)
+                Projectile.Setup(Damage, Speed)
                     .SetDirection(target.transform.position)
                     .SetDontDestroyOnHit()
                     .SetOutOfRangeBehaviour(OutOfRangeBehaviour)
@@ -47,10 +45,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         private void OutOfRangeBehaviour(Projectile projectile)
         {
-            var newProjectile = Instantiate(projectilePrefab, projectile.transform.position, Quaternion.identity);
-            var newProjectileScript = newProjectile.GetComponent<Projectile>();
+            var newProjectile = Instantiate(Projectile, projectile.transform.position, Quaternion.identity);
             
-            newProjectileScript.Setup(Damage, Speed)
+            newProjectile.Setup(Damage, Speed)
                 .SetTarget(PlayerTransform)
                 .SetSprite(projectileSprite)
                 .SetDontDestroyOnHit()

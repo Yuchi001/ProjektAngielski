@@ -2,19 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using ItemPack.Enums;
-using ItemPack.WeaponPack.Other;
 using Managers;
 using Managers.Enums;
 using UnityEngine;
 using Utils;
-using WeaponPack.Enums;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class ViolinLogic : ItemLogicBase
     {
         [SerializeField] private List<NotePair> noteList = new();
-        [SerializeField] private GameObject projectilePrefab;
         
         private float Accuracy => GetStatValue(EItemSelfStatType.Accuracy) ?? 1;
         private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale) ?? 1;
@@ -39,10 +36,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 var note = GetRandomNote(weightSum);
                 
-                var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
-                var projectileScript = projectile.GetComponent<Projectile>();
+                var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
                 
-                projectileScript.Setup(Mathf.CeilToInt(Damage * note.damageMultiplier), Speed)
+                projectile.Setup(Mathf.CeilToInt(Damage * note.damageMultiplier), Speed)
                     .SetDirection(GetDirection(position), checkX: true)
                     .SetSprite(note.noteSprite)
                     .SetSpriteRotation(90)

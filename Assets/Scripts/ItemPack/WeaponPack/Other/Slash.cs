@@ -70,9 +70,10 @@ namespace ItemPack.WeaponPack.Other
             topRight.x += offset;
             var bottomLeft = bounds.min;
             bottomLeft.x += offset;
-            
-            var targets = Physics2D.OverlapAreaAll(topRight, bottomLeft);
-            foreach (var t in targets)
+
+            var results = new Collider2D[50];
+            Physics2D.OverlapAreaNonAlloc(topRight, bottomLeft, results);
+            foreach (var t in results)
             {
                 if(!t.TryGetComponent<EnemyLogic>(out var enemy)) continue;
                 

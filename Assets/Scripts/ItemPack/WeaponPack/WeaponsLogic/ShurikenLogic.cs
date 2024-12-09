@@ -10,7 +10,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     {
         [SerializeField] private Sprite projectileSprite;
         [SerializeField] private float rotationSpeed;
-        [SerializeField] private GameObject projectilePrefab;
         protected override bool Use()
         {
             StartCoroutine(ThrowShurikens());
@@ -24,10 +23,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 var target = UtilsMethods.FindNearestTarget(transform.position);
                 if (target == null) continue;
 
-                var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
-                var projectileScript = projectile.GetComponent<Projectile>();
+                var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
                 
-                projectileScript.Setup(Damage, Speed)
+                projectile.Setup(Damage, Speed)
                     .SetDirection(target.transform.position)
                     .SetSprite(projectileSprite)
                     .SetScale(0.3f)

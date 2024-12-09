@@ -1,17 +1,14 @@
 ﻿using EnchantmentPack.Enums;
 using ItemPack.Enums;
-using ItemPack.WeaponPack.Other;
 using Other.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Utils;
-using WeaponPack.Enums;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class AxeLogic : ItemLogicBase
     {
-        [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private Sprite projectileSprite;
         [FormerlySerializedAs("rotationSpeed")] [SerializeField] private float rotationSpeedModifier;
 
@@ -27,10 +24,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 spawnedProjectiles++;
                 
-                var projectile = Instantiate(projectilePrefab, PlayerPos, Quaternion.identity);
-                var projectileScript = projectile.GetComponent<Projectile>();
+                var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
 
-                projectileScript.Setup(Damage, Speed)
+                projectile.Setup(Damage, Speed)
                     .SetDirection(target.transform.position)
                     .SetDontDestroyOnHit()
                     .SetSprite(projectileSprite)
@@ -41,10 +37,10 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 if (PlayerEnchantments.Has(EEnchantmentName.Sharpness))
                 {
                     var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.Sharpness, EValueKey.Percentage);
-                    if (Random.Range(0f, 1f) <= percentage) projectileScript.SetEffect(EEffectType.Bleed, 9999);
+                    if (Random.Range(0f, 1f) <= percentage) projectile.SetEffect(EEffectType.Bleed, 9999);
                 }
                 
-                projectileScript.SetReady();
+                projectile.SetReady();
             }
 
             return spawnedProjectiles > 0;
