@@ -1,7 +1,4 @@
-﻿using System;
-using Managers.Base;
-using Other;
-using Other.SO;
+﻿using Other.SO;
 using PlayerPack;
 using PoolPack;
 using UnityEngine;

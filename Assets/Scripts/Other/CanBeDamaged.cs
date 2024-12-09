@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Managers;
 using Other.Enums;
+using ParticlesPack;
 using PoolPack;
 using UnityEngine;
 
@@ -9,7 +9,6 @@ namespace Other
 {
     public abstract class CanBeDamaged : PoolObject
     {
-        [SerializeField] private GameObject bloodParticles;
         [SerializeField] private SpriteRenderer spriteRenderer;
 
         private const float _flashTime = 0.1f;
@@ -60,10 +59,7 @@ namespace Other
 
         public void SpawnBlood()
         {
-            if (bloodParticles == null) return;
-
-            var particles = Instantiate(bloodParticles, transform.position, Quaternion.identity);
-            Destroy(particles, 5f);
+            ParticleManager.Instance.SpawnParticles(EParticlesType.Blood, transform.position);
         }
 
         public virtual void OnDie(bool destroyObj = true, PoolManager poolManager = null)

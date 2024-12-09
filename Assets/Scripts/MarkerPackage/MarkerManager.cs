@@ -22,8 +22,8 @@ namespace MarkerPackage
 
         private void Start()
         {
-            var markerPrefab = GameManager.Instance.GetPrefab(PrefabNames.SpawnIndicator);
-            _markers = PoolHelper.CreatePool<SpawnMarkedEntity>(this, markerPrefab);
+            var markerPrefab = GameManager.Instance.GetPrefab(PrefabNames.SpawnIndicator).GetComponent<SpawnMarkedEntity>();
+            _markers = PoolHelper.CreatePool(this, markerPrefab, false);
             
             PrepareQueue();
         }
@@ -33,19 +33,14 @@ namespace MarkerPackage
             RunUpdatePoolStack();
         }
 
-        public override PoolObject GetPoolObject()
+        public override T GetPoolObject<T>()
         {
-            return _markers.Get();
+            return _markers.Get() as T;
         }
 
         public override void ReleasePoolObject(PoolObject poolObject)
         {
             _markers.Release(poolObject as SpawnMarkedEntity);
-        }
-
-        public override SoEntityBase GetRandomPoolData()
-        {
-            return null; // Not needed
         }
     }
 }

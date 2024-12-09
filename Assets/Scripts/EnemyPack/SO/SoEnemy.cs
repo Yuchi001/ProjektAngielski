@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 namespace EnemyPack.SO
 {
     [CreateAssetMenu(fileName = "new Enemy", menuName = "Custom/Enemy")]
-    public class SoEnemy : SoEntityBase
+    public class SoEnemy : SoPoolObject
     {
         [SerializeField] private AnimationClip walkingAnimationClip;
         [SerializeField] private int maxHealth;

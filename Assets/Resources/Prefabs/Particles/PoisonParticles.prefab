@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4795960402132231567}
   - component: {fileID: 3056877686207287091}
   - component: {fileID: 8640676582668962045}
+  - component: {fileID: 4510466929551356269}
   m_Layer: 0
   m_Name: PoisonParticles
   m_TagString: Untagged
@@ -4897,3 +4898,15 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &4510466929551356269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4510686599989819007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed3144fe40ae4620a4c205a730af6be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -15,7 +15,7 @@ namespace PoolPack
             Active = false;
         }
         
-        public virtual void OnGet(SoEntityBase so)
+        public virtual void OnGet(SoPoolObject so)
         {
             Active = true;
         }
@@ -38,6 +38,9 @@ namespace PoolPack
             return hasValue ? (DateTime.Now - lastMeasure).TotalSeconds : 0;
         }
 
+        /// <summary>
+        /// Do not call base method
+        /// </summary>
         public virtual void InvokeUpdate()
         {
             

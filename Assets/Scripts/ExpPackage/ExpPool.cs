@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Managers;
 using Managers.Other;
 using Other;
@@ -29,8 +28,8 @@ namespace ExpPackage
         {
             yield return new WaitUntil(() => GameManager.Instance != null);
             
-            var gemPrefab = GameManager.Instance.GetPrefab(PrefabNames.ExpGem);
-            _expGemPool = PoolHelper.CreatePool<ExpGem>(this, gemPrefab);
+            var gemPrefab = GameManager.Instance.GetPrefab(PrefabNames.ExpGem).GetComponent<ExpGem>();
+            _expGemPool = PoolHelper.CreatePool(this, gemPrefab, false);
             
             PrepareQueue();
         }
@@ -40,9 +39,9 @@ namespace ExpPackage
             RunUpdatePoolStack();
         }
 
-        public override PoolObject GetPoolObject()
+        public override T GetPoolObject<T>()
         {
-            return _expGemPool.Get();
+            return _expGemPool.Get() as T;
         }
 
         public override void ReleasePoolObject(PoolObject poolObject)
@@ -50,7 +49,7 @@ namespace ExpPackage
             _expGemPool.Release((ExpGem)poolObject);
         }
 
-        public override SoEntityBase GetRandomPoolData()
+        public override SoPoolObject GetRandomPoolData()
         {
             return null;
         }

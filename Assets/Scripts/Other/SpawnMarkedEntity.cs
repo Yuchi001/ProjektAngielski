@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Managers;
 using MarkerPackage;
@@ -28,13 +27,6 @@ namespace Other
             _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        public override void OnGet(SoEntityBase so)
-        {
-            base.OnGet(so);
-            
-            transform.position = GameManager.Instance.MapGenerator.GetRandomPos();
-        }
-
         public void SetReady(EEntityType entityType, PoolManager poolManager)
         {
             _poolManager = poolManager;
@@ -44,6 +36,9 @@ namespace Other
 
             _spriteRenderer.color = pair.color;
             SetTimer(SPAWN_TIMER_ID);
+            transform.position = GameManager.Instance.MapGenerator.GetRandomPos();
+            
+            OnGet(null);
         }
 
         #endregion
@@ -52,7 +47,7 @@ namespace Other
         {
             if (CheckTimer(SPAWN_TIMER_ID) < spawnTime) return;
 
-            var poolObj = _poolManager.GetPoolObject();
+            var poolObj = _poolManager.GetPoolObject<PoolObject>();
             poolObj.transform.position = transform.position;
             
             MarkerManager.Instance.ReleasePoolObject(this);

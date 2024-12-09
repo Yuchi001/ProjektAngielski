@@ -1,35 +1,32 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Pool;
+﻿using UnityEngine.Pool;
 using Object = UnityEngine.Object;
 
 namespace PoolPack
 {
     public static class PoolHelper
     {
-        public static ObjectPool<T> CreatePool<T>(PoolManager manager, GameObject prefab, Action<T> onCreate = null) where T: PoolObject
+        public static ObjectPool<T> CreatePool<T>(PoolManager manager, T prefab, bool randomGet) where T: PoolObject
         {
             return new ObjectPool<T>(
-                () => Create(prefab, manager, onCreate), 
-                (obj) => OnGet(obj, manager), 
+                () => Create<T>(prefab, manager), 
+                (obj) => OnGet(obj, manager, randomGet), 
                 (obj) => OnRelease(obj, manager),    
                 OnDestroy, true, manager.PoolSize, manager.PoolSize * 2);
         }
 
-        private static T Create<T>(GameObject prefab, PoolManager poolManager, Action<T> onCreate) where T: PoolObject
+        private static T Create<T>(T prefab, PoolManager poolManager) where T: PoolObject
         {
             var obj = Object.Instantiate(prefab);
             obj.gameObject.SetActive(false);
             var ret = obj.GetComponent<T>();
             ret.OnCreate(poolManager);
-            onCreate?.Invoke(ret);
             return ret;
         }
 
-        private static void OnGet(PoolObject obj, PoolManager poolManager)
+        private static void OnGet(PoolObject obj, PoolManager poolManager, bool randomGet)
         {
             obj.gameObject.SetActive(true);
-            obj.OnGet(poolManager.GetRandomPoolData());
+            if (randomGet) obj.OnGet(poolManager.GetRandomPoolData());
             poolManager.ActiveObjects.Add(obj);
         }
         

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4124138047864841705}
   - component: {fileID: 3731118770530087968}
   - component: {fileID: 174689664133326235}
+  - component: {fileID: 2223375727991034106}
   m_Layer: 0
   m_Name: BoomParticles
   m_TagString: Untagged
@@ -4897,3 +4898,15 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &2223375727991034106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8669169835032094286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed3144fe40ae4620a4c205a730af6be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

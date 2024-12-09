@@ -2,9 +2,9 @@
 
 namespace Other
 {
-    public class SoEntityBase : ScriptableObject
+    public class SoPoolObject : ScriptableObject
     {
-        public T As<T>() where T : SoEntityBase
+        public T As<T>() where T : SoPoolObject
         {
             return (T)this;
         }

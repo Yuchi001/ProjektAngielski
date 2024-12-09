@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EnchantmentPack.Enums;
 using ExpPackage.Enums;
@@ -10,7 +8,6 @@ using Other;
 using PlayerPack;
 using PoolPack;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 namespace ExpPackage
 {
@@ -45,12 +42,11 @@ namespace ExpPackage
             circleCollider2D.isTrigger = true;
         }
 
-        public override void OnGet(SoEntityBase so)
+        public override void OnGet(SoPoolObject so)
         {
             base.OnGet(so);
 
             _pickableState = EPickableState.Default;
-            startPosition = Vector2.zero;
         }
 
         public void Setup(EExpGemType gemType, Vector2 position)
@@ -65,6 +61,8 @@ namespace ExpPackage
             spriteRenderer.sprite = pair.gemSprite;
             startPosition = position;
             transform.position = startPosition;
+            
+            OnGet(null);
         }
 
         private void Update()
@@ -90,8 +88,6 @@ namespace ExpPackage
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.Log(_pickableState);
-            Debug.Log(other.tag);
             if (_pickableState != EPickableState.Default || !other.CompareTag("Player")) return;
             
             _pickableState = EPickableState.PickingUpPhase;

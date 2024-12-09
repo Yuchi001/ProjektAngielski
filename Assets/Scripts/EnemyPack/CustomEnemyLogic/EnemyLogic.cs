@@ -83,7 +83,7 @@ namespace EnemyPack.CustomEnemyLogic
             _enemySpawner = poolManager as EnemySpawner;
         }
 
-        public override void OnGet(SoEntityBase enemy)
+        public override void OnGet(SoPoolObject enemy)
         {
             base.OnGet(enemy);
             
@@ -309,8 +309,7 @@ namespace EnemyPack.CustomEnemyLogic
 
         public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)
         {
-            var gem = (ExpGem)ExpPool.Instance.GetPoolObject();
-            gem.Setup(_enemy.ExpGemType, transform.position);
+            ExpPool.Instance.GetPoolObject<ExpGem>().Setup(_enemy.ExpGemType, transform.position);
             _target = null;
             rb2d.velocity = Vector2.zero;
             Collider2D.enabled = false;

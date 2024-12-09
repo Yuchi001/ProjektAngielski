@@ -3,7 +3,7 @@
 namespace Other.SO
 {
     [CreateAssetMenu(fileName = "new Food", menuName = "Custom/Food")]
-    public class SoFood : SoEntityBase
+    public class SoFood : SoPoolObject
     {
         [SerializeField] private int saturationValue;
         [SerializeField] private Sprite foodSprite;

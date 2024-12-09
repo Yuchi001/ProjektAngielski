@@ -62,8 +62,8 @@ namespace EnemyPack
 
             _allEnemies = Resources.LoadAll<SoEnemy>("Enemies").Select(Instantiate).ToList();
             
-            var enemyPrefab = GameManager.Instance.GetPrefab(PrefabNames.Enemy);
-            _enemyPool = PoolHelper.CreatePool<EnemyLogic>(this, enemyPrefab);
+            var enemyPrefab = GameManager.Instance.GetPrefab(PrefabNames.Enemy).GetComponent<EnemyLogic>();
+            _enemyPool = PoolHelper.CreatePool(this, enemyPrefab, true);
             PrepareQueue();
         }
 
@@ -91,8 +91,7 @@ namespace EnemyPack
             //TODO: tutaj jakos zastapic
             //if (enemySo.ShootType != EShootType.None) ShootingEnemiesCount++;
 
-            var marker = (SpawnMarkedEntity)MarkerManager.Instance.GetPoolObject();
-            marker.SetReady(EEntityType.Negative, this);
+            MarkerManager.Instance.GetPoolObject<SpawnMarkedEntity>().SetReady(EEntityType.Negative, this);
         }
 
         public void SpawnEnemy(SoEnemy enemy, Vector2 position)
@@ -110,9 +109,9 @@ namespace EnemyPack
             return ActiveObjects;
         }
 
-        public override PoolObject GetPoolObject()
+        public override T GetPoolObject<T>()
         {
-            return _enemyPool.Get();
+            return _enemyPool.Get() as T;
         }
 
         public override void ReleasePoolObject(PoolObject poolObject)
@@ -120,7 +119,7 @@ namespace EnemyPack
             _enemyPool.Release(poolObject as EnemyLogic);
         }
 
-        public override SoEntityBase GetRandomPoolData()
+        public override SoPoolObject GetRandomPoolData()
         {
             var isHorde = false; // TODO: do usuniecia
             var validEnemies = _allEnemies.Where(e => e.IsHorde == isHorde).ToList();
