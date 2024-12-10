@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using EffectPack;
 using Managers;
 using Other.Enums;
 using ParticlesPack;
@@ -40,10 +41,9 @@ namespace Other
             if (_effectsManager) _effectsManager.Setup(this);
         }
 
-        public virtual void AddEffect(EffectInfo effectInfo)
+        public virtual void AddEffect(EEffectType effectType, float duration)
         {
-            if (_effectsManager == null) return;
-            _effectsManager.AddEffect(effectInfo.effectType, effectInfo.time);
+            _effectsManager.AddEffect(effectType, duration);
         }
 
         public bool HasEffect(EEffectType effectType)

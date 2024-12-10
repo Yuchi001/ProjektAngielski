@@ -81,11 +81,7 @@ namespace ItemPack.WeaponPack.Other
                 enemy.GetDamaged(_damage);
                 if (!_effectType.HasValue) continue; 
                 
-                enemy.AddEffect(new EffectInfo
-                {
-                    effectType = _effectType.Value,
-                    time = _effectTime,
-                });
+                enemy.AddEffect(_effectType.Value, _effectTime);
             }
             Destroy(gameObject, animTime);
         }

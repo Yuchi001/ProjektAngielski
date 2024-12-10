@@ -40,11 +40,7 @@ namespace EnchantmentPack.Enchantments
                 if (hit == null) continue;
                 if(!hit.TryGetComponent<EnemyLogic>(out var enemy)) continue;
                 
-                enemy.AddEffect(new EffectInfo
-                {
-                    effectType = EEffectType.Burn,
-                    time = parameters[EValueKey.Time],
-                });
+                enemy.AddEffect(EEffectType.Burn, parameters[EValueKey.Time]);
                 
                 enemy.GetDamaged(Mathf.CeilToInt(value * parameters[EValueKey.Percentage]));
             }

@@ -52,11 +52,7 @@ namespace ItemPack.WeaponPack.Other
                 if(!hit.TryGetComponent<EnemyLogic>(out var enemy)) continue;
                 
                 enemy.GetDamaged(_bookOfFireLogic.Damage);
-                enemy.AddEffect(new EffectInfo
-                {
-                    effectType = EEffectType.Burn,
-                    time = _bookOfFireLogic.EffectDuration,
-                });
+                enemy.AddEffect(EEffectType.Burn, _bookOfFireLogic.EffectDuration);
             }
         }
 
@@ -68,11 +64,7 @@ namespace ItemPack.WeaponPack.Other
         public void TriggerDamage(EnemyLogic enemy)
         {
             enemy.GetDamaged(_bookOfFireLogic.Damage);
-            enemy.AddEffect(new EffectInfo
-            {
-                effectType = EEffectType.Burn,
-                time = _bookOfFireLogic.EffectDuration,
-            });
+            enemy.AddEffect(EEffectType.Burn, _bookOfFireLogic.EffectDuration);
         }
     }
 }

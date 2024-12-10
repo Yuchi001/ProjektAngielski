@@ -48,7 +48,8 @@ namespace ItemPack.WeaponPack.Other
 
         private Vector2 _startDistance;
 
-        private EffectInfo _effectInfo = null;
+        private EEffectType _effectType = EEffectType.None;
+        private float _effectDuration = 0;
 
         private Action<GameObject, Projectile> _onCollisionStay = null;
         private Action<GameObject, Projectile> _onHit = null;
@@ -59,11 +60,6 @@ namespace ItemPack.WeaponPack.Other
         private bool _damageOnHit = true;
 
         private readonly Dictionary<string, float> _customValues = new();
-
-        private void Awake()
-        {
-            
-        }
 
         #region Setup methods
 
@@ -142,11 +138,8 @@ namespace ItemPack.WeaponPack.Other
 
         public Projectile SetEffect(EEffectType effectType, float time)
         {
-            _effectInfo = new EffectInfo
-            {
-                effectType = effectType,
-                time = time,
-            };
+            _effectType = effectType;
+            _effectDuration = time;
             return this;
         }
 
@@ -367,7 +360,7 @@ namespace ItemPack.WeaponPack.Other
             
             _onHit?.Invoke(hitObj, this);
             
-            if (_effectInfo != null) hitEntity.AddEffect(_effectInfo);
+            if (_effectType != EEffectType.None) hitEntity.AddEffect(_effectType, _effectDuration);
             
             TryPush(hitEntity, hitObj);
 

@@ -34,12 +34,7 @@ namespace EnemyPack.CustomEnemyLogic
 
         private void PlayerHitChaseBehaviour()
         {
-            var effectInfo = new EffectInfo
-            {
-                effectType = EEffectType.Stun,
-                time = stunDuration,
-            };
-            AddEffect(effectInfo);
+            AddEffect(EEffectType.Stun, stunDuration);
         }
     }
 }

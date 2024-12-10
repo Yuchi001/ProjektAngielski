@@ -18,6 +18,7 @@
         public static readonly string StatusImage = "StatusImage";
         public static readonly string Statuses = "Statuses";
         public static readonly string EffectsManager = "EffectsManager";
+        public static readonly string EffectStatus = "EffectStatus";
         public static readonly string SFX = "SFX";
         
         // PARTICLES

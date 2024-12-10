@@ -169,7 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c0c27440e14c7c8dd535aec69f659a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodParticles: {fileID: 7968732843853793858, guid: c5673512605494643b11f243bc5e09dd, type: 3}
   spriteRenderer: {fileID: 4733844501563839803}
   stunDuration: 3
   maxChaseSpeed: 3.25
@@ -182,13 +181,9 @@ MonoBehaviour:
   rb2d: {fileID: 2884553101495344094}
   animator: {fileID: 9143095408977510911}
   playerTagName: Player
-  enemyProjectileLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
   projectileSprites:
   - {fileID: 21300000, guid: 2131710759c88544a9d9827b020c9b57, type: 3}
   - {fileID: 21300000, guid: 96be7076c143f2849af38d34cd0107d8, type: 3}
-  projectilePrefab: {fileID: 1996234102917140788, guid: 2413cf475826b9446be16fe3e8393093, type: 3}
   bulletDamage: 5
   bulletSpeed: 2
   bulletsPerSec: 1
@@ -563,11 +558,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: EffectsManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8527232052204240630, guid: 4c9a2a4ac12990747a42ba4d1b85e84a, type: 3}
+      propertyPath: statusesHolder
+      value: 
+      objectReference: {fileID: 4240336757755427801}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c9a2a4ac12990747a42ba4d1b85e84a, type: 3}
+--- !u!224 &4240336757755427801 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7971727804290640116, guid: 4c9a2a4ac12990747a42ba4d1b85e84a, type: 3}
+  m_PrefabInstance: {fileID: 6087168926415983405}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6484699920603772857 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 974958792746034324, guid: 4c9a2a4ac12990747a42ba4d1b85e84a, type: 3}

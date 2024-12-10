@@ -41,11 +41,7 @@ namespace EnchantmentPack.Enchantments
                 if (hit == null) continue;
                 if(!hit.TryGetComponent<EnemyLogic>(out var enemy)) continue;
                 
-                enemy.AddEffect(new EffectInfo
-                {
-                    effectType = EEffectType.Poison,
-                    time = parameters[EValueKey.Time],
-                });
+                enemy.AddEffect(EEffectType.Poison, parameters[EValueKey.Time]);
             }
         }
     }
