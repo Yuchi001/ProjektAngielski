@@ -3,7 +3,6 @@ using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using UnityEngine;
 using Utils;
-using WeaponPack.Enums;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
@@ -28,7 +27,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
                 
                 targetedEnemies.Add(target.GetInstanceID());
-                Projectile.Setup(Damage, Speed)
+                projectile.Setup(Damage, Speed)
                     .SetDirection(target.transform.position)
                     .SetDontDestroyOnHit()
                     .SetOutOfRangeBehaviour(OutOfRangeBehaviour)

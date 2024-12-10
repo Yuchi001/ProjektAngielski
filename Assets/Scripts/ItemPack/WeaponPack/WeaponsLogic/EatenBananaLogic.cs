@@ -1,4 +1,5 @@
-﻿using EnemyPack.CustomEnemyLogic;
+﻿using AudioPack;
+using EnemyPack.CustomEnemyLogic;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Managers;

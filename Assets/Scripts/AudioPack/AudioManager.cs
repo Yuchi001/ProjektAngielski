@@ -1,18 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using Managers;
 using Managers.Enums;
+using Managers.Other;
+using PoolPack;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using UnityEngine.Pool;
 
-namespace Managers
+namespace AudioPack
 {
     //TODO: Object pooling for audiomanager
-    public class AudioManager : MonoBehaviour
+    public class AudioManager : PoolManager
     {
         [SerializeField] private List<SoundData> sounds = new();
         [SerializeField] private List<ThemeData> themes = new();
 
         private AudioSource mainAudio = null;
+
+        private ObjectPool<SFXPoolObject> _sfxPool;
+
+        public IEnumerable<SoundData> AllSounds => sounds;
 
         #region Singleton
 
@@ -26,19 +34,19 @@ namespace Managers
 
         #endregion
 
+        private IEnumerator Start()
+        {
+            yield return new WaitUntil(() => GameManager.Instance != null);
+
+            var sfxPrefab = GameManager.Instance.GetPrefab<SFXPoolObject>(PrefabNames.SFX);
+            _sfxPool = PoolHelper.CreatePool(this, sfxPrefab, false);
+            
+            PrepareQueue();
+        }
+
         public void PlaySound(ESoundType soundType)
         {
-            var clip = sounds.FirstOrDefault(s => s.SoundType == soundType)?.AudioClip;
-            if (clip == null) return;
-
-            var audioSource = new GameObject($"Audio: {soundType}", typeof(AudioSource));
-            var audioSourceScript = audioSource.GetComponent<AudioSource>();
-            audioSourceScript.volume = PlayerPrefs.GetFloat(StaticOptions.PLAYER_PREF_SFX_VOLUME, 0.1f);
-            audioSourceScript.loop = false;
-            audioSourceScript.pitch -= Random.Range(-0.1f, 0.1f);
-            audioSourceScript.PlayOneShot(clip);
-            
-            Destroy(audioSource, 0.5f);
+            GetPoolObject<SFXPoolObject>().Play(soundType);
         }
 
         public void SetTheme(EThemeType themeType)
@@ -58,6 +66,16 @@ namespace Managers
             audioSource.volume = PlayerPrefs.GetFloat(StaticOptions.PLAYER_PREF_VOLUME, 0.3f);
             audioSource.loop = true;
             audioSource.Play();
+        }
+
+        public override T GetPoolObject<T>()
+        {
+            return _sfxPool.Get() as T;
+        }
+
+        public override void ReleasePoolObject(PoolObject poolObject)
+        {
+            _sfxPool.Release(poolObject as SFXPoolObject);
         }
     }
 

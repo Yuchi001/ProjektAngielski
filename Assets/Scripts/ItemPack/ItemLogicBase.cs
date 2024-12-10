@@ -25,7 +25,7 @@ namespace ItemPack
         protected static PlayerEnchantments PlayerEnchantments => GameManager.Instance.CurrentPlayer.PlayerEnchantments;
         protected static Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
         protected static Transform PlayerTransform => GameManager.Instance.CurrentPlayer.transform;
-        protected Projectile Projectile => GameManager.Instance.GetPrefab<Projectile>(PrefabNames.Projectile);
+        protected static Projectile Projectile => GameManager.Instance.GetPrefab<Projectile>(PrefabNames.Projectile);
         public SoItem Item => _item;
         private SoItem _item;
 
