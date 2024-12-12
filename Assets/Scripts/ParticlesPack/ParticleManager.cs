@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Managers;
 using Other;
+using ParticlesPack.Enums;
 using ParticlesPack.SO;
 using PoolPack;
 using UnityEngine;
@@ -43,11 +42,11 @@ namespace ParticlesPack
             }
         }
 
-        public void SpawnParticles(EParticlesType type, Vector2 position)
+        public static void SpawnParticles(EParticlesType type, Vector2 position)
         {
-            if (!_particlesDict.TryGetValue(type, out var manager)) return;
+            if (!Instance._particlesDict.TryGetValue(type, out var manager)) return;
 
-            manager.GetPoolObject<PoolObject>().transform.position = position;
+            manager.SpawnParticles(position);
         }
 
         public class ParticlePool : PoolManager
@@ -70,9 +69,14 @@ namespace ParticlesPack
                 RunUpdatePoolStack();
             }
 
-            public override T GetPoolObject<T>()
+            protected override T GetPoolObject<T>()
             {
                 return _pool.Get() as T;
+            }
+
+            public void SpawnParticles(Vector2 position)
+            {
+                GetPoolObject<PoolObject>().transform.position = position;
             }
 
             public override void ReleasePoolObject(PoolObject poolObject)

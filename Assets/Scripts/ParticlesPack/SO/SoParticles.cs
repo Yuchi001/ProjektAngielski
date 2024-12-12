@@ -1,4 +1,5 @@
 ﻿using Other;
+using ParticlesPack.Enums;
 using UnityEngine;
 
 namespace ParticlesPack.SO

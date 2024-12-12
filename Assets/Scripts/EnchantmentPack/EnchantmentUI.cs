@@ -1,5 +1,4 @@
-﻿using System;
-using AudioPack;
+﻿using AudioPack;
 using Managers;
 using Managers.Enums;
 using PlayerPack;
@@ -27,7 +26,7 @@ namespace EnchantmentPack
         {
             if (!Input.GetKeyDown(GameManager.AcceptBind)) return;
             
-            AudioManager.Instance.PlaySound(ESoundType.PowerUp);
+            AudioManager.PlaySound(ESoundType.PowerUp);
             Time.timeScale = 1;
             PlayerManager.Instance.PlayerEnchantments.AddEnchantment(_pickedEnchantment);
             PlayerManager.Instance.PlayerMovement.ResetKeys();

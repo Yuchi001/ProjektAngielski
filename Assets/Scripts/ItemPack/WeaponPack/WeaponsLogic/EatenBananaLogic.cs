@@ -34,10 +34,10 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         private void OnHit(GameObject hitObj, Projectile projectile)
         {
-            AudioManager.Instance.PlaySound(ESoundType.BananaBoom);
+            AudioManager.PlaySound(ESoundType.BananaBoom);
 
             var projectilePos = projectile.transform.position;
-            SpecialEffectManager.Instance.SpawnExplosion(ESpecialEffectType.ExplosionBig, projectilePos, BlastRange);
+            SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionBig, projectilePos, BlastRange);
 
             var results = new Collider2D[50];
             Physics2D.OverlapCircleNonAlloc(projectilePos, BlastRange, results);

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EnemyPack.CustomEnemyLogic;
 using EnemyPack.Enums;
 using EnemyPack.SO;
@@ -52,10 +53,8 @@ namespace EnemyPack
         protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * EnemySpawnRate);
         public float EnemiesHpScale => enemiesHpScale + Mathf.Pow(1f + DeadEnemies * enemiesHpScaleMultiplierPerKill, 2) - 1;
         
-        private IEnumerator Start()
+        private void Start()
         {
-            yield return new WaitUntil(() => GameManager.Instance.MapGenerator != null);
-            
             GetComponent<EnemyManager>().Setup(ActiveObjects);
             
             DeadEnemies = 0;
@@ -91,7 +90,7 @@ namespace EnemyPack
             //TODO: tutaj jakos zastapic
             //if (enemySo.ShootType != EShootType.None) ShootingEnemiesCount++;
 
-            MarkerManager.Instance.GetPoolObject<SpawnMarkedEntity>().SetReady(EEntityType.Negative, this);
+            MarkerManager.SpawnMarker(this, EEntityType.Negative);
         }
 
         public void SpawnEnemy(SoEnemy enemy, Vector2 position)
@@ -104,12 +103,17 @@ namespace EnemyPack
             //if (enemy.ShootType != EShootType.None) ShootingEnemiesCount++;
         }
 
+        public override void SpawnRandomEntity(Vector2 position)
+        {
+            SpawnEnemy(GetRandomPoolData() as SoEnemy, position);
+        }
+
         public List<PoolObject> GetActiveEnemies()
         {
             return ActiveObjects;
         }
 
-        public override T GetPoolObject<T>()
+        protected override T GetPoolObject<T>()
         {
             return _enemyPool.Get() as T;
         }

@@ -33,7 +33,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var randomNoteLength = Random.Range(1, ProjectileCount + 1);
             for (var i = 0; i < randomNoteLength; i++)
             {
-                AudioManager.Instance.PlaySound(ESoundType.Note);
+                AudioManager.PlaySound(ESoundType.Note);
 
                 var note = GetRandomNote(weightSum);
                 

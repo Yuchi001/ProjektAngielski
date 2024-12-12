@@ -16,7 +16,7 @@ namespace EnchantmentPack.Enchantments.SideClasses
 
         private float _timer = 0;
 
-        private ExpGem.EPickableState _pickableState = ExpGem.EPickableState.Default;
+        private ExpGem.EGemState _gemState = ExpGem.EGemState.Default;
         private Vector2 startPosition;
         
         public void Setup(int amount)
@@ -29,14 +29,14 @@ namespace EnchantmentPack.Enchantments.SideClasses
         {
             if (PlayerManager.Instance == null) return;
 
-            switch (_pickableState)
+            switch (_gemState)
             {
-                case ExpGem.EPickableState.Default:
+                case ExpGem.EGemState.Default:
                     if (Vector2.Distance(transform.position, PlayerPos) > range) return;
 
-                    _pickableState = ExpGem.EPickableState.PickingUpPhase;
+                    _gemState = ExpGem.EGemState.PickingUpPhase;
                     return;
-                case ExpGem.EPickableState.PickingUpPhase:
+                case ExpGem.EGemState.PickingUpPhase:
                     _timer += Time.deltaTime;
                     var remainingTime = Mathf.Clamp01(_timer / animTime);
 
@@ -44,13 +44,13 @@ namespace EnchantmentPack.Enchantments.SideClasses
                     
                     if (Vector2.Distance(transform.position, PlayerPos) > 0.1f) return;
                     
-                    _pickableState = ExpGem.EPickableState.PickedUp;
+                    _gemState = ExpGem.EGemState.PickedUp;
                     
                     var playerExp = PlayerManager.Instance.PlayerHealth;
                     playerExp.Heal(healAmount, ESoundType.HealOrb);
                     Destroy(gameObject);
                     return;
-                case ExpGem.EPickableState.PickedUp: return;
+                case ExpGem.EGemState.PickedUp: return;
                 default: return;
             }
         }

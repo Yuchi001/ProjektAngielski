@@ -24,4 +24,10 @@ MonoBehaviour:
   itemScalingPower: []
   startingStats: []
   tieredStats:
-    _pairs: []
+    _pairs:
+    - _level: 0
+      _stats: []
+    - _level: 1
+      _stats: []
+    - _level: 2
+      _stats: []

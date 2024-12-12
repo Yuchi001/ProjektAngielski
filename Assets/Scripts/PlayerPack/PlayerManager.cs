@@ -23,10 +23,8 @@ namespace PlayerPack
 
         [SerializeField] private SpriteRenderer playerSpriteRenderer;
         [SerializeField] private Animator animator;
-        
-        private SoCharacter _pickedCharacter;
 
-        public SoCharacter PickedCharacter => _pickedCharacter;
+        public SoCharacter PickedCharacter { get; private set; }
 
         public PlayerExp PlayerExp => GetComponent<PlayerExp>();
         public PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
@@ -34,7 +32,8 @@ namespace PlayerPack
         public PlayerMovement PlayerMovement => GetComponent<PlayerMovement>();
         public PlayerEnchantments PlayerEnchantments => GetComponent<PlayerEnchantments>();
         public PlayerStatsManager PlayerStatsManager => GetComponent<PlayerStatsManager>();
-
+        public Vector2 PlayerPos => transform.position;
+        
         public delegate void PlayerDeathDelegate();
         public static event PlayerDeathDelegate OnPlayerDeath;
         
@@ -43,8 +42,8 @@ namespace PlayerPack
 
         public void Setup(SoCharacter pickedCharacter)
         {
-            _pickedCharacter = pickedCharacter;
-            playerSpriteRenderer.sprite = _pickedCharacter.CharacterSprite;
+            PickedCharacter = pickedCharacter;
+            playerSpriteRenderer.sprite = PickedCharacter.CharacterSprite;
 
             foreach (var mono in GetComponentsInChildren<MonoBehaviour>())
                 mono.enabled = true;

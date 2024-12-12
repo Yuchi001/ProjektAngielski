@@ -42,20 +42,14 @@ TagManager:
   - name: Floor
     uniqueID: 2364408009
     locked: 0
-  - name: Particles
-    uniqueID: 1987322603
+  - name: Projectiles
+    uniqueID: 1892697213
     locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Walls
-    uniqueID: 2865024721
-    locked: 0
-  - name: Unlit
-    uniqueID: 3926174571
-    locked: 0
-  - name: DeadZone
-    uniqueID: 2941917819
+  - name: Top
+    uniqueID: 1255433063
     locked: 0
   - name: UI
     uniqueID: 2400487259

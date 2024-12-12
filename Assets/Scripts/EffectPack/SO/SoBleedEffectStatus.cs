@@ -8,7 +8,7 @@ namespace EffectPack.SO
     {
         public override void OnResolve(EffectsManager effectsManager, int stacks, CanBeDamaged canBeDamaged)
         {
-            
+            canBeDamaged.GetDamaged(1 * stacks);
         }
     }
 }

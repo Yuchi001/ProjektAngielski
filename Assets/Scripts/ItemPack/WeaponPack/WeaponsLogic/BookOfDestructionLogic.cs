@@ -43,8 +43,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             {
                 if(colliderObj == null) continue;
 
-                AudioManager.Instance.PlaySound(ESoundType.BulletExplode);
-                SpecialEffectManager.Instance.SpawnExplosion(ESpecialEffectType.ExplosionMedium,
+                AudioManager.PlaySound(ESoundType.BulletExplode);
+                SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionMedium,
                     colliderObj.transform.position, 0.3f);
                 
                 var randomNum = Random.Range(0, 101);

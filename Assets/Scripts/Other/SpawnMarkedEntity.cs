@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Managers;
+using Managers.Base;
 using MarkerPackage;
 using Other.Enums;
 using PoolPack;
@@ -15,7 +16,7 @@ namespace Other
 
         private SpriteRenderer _spriteRenderer;
 
-        private PoolManager _poolManager;
+        private SpawnerBase _poolManager;
 
         private static readonly string SPAWN_TIMER_ID = "SPAWN_TIMER";
 
@@ -27,7 +28,7 @@ namespace Other
             _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        public void SetReady(EEntityType entityType, PoolManager poolManager)
+        public void SetReady(EEntityType entityType, SpawnerBase poolManager)
         {
             _poolManager = poolManager;
             
@@ -47,8 +48,7 @@ namespace Other
         {
             if (CheckTimer(SPAWN_TIMER_ID) < spawnTime) return;
 
-            var poolObj = _poolManager.GetPoolObject<PoolObject>();
-            poolObj.transform.position = transform.position;
+            _poolManager.SpawnRandomEntity(transform.position);
             
             MarkerManager.Instance.ReleasePoolObject(this);
             SetTimer(SPAWN_TIMER_ID);

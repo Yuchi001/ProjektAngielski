@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: -0.09}
+  m_AnchoredPosition: {x: 0, y: 0.042}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4017550420966226036
@@ -115,6 +115,7 @@ GameObject:
   - component: {fileID: 4163185852223779518}
   - component: {fileID: 2884553101495344094}
   - component: {fileID: 4112197100625066992}
+  - component: {fileID: 3064657196240184749}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Enemy
@@ -246,9 +247,21 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.08}
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.19
+--- !u!210 &3064657196240184749
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2320810237440355403}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &3434908439231397238
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,7 +440,7 @@ Transform:
   m_GameObject: {fileID: 9108684698723802135}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.132, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -520,7 +533,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 974958792746034324, guid: 4c9a2a4ac12990747a42ba4d1b85e84a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.132
       objectReference: {fileID: 0}
     - target: {fileID: 974958792746034324, guid: 4c9a2a4ac12990747a42ba4d1b85e84a, type: 3}
       propertyPath: m_LocalPosition.z

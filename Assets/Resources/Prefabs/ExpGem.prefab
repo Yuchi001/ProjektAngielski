@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4332997253735141817}
   - component: {fileID: 7563672922002833712}
   - component: {fileID: 1033278736102926430}
+  - component: {fileID: 5629992176968089178}
   m_Layer: 0
   m_Name: ExpGem
   m_TagString: Untagged
@@ -167,3 +168,15 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!210 &5629992176968089178
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330231302069748770}
+  m_Enabled: 1
+  m_SortingLayerID: 1892697213
+  m_SortingLayer: -1
+  m_SortingOrder: 0
+  m_SortAtRoot: 0

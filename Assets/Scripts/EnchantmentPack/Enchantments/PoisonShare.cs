@@ -31,10 +31,9 @@ namespace EnchantmentPack.Enchantments
             var range = parameters[EValueKey.Range];
             var results = new Collider2D[50];
             
-            AudioManager.Instance.PlaySound(ESoundType.PoisonShare);
+            AudioManager.PlaySound(ESoundType.PoisonShare);
             Physics2D.OverlapCircleNonAlloc(position, range, results);
-            SpecialEffectManager.Instance.SpawnExplosion(ESpecialEffectType.ExplosionMedium,
-                position, range).SetColor(Color.green);
+            SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionMedium, position, range, Color.green);
             
             foreach (var hit in results)
             {

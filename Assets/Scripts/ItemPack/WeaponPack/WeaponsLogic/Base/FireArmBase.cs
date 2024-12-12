@@ -53,8 +53,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
             var range = PlayerEnchantments.GetParamValue(EEnchantmentName.ExplosiveBullets, EValueKey.Range);
             Physics2D.OverlapCircleNonAlloc(position, range, results);
 
-            AudioManager.Instance.PlaySound(ESoundType.BulletExplode);
-            SpecialEffectManager.Instance.SpawnExplosion(ESpecialEffectType.ExplosionMedium, position, range);
+            AudioManager.PlaySound(ESoundType.BulletExplode);
+            SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionMedium, position, range);
 
             var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.ExplosiveBullets, EValueKey.Percentage);
             var damage = Mathf.CeilToInt(Damage * percentage);

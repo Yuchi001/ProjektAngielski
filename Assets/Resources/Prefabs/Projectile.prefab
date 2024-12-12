@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5515122463823492508}
   - component: {fileID: 1331267961229922286}
   - component: {fileID: 4811929788897700239}
+  - component: {fileID: 2048317547099158718}
   m_Layer: 3
   m_Name: Projectile
   m_TagString: Untagged
@@ -95,6 +96,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!210 &2048317547099158718
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996234102917140788}
+  m_Enabled: 1
+  m_SortingLayerID: 1892697213
+  m_SortingLayer: -1
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &7065333116034189329
 GameObject:
   m_ObjectHideFlags: 0

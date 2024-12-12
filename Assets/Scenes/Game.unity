@@ -1065,8 +1065,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1353049477
-  m_SortingLayer: 3
+  m_SortingLayerID: 1255433063
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.84313726}
@@ -1339,6 +1339,52 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &1246294617
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1246294619}
+  - component: {fileID: 1246294618}
+  m_Layer: 0
+  m_Name: DamageIndicatorManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1246294618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246294617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b886df3244394b1fa40ef8e63fc20d78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxUpdateStackDuration: 0.5
+  <PoolSize>k__BackingField: 50
+--- !u!4 &1246294619
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246294617}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.269242, y: 0.20262031, z: -0.29736578}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1355136557
 GameObject:
   m_ObjectHideFlags: 0
@@ -1593,7 +1639,7 @@ MonoBehaviour:
   m_Intensity: 0.3
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: eb22747600000000c900ee8c6bab04ea5b87148fd1cec4aa7b1a5aaf
+  m_ApplyToSortingLayers: 00000000c900ee8c5b87148f7d44d0706763d44a
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -1853,13 +1899,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83276bcd949143ab9faf38e9df6386b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionEffects:
-  - specialEffectType: 0
-    explosionPrefab: {fileID: 7856944979272311960, guid: 98c08ae0666986942b50edabdc022130, type: 3}
-  - specialEffectType: 1
-    explosionPrefab: {fileID: 8852084033151925631, guid: 1cd7645b1aea74e4ab4d8eeb27f8529b, type: 3}
-  - specialEffectType: 2
-    explosionPrefab: {fileID: 2676599882158190016, guid: 120bcbd172547df42818c7e20ba869a5, type: 3}
+  maxUpdateStackDuration: 0.5
+  <PoolSize>k__BackingField: 0
 --- !u!4 &1925957712
 Transform:
   m_ObjectHideFlags: 0
@@ -1941,3 +1982,4 @@ SceneRoots:
   - {fileID: 783534116}
   - {fileID: 288947034}
   - {fileID: 333638486}
+  - {fileID: 1246294619}

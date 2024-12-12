@@ -1,38 +1,73 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
+using PoolPack;
+using SpecialEffectPack.Enums;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace SpecialEffectPack
 {
     [RequireComponent(typeof(Animator))]
-    public class ExplosionAnimation : MonoBehaviour
+    public class ExplosionAnimation : PoolObject
     {
         [SerializeField] private Animator animator;
         [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private float explosionRangeScaling;
 
-        public ExplosionAnimation Trigger(float range)
+        [SerializeField] private List<ExplosionData> explosionDataList;
+
+        private const string EXPLOSION_ANIMATION_TIMER_ID = "EXPLOSION_ANIMATION_TIMER_ID";
+
+        private SpecialEffectManager _pool;
+
+        private Dictionary<ESpecialEffectType, ExplosionData> _explosionDataDict = new();
+
+        public override void OnCreate(PoolManager poolManager)
+        {
+            base.OnCreate(poolManager);
+
+            _explosionDataDict = explosionDataList.ToDictionary(e => e.SpecialEffectType, e => e);
+        }
+
+        public void Setup(ESpecialEffectType type, float range, Color color = default)
+        {
+            if (!_explosionDataDict.TryGetValue(type, out var data)) return;
+            
+            animator.Play(data.AnimName);
+            
+            var scale = range / data.ExplosionRangeScaling;
+            transform.localScale = Vector2.one * scale;
+            
+            SetTimer(EXPLOSION_ANIMATION_TIMER_ID);
+            
+            if (color != default) spriteRenderer.color = color;
+            
+            OnGet(null);
+        }
+
+        private float GetLifeTime()
         {
             var clip = animator.runtimeAnimatorController.animationClips[0];
             var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-            var time = clip.length / stateInfo.speed;
-            Destroy(gameObject, time - 0.05f);
-            var scale = range / explosionRangeScaling;
-            transform.localScale = Vector2.one * scale;
-
-            return this;
+            return clip.length / stateInfo.speed;
         }
 
-        public ExplosionAnimation SetColor(Color color)
+        public override void InvokeUpdate()
         {
-            spriteRenderer.color = color;
-            return this;
+            if (CheckTimer(EXPLOSION_ANIMATION_TIMER_ID) < GetLifeTime()) return;
+            
+            _pool.ReleasePoolObject(this);
         }
 
-        private void OnDrawGizmos()
+        [System.Serializable]
+        private class ExplosionData
         {
-            Gizmos.DrawWireSphere(transform.position, explosionRangeScaling);
+            [SerializeField] private string animName;
+            [SerializeField] private float explosionRangeScaling;
+            [SerializeField] private ESpecialEffectType specialEffectType;
+            
+            public string AnimName => animName;
+            public float ExplosionRangeScaling => explosionRangeScaling;
+            public ESpecialEffectType SpecialEffectType => specialEffectType;
         }
     }
 }

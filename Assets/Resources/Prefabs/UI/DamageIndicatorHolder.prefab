@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8347572674640105234}
   - component: {fileID: -4979506521138799914}
   - component: {fileID: 4215095410173136235}
+  - component: {fileID: 5056452011654422980}
   m_Layer: 5
   m_Name: DamageIndicatorHolder
   m_TagString: Untagged
@@ -81,9 +82,8 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   healColor: {r: 0.23092759, g: 1, b: 0, a: 1}
-  animTime: 0.3
-  moveValue: 0.5
   damageText: {fileID: 1988336532472435314}
+  lifeTime: 1
 --- !u!222 &4215095410173136235
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -92,6 +92,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3205396376673001242}
   m_CullTransparentMesh: 1
+--- !u!210 &5056452011654422980
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3205396376673001242}
+  m_Enabled: 1
+  m_SortingLayerID: -1894480037
+  m_SortingLayer: 2
+  m_SortingOrder: 999
+  m_SortAtRoot: 0
 --- !u!1 &6011311741849632456
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,8 +197,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

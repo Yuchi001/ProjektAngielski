@@ -2,7 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Managers;
+using Managers.Other;
 using PlayerPack;
+using StructurePack;
+using StructurePack.SO;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,11 +17,12 @@ namespace MapGeneratorPack
         [SerializeField] private float chestSpawnChance = 10f;
         [SerializeField] private float maxDistance = 5;
         [SerializeField] private GameObject zonePrefab;
-        [SerializeField] private GameObject chestPrefab;
         [SerializeField] private float zonesPerSecond = 0.1f;
         [SerializeField] private float checkPlayerDistancePerSecond = 0.5f;
         
-        private List<Zone> _zones = new();
+        private readonly List<Zone> _zones = new();
+
+        private List<SoStructure> _structures = new();
         
         private bool _generate = false;
 
@@ -34,13 +39,34 @@ namespace MapGeneratorPack
         private IEnumerator Start()
         {
             yield return new WaitUntil(() => PlayerManager.Instance != null);
+
+            _structures = Resources.LoadAll<SoStructure>("Structures").ToList();
+            
             Generate();
         }
 
         public void Generate()
         {
             _zones.Add(SpawnZone());
+            GenerateStructures();
             _generate = true;
+        }
+
+        private void GenerateStructures()
+        {
+            // TODO: Structure generation 
+
+            // THIS IS DEBUG ONLY
+            var structurePrefab = GameManager.Instance.GetPrefab<StructureBase>(PrefabNames.StructureBase);
+            foreach (var structure in _structures)
+            {
+                var randomOffsetX = Random.Range(-0.5f, 0.5f);
+                var randomOffsetY = Random.Range(-0.5f, 0.5f);
+                var newPos = transform.position;
+                newPos.x = randomOffsetX;
+                newPos.y = randomOffsetY;
+                Instantiate(structurePrefab, newPos, Quaternion.identity).Setup(structure);
+            }
         }
 
         private void Update()
@@ -63,14 +89,13 @@ namespace MapGeneratorPack
 
                 if (Random.Range(0f, 101f) > chestSpawnChance) return;
                 
-                Instantiate(chestPrefab, _zones[Random.Range(0, _zones.Count)].GetRandomPos(), Quaternion.identity);
+                // TODO: tu byly skrzynki
             }
         }
 
         public Vector2 GetRandomPos()
         {
-            if (CloseZones.Count == 0) return Vector2.zero;
-            return CloseZones[Random.Range(0, CloseZones.Count)].GetRandomPos();
+            return CloseZones.Count == 0 ? Vector2.zero : CloseZones[Random.Range(0, CloseZones.Count)].GetRandomPos();
         }
 
         private List<Zone> GetCloseZone()
@@ -90,7 +115,11 @@ namespace MapGeneratorPack
 
         public bool ContainsEntity(Vector2 position)
         {
-            return _zones.Any(z => z.Contains(position));
+            foreach (var zone in _zones)
+            {
+                if (zone.Contains(position)) return true;
+            }
+            return false;
         }
     }
 }

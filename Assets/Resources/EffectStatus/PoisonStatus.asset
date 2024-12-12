@@ -20,3 +20,4 @@ MonoBehaviour:
   effectParticles: {fileID: 3056877686207287091, guid: 8689277780798524cbe676bd4cb79031, type: 3}
   effectColor: {r: 0, g: 0.5471698, b: 0.021552023, a: 1}
   effectType: 1
+  poisonDamage: 10

@@ -33,8 +33,8 @@ namespace EnchantmentPack.Enchantments
             var range = parameters[EValueKey.Range];
             Physics2D.OverlapCircleNonAlloc(playerPos, range, results);
 
-            AudioManager.Instance.PlaySound(ESoundType.BananaBoom);
-            SpecialEffectManager.Instance.SpawnExplosion(ESpecialEffectType.ExplosionMedium, playerPos, range);
+            AudioManager.PlaySound(ESoundType.BananaBoom);
+            SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionMedium, playerPos, range);
 
             var particles = Instantiate(boomParticles, playerPos, Quaternion.identity);
             Destroy(particles, 2f);

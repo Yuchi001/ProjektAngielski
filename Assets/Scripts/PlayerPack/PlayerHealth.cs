@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using AudioPack;
+using DamageIndicatorPack;
 using EnchantmentPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Managers;
-using Managers.Base;
 using Managers.Enums;
 using Other;
+using ParticlesPack;
+using ParticlesPack.Enums;
 using PlayerPack.Enums;
 using PlayerPack.SO;
 using PoolPack;
-using UI;
 using UnityEngine;
 
 namespace PlayerPack
@@ -19,7 +20,6 @@ namespace PlayerPack
     {
         [SerializeField] private float zoneCheckPerSec = 4;
         [SerializeField] private GameObject healParticles;
-        [SerializeField] private GameObject damageIndicator;
 
         private static PlayerStatsManager PlayerStatsManager => PlayerManager.Instance.PlayerStatsManager;
         public override int MaxHealth => PlayerStatsManager.GetStatAsInt(EPlayerStatType.MaxHealth);
@@ -91,7 +91,7 @@ namespace PlayerPack
             _currentHealth = Mathf.Clamp(_currentHealth - value, 
                 0, MaxHealth);
             
-            AudioManager.Instance.PlaySound(ESoundType.PlayerHurt);
+            AudioManager.PlaySound(ESoundType.PlayerHurt);
             
             if(_currentHealth <= 0) OnDie(false);
         }
@@ -112,11 +112,10 @@ namespace PlayerPack
             }
             
             OnPlayerHeal?.Invoke(value);
-            AudioManager.Instance.PlaySound(soundType);
-            DamageIndicator.SpawnDamageIndicator(transform.position, damageIndicator, value, false, false);
+            AudioManager.PlaySound(soundType);
             
-            var particles = Instantiate(healParticles, transform.position, Quaternion.identity);
-            Destroy(particles, 1f);
+            IndicatorManager.SpawnIndicator(PlayerManager.Instance.PlayerPos, value, false, false);
+            ParticleManager.SpawnParticles(EParticlesType.Blood, PlayerManager.Instance.PlayerPos);
             
             _currentHealth = Mathf.Clamp(_currentHealth + value, 
                 0, MaxHealth);
@@ -131,7 +130,7 @@ namespace PlayerPack
                 return;
             }
             
-            AudioManager.Instance.PlaySound(ESoundType.PlayerDeath);
+            AudioManager.PlaySound(ESoundType.PlayerDeath);
             PlayerManager.Instance.ManagePlayerDeath();
             
             base.OnDie(destroyObj);

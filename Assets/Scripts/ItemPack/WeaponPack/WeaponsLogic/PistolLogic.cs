@@ -24,7 +24,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         {
             for (var i = 0; i < ProjectileCount; i++)
             {
-                AudioManager.Instance.PlaySound(ESoundType.PistolShoot);
+                AudioManager.PlaySound(ESoundType.PistolShoot);
 
                 SpawnProjectile(position).SetReady();
                 

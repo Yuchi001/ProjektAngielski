@@ -20,3 +20,4 @@ MonoBehaviour:
   effectParticles: {fileID: 6018507598625937068, guid: 89c0086434b47224d8bcbcdbcd0eb1c3, type: 3}
   effectColor: {r: 1, g: 0.53673553, b: 0, a: 1}
   effectType: 2
+  burnDamage: 2

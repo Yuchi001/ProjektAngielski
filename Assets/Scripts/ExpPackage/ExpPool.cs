@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using ExpPackage.Enums;
 using Managers;
 using Managers.Other;
 using Other;
@@ -11,7 +11,7 @@ namespace ExpPackage
     public class ExpPool : PoolManager
     {
         private ObjectPool<ExpGem> _expGemPool;
-
+        
         #region Singleton
 
         public static ExpPool Instance { get; private set; }
@@ -24,10 +24,8 @@ namespace ExpPackage
 
         #endregion
 
-        private IEnumerator Start()
+        private void Start()
         {
-            yield return new WaitUntil(() => GameManager.Instance != null);
-            
             var gemPrefab = GameManager.Instance.GetPrefab<ExpGem>(PrefabNames.ExpGem);
             _expGemPool = PoolHelper.CreatePool(this, gemPrefab, false);
             
@@ -39,7 +37,12 @@ namespace ExpPackage
             RunUpdatePoolStack();
         }
 
-        public override T GetPoolObject<T>()
+        public static void SpawnExpGem(EExpGemType gemType, Vector2 position)
+        {
+            Instance.GetPoolObject<ExpGem>().Setup(gemType, position);
+        }
+
+        protected override T GetPoolObject<T>()
         {
             return _expGemPool.Get() as T;
         }

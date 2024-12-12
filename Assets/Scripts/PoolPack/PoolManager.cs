@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Managers;
 using Other;
 using UnityEngine;
 
@@ -10,7 +13,7 @@ namespace PoolPack
         [field: SerializeField, Range(10, 1000)] public int PoolSize { get; protected set; }
         public List<PoolObject> ActiveObjects { get; } = new();
 
-        public abstract T GetPoolObject<T>() where T: PoolObject;
+        protected abstract T GetPoolObject<T>() where T: PoolObject;
         public abstract void ReleasePoolObject(PoolObject poolObject);
 
         public virtual SoPoolObject GetRandomPoolData()

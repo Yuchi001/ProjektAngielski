@@ -33,6 +33,8 @@ namespace Managers.Base
             SpawnLogic();
         }
 
+        public abstract void SpawnRandomEntity(Vector2 position);
+
         public void SetState(ESpawnerState state)
         {
             _state = state;

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using EffectPack.SO;
 using Managers;
 using Managers.Other;
 using Other;
@@ -25,13 +27,14 @@ namespace EffectPack
             {
                 var prefab = Instantiate(effectStatusPrefab, statusesHolder);
                 prefab.SpawnSetup(effectType, this, _canBeDamaged);
-                _statuses.Add(effectType, prefab);   
+                _statuses.Add(effectType, prefab);
             }
         }
 
         public void Setup(CanBeDamaged canBeDamaged)
         {
             _canBeDamaged = canBeDamaged;
+            _canBeDamaged.SpriteRenderer.color = Color.white;
             foreach (var status in _statuses.Values) status.Setup();
         }
 
@@ -42,7 +45,20 @@ namespace EffectPack
 
         public bool HasEffect(EEffectType effectType)
         {
-            return _statuses[effectType].isActiveAndEnabled;
+            return _statuses[effectType].IsActive;
+        }
+
+        public bool TryGetAnyEffect(out SoEffectBase returnedEffect)
+        {
+            returnedEffect = null;
+            foreach (var effect in _statuses.Values)
+            {
+                if (!effect.IsActive) continue;
+
+                returnedEffect = effect.EffectBase;
+                return true;
+            }
+            return false;
         }
     }
 }

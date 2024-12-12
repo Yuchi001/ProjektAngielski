@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using AudioPack;
-using EnchantmentPack;
-using EnchantmentPack.Enums;
 using EnemyPack;
 using MainCameraPack;
 using Managers.Enums;
+using Managers.Other;
 using MapGeneratorPack;
 using PlayerPack;
 using PlayerPack.SO;
@@ -61,22 +59,23 @@ namespace Managers
            }
            
            LeanTween.init(100, 100);
+           
            StartRun(baseCharacter);
        }
 
-       public void StartRun(SoCharacter pickedCharacter)
+       public void StartRun(SoCharacter soCharacter)
        {
-           MapGenerator = Instantiate(GetPrefab<MapGenerator>("MapGeneratorManager"));
+           MapGenerator = Instantiate(GetPrefab<MapGenerator>(PrefabNames.MapGeneratorManager));
            
            gameUiManager.BeginPlay();
            
            var playerObj = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
            CurrentPlayer = playerObj.GetComponent<PlayerManager>();
-           CurrentPlayer.Setup(pickedCharacter);
+           CurrentPlayer.Setup(soCharacter);
            
            mainCamera.Setup(playerObj);
            
-           AudioManager.Instance.SetTheme(EThemeType.Main1);
+           AudioManager.SetTheme(EThemeType.Main1);
            
            waveManager.BeginSpawn();
 

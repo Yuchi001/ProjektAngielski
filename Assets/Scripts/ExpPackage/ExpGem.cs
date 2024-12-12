@@ -26,7 +26,7 @@ namespace ExpPackage
         
         private int expAmount = 0;
         
-        private EPickableState _pickableState = EPickableState.Default;
+        private EGemState _gemState = EGemState.Default;
         private Vector2 startPosition;
         
         private const string PICK_UP_TIMER = "PICK_UP_TIMER";
@@ -47,7 +47,7 @@ namespace ExpPackage
         {
             base.OnGet(so);
 
-            _pickableState = EPickableState.Default;
+            _gemState = EGemState.Default;
         }
 
         public void Setup(EExpGemType gemType, Vector2 position)
@@ -70,7 +70,7 @@ namespace ExpPackage
         {
             if (PlayerManager.Instance == null) return;
 
-            if (_pickableState != EPickableState.PickingUpPhase) return;
+            if (_gemState != EGemState.PickingUpPhase) return;
             
             var remainingTime = Mathf.Clamp01((float)CheckTimer(PICK_UP_TIMER) / animTime);
 
@@ -78,9 +78,9 @@ namespace ExpPackage
                     
             if (Vector2.Distance(transform.position, PlayerPos) > 0.1f) return;
                     
-            AudioManager.Instance.PlaySound(ESoundType.PickUpGem);
+            AudioManager.PlaySound(ESoundType.PickUpGem);
 
-            _pickableState = EPickableState.PickedUp;
+            _gemState = EGemState.PickedUp;
                     
             PlayerManager.Instance.PlayerExp.GainExp(expAmount);
             
@@ -89,9 +89,9 @@ namespace ExpPackage
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (_pickableState != EPickableState.Default || !other.CompareTag("Player")) return;
+            if (_gemState != EGemState.Default || !other.CompareTag("Player")) return;
             
-            _pickableState = EPickableState.PickingUpPhase;
+            _gemState = EGemState.PickingUpPhase;
             SetTimer(PICK_UP_TIMER);
         }
 
@@ -100,7 +100,7 @@ namespace ExpPackage
             Gizmos.DrawWireSphere(transform.position, range);
         }
 
-        public enum EPickableState
+        public enum EGemState
         {
             Default,
             PickingUpPhase,

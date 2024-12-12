@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Managers;
@@ -30,7 +31,7 @@ namespace FoodPack
 
         protected override float MaxTimer => trySpawnRate;
         private PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
-
+        
         private void Awake()
         {
             var foodList = Resources.LoadAll<SoFood>("Food").Select(Instantiate).ToList();
@@ -51,6 +52,18 @@ namespace FoodPack
             _foodPool = PoolHelper.CreatePool(this, foodPrefab, true);
         }
 
+        public void SpawnFood(SoFood food, Vector2 position)
+        {
+            var foodObj = _foodPool.Get();
+            foodObj.OnGet(food);
+            foodObj.transform.position = position;
+        }
+
+        public override void SpawnRandomEntity(Vector2 position)
+        {
+            SpawnFood(GetRandomPoolData() as SoFood, position);
+        }
+
         protected override void SpawnLogic()
         {
             if (PlayerManager == null) return;
@@ -58,10 +71,10 @@ namespace FoodPack
             var randomPercentage = Random.Range(0, 101);
             if (randomPercentage > foodSpawnChance) return;
 
-            MarkerManager.Instance.GetPoolObject<SpawnMarkedEntity>().SetReady(EEntityType.Positive, this);
+            MarkerManager.SpawnMarker(this, EEntityType.Positive);
         }
 
-        public override T GetPoolObject<T>()
+        protected override T GetPoolObject<T>()
         {
             return _foodPool.Get() as T;
         }

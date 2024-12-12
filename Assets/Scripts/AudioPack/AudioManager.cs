@@ -21,10 +21,10 @@ namespace AudioPack
         private ObjectPool<SFXPoolObject> _sfxPool;
 
         public IEnumerable<SoundData> AllSounds => sounds;
-
+        
         #region Singleton
 
-        public static AudioManager Instance { get; private set; }
+        private static AudioManager Instance { get; set; }
 
         private void Awake()
         {
@@ -34,32 +34,30 @@ namespace AudioPack
 
         #endregion
 
-        private IEnumerator Start()
+        private void Start()
         {
-            yield return new WaitUntil(() => GameManager.Instance != null);
-
             var sfxPrefab = GameManager.Instance.GetPrefab<SFXPoolObject>(PrefabNames.SFX);
             _sfxPool = PoolHelper.CreatePool(this, sfxPrefab, false);
             
             PrepareQueue();
         }
 
-        public void PlaySound(ESoundType soundType)
+        public static void PlaySound(ESoundType soundType)
         {
-            GetPoolObject<SFXPoolObject>().Play(soundType);
+            Instance.GetPoolObject<SFXPoolObject>().Play(soundType);
         }
 
-        public void SetTheme(EThemeType themeType)
+        public static void SetTheme(EThemeType themeType)
         {
-            var audioSource = mainAudio;
+            var audioSource = Instance.mainAudio;
             if (audioSource == null)
             {
                 var audioSourceObj = new GameObject($"Audio: {themeType}", typeof(AudioSource));
                 audioSource = audioSourceObj.GetComponent<AudioSource>();
-                mainAudio = audioSource;
+                Instance.mainAudio = audioSource;
             }
             
-            var clip = themes.FirstOrDefault(s => s.ThemeType == themeType)?.AudioClip;
+            var clip = Instance.themes.FirstOrDefault(s => s.ThemeType == themeType)?.AudioClip;
             if (clip == null) return;
 
             audioSource.clip = clip;
@@ -68,7 +66,7 @@ namespace AudioPack
             audioSource.Play();
         }
 
-        public override T GetPoolObject<T>()
+        protected override T GetPoolObject<T>()
         {
             return _sfxPool.Get() as T;
         }

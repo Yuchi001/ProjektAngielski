@@ -3,6 +3,7 @@ using EffectPack;
 using Managers;
 using Other.Enums;
 using ParticlesPack;
+using ParticlesPack.Enums;
 using PoolPack;
 using UnityEngine;
 
@@ -61,7 +62,7 @@ namespace Other
 
         public void SpawnBlood()
         {
-            ParticleManager.Instance.SpawnParticles(EParticlesType.Blood, transform.position);
+            ParticleManager.SpawnParticles(EParticlesType.Blood, transform.position);
         }
 
         public virtual void OnDie(bool destroyObj = true, PoolManager poolManager = null)
