@@ -26,7 +26,7 @@ namespace PlayerPack.PlayerMovementPack
         private float _additionalMovementSpeed = 0;
 
         private bool _lookingRight;
-        public bool Dash { get; private set; } = false;
+        public bool DuringDash { get; private set; } = false;
         private float _dashTimer = 0;
         private float _dashingTimer = 0;
         public int CurrentDashStacks { get; private set; } = 0;
@@ -81,7 +81,7 @@ namespace PlayerPack.PlayerMovementPack
         private void ManageMovement()
         {
             ManageDash();
-            if (Dash) return;
+            if (DuringDash) return;
             
             var velocity = GetVelocity();
             rb2d.velocity = velocity;
@@ -95,7 +95,7 @@ namespace PlayerPack.PlayerMovementPack
 
         private void ManageDash()
         {
-            if (Dash)
+            if (DuringDash)
             {
                 var sr = new GameObject("dashGhost", typeof(SpriteRenderer));
                 sr.GetComponent<SpriteRenderer>().sprite = PickedCharacter.CharacterSprite;
@@ -106,7 +106,7 @@ namespace PlayerPack.PlayerMovementPack
                 _dashingTimer += Time.deltaTime;
                 if (_dashingTimer < dashTime) return;
                 
-                Dash = false;
+                DuringDash = false;
                 PlayerHealth.Invincible = false;
                 rb2d.velocity /= dashForceMultiplier;
                 _dashingTimer = 0;
@@ -126,7 +126,7 @@ namespace PlayerPack.PlayerMovementPack
 
             if (CurrentDashStacks == MaxDashStacks) _dashTimer = 0;
             
-            Dash = true;
+            DuringDash = true;
             CurrentDashStacks--;
             rb2d.velocity = rb2d.velocity.normalized * dashForceMultiplier;
             PlayerHealth.Invincible = true;

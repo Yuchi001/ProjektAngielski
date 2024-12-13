@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using EffectPack;
-using Managers;
 using Other.Enums;
 using ParticlesPack;
 using ParticlesPack.Enums;

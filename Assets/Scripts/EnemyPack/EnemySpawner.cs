@@ -125,8 +125,7 @@ namespace EnemyPack
 
         public override SoPoolObject GetRandomPoolData()
         {
-            var isHorde = false; // TODO: do usuniecia
-            var validEnemies = _allEnemies.Where(e => e.IsHorde == isHorde).ToList();
+            var validEnemies = _allEnemies.ToList();
 
             var sum = gemRarityList.Sum(g => g.weight);
             var randomInt = Random.Range(0, sum + 1) * (1 - Mathf.Clamp(_difficultyTimer / maximumDifficultyTimeCap, 0, 1));

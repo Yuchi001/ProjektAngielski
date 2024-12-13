@@ -25,14 +25,14 @@ namespace PoolPack
             Active = false;
         }
 
-        protected void SetTimer(string ID)
+        public void SetTimer(string ID)
         {
             if (_lastMeasure.TryAdd(ID, DateTime.Now)) return;
             
             _lastMeasure[ID] = DateTime.Now;
         }
 
-        protected double CheckTimer(string ID)
+        public double CheckTimer(string ID)
         {
             var hasValue = _lastMeasure.TryGetValue(ID, out var lastMeasure);
             return hasValue ? (DateTime.Now - lastMeasure).TotalSeconds : 0;

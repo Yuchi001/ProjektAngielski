@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AudioPack;
 using EnemyPack;
+using ItemPack.WeaponPack.Other;
 using MainCameraPack;
 using Managers.Enums;
 using Managers.Other;
@@ -48,6 +49,13 @@ namespace Managers
        public MapGenerator MapGenerator { get; private set; }
        public WaveManager WaveManager => waveManager;
        public EnemySpawner EnemySpawner => waveManager.EnemySpawner;
+
+       #region CachedPrefabs
+
+       private Projectile _projectilePrefab;
+       public Projectile ProjectilePrefab => _projectilePrefab ??= GetPrefab<Projectile>(PrefabNames.Projectile);
+
+       #endregion
        
        private void Init()
        {
