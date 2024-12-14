@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6ad64d905246959d1209eebe50a24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.2
+  maxUpdateStackDuration: 0.005
   <PoolSize>k__BackingField: 100
   _waitBeforeSpawn: 1.5
   enemiesHpScaleMultiplierPerKill: 0.001
@@ -1900,7 +1900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxUpdateStackDuration: 0.5
-  <PoolSize>k__BackingField: 0
+  <PoolSize>k__BackingField: 10
 --- !u!4 &1925957712
 Transform:
   m_ObjectHideFlags: 0

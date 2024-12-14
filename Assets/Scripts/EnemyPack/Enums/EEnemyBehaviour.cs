@@ -2,7 +2,6 @@
 {
     public enum EEnemyBehaviour
     {
-        RockSmall,
         BatSmall,
     }
 }

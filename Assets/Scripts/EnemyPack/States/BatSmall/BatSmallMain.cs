@@ -5,10 +5,10 @@ namespace EnemyPack.States.BatSmall
 {
     public class BatSmallMain : StateBase
     {
-        public override bool CanBeStuned => true;
+        public override bool CanBeStunned => true;
         public override bool CanBePushed => true;
 
-        private static readonly float IDLE_RANGE = 3f;
+        private static readonly float IDLE_RANGE = 4f;
 
         public override void Enter(EnemyLogic state)
         {

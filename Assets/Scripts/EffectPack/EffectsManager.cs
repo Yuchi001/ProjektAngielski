@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using EffectPack.SO;
 using Managers;
 using Managers.Other;
@@ -15,7 +16,7 @@ namespace EffectPack
         
         private readonly Dictionary<EEffectType, EffectStatusObject> _statuses = new();
 
-        public bool Stuned => HasEffect(EEffectType.Stun);
+        public bool Stunned => HasEffect(EEffectType.Stun);
         public bool Slowed => HasEffect(EEffectType.Slow);
 
         private CanBeDamaged _canBeDamaged;
@@ -26,8 +27,18 @@ namespace EffectPack
             foreach (var effectType in (EEffectType[])System.Enum.GetValues(typeof(EEffectType)))
             {
                 var prefab = Instantiate(effectStatusPrefab, statusesHolder);
-                prefab.SpawnSetup(effectType, this, _canBeDamaged);
+                prefab.SpawnSetup(GetEffect(effectType), this, _canBeDamaged);
                 _statuses.Add(effectType, prefab);
+            }
+            
+            SoEffectBase GetEffect(EEffectType effectType)
+            {
+                foreach (var effectBase in GameManager.Instance.EffectList)
+                {
+                    if (effectBase.EffectType == effectType) return effectBase;
+                }
+
+                return null;
             }
         }
 

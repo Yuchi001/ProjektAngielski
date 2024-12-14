@@ -6,10 +6,10 @@ namespace EnemyPack.States
 {
     public abstract class StateBase
     {
-        public abstract bool CanBeStuned { get; }
+        public abstract bool CanBeStunned { get; }
         public abstract bool CanBePushed { get; }
 
-        protected Vector2 PlayerPos => PlayerManager.Instance.PlayerPos;
+        protected static Vector2 PlayerPos => PlayerManager.Instance.PlayerPos;
         
         public abstract void Enter(EnemyLogic state);
         public abstract void Execute(EnemyLogic state);

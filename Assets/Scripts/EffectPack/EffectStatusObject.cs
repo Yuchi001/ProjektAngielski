@@ -12,8 +12,6 @@ namespace EffectPack
 {
     public class EffectStatusObject : MonoBehaviour
     {
-        private List<SoEffectBase> _effectsDisplaySettings;
-        
         private Image _effectImage;
         private TextMeshProUGUI _effectDamageStackText;
 
@@ -41,11 +39,10 @@ namespace EffectPack
             gameObject.SetActive(false);
         }
 
-        public void SpawnSetup(EEffectType effectType, EffectsManager effectsManager, CanBeDamaged canBeDamaged)
+        public void SpawnSetup(SoEffectBase effectBase, EffectsManager effectsManager, CanBeDamaged canBeDamaged)
         {
             _transform = transform;
             
-            _effectsDisplaySettings = Resources.LoadAll<SoEffectBase>("EffectStatus").ToList();
             _effectImage = GetComponent<Image>();
             
             _effectDamageStackText = GetComponentInChildren<TextMeshProUGUI>();
@@ -60,7 +57,7 @@ namespace EffectPack
 
             _effectDamageStackText.text = "";
 
-            _pickedEffectBase = _effectsDisplaySettings.FirstOrDefault(e => e.EffectType == effectType);
+            _pickedEffectBase = effectBase;
             if (_pickedEffectBase == default) return;
 
             _hasParticles = _pickedEffectBase.EffectParticles != null;

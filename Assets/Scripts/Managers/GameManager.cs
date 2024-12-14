@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AudioPack;
+using EffectPack.SO;
 using EnemyPack;
 using ItemPack.WeaponPack.Other;
 using MainCameraPack;
@@ -50,10 +51,14 @@ namespace Managers
        public WaveManager WaveManager => waveManager;
        public EnemySpawner EnemySpawner => waveManager.EnemySpawner;
 
-       #region CachedPrefabs
+       #region Cached
 
        private Projectile _projectilePrefab;
        public Projectile ProjectilePrefab => _projectilePrefab ??= GetPrefab<Projectile>(PrefabNames.Projectile);
+
+       private IEnumerable<SoEffectBase> _effects = null;
+       public IEnumerable<SoEffectBase> EffectList => _effects ??= Resources.LoadAll<SoEffectBase>("EffectStatus");
+
 
        #endregion
        

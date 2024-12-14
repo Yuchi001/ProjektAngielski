@@ -117,8 +117,7 @@ namespace PlayerPack
             IndicatorManager.SpawnIndicator(PlayerManager.Instance.PlayerPos, value, false, false);
             ParticleManager.SpawnParticles(EParticlesType.Blood, PlayerManager.Instance.PlayerPos);
             
-            _currentHealth = Mathf.Clamp(_currentHealth + value, 
-                0, MaxHealth);
+            _currentHealth = Mathf.Clamp(_currentHealth + value, 0, MaxHealth);
         }
 
         public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)

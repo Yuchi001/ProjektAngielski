@@ -25,7 +25,7 @@ namespace Other
         public abstract int CurrentHealth { get; }
         public abstract int MaxHealth { get; }
 
-        protected bool Stuned => _effectsManager.Stuned;
+        protected bool Stuned => _effectsManager.Stunned;
         protected bool Slowed => _effectsManager.Slowed;
 
         public SpriteRenderer SpriteRenderer => spriteRenderer;

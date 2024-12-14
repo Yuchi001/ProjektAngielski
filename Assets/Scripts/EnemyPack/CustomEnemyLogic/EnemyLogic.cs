@@ -28,8 +28,8 @@ namespace EnemyPack.CustomEnemyLogic
         
         private static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
         private static Vector2 PlayerPos => PlayerManager.Instance.PlayerPos;
-        private EnemyHealthBar EnemyHealthBar => GetComponent<EnemyHealthBar>();
-        private Collider2D Collider2D => GetComponent<Collider2D>();
+        private EnemyHealthBar _enemyHealthBar;
+        private Collider2D _collider2D;
         public override int MaxHealth => Mathf.CeilToInt(EnemyData.MaxHealth * _enemySpawner.EnemiesHpScale);
         private static float PlayerSpeed => PlayerManager.Instance.PlayerStatsManager.GetStat(EPlayerStatType.MovementSpeed);
         private float Mass => Mathf.Pow(EnemyData.BodyScale, 2);
@@ -51,6 +51,8 @@ namespace EnemyPack.CustomEnemyLogic
         public override void OnCreate(PoolManager poolManager)
         {
             base.OnCreate(poolManager);
+            _collider2D = GetComponent<Collider2D>();
+            _enemyHealthBar = GetComponent<EnemyHealthBar>();
             _enemySpawner = poolManager as EnemySpawner;
         }
 
@@ -68,7 +70,7 @@ namespace EnemyPack.CustomEnemyLogic
             
             _currentHealth = MaxHealth;
             
-            Collider2D.enabled = true;
+            _collider2D.enabled = true;
 
             var scale = EnemyData.BodyScale;
             transform.localScale = new Vector3(scale,scale,scale);
@@ -80,7 +82,7 @@ namespace EnemyPack.CustomEnemyLogic
             
             CanBeDamagedSetup();
             
-            EnemyHealthBar.Setup(SpriteRenderer);
+            _enemyHealthBar.Setup(SpriteRenderer);
 
             _currentState = StateFactory.GetState(EnemyData.EnemyBehaviour);
             _currentState.Reset(this);
@@ -97,9 +99,9 @@ namespace EnemyPack.CustomEnemyLogic
 
         public override void InvokeUpdate()
         {
-            if (Dead || (Stuned && _currentState.CanBeStuned) || !Active) return;
+            if (Dead || (Stuned && _currentState.CanBeStunned) || !Active) return;
             
-            EnemyHealthBar.ManageHealthBar();
+            _enemyHealthBar.ManageHealthBar();
             
             _currentState.Execute(this);
         }
@@ -117,6 +119,7 @@ namespace EnemyPack.CustomEnemyLogic
 
         public void SwitchState(StateBase state)
         {
+            state.Enter(this);
             _currentState = state;
         }
         
@@ -147,7 +150,7 @@ namespace EnemyPack.CustomEnemyLogic
             IndicatorManager.SpawnIndicator(transform.position, value, isCrit);
             _currentHealth = Mathf.Clamp(_currentHealth - value, 0, MaxHealth);
             
-            EnemyHealthBar.UpdateHealthBar(_currentHealth, MaxHealth);
+            _enemyHealthBar.UpdateHealthBar(_currentHealth, MaxHealth);
             
             if(_currentHealth <= 0) OnDie();
         }
@@ -156,7 +159,7 @@ namespace EnemyPack.CustomEnemyLogic
         {
             ExpPool.SpawnExpGem(EnemyData.ExpGemType, transform.position);
             rb2d.velocity = Vector2.zero;
-            Collider2D.enabled = false;
+            _collider2D.enabled = false;
             
             base.OnDie(destroyObj, _enemySpawner);
         }
@@ -164,7 +167,7 @@ namespace EnemyPack.CustomEnemyLogic
         public void DieWithoutGem()
         {
             rb2d.velocity = Vector2.zero;
-            Collider2D.enabled = false;
+            _collider2D.enabled = false;
             
             base.OnDie();
         }
