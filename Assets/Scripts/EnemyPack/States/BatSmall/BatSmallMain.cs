@@ -19,7 +19,7 @@ namespace EnemyPack.States.BatSmall
         {
             if (Vector2.Distance(state.transform.position, PlayerPos) > IDLE_RANGE) return;
             
-            state.SwitchState(new BatSmallTarget());
+            state.SwitchState(new Chase());
         }
 
         public override void Reset(EnemyLogic state)

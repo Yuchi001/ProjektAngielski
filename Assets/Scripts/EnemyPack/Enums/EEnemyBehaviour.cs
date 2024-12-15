@@ -3,5 +3,6 @@
     public enum EEnemyBehaviour
     {
         BatSmall,
+        Mimic,
     }
 }

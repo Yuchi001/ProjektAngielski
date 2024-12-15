@@ -13,7 +13,6 @@ namespace Other
     public abstract class CanBeDamaged : PoolObject
     {
         [SerializeField] private SpriteRenderer spriteRenderer;
-
         private const float _flashTime = 0.1f;
         private Material _spriteMaterial;
         
@@ -29,7 +28,6 @@ namespace Other
         protected bool Slowed => _effectsManager.Slowed;
 
         public SpriteRenderer SpriteRenderer => spriteRenderer;
-
 
         protected void CanBeDamagedSetup()
         {

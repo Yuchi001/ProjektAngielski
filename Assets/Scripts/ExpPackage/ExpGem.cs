@@ -49,7 +49,7 @@ namespace ExpPackage
 
             _gemState = EGemState.Default;
         }
-
+        
         public void Setup(EExpGemType gemType, Vector2 position)
         {
             var gemList = PlayerEnchantments.Has(EEnchantmentName.BetterExp)

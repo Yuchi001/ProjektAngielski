@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EnemyPack.CustomEnemyLogic;
 using EnemyPack.Enums;
 using EnemyPack.SO;
@@ -125,8 +122,6 @@ namespace EnemyPack
 
         public override SoPoolObject GetRandomPoolData()
         {
-            var validEnemies = _allEnemies.ToList();
-
             var sum = gemRarityList.Sum(g => g.weight);
             var randomInt = Random.Range(0, sum + 1) * (1 - Mathf.Clamp(_difficultyTimer / maximumDifficultyTimeCap, 0, 1));
             var pickedGemType = EExpGemType.Common;
@@ -142,9 +137,17 @@ namespace EnemyPack
                 randomInt -= gemRarityTuple.weight;
             }
 
-            validEnemies = validEnemies.Where(e => e.ExpGemType == pickedGemType).ToList();
-            
-            return validEnemies.Count != 0 ? validEnemies[Random.Range(0, validEnemies.Count)] : _allEnemies[0];
+            var enemies = GetValidEnemies();
+            var soEnemies = enemies as SoEnemy[] ?? enemies.ToArray();
+            return soEnemies.ElementAt(Random.Range(0, soEnemies.Length));
+
+            IEnumerable<SoEnemy> GetValidEnemies()
+            {
+                var current = new List<SoEnemy>();
+                foreach (var enemy in _allEnemies)
+                    if (enemy.ExpGemType == pickedGemType) current.Add(enemy);
+                return current;
+            }
         }
     }
 

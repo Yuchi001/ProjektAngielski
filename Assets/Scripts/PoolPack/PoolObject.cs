@@ -23,6 +23,8 @@ namespace PoolPack
         public virtual void OnRelease()
         {
             Active = false;
+            
+            _lastMeasure.Clear();
         }
 
         public void SetTimer(string ID)

@@ -4,6 +4,7 @@ using System.Linq;
 using AudioPack;
 using DamageIndicatorPack;
 using EnchantmentPack.Enums;
+using EnemyPack.Enums;
 using EnemyPack.SO;
 using EnemyPack.States;
 using ExpPackage;
@@ -25,9 +26,10 @@ namespace EnemyPack.CustomEnemyLogic
         [SerializeField] private Transform bodyTransform;
         [SerializeField] private Rigidbody2D rb2d;
         [SerializeField] private Animator animator;
-        
-        private static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
-        private static Vector2 PlayerPos => PlayerManager.Instance.PlayerPos;
+
+        public Animator Animator => animator;
+        public static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
+        public static Vector2 PlayerPos => PlayerManager.Instance.PlayerPos;
         private EnemyHealthBar _enemyHealthBar;
         private Collider2D _collider2D;
         public override int MaxHealth => Mathf.CeilToInt(EnemyData.MaxHealth * _enemySpawner.EnemiesHpScale);
@@ -35,7 +37,13 @@ namespace EnemyPack.CustomEnemyLogic
         private float Mass => Mathf.Pow(EnemyData.BodyScale, 2);
         private float MovementSpeed => Slowed ? EnemyData.MovementSpeed / 2f : EnemyData.MovementSpeed;
         private static PlayerEnchantments PlayerEnchantments => PlayerManager.Instance.PlayerEnchantments;
-        
+
+        public bool Invincible { get; private set; }
+
+        public void SetInvincible(bool invincible)
+        {
+            Invincible = invincible;
+        }
 
         private bool _isBeingPushed = false;
         
@@ -92,7 +100,7 @@ namespace EnemyPack.CustomEnemyLogic
         public override void OnRelease()
         {
             base.OnRelease();
-            
+
             if (_enemySpawner == null) return;
             _enemySpawner.IncrementDeadEnemies(this, EnemyData);
         }
@@ -100,6 +108,12 @@ namespace EnemyPack.CustomEnemyLogic
         public override void InvokeUpdate()
         {
             if (Dead || (Stuned && _currentState.CanBeStunned) || !Active) return;
+
+            if (EnemyData.SpriteRotation != ESpriteRotation.None)
+            {
+                var playerOnLeft = PlayerPos.x < transform.position.x;
+                SpriteRenderer.flipX = playerOnLeft == (EnemyData.SpriteRotation == ESpriteRotation.RotateRight);
+            }
             
             _enemyHealthBar.ManageHealthBar();
             
