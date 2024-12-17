@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
   m_Name: SkullGreen
   m_EditorClassIdentifier: 
+  sprite: {fileID: 2020607364, guid: 4686c4413da0bd24eb6c3a0cf7dcbcca, type: 3}
   walkingAnimationClip: {fileID: 7400000, guid: 115afade84030564ab64b1c250c57841, type: 2}
   maxHealth: 2
   bodyScale: 1
   movementSpeed: 2
+  attackSpeed: 1
+  damage: 5
   expGemType: 0
-  isHorde: 0
-  isHeavy: 0
-  enemyState: 0
-  canShoot: 1
+  occurenceList: 
+  spriteRotation: 2
+  enemyBehaviour: 0

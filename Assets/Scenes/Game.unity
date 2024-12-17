@@ -755,6 +755,7 @@ GameObject:
   m_Component:
   - component: {fileID: 434654684}
   - component: {fileID: 434654683}
+  - component: {fileID: 434654685}
   m_Layer: 0
   m_Name: GameUiManager
   m_TagString: Untagged
@@ -774,7 +775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3bd2483567404986536910e2038f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameCanvas: {fileID: 0}
+  gameCanvas: {fileID: 1883401382}
   deathCanvas: {fileID: 0}
   menuCanvas: {fileID: 0}
   worldCanvas: {fileID: 936799114}
@@ -795,6 +796,18 @@ Transform:
   - {fileID: 1883401382}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &434654685
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434654682}
+  m_Enabled: 1
+  m_SortingLayerID: -1894480037
+  m_SortingLayer: 2
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &456224867
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,6 +1033,7 @@ GameObject:
   m_Component:
   - component: {fileID: 552953885}
   - component: {fileID: 552953884}
+  - component: {fileID: 552953886}
   m_Layer: 0
   m_Name: DeadZone
   m_TagString: Untagged
@@ -1094,6 +1108,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &552953886
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552953883}
+  m_Enabled: 1
+  m_SortingLayerID: 1255433063
+  m_SortingLayer: 1
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &598431558
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,8 +1362,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1894480037
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!1 &1246294617
 GameObject:
@@ -1867,7 +1893,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -1894480037
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!1 &1925957710

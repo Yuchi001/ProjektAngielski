@@ -12,9 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
   m_Name: BrainE
   m_EditorClassIdentifier: 
+  sprite: {fileID: -1333362743, guid: 7fd7bcd676b4cc54aaaf8f40b8393b08, type: 3}
   walkingAnimationClip: {fileID: 7400000, guid: 8c6b6af531adff64ab85fa19283e4f26, type: 2}
   maxHealth: 640
   bodyScale: 4
   movementSpeed: 0.5
+  attackSpeed: 0
+  damage: 0
   expGemType: 4
-  isHorde: 0
+  shootType: 0
+  occurenceList: 
+  spriteRotation: 2
+  enemyBehaviour: 1

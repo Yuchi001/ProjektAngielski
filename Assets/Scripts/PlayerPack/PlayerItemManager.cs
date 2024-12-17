@@ -1,62 +1,102 @@
-﻿ using System.Collections.Generic;
+﻿ using System;
+ using System.Collections.Generic;
 using System.Linq;
+using InventoryPack;
 using ItemPack;
 using ItemPack.SO;
+using ItemPack.WeaponPack.WeaponsLogic;
 using Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace PlayerPack
 {
-    public class PlayerItemManager : MonoBehaviour
+    public class PlayerItemManager : Box
     {
         private readonly List<ItemLogicBase> _currentItems = new();
         private List<SoItem> _allItems = new();
+        private List<(float weight, SoItem item)> _normalizedWeightItemList = new();
+        private float weightSum = 0;
 
-        public delegate void WeaponAddDelegate(ItemLogicBase itemLogicBase);
-        public static event WeaponAddDelegate OnItemAdd;
+        public delegate void ItemAddDelegate(ItemLogicBase itemLogicBase);
+        public static event ItemAddDelegate OnItemAdd;
 
-        
-        private void Awake()
+        protected override void Init()
         {
-            _allItems = Resources.LoadAll<SoItem>("Weapons").Select(Instantiate).ToList();
+            _allItems = Resources.LoadAll<SoItem>("Items").Select(Instantiate).ToList();
+
+            var weightItemList = _allItems.Select(item => (weight: 1f / item.ItemPrice, item: item)).ToList();
+            weightSum = weightItemList.Sum(w => w.weight);
+            _normalizedWeightItemList = weightItemList.Select(pair => (weight: pair.weight / weightSum, item: pair.item)).ToList();
         }
 
-        public void AddItem(SoItem itemToAdd, int level)
+        private void AddItemLogic(SoItem itemToAdd, int level)
         {
-            var itemLogicObj = Instantiate(itemToAdd.ItemPrefab, transform, true);
-            itemLogicObj.transform.localPosition = Vector3.zero;
-            var itemLogic = itemLogicObj.GetComponent<ItemLogicBase>();
-            itemLogic.Setup(itemToAdd);
+            var itemLogic = Instantiate(itemToAdd.ItemPrefab, transform, true);
+            itemLogic.transform.localPosition = Vector3.zero;
+            itemLogic.Setup(itemToAdd, level);
             _currentItems.Add(itemLogic);
-            
-            OnItemAdd?.Invoke(itemLogic);
-            
-            var availableWeapons = _currentItems.Where(w => w.Item.ItemName == itemToAdd.ItemName && w.Level == level);
-            if (availableWeapons.Count() < StaticOptions.LEVEL_UP_PER_WEAPONS_COUNT || level >= StaticOptions.MAX_TIER) return;
 
-            for (var i = 0; i < StaticOptions.LEVEL_UP_PER_WEAPONS_COUNT; i++) 
-                DestroyItem(itemToAdd.ItemName);
-            
-            AddItem(itemToAdd, level + 1);
+            OnItemAdd?.Invoke(itemLogic);
         }
 
-        public IEnumerable<SoItem> GetRandomWeapons(int count)
+        public override int AddItem(SoItem item, int level)
         {
-            var weapons = new List<SoItem>();
-            var weaponPool = new List<SoItem>(_allItems);
+            var index = base.AddItem(item, level);
+            if (index == -1) return -1;
+            
+            if (index < 7) AddItemLogic(item, level);
+            return index;
+        }
+
+        public void RefreshInventory()
+        {
+            DestroyAllItems();
+            foreach (var slot in _itemSlots)
+            {
+                if (slot.Index >= 7) return; 
+                var itemPair = slot.ViewItem();
+                AddItemLogic(itemPair.item, itemPair.level);
+            }
+        }
+
+        public override void AddItemAtSlot(int index, SoItem item, int level)
+        {
+            base.AddItemAtSlot(index, item, level);
+            //RefreshInventory();
+        }
+
+        public override void RemoveItemAtSlot(int index)
+        {
+            base.RemoveItemAtSlot(index);
+            //RefreshInventory();
+        }
+
+        public IEnumerable<SoItem> GetRandomItems(int count, float percentage = 0.0f)
+        {
+            var selectedItems = new List<SoItem>();
 
             for (var i = 0; i < count; i++)
             {
-                if (weaponPool.Count == 0) break;
-                
-                var randomIndex = Random.Range(0, weaponPool.Count);
-                var pickedWeapon = Instantiate(weaponPool[randomIndex]);
-                weapons.Add(pickedWeapon);
-                weaponPool.RemoveAt(randomIndex);
+                var roll = Random.value;
+
+                roll -= Random.value * percentage;
+                roll = Mathf.Max(roll, 0f);
+
+                var cumulativeWeight = 0f;
+
+                foreach (var entry in _normalizedWeightItemList)
+                {
+                    cumulativeWeight += entry.weight;
+
+                    if (roll > cumulativeWeight) continue;
+                    
+                    selectedItems.Add(entry.item);
+                    break;
+                }
             }
-            
-            return weapons;
+
+            return selectedItems;
         }
 
         public void DestroyAllItems()
@@ -65,15 +105,6 @@ namespace PlayerPack
             {
                 Destroy(item.gameObject);
             }
-        }
-
-        public void DestroyItem(string itemName)
-        {
-            var item = _currentItems.FirstOrDefault(i => i != null && i.Item.ItemName == itemName);
-            if (item == default) return;
-            
-            _currentItems.Remove(item);
-            Destroy(item.gameObject);
         }
     }
 }

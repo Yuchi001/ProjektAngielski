@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EnemyPack.Enums;
 using EnemyPack.States.BatSmall;
+using EnemyPack.States.Mimic;
 
 namespace EnemyPack.States
 {
@@ -9,7 +10,8 @@ namespace EnemyPack.States
     {
         private static readonly Dictionary<EEnemyBehaviour, Func<StateBase>> _states = new()
         {
-            { EEnemyBehaviour.BatSmall, () => new BatSmallMain() }
+            { EEnemyBehaviour.BatSmall, () => new BatSmallMain() },
+            { EEnemyBehaviour.Mimic, () => new MimicMain() }
         };
 
         public static StateBase GetState(EEnemyBehaviour type)

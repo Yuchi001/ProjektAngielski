@@ -16,10 +16,10 @@ namespace ItemPack
     {
         public int Level { get; private set; } = 0;
         public float TimerScaled => 1 - _timer / Cooldown;
-        public int Damage => (int)_realWeaponStats.FirstOrDefault(s => s.SelfStatType == EItemSelfStatType.Damage)!.StatValue;
-        protected float Speed => _realWeaponStats.FirstOrDefault(s => s.SelfStatType == EItemSelfStatType.ProjectileSpeed)!.StatValue;
-        protected int ProjectileCount => (int)_realWeaponStats.FirstOrDefault(s => s.SelfStatType == EItemSelfStatType.ProjectilesCount)!.StatValue;
-        protected float PushForce => _realWeaponStats.FirstOrDefault(s => s.SelfStatType == EItemSelfStatType.PushForce)!.StatValue;
+        public int Damage => (int)(GetStatValue(EItemSelfStatType.Damage) ?? 0);
+        protected float Speed => GetStatValue(EItemSelfStatType.ProjectileSpeed) ?? 0;
+        protected int ProjectileCount => (int)(GetStatValue(EItemSelfStatType.ProjectilesCount) ?? 0);
+        protected float PushForce => GetStatValue(EItemSelfStatType.PushForce) ?? 0;
         protected float Cooldown => (GetStatValue(EItemSelfStatType.Cooldown) ?? 1) * CustomCooldownModifier();
 
         protected static PlayerEnchantments PlayerEnchantments => GameManager.Instance.CurrentPlayer.PlayerEnchantments;
@@ -31,17 +31,11 @@ namespace ItemPack
 
         private float _timer = 0;
         private bool spawned = false;
-
-
-        private List<StatPair> OngoingStats = new();
-        private List<StatPair> _realWeaponStats = new();
         
-        
-        public void Setup(SoItem item)
+        public void Setup(SoItem item, int level)
         {
             _item = Instantiate(item);
-            OngoingStats = _item.StartingStats;
-            _realWeaponStats = _item.StartingStats;
+            Level = level;
         }
         
         private void Update()
@@ -57,18 +51,13 @@ namespace ItemPack
 
         protected float? GetStatValue(EItemSelfStatType statTypeType)
         {
-            var stat = _realWeaponStats.FirstOrDefault(s => s.SelfStatType == statTypeType);
+            var stat = Item.GetStat(statTypeType, Level);
             return stat?.StatValue;
         }
         
         protected virtual float CustomCooldownModifier()
         {
             return 1; 
-        }
-
-        public virtual void LevelUp()
-        {
-            Level++;
         }
     }
 }

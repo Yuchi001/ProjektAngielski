@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de381b3008804c3dbe63ed1939590453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 0.5
-  animTime: 0.3
+  range: 2
+  animTime: 0.15
   expAmountPair:
   - gemType: 0
     expAmount: 1

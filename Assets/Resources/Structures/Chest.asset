@@ -17,3 +17,5 @@ MonoBehaviour:
   structureSprite: {fileID: 21300000, guid: c251c0d862045694db1131ee7a838219, type: 3}
   structureScale: 0.5
   reusable: 0
+  randomPercentageBust: 0
+  maxItems: 4

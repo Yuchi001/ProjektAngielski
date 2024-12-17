@@ -15,5 +15,7 @@
         public const string StructureBase = "StructureBase";
         public const string ExplosionBase = "ExplosionBase";
         public const string DamageIndicatorHolder = "DamageIndicatorHolder";
+        public const string ItemSlot = "ItemSlot";
+        public const string ChestInteractionUI = "ChestInteractionUI";
     }
 }

@@ -14,7 +14,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     {
         [SerializeField] private List<NotePair> noteList = new();
         
-        private float Accuracy => GetStatValue(EItemSelfStatType.Accuracy) ?? 1;
+        private float Accuracy => GetStatValue(EItemSelfStatType.Spread) ?? 1;
         private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale) ?? 1;
         
         protected override bool Use()

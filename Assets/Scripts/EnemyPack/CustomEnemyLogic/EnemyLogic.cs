@@ -31,7 +31,7 @@ namespace EnemyPack.CustomEnemyLogic
         public static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
         public static Vector2 PlayerPos => PlayerManager.Instance.PlayerPos;
         private EnemyHealthBar _enemyHealthBar;
-        private Collider2D _collider2D;
+        public Collider2D Collider2D { get; private set; }
         public override int MaxHealth => Mathf.CeilToInt(EnemyData.MaxHealth * _enemySpawner.EnemiesHpScale);
         private static float PlayerSpeed => PlayerManager.Instance.PlayerStatsManager.GetStat(EPlayerStatType.MovementSpeed);
         private float Mass => Mathf.Pow(EnemyData.BodyScale, 2);
@@ -59,7 +59,7 @@ namespace EnemyPack.CustomEnemyLogic
         public override void OnCreate(PoolManager poolManager)
         {
             base.OnCreate(poolManager);
-            _collider2D = GetComponent<Collider2D>();
+            Collider2D = GetComponent<Collider2D>();
             _enemyHealthBar = GetComponent<EnemyHealthBar>();
             _enemySpawner = poolManager as EnemySpawner;
         }
@@ -67,18 +67,22 @@ namespace EnemyPack.CustomEnemyLogic
         public override void OnGet(SoPoolObject enemy)
         {
             base.OnGet(enemy);
+
+            SpriteRenderer.enabled = false;
             
             var player = PlayerManager.Instance;
             if (player == null) _enemySpawner.ReleasePoolObject(this);
             
             _isBeingPushed = false;
+
+            Animator.enabled = true;
             
             EnemyData = enemy.As<SoEnemy>();
             rb2d.mass = Mass;
             
             _currentHealth = MaxHealth;
             
-            _collider2D.enabled = true;
+            Collider2D.enabled = true;
 
             var scale = EnemyData.BodyScale;
             transform.localScale = new Vector3(scale,scale,scale);
@@ -95,6 +99,8 @@ namespace EnemyPack.CustomEnemyLogic
             _currentState = StateFactory.GetState(EnemyData.EnemyBehaviour);
             _currentState.Reset(this);
             _currentState.Enter(this);
+            
+            SpriteRenderer.enabled = true;
         }
 
         public override void OnRelease()
@@ -109,10 +115,12 @@ namespace EnemyPack.CustomEnemyLogic
         {
             if (Dead || (Stuned && _currentState.CanBeStunned) || !Active) return;
 
-            if (EnemyData.SpriteRotation != ESpriteRotation.None)
+            var rotation = _currentState.GetRotation(this);
+            if (rotation != ESpriteRotation.None)
             {
                 var playerOnLeft = PlayerPos.x < transform.position.x;
-                SpriteRenderer.flipX = playerOnLeft == (EnemyData.SpriteRotation == ESpriteRotation.RotateRight);
+                var rotationRight = rotation == ESpriteRotation.RotateRight;
+                SpriteRenderer.flipX = playerOnLeft == rotationRight;
             }
             
             _enemyHealthBar.ManageHealthBar();
@@ -173,7 +181,7 @@ namespace EnemyPack.CustomEnemyLogic
         {
             ExpPool.SpawnExpGem(EnemyData.ExpGemType, transform.position);
             rb2d.velocity = Vector2.zero;
-            _collider2D.enabled = false;
+            Collider2D.enabled = false;
             
             base.OnDie(destroyObj, _enemySpawner);
         }
@@ -181,7 +189,7 @@ namespace EnemyPack.CustomEnemyLogic
         public void DieWithoutGem()
         {
             rb2d.velocity = Vector2.zero;
-            _collider2D.enabled = false;
+            Collider2D.enabled = false;
             
             base.OnDie();
         }

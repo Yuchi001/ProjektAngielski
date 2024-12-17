@@ -14,10 +14,9 @@ namespace ItemPack.SO
         [SerializeField] private string itemName;
         [SerializeField, TextArea] private string itemDescription;
         [SerializeField] private int itemPrice;
-        [SerializeField] private int itemWeight;
         [SerializeField] private Sprite itemSprite;
         [SerializeField] private bool oneTimeSpawnLogic;
-        [SerializeField] private GameObject itemPrefab;
+        [SerializeField] private ItemLogicBase itemPrefab;
         [SerializeField] private List<EItemTag> itemTags;
         [SerializeField] private EItemType itemType;
         [SerializeField] private List<StatScalePair> itemScalingPower = new();
@@ -27,13 +26,13 @@ namespace ItemPack.SO
         [SerializeField] private TieredStatDict tieredStats = new();
 
         public string ItemName => itemName;
+        public float ItemPrice => itemPrice;
         public string ItemDescription => itemDescription;
         public bool OneTimeSpawnLogic => oneTimeSpawnLogic;
         public List<EItemTag> ItemTags => itemTags;
         public EItemType ItemType => itemType;
         public Dictionary<EPlayerStatType, EScalingPower> ItemScalingPower => itemScalingPower.ToDictionary(e => e.StatType, e => e.ScalingPower);
-        public int ItemWeight => itemWeight;
-        public GameObject ItemPrefab => itemPrefab;
+        public ItemLogicBase ItemPrefab => itemPrefab;
         public Sprite ItemSprite => itemSprite;
         public List<StatPair> StartingStats => startingStats;
         public TieredStatDict TieredStats => tieredStats;

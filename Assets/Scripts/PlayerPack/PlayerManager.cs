@@ -22,13 +22,14 @@ namespace PlayerPack
         #endregion
 
         [SerializeField] private SpriteRenderer playerSpriteRenderer;
+        [SerializeField] private PlayerItemManager playerItemManagerPrefab;
         [SerializeField] private Animator animator;
 
         public SoCharacter PickedCharacter { get; private set; }
 
         public PlayerExp PlayerExp => GetComponent<PlayerExp>();
         public PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
-        public PlayerItemManager PlayerItemManager => GetComponent<PlayerItemManager>();
+        public PlayerItemManager PlayerItemManager { get; private set; }
         public PlayerMovement PlayerMovement => GetComponent<PlayerMovement>();
         public PlayerEnchantments PlayerEnchantments => GetComponent<PlayerEnchantments>();
         public PlayerStatsManager PlayerStatsManager => GetComponent<PlayerStatsManager>();
@@ -57,7 +58,8 @@ namespace PlayerPack
             aoc.ApplyOverrides(anims);
             animator.runtimeAnimatorController = aoc;
             
-            GetComponent<PlayerItemManager>().AddItem(pickedCharacter.StartingItem, 0);
+            PlayerItemManager = Instantiate(playerItemManagerPrefab, GameUiManager.Instance.GameCanvas);
+            PlayerItemManager.AddItem(pickedCharacter.StartingItem, 1);
             
             OnPlayerReady?.Invoke();
         }

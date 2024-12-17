@@ -54,11 +54,10 @@ namespace StructurePack
 
         private void Update()
         {
-            if (!_inRange || (_wasUsed && !_structureData.Reusable) || !Input.GetKey(KeyCode.E)) return;
+            if (!_inRange || (_wasUsed && !_structureData.Reusable) || _toggle || !Input.GetKeyDown(KeyCode.E)) return;
 
             _wasUsed = true;
             _toggle = !_toggle;
-            
             _structureData.OnInteract(this);
         }
 

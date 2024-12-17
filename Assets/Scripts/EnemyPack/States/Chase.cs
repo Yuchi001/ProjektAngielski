@@ -26,7 +26,7 @@ namespace EnemyPack.States
 
         private new static Vector2 PlayerPos => PlayerManager.Instance.PlayerPos;
 
-        public Chase(StateBase nextState)
+        public Chase(StateBase nextState, bool runAwa)
         {
             _onPlayerInRange = logic => logic.SwitchState(nextState);
         }

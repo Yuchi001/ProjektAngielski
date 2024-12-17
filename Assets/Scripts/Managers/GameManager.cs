@@ -58,8 +58,7 @@ namespace Managers
 
        private IEnumerable<SoEffectBase> _effects = null;
        public IEnumerable<SoEffectBase> EffectList => _effects ??= Resources.LoadAll<SoEffectBase>("EffectStatus");
-
-
+       
        #endregion
        
        private void Init()

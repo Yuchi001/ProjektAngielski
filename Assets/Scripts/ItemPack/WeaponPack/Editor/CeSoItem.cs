@@ -23,7 +23,6 @@ namespace ItemPack.WeaponPack.Editor
         private SerializedProperty itemTags;
         private SerializedProperty itemType;
         private SerializedProperty itemPrice;
-        private SerializedProperty itemWeight;
 
         private SoItem _soItem;
 
@@ -47,7 +46,6 @@ namespace ItemPack.WeaponPack.Editor
             itemPrefab = serializedObject.FindProperty("itemPrefab");
             itemTags = serializedObject.FindProperty("itemTags");
             itemType = serializedObject.FindProperty("itemType");
-            itemWeight = serializedObject.FindProperty("itemWeight");
             _soItem = target as SoItem;
         }
 
@@ -57,7 +55,6 @@ namespace ItemPack.WeaponPack.Editor
 
             EditorGUILayout.PropertyField(itemName);
             EditorGUILayout.PropertyField(itemDescription);
-            EditorGUILayout.PropertyField(itemWeight);
             EditorGUILayout.PropertyField(itemPrice);
             EditorGUILayout.PropertyField(itemType);
             EditorGUILayout.PropertyField(sprite);

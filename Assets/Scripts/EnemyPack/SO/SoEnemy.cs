@@ -10,21 +10,22 @@ namespace EnemyPack.SO
     [CreateAssetMenu(fileName = "new Enemy", menuName = "Custom/Enemy")]
     public class  SoEnemy : SoPoolObject
     {
-        [Header("General")]
+        [Header("General")] 
+        [SerializeField] private Sprite sprite;
         [SerializeField] private AnimationClip walkingAnimationClip;
         [SerializeField] private int maxHealth;
         [SerializeField] private float bodyScale = 1;
         [SerializeField] private float movementSpeed;
-        [SerializeField] private float attackSpeed;
+        [SerializeField, Min(0.1f)] private float attackSpeed;
         [SerializeField] private int damage;
         [SerializeField] private EExpGemType expGemType;
-        [SerializeField] private EShootType shootType;
         [SerializeField] private List<EStageType> occurenceList;
         [SerializeField] private ESpriteRotation spriteRotation = ESpriteRotation.RotateLeft;
         
         [Header("Behaviour")]
         [SerializeField] private EEnemyBehaviour enemyBehaviour;
 
+        public Sprite EnemySprite => sprite;
         public EEnemyBehaviour EnemyBehaviour => enemyBehaviour;
         public List<EStageType> OccurenceList => occurenceList;
         public float BodyScale => bodyScale;
@@ -35,6 +36,5 @@ namespace EnemyPack.SO
         public float MovementSpeed => movementSpeed;
         public float AttackSpeed => attackSpeed;
         public EExpGemType ExpGemType => expGemType;
-        public EShootType ShootType => shootType;
     }
 }

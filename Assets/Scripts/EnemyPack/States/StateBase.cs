@@ -1,4 +1,5 @@
 ﻿using EnemyPack.CustomEnemyLogic;
+using EnemyPack.Enums;
 using PlayerPack;
 using UnityEngine;
 
@@ -21,5 +22,10 @@ namespace EnemyPack.States
         public virtual void FixedExecute(EnemyLogic state) { }
 
         public abstract void Reset(EnemyLogic state);
+
+        public virtual ESpriteRotation GetRotation(EnemyLogic state)
+        {
+            return state.EnemyData.SpriteRotation;
+        }
     }
 }

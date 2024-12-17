@@ -17,11 +17,10 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
         [SerializeField] protected float trailTime = 0.2f;
         [SerializeField] protected Sprite projectileSprite;
         
-        private float Accuracy => GetStatValue(EItemSelfStatType.Accuracy) ?? 1;
+        private float Spread => GetStatValue(EItemSelfStatType.Spread) ?? 1;
         
         /// <summary>
         /// Base for fire arm bullet, options already set:
-        ///<br/> - light color
         ///<br/> - scale
         ///<br/> - sprite
         ///<br/> - push force
@@ -71,8 +70,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
         private Vector2 GetDirection(Vector2 pickedTargetPos)
         {
             var pos = pickedTargetPos;
-            pos.x += Random.Range(-Accuracy, Accuracy);
-            pos.y += Random.Range(-Accuracy, Accuracy);
+            pos.x += Random.Range(-Spread, Spread);
+            pos.y += Random.Range(-Spread, Spread);
             return pos;
         }
     }

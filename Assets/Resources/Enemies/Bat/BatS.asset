@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
   m_Name: BatS
   m_EditorClassIdentifier: 
+  sprite: {fileID: 1681999334, guid: a457484fbe6f3d3419e95037895271c1, type: 3}
   walkingAnimationClip: {fileID: 7400000, guid: 600fc0f48ae512340a98928b18a8825a, type: 2}
   maxHealth: 320
   bodyScale: 4
   movementSpeed: 1
+  attackSpeed: 0
+  damage: 5
   expGemType: 4
-  isHorde: 0
-  isHeavy: 0
-  enemyState: 0
+  occurenceList: 
+  spriteRotation: 2
+  enemyBehaviour: 0

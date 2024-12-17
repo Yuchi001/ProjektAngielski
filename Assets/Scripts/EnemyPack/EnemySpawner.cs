@@ -77,7 +77,6 @@ namespace EnemyPack
         {
             OnEnemyDie?.Invoke(enemyLogic);
             DeadEnemies++;
-            if (enemy.ShootType != EShootType.None) ShootingEnemiesCount--;
         }
 
         protected override void SpawnLogic()
@@ -95,9 +94,6 @@ namespace EnemyPack
             var enemyObj = _enemyPool.Get();
             enemyObj.OnGet(enemy);
             enemyObj.transform.position = position;
-            
-            // TODO: Tutaj tez zastap
-            //if (enemy.ShootType != EShootType.None) ShootingEnemiesCount++;
         }
 
         public override void SpawnRandomEntity(Vector2 position)
