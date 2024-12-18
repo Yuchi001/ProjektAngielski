@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using ItemPack.SO;
 using Managers;
 using Managers.Other;
@@ -9,8 +8,7 @@ namespace InventoryPack
 {
     public abstract class Box : MonoBehaviour
     {
-        [SerializeField] private Sprite emptySprite;
-        [SerializeField] private List<BoxGridData> gridDataList;
+        [SerializeField] protected List<BoxGridData> gridDataList;
 
         protected readonly List<ItemSlot> _itemSlots = new();
         public Canvas CurrentCanvas { get; private set; }
@@ -21,21 +19,43 @@ namespace InventoryPack
         {
             CurrentCanvas = GetComponentInParent<Canvas>();
             
-            var itemSlotPrefab = GameManager.Instance.GetPrefab<ItemSlot>(PrefabNames.ItemSlot);
+            var prefab = GameManager.Instance.GetPrefab<ItemSlot>(PrefabNames.ItemSlot);
+            SpawnSlots(prefab);
+            Init();
+        }
 
+        private void SpawnSlots(ItemSlot prefab)
+        {
             var index = 0;
             foreach (var gridData in gridDataList)
             {
                 for (var i = 0; i < gridData.Capacity; i++)
                 {
-                    var spawnedSlot = Instantiate(itemSlotPrefab, gridData.Grid);
-                    spawnedSlot.Setup(this, index, emptySprite);
+                    var spawnedSlot = Instantiate(prefab, gridData.Grid);
+                    spawnedSlot.Setup(this, index);
                     _itemSlots.Add(spawnedSlot);
                     index++;
                 }
             }
-            
-            Init();
+        }
+        
+        /// <summary>
+        /// Editor only function
+        /// </summary>
+        public void SpawnSlots()
+        {
+            var prefab = Resources.Load<ItemSlot>("Prefabs/UI/ItemSlot");
+            var index = 0;
+            foreach (var gridData in gridDataList)
+            {
+                for (var i = 0; i < gridData.Capacity; i++)
+                {
+                    var spawnedSlot = Instantiate(prefab, gridData.Grid);
+                    spawnedSlot.Setup(this, index);
+                    _itemSlots.Add(spawnedSlot);
+                    index++;
+                }
+            }
         }
 
         protected abstract void Init();
@@ -93,6 +113,11 @@ namespace InventoryPack
         public ItemSlot GetSlotAtIndex(int index)
         {
             return _itemSlots[index];
+        }
+
+        public virtual bool CanInteract()
+        {
+            return true;
         }
 
         public virtual void Open()

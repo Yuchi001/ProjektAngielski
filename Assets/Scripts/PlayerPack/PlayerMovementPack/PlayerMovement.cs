@@ -111,7 +111,6 @@ namespace PlayerPack.PlayerMovementPack
                 _dashingTimer += Time.deltaTime;
                 if (_dashingTimer < dashTime) return;
                 
-                
                 dashParticles.Stop();
                 DuringDash = false;
                 PlayerHealth.Invincible = false;

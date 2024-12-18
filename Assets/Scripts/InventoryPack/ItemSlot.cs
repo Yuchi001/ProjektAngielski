@@ -7,35 +7,46 @@ namespace InventoryPack
 {
     public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        //private Box _box;
         private SoItem _current = null;
         private DragItemSlot _dragItemSlot;
         private Image _itemImage;
+        private Image _backgroundImage;
         private int _level;
-        private Color _dragColor;
-        private Sprite _emptySlotSprite;
+        private static readonly Color _dragColor = new(0.5f, 0.5f, 0.5f, 0.3f);
+        private static readonly Color _tonedColor = new(0.5f, 0.5f, 0.5f, 1);
+        private static readonly Color _disabledColor = new(0.35f, 0.35f, 0.35f, 1);
+        private bool _enabled = true;
+        private Box _box;
         
         public int Index { get; private set; }
 
-        public void Setup(Box box, int index, Sprite emptySprite)
+        public void Setup(Box box, int index, bool enabled = true)
         {
-            //_box = box;
+            _box = box;
+            _enabled = enabled;
             _dragItemSlot = transform.GetComponentInChildren<DragItemSlot>();
             _dragItemSlot.Setup(this, box);
-            _itemImage = GetComponent<Image>();
-            _itemImage.sprite = emptySprite;
-            _dragColor = new Color(1, 1, 1, 0.3f);
+            _itemImage = transform.GetChild(transform.childCount - 1).GetComponent<Image>();
+            _backgroundImage = transform.GetChild(1).GetComponent<Image>();
             Index = index;
+            _itemImage.color = Color.clear;
+            _backgroundImage.color = enabled ? _tonedColor : _disabledColor;
+            if (!enabled) SetItem(null, -1);
         }
 
         public bool TryAddNewItem(SoItem item, int level)
         {
-            if (_current != null || !item) return false;
+            if (_current || !item) return false;
 
-            _current = Instantiate(item);
-            _itemImage.sprite = _current.ItemSprite;
-            _level = level;
+            SetItem(item, level);
             return true;
+        }
+
+        public void SetEnabled(bool enabled)
+        {
+            _enabled = enabled;
+            _backgroundImage.color = enabled ? _tonedColor : _disabledColor;
+            if (!enabled) SetItem(null, -1);
         }
 
         public void SetItem(SoItem item, int level)
@@ -43,6 +54,7 @@ namespace InventoryPack
             _level = level;
             _current = item ? Instantiate(item) : null;
             _itemImage.sprite = _current ? _current.ItemSprite : null;
+            _itemImage.color = _current ? _tonedColor : Color.clear;
         }
 
         public (SoItem item, int level) ViewItem()
@@ -52,7 +64,7 @@ namespace InventoryPack
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (_current == null) return;
+            if (_current == null || !enabled || !_box.CanInteract()) return;
             
             _dragItemSlot.BeginDrag();
             _itemImage.color = _dragColor;
@@ -63,16 +75,21 @@ namespace InventoryPack
             return _current == null;
         }
 
+        public bool IsEnabled()
+        {
+            return _enabled;
+        }
+
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (IsEmpty()) return;
+            if (IsEmpty() || !_enabled || !_box.CanInteract()) return;
             
             var rayCastHitGO = eventData.pointerCurrentRaycast.gameObject;
-            if (rayCastHitGO && rayCastHitGO.TryGetComponent(out ItemSlot itemSlot))
+            if (rayCastHitGO && rayCastHitGO.TryGetComponent(out ItemSlot itemSlot) && itemSlot.IsEnabled())
                 _dragItemSlot.EndDrag(itemSlot.Index, itemSlot.GetComponentInParent<Box>());
             else _dragItemSlot.EndDrag();
             
-            _itemImage.color = Color.white;
+            _itemImage.color = _current ? _tonedColor : Color.clear;
         }
     }
 }

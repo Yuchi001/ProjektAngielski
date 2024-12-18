@@ -65,12 +65,12 @@ namespace PlayerPack
 
         public float GetStat(EPlayerStatType statType) 
         {
-            return _stats[statType].Value;
+            return _stats[statType].GetDependentValue(_stats);
         }
 
         public int GetStatAsInt(EPlayerStatType statType)
         {
-            return Mathf.CeilToInt(_stats[statType].Value);
+            return Mathf.CeilToInt(_stats[statType].GetDependentValue(_stats));
         }
 
         public float ModifyStat(EPlayerStatType statType, float modifier)
@@ -106,17 +106,18 @@ namespace PlayerPack
             
             public float GetDependentValue(Dictionary<EPlayerStatType, Stat> stats)
             {
+                var val = Value;
                 foreach (var pair in _dependencies)
                 {
-                    Value += stats[pair.stat].Value * pair.factor;
+                    val += stats[pair.stat].Value * pair.factor;
 
                     if (!limit.HasValue || Value < limit) continue;
 
-                    Value = limit.Value;
+                    val = limit.Value;
                     break;
                 }
 
-                return _isInt ? Mathf.CeilToInt(Value) : Value;
+                return _isInt ? Mathf.CeilToInt(val) : val;
             }
 
             public float ModifyValue(float modifier)

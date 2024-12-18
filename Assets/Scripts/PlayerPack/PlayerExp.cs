@@ -10,38 +10,34 @@ namespace PlayerPack
     public class PlayerExp : MonoBehaviour
     {
         [SerializeField] private int levelOneCap;
-        [SerializeField] private GameObject levelUpUiPrefab;
 
-        public int CurrentLevel { get; private set; } = 1;
+        public int StackedLevels { get; private set; } = 1;
         public int NextLevelExp { get; private set; }
-        public float CurrentExp { get; private set; }
+        public int CurrentExp { get; private set; }
+
+        public delegate void GainExpDelegate();
+        public static event GainExpDelegate OnGainExp;
         
         private void Awake()
         {
-            CurrentLevel = 1;
+            StackedLevels = 1;
             NextLevelExp = levelOneCap;
         }
 
         public void GainExp(int expPoints)
         {
             CurrentExp += expPoints;
-            //if (CurrentExp >= NextLevelExp) StartCoroutine(LevelUp());
+            OnGainExp?.Invoke();
+            if (CurrentExp >= NextLevelExp) LevelUp();
         }
         
-        private IEnumerator LevelUp()
+        private void LevelUp()
         {
-            LeanTween.pause(gameObject);
-            
-            CurrentLevel++;
+            StackedLevels++;
             var expExcess = CurrentExp - NextLevelExp;
             CurrentExp = 0;
-            NextLevelExp = levelOneCap * CurrentLevel + CurrentLevel * CurrentLevel;
+            NextLevelExp = levelOneCap * StackedLevels + StackedLevels * StackedLevels;
 
-            var levelUpUiInstance = Instantiate(levelUpUiPrefab, GameUiManager.Instance.GameCanvas, false);
-            //levelUpUiInstance.GetComponent<LevelUpUi>().Setup(); TODO: Refactor
-
-            yield return new WaitUntil(() => levelUpUiInstance == null);
-            
             if(expExcess >= 1) GainExp((int)expExcess);
         }
     }

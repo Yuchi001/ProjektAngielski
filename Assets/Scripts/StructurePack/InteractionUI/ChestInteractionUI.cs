@@ -1,7 +1,9 @@
-﻿using InventoryPack;
+﻿using System;
+using InventoryPack;
 using PlayerPack;
 using StructurePack.SO;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace StructurePack.InteractionUI
 {
@@ -17,6 +19,7 @@ namespace StructurePack.InteractionUI
         public override void Close()
         {
             PlayerManager.Instance.PlayerItemManager.RefreshInventory();
+            PlayerItemManager.ToggleEq(false);
             Time.timeScale = 1;
             Destroy(gameObject);
         }
@@ -24,6 +27,7 @@ namespace StructurePack.InteractionUI
         public override void Open()
         {
             base.Open();
+            PlayerItemManager.ToggleEq(true);
             Time.timeScale = 0;
         }
 
@@ -35,11 +39,17 @@ namespace StructurePack.InteractionUI
             var itemCount = Random.Range(1, chest.MaxItems + 1);
             foreach (var item in PlayerItemManager.GetRandomItems(itemCount, chest.RandomPercentageBust))
             {
-                Debug.Log("ADDING ITEM");
                 AddItem(item, 1);
             }
             
             Open();
+        }
+
+        private void Update()
+        {
+            if (!Input.GetKeyDown(KeyCode.Escape)) return;
+            
+            Close();
         }
     }
 }

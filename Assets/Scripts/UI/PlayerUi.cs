@@ -88,7 +88,7 @@ namespace UI
             healthText.text = $"{PlayerHealth.CurrentHealth}/{PlayerHealth.MaxHealth}";
 
             expMeter.fillAmount = PlayerExp.CurrentExp / PlayerExp.NextLevelExp;
-            levelText.text = PlayerExp.CurrentLevel + " LvL";
+            levelText.text = PlayerExp.StackedLevels + " LvL";
             _uiUpdateTimer = 0;
         }
     }

@@ -26,14 +26,12 @@ namespace EnemyPack.States.Mimic
 
             var sprite = state.EnemyData.EnemySprite;
             state.SpriteRenderer.sprite = sprite;
-            _transform.localScale = Vector2.one * (sprite.pixelsPerUnit / 32 * state.EnemyData.BodyScale);
         }
 
         public override void Execute(EnemyLogic state)
         {
             if (Vector2.Distance(_transform.position, PlayerPos) > DETECTION_RANGE) return;
 
-            _transform.localScale = Vector2.one * state.EnemyData.BodyScale; 
             state.Animator.enabled = true;
             state.Collider2D.isTrigger = false;
             state.Animator.Play("Idle");

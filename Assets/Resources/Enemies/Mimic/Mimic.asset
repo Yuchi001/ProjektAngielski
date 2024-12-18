@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
   m_Name: Mimic
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: c251c0d862045694db1131ee7a838219, type: 3}
+  sprite: {fileID: 21300000, guid: d1c613ea31047d04d814e3f2c3058c68, type: 3}
   walkingAnimationClip: {fileID: 7400000, guid: 3e66f7e11dbbc1748b0c4791e8862e25, type: 2}
   maxHealth: 100
   bodyScale: 1
