@@ -9,11 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3798e612a6de4f06bad9ce9a5e613bcf, type: 3}
+  m_Script: {fileID: 11500000, guid: 9fa2a18466fe4b59a9ae2cd0da4546de, type: 3}
   m_Name: EnchantmentTotem
   m_EditorClassIdentifier: 
-  structureName: Enchantment
+  structureName: Totem
   structureDescription: 
   structureSprite: {fileID: 21300000, guid: ba575929a00dcc541ad075e87083e4b0, type: 3}
+  usedStructureSprite: {fileID: 0}
   structureScale: 1
   reusable: 1
+  maintainData: 1
+  enchantmentCount: 3
+  costModifierPerPurchase: 5
+  rechargeIncrementCost: 5
+  baseRechargeCost: 10

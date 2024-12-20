@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AudioPack;
 using EffectPack.SO;
+using EnchantmentPack;
 using EnemyPack;
 using ItemPack.WeaponPack.Other;
 using MainCameraPack;
@@ -50,6 +51,7 @@ namespace Managers
        public MapGenerator MapGenerator { get; private set; }
        public WaveManager WaveManager => waveManager;
        public EnemySpawner EnemySpawner => waveManager.EnemySpawner;
+       public int StageCount = 0;
 
        #region Cached
 
@@ -58,6 +60,9 @@ namespace Managers
 
        private IEnumerable<SoEffectBase> _effects = null;
        public IEnumerable<SoEffectBase> EffectList => _effects ??= Resources.LoadAll<SoEffectBase>("EffectStatus");
+
+       private IEnumerable<SoEnchantment> _enchantments = null;
+       public IEnumerable<SoEnchantment> EnchantmentList => _enchantments ??= Resources.LoadAll<SoEnchantment>("Enchantments");
        
        #endregion
        
@@ -98,12 +103,6 @@ namespace Managers
        {
            var hasValue = _prefabs.TryGetValue(prefName, out var prefab);
            return hasValue ? prefab.GetComponent<T>() : null;
-       }
-       
-       public GameObject GetPrefab(string prefName)
-       {
-           var hasValue = _prefabs.TryGetValue(prefName, out var prefab);
-           return hasValue ? prefab : null;
        }
     }
 }

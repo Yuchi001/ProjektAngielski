@@ -1,11 +1,13 @@
 ﻿using ItemPack.SO;
+using Managers;
+using Managers.Other;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace InventoryPack
 {
-    public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
     {
         private SoItem _current = null;
         private DragItemSlot _dragItemSlot;
@@ -17,6 +19,9 @@ namespace InventoryPack
         private static readonly Color _disabledColor = new(0.35f, 0.35f, 0.35f, 1);
         private bool _enabled = true;
         private Box _box;
+        private ItemInformationHover _informationPrefab;
+        private ItemInformationHover _spawnedInformationInstance = null;
+        private bool _drag = false;
         
         public int Index { get; private set; }
 
@@ -31,6 +36,7 @@ namespace InventoryPack
             Index = index;
             _itemImage.color = Color.clear;
             _backgroundImage.color = enabled ? _tonedColor : _disabledColor;
+            _informationPrefab = GameManager.Instance.GetPrefab<ItemInformationHover>(PrefabNames.ItemInformationUI);
             if (!enabled) SetItem(null, -1);
         }
 
@@ -62,14 +68,6 @@ namespace InventoryPack
             return (item: _current, level: _level);
         }
 
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            if (_current == null || !enabled || !_box.CanInteract()) return;
-            
-            _dragItemSlot.BeginDrag();
-            _itemImage.color = _dragColor;
-        }
-
         public bool IsEmpty()
         {
             return _current == null;
@@ -78,6 +76,16 @@ namespace InventoryPack
         public bool IsEnabled()
         {
             return _enabled;
+        }
+        
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            if (_current == null || !enabled || !_box.CanInteract()) return;
+            
+            _dragItemSlot.BeginDrag();
+            _itemImage.color = _dragColor;
+            _drag = true;
+            OnPointerExit(eventData);
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -90,6 +98,23 @@ namespace InventoryPack
             else _dragItemSlot.EndDrag();
             
             _itemImage.color = _current ? _tonedColor : Color.clear;
+            _drag = false;
+            //OnPointerEnter(eventData);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (IsEmpty() || !_enabled || _drag || !_box.CanInteract() || _spawnedInformationInstance != null) return;
+
+            _spawnedInformationInstance = Instantiate(_informationPrefab, GameUiManager.Instance.GameCanvas);
+            _spawnedInformationInstance.Setup(_current, _level, _box);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (_spawnedInformationInstance == null) return;
+            
+            Destroy(_spawnedInformationInstance.gameObject);
         }
     }
 }

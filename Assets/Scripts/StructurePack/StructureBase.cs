@@ -23,6 +23,8 @@ namespace StructurePack
 
         public bool Toggle => _toggle;
         public bool WasUsed => _wasUsed;
+
+        private GameObject spawnedStructure = null;
         
         private void Awake()
         {
@@ -56,9 +58,11 @@ namespace StructurePack
         {
             if (!_inRange || (_wasUsed && !_structureData.Reusable) || _toggle || !Input.GetKeyDown(KeyCode.E)) return;
 
+
+            if (!_structureData.Reusable) structureSpriteRenderer.sprite = _structureData.UsedStructureSprite;
             _wasUsed = true;
             _toggle = !_toggle;
-            _structureData.OnInteract(this);
+            _structureData.OnInteract(this, ref spawnedStructure);
         }
 
         private void OnTriggerEnter2D(Collider2D other)

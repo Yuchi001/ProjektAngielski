@@ -1,6 +1,7 @@
 ﻿using ItemPack.SO;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 namespace InventoryPack
 {
@@ -85,9 +86,7 @@ namespace InventoryPack
 
         private void Update()
         {
-            var mousePosition = _cameraMain.ScreenToWorldPoint(Input.mousePosition);
-            mousePosition.z = 0;
-            transform.position = mousePosition;
+            transform.SetPositionToMousePos(_cameraMain);
         }
     }
 }

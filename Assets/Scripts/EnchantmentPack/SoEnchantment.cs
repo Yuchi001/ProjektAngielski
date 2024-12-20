@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using EnchantmentPack.Enums;
-using EnchantmentPack.Interfaces;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace EnchantmentPack
@@ -19,9 +17,11 @@ namespace EnchantmentPack
         [SerializeField] private EEnchantmentType enchantmentType;
         [SerializeField] private List<EnchantmentParam> parameters;
         [SerializeField, TextArea(5, 5)] private string description;
+        [SerializeField] private int cost;
         [SerializeField, Tooltip("Optional")] private EEnchantmentName requirement = EEnchantmentName.None;
         
         public Sprite EnchantmentSprite => enchantmentSprite;
+        public int EnchantmentCost => cost;
         public Sprite EnchantmentActiveSprite => enchantmentActiveSprite;
         public EEnchantmentName EnchantmentName => enchantmentName;
         public EEnchantmentType EEnchantmentType => enchantmentType;

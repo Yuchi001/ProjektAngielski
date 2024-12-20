@@ -16,6 +16,9 @@
         public const string ExplosionBase = "ExplosionBase";
         public const string DamageIndicatorHolder = "DamageIndicatorHolder";
         public const string ItemSlot = "ItemSlot";
-        public const string ChestInteractionUI = "ChestInteractionUI";
+        public const string ItemInformationUI = "ItemInformationUI";
+        public const string TotemSlot = "TotemSlot";
+        public const string TotemInteractionUI = "TotemInteractionUI";
+        public const string WorldItem = "WorldItem";
     }
 }

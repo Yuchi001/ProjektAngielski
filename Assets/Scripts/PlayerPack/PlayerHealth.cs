@@ -85,14 +85,13 @@ namespace PlayerPack
         {
             if (Dead || Invincible) return;
             
-            OnPlayerDamaged?.Invoke();
-            
             base.GetDamaged(value, color);
             _currentHealth = Mathf.Clamp(_currentHealth - value, 
                 0, MaxHealth);
             
             AudioManager.PlaySound(ESoundType.PlayerHurt);
             
+            OnPlayerDamaged?.Invoke();
             if(_currentHealth <= 0) OnDie(false);
         }
 

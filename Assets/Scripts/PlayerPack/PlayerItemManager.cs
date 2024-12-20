@@ -93,6 +93,11 @@ namespace PlayerPack
             return index;
         }
 
+        public void AddCoins(int count)
+        {
+            
+        }
+
         public void RefreshInventory()
         {
             DestroyAllItems();

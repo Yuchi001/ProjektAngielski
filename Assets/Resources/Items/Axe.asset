@@ -20,7 +20,25 @@ MonoBehaviour:
   itemPrefab: {fileID: 506535658867812816, guid: 0afe6e8b9009e8c4a960660c2ba5085f, type: 3}
   itemTags: 
   itemType: 0
-  itemScalingPower: []
+  itemScalingPower:
+  - _statType: 0
+    _scalingPower: 1
+  - _statType: 1
+    _scalingPower: 0
+  - _statType: 2
+    _scalingPower: 2
+  - _statType: 3
+    _scalingPower: 0
+  - _statType: 4
+    _scalingPower: 2
+  - _statType: 5
+    _scalingPower: 0
+  - _statType: 6
+    _scalingPower: 0
+  - _statType: 7
+    _scalingPower: 0
+  - _statType: 8
+    _scalingPower: 0
   startingStats:
   - selfStatType: 1
     statValue: 5
@@ -31,7 +49,7 @@ MonoBehaviour:
     isPercentage: 0
     canUpgrade: 0
   - selfStatType: 6
-    statValue: 1
+    statValue: 0.4
     isPercentage: 0
     canUpgrade: 1
   - selfStatType: 4
@@ -39,7 +57,7 @@ MonoBehaviour:
     isPercentage: 0
     canUpgrade: 1
   - selfStatType: 3
-    statValue: 3
+    statValue: 5
     isPercentage: 0
     canUpgrade: 0
   - selfStatType: 14
@@ -85,7 +103,7 @@ MonoBehaviour:
         isPercentage: 0
         canUpgrade: 0
       - selfStatType: 6
-        statValue: 1
+        statValue: 0.3
         isPercentage: 0
         canUpgrade: 1
       - selfStatType: 4
@@ -111,7 +129,7 @@ MonoBehaviour:
         isPercentage: 0
         canUpgrade: 0
       - selfStatType: 6
-        statValue: 2
+        statValue: 0.6
         isPercentage: 0
         canUpgrade: 1
       - selfStatType: 4

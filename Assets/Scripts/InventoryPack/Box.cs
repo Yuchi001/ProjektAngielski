@@ -83,6 +83,16 @@ namespace InventoryPack
 
             return -1;
         }
+
+        public bool IsFull()
+        {
+            foreach (var slot in _itemSlots)
+            {
+                if (!slot.IsEmpty()) return false;
+            }
+
+            return true;
+        }
         
         /// <summary>
         /// Checks if item can be added to box.

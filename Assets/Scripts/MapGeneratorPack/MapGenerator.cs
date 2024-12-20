@@ -60,8 +60,8 @@ namespace MapGeneratorPack
             var structurePrefab = GameManager.Instance.GetPrefab<StructureBase>(PrefabNames.StructureBase);
             foreach (var structure in _structures)
             {
-                var randomOffsetX = Random.Range(-0.5f, 0.5f);
-                var randomOffsetY = Random.Range(-0.5f, 0.5f);
+                var randomOffsetX = Random.Range(-3f, 3f);
+                var randomOffsetY = Random.Range(-3f, 3f);
                 var newPos = transform.position;
                 newPos.x = randomOffsetX;
                 newPos.y = randomOffsetY;
