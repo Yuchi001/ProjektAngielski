@@ -25,6 +25,7 @@ namespace StructurePack
         public bool WasUsed => _wasUsed;
 
         private GameObject spawnedStructure = null;
+        private Light2D _spriteLight;
         
         private void Awake()
         {
@@ -34,7 +35,7 @@ namespace StructurePack
         public void Setup(SoStructure structureData)
         {
             var spriteTransform = structureSpriteRenderer.transform;
-            var spriteLight = structureSpriteRenderer.GetComponent<Light2D>();
+            _spriteLight = structureSpriteRenderer.GetComponent<Light2D>();
             
             Collider.radius = collisionRange * structureData.StructureScale;
             
@@ -42,7 +43,7 @@ namespace StructurePack
             structureSpriteRenderer.sprite = structureData.StructureSprite;
             spriteTransform.localScale *= structureData.StructureScale;
 
-            spriteLight.lightCookieSprite = structureData.StructureSprite;
+            _spriteLight.lightCookieSprite = structureData.StructureSprite;
 
             var height = structureData.StructureSprite.rect.height;
             var offsetY = 0.5f * (height / 16.0f) * structureData.StructureScale;
@@ -58,16 +59,20 @@ namespace StructurePack
         {
             if (!_inRange || (_wasUsed && !_structureData.Reusable) || _toggle || !Input.GetKeyDown(KeyCode.E)) return;
 
-
-            if (!_structureData.Reusable) structureSpriteRenderer.sprite = _structureData.UsedStructureSprite;
+            if (!_structureData.Reusable)
+            {
+                structureSpriteRenderer.sprite = _structureData.UsedStructureSprite;
+                _spriteLight.enabled = false;
+            }
             _wasUsed = true;
             _toggle = !_toggle;
             _structureData.OnInteract(this, ref spawnedStructure);
+            interactionMessage.SetActive(false);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (!other.CompareTag("Player")) return;
+            if (!other.CompareTag("Player") || (_wasUsed && !_structureData.Reusable)) return;
 
             _inRange = true;
             interactionMessage.SetActive(true);

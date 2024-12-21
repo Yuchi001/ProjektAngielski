@@ -95,7 +95,7 @@ namespace PlayerPack
 
         public void AddCoins(int count)
         {
-            
+            // TODO: add coins
         }
 
         public void RefreshInventory()

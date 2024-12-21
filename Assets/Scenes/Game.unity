@@ -1972,7 +1972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd182f2fc5d74f35b106d381102e100c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.5
+  maxUpdateStackDuration: 0.1
   <PoolSize>k__BackingField: 10
   coinDataList:
   - coinSprite: {fileID: 21300000, guid: c23f17c0a3cc27d48b1fb746d3068b36, type: 3}

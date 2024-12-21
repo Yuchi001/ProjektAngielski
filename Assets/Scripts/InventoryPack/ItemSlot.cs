@@ -1,6 +1,8 @@
-﻿using ItemPack.SO;
+﻿using InventoryPack.WorldItemPack;
+using ItemPack.SO;
 using Managers;
 using Managers.Other;
+using PlayerPack;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -42,7 +44,7 @@ namespace InventoryPack
 
         public bool TryAddNewItem(SoItem item, int level)
         {
-            if (_current || !item) return false;
+            if (_current != null || item == null || !_enabled) return false;
 
             SetItem(item, level);
             return true;
@@ -99,6 +101,13 @@ namespace InventoryPack
             
             _itemImage.color = _current ? _tonedColor : Color.clear;
             _drag = false;
+
+            if (rayCastHitGO == null)
+            {
+                WorldItemManager.SpawnItem(Instantiate(_current), _level, PlayerManager.Instance.PlayerPos);
+                SetItem(null, -1);
+            }
+            
             //OnPointerEnter(eventData);
         }
 

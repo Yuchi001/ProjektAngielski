@@ -44,6 +44,11 @@ namespace Utils
             transform.position = mousePosition;
         }
 
+        public static T BinaryRandom<T>(T first, T second)
+        {
+            return Random.Range(0, 2) == 0 ? first : second;
+        }
+
         public static bool InRange(this Transform current, Vector2 searched, float dist)
         {
             return Vector2.Distance(current.position, searched) < dist;

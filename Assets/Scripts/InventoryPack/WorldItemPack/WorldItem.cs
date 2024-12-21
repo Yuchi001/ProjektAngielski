@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using ItemPack.SO;
 using Other;
 using PlayerPack;
@@ -23,11 +24,15 @@ namespace InventoryPack.WorldItemPack
         private SoItem _item;
         private int _level;
         private bool _isCoin = false;
+        private bool _canPickUp = false;
+
+        private PoolManager _poolManager;
 
         public override void OnCreate(PoolManager poolManager)
         {
             base.OnCreate(poolManager);
 
+            _poolManager = poolManager;
             _anim = GetComponent<Animator>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -41,6 +46,7 @@ namespace InventoryPack.WorldItemPack
             _item = null;
             _isCoin = false;
             _level = 1;
+            _canPickUp = false;
             _spriteRenderer.enabled = false;
         }
 
@@ -56,7 +62,7 @@ namespace InventoryPack.WorldItemPack
             transform.position = position;
             _item = item;
             _level = level;
-            _isCoin = true;
+            _isCoin = false;
             _spriteRenderer.sprite = item.ItemSprite;
             
             Ready();
@@ -78,15 +84,23 @@ namespace InventoryPack.WorldItemPack
 
             var randomDir = new Vector2
             {
-                x = Random.Range(-1f, 1f),
-                y = Random.Range(-1f, 1f),
+                x = UtilsMethods.BinaryRandom(-1, 1),
+                y = UtilsMethods.BinaryRandom(-1, 1),
             };
             _rigidbody2D.AddForce(randomDir * forceMagnitude, ForceMode2D.Impulse);
+            StartCoroutine(SetCanPickUp());
+        }
+
+        private IEnumerator SetCanPickUp()
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            _canPickUp = true;
         }
 
         public override void InvokeUpdate()
         {
-            if (PlayerManager.Instance.PlayerItemManager.IsFull() && !_isCoin) return;
+            if (PlayerManager.Instance.PlayerItemManager.IsFull() && !_isCoin || !_canPickUp) return;
             
             var playerPos = PlayerManager.Instance.PlayerPos;
             var dist = transform.Distance(playerPos);
@@ -94,9 +108,16 @@ namespace InventoryPack.WorldItemPack
 
             transform.MoveTowards(playerPos, movementSpeed);
             if (dist >= getDistance) return;
+
+            if (_isCoin)
+            {
+                PlayerManager.Instance.PlayerItemManager.AddCoins(_level); 
+                _poolManager.ReleasePoolObject(this);
+                return;
+            }
             
-            if (_isCoin) PlayerManager.Instance.PlayerItemManager.AddCoins(_level); 
-            else PlayerManager.Instance.PlayerItemManager.AddItem(_item, _level);
+            var index = PlayerManager.Instance.PlayerItemManager.AddItem(Instantiate(_item), _level);
+            if (index != -1) _poolManager.ReleasePoolObject(this);
         }
 
         private void OnDrawGizmos()

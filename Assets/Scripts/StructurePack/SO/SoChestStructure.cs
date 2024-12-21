@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using InventoryPack.WorldItemPack;
 using ItemPack.SO;
@@ -21,12 +22,21 @@ namespace StructurePack.SO
                 resultItems.Add(item);
                 if (resultItems.Sum(i => i.ItemPrice) + calculatedCash > item.ItemPrice) break;
             }
-            
-            WorldItemManager.SpawnCoins(calculatedCash, structureBase.transform.position);
 
-            foreach (var item in resultItems) WorldItemManager.SpawnItem(item, 1, structureBase.transform.position);
+            var spawnPos = structureBase.transform.position;
+            WorldItemManager.SpawnCoins(calculatedCash, spawnPos);
+            structureBase.StartCoroutine(SpawnItems(resultItems, spawnPos));
             
             Destroy(structureBase, 10f);
+        }
+
+        private IEnumerator SpawnItems(List<SoItem> items, Vector2 position)
+        {
+            foreach (var item in items)
+            {
+                WorldItemManager.SpawnItem(item, 1, position);
+                yield return new WaitForFixedUpdate();
+            }
         }
     }
 }

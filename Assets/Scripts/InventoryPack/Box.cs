@@ -88,7 +88,7 @@ namespace InventoryPack
         {
             foreach (var slot in _itemSlots)
             {
-                if (!slot.IsEmpty()) return false;
+                if (slot.IsEmpty()) return false;
             }
 
             return true;

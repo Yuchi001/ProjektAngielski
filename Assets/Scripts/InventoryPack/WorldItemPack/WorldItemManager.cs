@@ -47,13 +47,18 @@ namespace InventoryPack.WorldItemPack
             item.Setup(data, level, position);
         }
 
+        private void Update()
+        {
+            RunUpdatePoolStack();
+        }
+
         public static void SpawnCoins(int value, Vector2 position)
         {
             var coins = Instance.coinDataList;
             foreach (var coin in coins)
             {
                 var count = value % coin.CoinValue;
-                while (count > 0)
+                while (count > 0 && value >= coin.CoinValue)
                 {
                     var item = Instance.GetPoolObject<WorldItem>();
                     item.Setup(coin.CoinSprite, coin.CoinValue, position);
