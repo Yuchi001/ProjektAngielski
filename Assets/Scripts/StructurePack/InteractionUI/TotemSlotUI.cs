@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using EnchantmentPack;
 using PlayerPack;
 using TMPro;
@@ -11,6 +12,7 @@ namespace StructurePack.InteractionUI
     {
         [SerializeField] private Image image;
         [SerializeField] private TextMeshProUGUI nameField;
+        [SerializeField] private GameObject purchasedObject;
         [SerializeField] private TextMeshProUGUI descriptionField;
         [SerializeField] private TextMeshProUGUI costField;
 
@@ -18,11 +20,25 @@ namespace StructurePack.InteractionUI
         [SerializeField] private Button enchantButton;
 
         private SoEnchantment _enchantment;
-        
-        public void Setup(SoEnchantment enchantment)
+        private TotemInteractionUI _totem;
+
+        private void Awake()
         {
+            purchasedObject.SetActive(false);
+        }
+
+        private void OnEnable()
+        {
+            if (!_enchantment || !PlayerManager.Instance.PlayerEnchantments.Has(_enchantment.EnchantmentName)) return;
+            
+            ReRollEnchantment();
+        }
+
+        public void Setup(SoEnchantment enchantment, TotemInteractionUI totem)
+        {
+            _totem = totem;
             image.sprite = enchantment.EnchantmentSprite;
-            nameField.text = enchantment.EnchantmentName.ToString();
+            //nameField.text = enchantment.EnchantmentName.ToString();
             descriptionField.text = enchantment.GetDescription();
             costField.text = enchantment.EnchantmentCost.ToString();
 
@@ -31,8 +47,12 @@ namespace StructurePack.InteractionUI
 
         public void ReRollEnchantment()
         {
-            _enchantment = PlayerManager.Instance.PlayerEnchantments.GetRandomEnchantmentList(0).ElementAt(0);
+            do
+            {
+                _enchantment = PlayerManager.Instance.PlayerEnchantments.GetRandomEnchantment(_enchantment);
+            } while (!_totem.CanUseThisEnchantment(_enchantment));
             rollButton.interactable = false;
+            Setup(_enchantment, _totem);
         }
 
         public void Enchant()
@@ -40,6 +60,13 @@ namespace StructurePack.InteractionUI
             enchantButton.interactable = false;
             rollButton.interactable = false;
             PlayerManager.Instance.PlayerEnchantments.AddEnchantment(_enchantment);
+            _totem.IncrementRechargeCost();
+            purchasedObject.SetActive(true);
+        }
+
+        public bool HasEnchantment(SoEnchantment enchantment)
+        {
+            return _enchantment.EnchantmentName == enchantment.EnchantmentName;
         }
 
         private void Update()

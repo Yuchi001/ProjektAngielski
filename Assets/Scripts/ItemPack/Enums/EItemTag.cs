@@ -9,8 +9,8 @@
         Wand,
         Whip,
         Magic,
-        Physical,
         Mele,
+        Ranged,
         Boots,
         Chestplate
     }

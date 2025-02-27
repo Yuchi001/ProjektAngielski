@@ -63,11 +63,12 @@ namespace StructurePack
             {
                 structureSpriteRenderer.sprite = _structureData.UsedStructureSprite;
                 _spriteLight.enabled = false;
+                interactionMessage.SetActive(false);
             }
+            
             _wasUsed = true;
             _toggle = !_toggle;
             _structureData.OnInteract(this, ref spawnedStructure);
-            interactionMessage.SetActive(false);
         }
 
         private void OnTriggerEnter2D(Collider2D other)

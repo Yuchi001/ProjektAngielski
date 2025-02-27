@@ -1,6 +1,7 @@
 ﻿using Managers;
 using PoolPack;
 using TMPro;
+using UIPack;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -23,7 +24,8 @@ namespace DamageIndicatorPack
 
             _poolManager = (IndicatorManager)poolManager;
             
-            transform.SetParent(GameUiManager.Instance.WorldCanvas);
+            //TODO: Zunifikuj z uiManagerem
+            /*transform.SetParent(UIManager.Instance.WorldCanvas);*/
         }
 
         public void Setup(Vector2 position, int damage, bool isDamage, bool isCrit)

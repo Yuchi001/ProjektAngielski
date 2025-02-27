@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Managers;
-using UI;
 using UnityEngine;
 
 namespace PlayerPack

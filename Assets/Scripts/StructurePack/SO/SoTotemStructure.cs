@@ -2,6 +2,7 @@
 using Managers.Other;
 using PlayerPack;
 using StructurePack.InteractionUI;
+using UIPack;
 using UnityEngine;
 
 namespace StructurePack.SO
@@ -20,6 +21,7 @@ namespace StructurePack.SO
         
         public override void OnInteract(StructureBase structureBase, ref GameObject spawnedStructureInteraction)
         {
+            Time.timeScale = 0;
             PlayerManager.Instance.PlayerItemManager.ToggleEq(true);
             if (spawnedStructureInteraction != null)
             {
@@ -28,9 +30,11 @@ namespace StructurePack.SO
             }
             
             var prefab = GameManager.Instance.GetPrefab<TotemInteractionUI>(PrefabNames.TotemInteractionUI);
-            var spawned = Instantiate(prefab, GameUiManager.Instance.GameCanvas);
+            
+            //TODO: zunifikuj z uiManagerem
+            /*var spawned = Instantiate(prefab, UIManager.Instance.GameCanvas);
             spawned.Setup(this);
-            spawnedStructureInteraction = spawned.gameObject;
+            spawnedStructureInteraction = spawned.gameObject;*/
         }
     }
 }

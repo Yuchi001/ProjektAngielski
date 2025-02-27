@@ -7,10 +7,11 @@ using ItemPack.WeaponPack.Other;
 using MainCameraPack;
 using Managers.Enums;
 using Managers.Other;
-using MapGeneratorPack;
 using PlayerPack;
 using PlayerPack.SO;
+using UIPack;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Managers
 {
@@ -41,14 +42,13 @@ namespace Managers
        [SerializeField] private MainCamera mainCamera;
 
        [SerializeField] private WaveManager waveManager;
-       [SerializeField] private GameUiManager gameUiManager;
+       [FormerlySerializedAs("gameUiManager")] [SerializeField] private UIManager uiManager;
 
        [SerializeField] private SoCharacter baseCharacter; // TODO: usun
 
        private readonly Dictionary<string, GameObject> _prefabs = new();
        
        public PlayerManager CurrentPlayer { get; private set; }
-       public MapGenerator MapGenerator { get; private set; }
        public WaveManager WaveManager => waveManager;
        public EnemySpawner EnemySpawner => waveManager.EnemySpawner;
        public int StageCount = 0;
@@ -82,17 +82,13 @@ namespace Managers
 
        public void StartRun(SoCharacter soCharacter)
        {
-           MapGenerator = Instantiate(GetPrefab<MapGenerator>(PrefabNames.MapGeneratorManager));
-           
-           gameUiManager.BeginPlay();
-           
            var playerObj = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
            CurrentPlayer = playerObj.GetComponent<PlayerManager>();
            CurrentPlayer.Setup(soCharacter);
            
            mainCamera.Setup(playerObj);
            
-           AudioManager.SetTheme(EThemeType.Main1);
+           AudioManager.SetTheme(EThemeType.Mines);
            
            waveManager.BeginSpawn();
 

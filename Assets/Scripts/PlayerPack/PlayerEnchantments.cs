@@ -76,24 +76,37 @@ namespace PlayerPack
         {
             var enchantments = new List<SoEnchantment>();
 
+            var validEnchantments = _unusedEnchantments.Where(e => !e.HasRequirement || _currentEnchantments.ContainsKey(e.Requirement)).ToList();
+
             for (var i = 0; i < count; i++)
             {
-                if (_unusedEnchantments.Count == 0) break;
+                if (validEnchantments.Count == 0) break;
 
-                var randomIndex = Random.Range(0, _unusedEnchantments.Count);
-                var randomEnchantment = _unusedEnchantments[randomIndex];
-                
-                if (randomEnchantment.HasRequirement)
-                {
-                    var requirementValid = _currentEnchantments.ContainsKey(randomEnchantment.Requirement);
-                    if (!requirementValid) continue;
-                }
+                var randomIndex = Random.Range(0, validEnchantments.Count);
+                var randomEnchantment = validEnchantments[randomIndex];
                 
                 enchantments.Add(randomEnchantment);
-                _unusedEnchantments.RemoveAt(randomIndex);
+                validEnchantments.Remove(randomEnchantment);
+                _unusedEnchantments.Remove(randomEnchantment);
             }
 
             return enchantments;
+        }
+        
+        public SoEnchantment GetRandomEnchantment(SoEnchantment except = null)
+        {
+            var validEnchantments = _unusedEnchantments.Where(e => !e.HasRequirement || _currentEnchantments.ContainsKey(e.Requirement)).ToList();
+
+            if (except) validEnchantments.Remove(except);
+            
+            var randomIndex = Random.Range(0, validEnchantments.Count);
+            Debug.Log(validEnchantments.Count);
+            Debug.Log(randomIndex);
+            var randomEnchantment = validEnchantments[randomIndex];
+
+            _unusedEnchantments.Remove(randomEnchantment);
+
+            return randomEnchantment;
         }
 
         private void RemoveEnchantment(EEnchantmentName enchantmentName)

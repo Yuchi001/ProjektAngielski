@@ -2,6 +2,7 @@
 using System.Linq;
 using Managers;
 using Managers.Base;
+using MapGeneratorPack;
 using MarkerPackage;
 using Other.Enums;
 using PoolPack;
@@ -37,7 +38,7 @@ namespace Other
 
             _spriteRenderer.color = pair.color;
             SetTimer(SPAWN_TIMER_ID);
-            transform.position = GameManager.Instance.MapGenerator.GetRandomPos();
+            transform.position = MapGenerator.GetRandomPos();
             
             OnGet(null);
         }

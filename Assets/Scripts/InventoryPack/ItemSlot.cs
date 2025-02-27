@@ -3,6 +3,7 @@ using ItemPack.SO;
 using Managers;
 using Managers.Other;
 using PlayerPack;
+using UIPack;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -115,8 +116,9 @@ namespace InventoryPack
         {
             if (IsEmpty() || !_enabled || _drag || !_box.CanInteract() || _spawnedInformationInstance != null) return;
 
-            _spawnedInformationInstance = Instantiate(_informationPrefab, GameUiManager.Instance.GameCanvas);
-            _spawnedInformationInstance.Setup(_current, _level, _box);
+            //TODO: Zunifikuj z uiManagerem
+            /*_spawnedInformationInstance = Instantiate(_informationPrefab, UIManager.Instance.GameCanvas);
+            _spawnedInformationInstance.Setup(_current, _level, _box);*/
         }
 
         public void OnPointerExit(PointerEventData eventData)

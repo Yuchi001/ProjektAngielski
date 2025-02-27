@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using EnchantmentPack;
 using Managers;
 using Managers.Other;
 using PlayerPack;
 using StructurePack.SO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,15 +14,24 @@ namespace StructurePack.InteractionUI
 {
     public class TotemInteractionUI : MonoBehaviour, IStructure
     {
-        [SerializeField] private Transform enchantmentsHolder;
+        [SerializeField] private RectTransform enchantmentsHolder;
 
         [SerializeField] private Button rechargeButton;
 
+        private TextMeshProUGUI _rechargeButtonText;
         private SoTotemStructure _totem;
         private int _rechargeCost;
-        
+
+        private List<TotemSlotUI> _slotList = new();
+
+        private void Awake()
+        {
+            _rechargeButtonText = rechargeButton.GetComponentInChildren<TextMeshProUGUI>();
+        }
+
         public void Setup(SoStructure structureData)
         {
+            _slotList.Clear();
             _totem = (SoTotemStructure)structureData;
             _rechargeCost = _totem.BaseRechargeCost;
             var slotPrefab = GameManager.Instance.GetPrefab<TotemSlotUI>(PrefabNames.TotemSlot);
@@ -27,13 +39,29 @@ namespace StructurePack.InteractionUI
             foreach (var enchantment in randomEnchantments)
             {
                 var slot = Instantiate(slotPrefab, enchantmentsHolder);
-                slot.Setup(enchantment);
+                slot.Setup(enchantment, this);
+                _slotList.Add(slot);
             }
+            
+            enchantmentsHolder.ForceUpdateRectTransforms();
+            _rechargeButtonText.text = $"Recharge: {_rechargeCost} lvl's";
+        }
+
+        public bool CanUseThisEnchantment(SoEnchantment enchantment)
+        {
+            return _slotList.All(slot => !slot.HasEnchantment(enchantment));
         }
 
         public void IncrementRechargeCost()
         {
             _rechargeCost += _totem.RechargeIncrementCost;
+            _rechargeButtonText.text = $"Recharge: {_rechargeCost} lvl's";
+        }
+
+        private void Update()
+        {
+            rechargeButton.interactable = _rechargeCost <= PlayerManager.Instance.PlayerExp.StackedLevels;
+            if (Input.GetKeyDown(KeyCode.Escape)) Close();
         }
 
         public void Recharge()
@@ -41,9 +69,11 @@ namespace StructurePack.InteractionUI
             Setup(_totem);
         }
 
-        private void Update()
+        public void Close()
         {
-            rechargeButton.interactable = _rechargeCost <= PlayerManager.Instance.PlayerExp.StackedLevels;
+            Time.timeScale = 1;
+            gameObject.SetActive(false);
+            PlayerManager.Instance.PlayerItemManager.ToggleEq(false);
         }
     }
 }

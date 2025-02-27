@@ -12,32 +12,51 @@ using Random = UnityEngine.Random;
 
 namespace MapGeneratorPack
 {
+    [RequireComponent(typeof(MeshFilter))]
     public class MapGenerator : MonoBehaviour
     {
-        [SerializeField] private float chestSpawnChance = 10f;
-        [SerializeField] private float maxDistance = 5;
-        [SerializeField] private GameObject zonePrefab;
-        [SerializeField] private float zonesPerSecond = 0.1f;
-        [SerializeField] private float checkPlayerDistancePerSecond = 0.5f;
-        
-        private readonly List<Zone> _zones = new();
-
         private List<SoStructure> _structures = new();
-        
-        private bool _generate = false;
 
-        private float _playerDistanceTimer = 0;
-        private float _zoneSpawnTimer = 0;
+        private List<Vector3> _vertices;
+        private List<int> _triangles;
 
-        private List<Zone> CloseZones
+        private MeshFilter _meshFilter;
+
+        #region Singleton
+
+        private static MapGenerator Instance { get; set; }
+
+        private void Awake()
         {
-            get { return _currentZones ??= GetCloseZone(); }
-            set => _currentZones = value;
+            if (Instance != null && Instance != this) Destroy(gameObject);
+            else Instance = this;
         }
-        private List<Zone> _currentZones = null;
+
+        #endregion
 
         private IEnumerator Start()
         {
+            _meshFilter = GetComponent<MeshFilter>();
+            
+            var mesh = new Mesh();
+            
+            _vertices = new List<Vector3>
+            {
+                new(-1.5f, 1.5f),
+                new(1.5f, 1.5f),
+                new(1.5f, -1.5f),
+                new(-1.5f, 1.5f),
+            };
+            _triangles = new List<int>
+            {
+                0, 1, 2, 1, 3, 2
+            };
+
+            mesh.vertices = _vertices.ToArray();
+            mesh.triangles = _triangles.ToArray();
+
+            _meshFilter.mesh = mesh;
+
             yield return new WaitUntil(() => PlayerManager.Instance != null);
 
             _structures = Resources.LoadAll<SoStructure>("Structures").ToList();
@@ -47,9 +66,7 @@ namespace MapGeneratorPack
 
         public void Generate()
         {
-            _zones.Add(SpawnZone());
             GenerateStructures();
-            _generate = true;
         }
 
         private void GenerateStructures()
@@ -58,68 +75,33 @@ namespace MapGeneratorPack
 
             // THIS IS DEBUG ONLY
             var structurePrefab = GameManager.Instance.GetPrefab<StructureBase>(PrefabNames.StructureBase);
-            foreach (var structure in _structures)
+            for (int i = 0; i < 5; i++)
             {
-                var randomOffsetX = Random.Range(-3f, 3f);
-                var randomOffsetY = Random.Range(-3f, 3f);
-                var newPos = transform.position;
-                newPos.x = randomOffsetX;
-                newPos.y = randomOffsetY;
-                Instantiate(structurePrefab, newPos, Quaternion.identity).Setup(structure);
+                foreach (var structure in _structures)
+                {
+                    var randomOffsetX = Random.Range(-3f, 3f);
+                    var randomOffsetY = Random.Range(-3f, 3f);
+                    var newPos = transform.position;
+                    newPos.x = randomOffsetX;
+                    newPos.y = randomOffsetY;
+                    Instantiate(structurePrefab, newPos, Quaternion.identity).Setup(structure);
+                }
             }
         }
 
         private void Update()
         {
-            if (!_generate) return;
-
-            _playerDistanceTimer += Time.deltaTime;
-            _zoneSpawnTimer += Time.deltaTime;
-
-            if (_playerDistanceTimer > 1f / checkPlayerDistancePerSecond)
-            {
-                CloseZones = GetCloseZone();
-                _playerDistanceTimer = 0;
-            }
-
-            if (_zoneSpawnTimer > 1f / zonesPerSecond)
-            {
-                SpawnZone();
-                _zoneSpawnTimer = 0;
-
-                if (Random.Range(0f, 101f) > chestSpawnChance) return;
-                
-                // TODO: tu byly skrzynki
-            }
+            
         }
 
-        public Vector2 GetRandomPos()
+        public static Vector2 GetRandomPos()
         {
-            return CloseZones.Count == 0 ? Vector2.zero : CloseZones[Random.Range(0, CloseZones.Count)].GetRandomPos();
+            throw new Exception();
         }
 
-        private List<Zone> GetCloseZone()
+        public static bool ContainsEntity(Vector2 position)
         {
-            var playerPos = PlayerManager.Instance.transform.position;
-            return _zones.Where(z => Vector2.Distance(playerPos, z.transform.position) < maxDistance).ToList();
-        }
-
-        private Zone SpawnZone()
-        {
-            var obj = Instantiate(zonePrefab);
-            var zone = obj.GetComponent<Zone>();
-            zone.Setup(CloseZones.Count > 0 ? CloseZones[Random.Range(0, CloseZones.Count)] : null);
-            _zones.Add(zone);
-            return zone;
-        }
-
-        public bool ContainsEntity(Vector2 position)
-        {
-            foreach (var zone in _zones)
-            {
-                if (zone.Contains(position)) return true;
-            }
-            return false;
+            throw new Exception();
         }
     }
 }

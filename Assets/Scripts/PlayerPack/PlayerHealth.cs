@@ -6,6 +6,7 @@ using EnchantmentPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Managers;
 using Managers.Enums;
+using MapGeneratorPack;
 using Other;
 using ParticlesPack;
 using ParticlesPack.Enums;
@@ -77,7 +78,7 @@ namespace PlayerPack
             if (_zoneTimer < 1f / zoneCheckPerSec) return;
 
             _zoneTimer = 0;
-            var inBounds = GameManager.Instance.MapGenerator.ContainsEntity(transform.position);
+            var inBounds = MapGenerator.ContainsEntity(transform.position);
             if (!inBounds) GetDamaged(MaxHealth / 10);
         }
 

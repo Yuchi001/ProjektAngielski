@@ -18,113 +18,26 @@ MonoBehaviour:
   itemSprite: {fileID: 21300000, guid: 77af35722b5983046b7c502d2e5fedf2, type: 3}
   oneTimeSpawnLogic: 0
   itemPrefab: {fileID: 5679424887727705593, guid: 51b8214004e8c9246a98ad9ae5463170, type: 3}
-  itemTags: 
+  itemTags: 0200000008000000
   itemType: 0
-  itemScalingPower:
-  - _statType: 0
-    _scalingPower: 0
-  - _statType: 1
-    _scalingPower: 0
-  - _statType: 2
-    _scalingPower: 0
-  - _statType: 3
-    _scalingPower: 0
-  - _statType: 4
-    _scalingPower: 0
-  - _statType: 5
-    _scalingPower: 0
-  - _statType: 6
-    _scalingPower: 0
-  - _statType: 7
-    _scalingPower: 0
-  - _statType: 8
-    _scalingPower: 0
   startingStats:
   - selfStatType: 2
-    statValue: 3
-    isPercentage: 0
-    canUpgrade: 0
+    statValue: 0.1
+    canUpgrade: 1
+    mod: 0.05
   - selfStatType: 1
     statValue: 2
-    isPercentage: 0
     canUpgrade: 1
+    mod: -0.3
   - selfStatType: 9
     statValue: 0.5
-    isPercentage: 1
     canUpgrade: 1
+    mod: -0.1
   - selfStatType: 4
     statValue: 20
-    isPercentage: 0
     canUpgrade: 1
+    mod: 5
   - selfStatType: 3
     statValue: 5
-    isPercentage: 0
     canUpgrade: 0
-  tieredStats:
-    _pairs:
-    - _level: 0
-      _stats:
-      - selfStatType: 2
-        statValue: 0
-        isPercentage: 0
-        canUpgrade: 0
-      - selfStatType: 1
-        statValue: 0
-        isPercentage: 0
-        canUpgrade: 1
-      - selfStatType: 9
-        statValue: 0
-        isPercentage: 1
-        canUpgrade: 1
-      - selfStatType: 4
-        statValue: 0
-        isPercentage: 0
-        canUpgrade: 1
-      - selfStatType: 3
-        statValue: 0
-        isPercentage: 0
-        canUpgrade: 0
-    - _level: 1
-      _stats:
-      - selfStatType: 2
-        statValue: 0
-        isPercentage: 0
-        canUpgrade: 0
-      - selfStatType: 1
-        statValue: -0.25
-        isPercentage: 0
-        canUpgrade: 1
-      - selfStatType: 9
-        statValue: 10
-        isPercentage: 1
-        canUpgrade: 1
-      - selfStatType: 4
-        statValue: 20
-        isPercentage: 0
-        canUpgrade: 1
-      - selfStatType: 3
-        statValue: 0
-        isPercentage: 0
-        canUpgrade: 0
-    - _level: 2
-      _stats:
-      - selfStatType: 2
-        statValue: 0
-        isPercentage: 0
-        canUpgrade: 0
-      - selfStatType: 1
-        statValue: -0.5
-        isPercentage: 0
-        canUpgrade: 1
-      - selfStatType: 9
-        statValue: 20
-        isPercentage: 1
-        canUpgrade: 1
-      - selfStatType: 4
-        statValue: 20
-        isPercentage: 0
-        canUpgrade: 1
-      - selfStatType: 3
-        statValue: 0
-        isPercentage: 0
-        canUpgrade: 0
+    mod: 0

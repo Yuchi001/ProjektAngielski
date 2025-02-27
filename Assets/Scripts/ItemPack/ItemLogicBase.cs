@@ -51,8 +51,7 @@ namespace ItemPack
 
         protected float? GetStatValue(EItemSelfStatType statTypeType)
         {
-            var stat = Item.GetStat(statTypeType, Level);
-            return stat?.StatValue;
+            return Item.GetStatValue(statTypeType, Level);
         }
         
         protected virtual float CustomCooldownModifier()

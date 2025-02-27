@@ -2,6 +2,7 @@
 using Managers;
 using PlayerPack.PlayerMovementPack;
 using PlayerPack.SO;
+using UIPack;
 using UnityEngine;
 
 namespace PlayerPack
@@ -57,8 +58,9 @@ namespace PlayerPack
             aoc.ApplyOverrides(anims);
             animator.runtimeAnimatorController = aoc;
             
-            PlayerItemManager = Instantiate(playerItemManagerPrefab, GameUiManager.Instance.GameCanvas);
-            PlayerItemManager.AddItem(pickedCharacter.StartingItem, 1);
+            //TODO: zunifikuj razem z uiManagerem
+            //PlayerItemManager = Instantiate(playerItemManagerPrefab, UIManager.Instance.GameCanvas);
+            //PlayerItemManager.AddItem(pickedCharacter.StartingItem, 1);
             
             OnPlayerReady?.Invoke();
         }

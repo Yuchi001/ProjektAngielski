@@ -18,35 +18,18 @@ MonoBehaviour:
   itemSprite: {fileID: 21300000, guid: bf82be54333fa3649b0ce7f40949eb2a, type: 3}
   oneTimeSpawnLogic: 1
   itemPrefab: {fileID: 8613480531276933046, guid: 3fbda3aa0cbee3441833825b0e7504ad, type: 3}
-  itemTags: 
+  itemTags: 0600000001000000
   itemType: 0
-  itemScalingPower: []
   startingStats:
   - selfStatType: 1
     statValue: 20
-    isPercentage: 0
     canUpgrade: 0
-  - selfStatType: 0
-    statValue: 0
-    isPercentage: 0
-    canUpgrade: 0
-  tieredStats:
-    _pairs:
-    - _level: 0
-      _stats:
-      - selfStatType: 1
-        statValue: 0
-        isPercentage: 0
-        canUpgrade: 0
-    - _level: 1
-      _stats:
-      - selfStatType: 1
-        statValue: 0
-        isPercentage: 0
-        canUpgrade: 0
-    - _level: 2
-      _stats:
-      - selfStatType: 1
-        statValue: 0
-        isPercentage: 0
-        canUpgrade: 0
+    mod: 0
+  - selfStatType: 7
+    statValue: 2
+    canUpgrade: 1
+    mod: 0.5
+  - selfStatType: 10
+    statValue: 0.05
+    canUpgrade: 1
+    mod: 0.1

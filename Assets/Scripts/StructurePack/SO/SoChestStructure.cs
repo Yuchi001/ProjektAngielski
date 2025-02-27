@@ -15,7 +15,7 @@ namespace StructurePack.SO
         public override void OnInteract(StructureBase structureBase, ref GameObject spawnedInteraction)
         {
             var resultItems = new List<SoItem>();
-            var calculatedCash = Random.Range(0, maxCashReward / maxWeaponCount);
+            var calculatedCash = Random.Range(0, maxCashReward);
             var items = PlayerManager.Instance.PlayerItemManager.GetRandomItems(maxWeaponCount);
             foreach (var item in items)
             {

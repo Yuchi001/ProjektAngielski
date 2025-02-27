@@ -34,8 +34,6 @@ namespace EnemyPack
         private static PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
 
         private List<SoEnemy> _allEnemies = new();
-
-        public int ShootingEnemiesCount { get; private set; } = 0;
         
         private float _difficultyTimer = 0;
 
@@ -82,9 +80,6 @@ namespace EnemyPack
         protected override void SpawnLogic()
         {
             if (PlayerManager == null || _enemyPool == null) return;
-            
-            //TODO: tutaj jakos zastapic
-            //if (enemySo.ShootType != EShootType.None) ShootingEnemiesCount++;
 
             MarkerManager.SpawnMarker(this, EEntityType.Negative);
         }

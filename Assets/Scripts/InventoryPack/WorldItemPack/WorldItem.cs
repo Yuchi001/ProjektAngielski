@@ -5,6 +5,7 @@ using Other;
 using PlayerPack;
 using PoolPack;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using Utils;
 using Random = UnityEngine.Random;
 
@@ -20,6 +21,7 @@ namespace InventoryPack.WorldItemPack
         
         private SpriteRenderer _spriteRenderer;
         private Rigidbody2D _rigidbody2D;
+        private Light2D _light2D;
         private Animator _anim;
         private SoItem _item;
         private int _level;
@@ -34,6 +36,7 @@ namespace InventoryPack.WorldItemPack
 
             _poolManager = poolManager;
             _anim = GetComponent<Animator>();
+            _light2D = GetComponent<Light2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _spriteRenderer.enabled = false;
@@ -48,6 +51,7 @@ namespace InventoryPack.WorldItemPack
             _level = 1;
             _canPickUp = false;
             _spriteRenderer.enabled = false;
+            _light2D.enabled = false;
         }
 
         public override void OnGet(SoPoolObject so)
@@ -55,6 +59,7 @@ namespace InventoryPack.WorldItemPack
             base.OnGet(so);
             
             _spriteRenderer.enabled = true;
+            _light2D.enabled = true;
         }
 
         public void Setup(SoItem item, int level, Vector2 position)
@@ -64,6 +69,7 @@ namespace InventoryPack.WorldItemPack
             _level = level;
             _isCoin = false;
             _spriteRenderer.sprite = item.ItemSprite;
+            _light2D.lightCookieSprite = item.ItemSprite;
             
             Ready();
         }
@@ -74,6 +80,7 @@ namespace InventoryPack.WorldItemPack
             _spriteRenderer.sprite = coinSprite;
             _level = value;
             _isCoin = true;
+            _light2D.lightCookieSprite = coinSprite;
             
             Ready();
         }
@@ -84,9 +91,9 @@ namespace InventoryPack.WorldItemPack
 
             var randomDir = new Vector2
             {
-                x = UtilsMethods.BinaryRandom(-1, 1),
-                y = UtilsMethods.BinaryRandom(-1, 1),
-            };
+                x = Random.Range(-1f, 1f),
+                y = Random.Range(-1f, 1f),
+            }.normalized;
             _rigidbody2D.AddForce(randomDir * forceMagnitude, ForceMode2D.Impulse);
             StartCoroutine(SetCanPickUp());
         }
