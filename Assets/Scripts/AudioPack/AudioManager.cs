@@ -10,7 +10,6 @@ using UnityEngine.Pool;
 
 namespace AudioPack
 {
-    //TODO: Object pooling for audiomanager
     public class AudioManager : PoolManager
     {
         [SerializeField] private List<SoundData> sounds = new();

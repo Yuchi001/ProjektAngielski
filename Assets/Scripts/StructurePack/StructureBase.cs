@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Managers;
+using Managers.Other;
+using StructurePack.InteractionUI;
 using StructurePack.SO;
+using UIPack.CloseStrategies;
+using UIPack.OpenStrategies;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
@@ -18,18 +22,20 @@ namespace StructurePack
 
         private bool _inRange = false;
 
-        private bool _toggle = false;
-        private bool _wasUsed = false;
+        public bool Toggle { get; private set; } = false;
+        public bool WasUsed { get; private set; } = false;
 
-        public bool Toggle => _toggle;
-        public bool WasUsed => _wasUsed;
-
-        private GameObject spawnedStructure = null;
         private Light2D _spriteLight;
+
+        private IOpenStrategy _openStrategy;
+        private ICloseStrategy _closeStrategy;
         
         private void Awake()
         {
             Collider.isTrigger = true;
+            var prefab = GameManager.Instance.GetPrefab<TotemInteractionUI>(PrefabNames.TotemInteractionUI);
+            _openStrategy = new CloseAllOfTypeOpenStrategy<IStructure>(prefab, false);
+            _closeStrategy = new DefaultCloseStrategy();
         }
 
         public void Setup(SoStructure structureData)
@@ -57,7 +63,7 @@ namespace StructurePack
 
         private void Update()
         {
-            if (!_inRange || (_wasUsed && !_structureData.Reusable) || _toggle || !Input.GetKeyDown(KeyCode.E)) return;
+            if (!_inRange || (WasUsed && !_structureData.Reusable) || !Input.GetKeyDown(KeyCode.E)) return;
 
             if (!_structureData.Reusable)
             {
@@ -66,14 +72,26 @@ namespace StructurePack
                 interactionMessage.SetActive(false);
             }
             
-            _wasUsed = true;
-            _toggle = !_toggle;
-            _structureData.OnInteract(this, ref spawnedStructure);
+            HandleInteraction();
+        }
+
+        public void HandleInteraction()
+        {
+            Toggle = !Toggle;
+            _structureData.OnInteract(this, _openStrategy, _closeStrategy);
+            WasUsed = true;
+        }
+
+        public void HandleCloseUI()
+        {
+            Time.timeScale = 1;
+            Toggle = false;
+            WasUsed = true;
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (!other.CompareTag("Player") || (_wasUsed && !_structureData.Reusable)) return;
+            if (!other.CompareTag("Player") || (WasUsed && !_structureData.Reusable)) return;
 
             _inRange = true;
             interactionMessage.SetActive(true);

@@ -3,25 +3,21 @@ using System.Linq;
 
 namespace UIPack.OpenStrategies
 {
-    public class UniqueOpenStrategy<T> : IOpenStrategy where T: UIBase
+    public class SingletonOpenStrategy<T> : IOpenStrategy
     {
         private readonly Type _instanceType = typeof(T);
         private readonly UIBase _basePrefab;
 
-        public UniqueOpenStrategy(UIBase basePrefab)
+        public SingletonOpenStrategy(UIBase basePrefab)
         {
             _basePrefab = basePrefab;
         }
 
-        public bool Open(out UIBase uiBase)
+        public bool Open(out UIBase uiBase, string key)
         {
             var record = UIManager.GetCurrentUIBaseList().FirstOrDefault(ui => ui.GetType() == _instanceType);
             uiBase = record == default ? UIManager.SpawnUI(_basePrefab) : record.Script;
-            
-            uiBase.gameObject.SetActive(true);
-            uiBase.Animator.SetTrigger("OPEN");
-            
-            uiBase.OnOpen();
+            uiBase.OnOpen(key);
 
             return true;
         }

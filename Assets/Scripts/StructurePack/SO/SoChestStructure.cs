@@ -4,6 +4,8 @@ using System.Linq;
 using InventoryPack.WorldItemPack;
 using ItemPack.SO;
 using PlayerPack;
+using UIPack.CloseStrategies;
+using UIPack.OpenStrategies;
 using UnityEngine;
 
 namespace StructurePack.SO
@@ -12,7 +14,17 @@ namespace StructurePack.SO
     {
         [SerializeField, Range(1, 100)] private int maxCashReward;
         [SerializeField, Range(1, 4)] private int maxWeaponCount;
-        public override void OnInteract(StructureBase structureBase, ref GameObject spawnedInteraction)
+
+        private static IEnumerator SpawnItems(List<SoItem> items, Vector2 position)
+        {
+            foreach (var item in items)
+            {
+                WorldItemManager.SpawnItem(item, 1, position);
+                yield return new WaitForFixedUpdate();
+            }
+        }
+
+        public override void OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
         {
             var resultItems = new List<SoItem>();
             var calculatedCash = Random.Range(0, maxCashReward);
@@ -28,15 +40,6 @@ namespace StructurePack.SO
             structureBase.StartCoroutine(SpawnItems(resultItems, spawnPos));
             
             Destroy(structureBase, 10f);
-        }
-
-        private IEnumerator SpawnItems(List<SoItem> items, Vector2 position)
-        {
-            foreach (var item in items)
-            {
-                WorldItemManager.SpawnItem(item, 1, position);
-                yield return new WaitForFixedUpdate();
-            }
         }
     }
 }

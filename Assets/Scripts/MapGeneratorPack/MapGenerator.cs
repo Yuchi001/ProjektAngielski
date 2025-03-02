@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Managers;
@@ -10,6 +9,7 @@ using StructurePack.SO;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+//TODO: uzupełnij
 namespace MapGeneratorPack
 {
     [RequireComponent(typeof(MeshFilter))]
@@ -96,12 +96,12 @@ namespace MapGeneratorPack
 
         public static Vector2 GetRandomPos()
         {
-            throw new Exception();
+            return Vector2.zero;
         }
 
         public static bool ContainsEntity(Vector2 position)
         {
-            throw new Exception();
+            return false;
         }
     }
 }

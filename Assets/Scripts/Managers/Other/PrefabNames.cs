@@ -7,6 +7,7 @@
         public const string Food = "Food";
         public const string LaserProjectile = "LaserProjectile";
         public const string MapGeneratorManager = "MapGeneratorManager";
+        public const string PlayerInventoryManager = "PlayerInventoryManager";
         public const string Projectile = "Projectile";
         public const string SlashAttack = "SlashAttack";
         public const string SpawnIndicator = "SpawnIndicator";

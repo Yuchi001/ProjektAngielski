@@ -2,19 +2,18 @@
 using ItemPack.SO;
 using Managers;
 using Managers.Other;
+using UIPack;
 using UnityEngine;
 
 namespace InventoryPack
 {
-    public abstract class Box : MonoBehaviour
+    public abstract class Box : UIBase
     {
         [SerializeField] protected List<BoxGridData> gridDataList;
 
         protected readonly List<ItemSlot> _itemSlots = new();
         public Canvas CurrentCanvas { get; private set; }
-
-        protected bool _opened = false;
-
+        
         private void Awake()
         {
             CurrentCanvas = GetComponentInParent<Canvas>();
@@ -128,18 +127,6 @@ namespace InventoryPack
         public virtual bool CanInteract()
         {
             return true;
-        }
-
-        public virtual void Open()
-        {
-            _opened = true;
-            gameObject.SetActive(true);
-        }
-
-        public virtual void Close()
-        {
-            _opened = false;
-            gameObject.SetActive(false);
         }
 
         [System.Serializable]

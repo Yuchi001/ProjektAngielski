@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using Managers;
+using Managers.Other;
 using PlayerPack.PlayerMovementPack;
 using PlayerPack.SO;
 using UIPack;
+using UIPack.CloseStrategies;
+using UIPack.OpenStrategies;
 using UnityEngine;
 
 namespace PlayerPack
@@ -22,7 +25,6 @@ namespace PlayerPack
         #endregion
 
         [SerializeField] private SpriteRenderer playerSpriteRenderer;
-        [SerializeField] private PlayerItemManager playerItemManagerPrefab;
         [SerializeField] private Animator animator;
 
         public SoCharacter PickedCharacter { get; private set; }
@@ -58,9 +60,11 @@ namespace PlayerPack
             aoc.ApplyOverrides(anims);
             animator.runtimeAnimatorController = aoc;
             
-            //TODO: zunifikuj razem z uiManagerem
-            //PlayerItemManager = Instantiate(playerItemManagerPrefab, UIManager.Instance.GameCanvas);
-            //PlayerItemManager.AddItem(pickedCharacter.StartingItem, 1);
+            var playerItemManagerPrefab = GameManager.Instance.GetPrefab<PlayerItemManager>(PrefabNames.PlayerInventoryManager);
+            var openStrategy = new SingletonOpenStrategy<PlayerItemManager>(playerItemManagerPrefab);
+            var closeStrategy = new DefaultCloseStrategy();
+            PlayerItemManager = UIManager.OpenUI<PlayerItemManager>("PlayerItemManager", openStrategy, closeStrategy);
+            PlayerItemManager.AddItem(pickedCharacter.StartingItem, 1);
             
             OnPlayerReady?.Invoke();
         }

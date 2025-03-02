@@ -1,9 +1,13 @@
-﻿using Managers;
+﻿using System;
+using Managers;
 using Managers.Other;
 using PlayerPack;
 using StructurePack.InteractionUI;
 using UIPack;
+using UIPack.CloseStrategies;
+using UIPack.OpenStrategies;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace StructurePack.SO
 {
@@ -18,23 +22,21 @@ namespace StructurePack.SO
         public float CostModifierPerPurchase => costModifierPerPurchase;
         public int RechargeIncrementCost => rechargeIncrementCost;
         public int BaseRechargeCost => baseRechargeCost;
-        
-        public override void OnInteract(StructureBase structureBase, ref GameObject spawnedStructureInteraction)
+
+        private string StructureUIKey(StructureBase structureBase) => $"{StructureName}{structureBase.GetInstanceID()}";
+
+        public override void OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
         {
-            Time.timeScale = 0;
-            PlayerManager.Instance.PlayerItemManager.ToggleEq(true);
-            if (spawnedStructureInteraction != null)
+            var opened = structureBase.Toggle;
+            Time.timeScale = opened ? 0 : 1;
+            PlayerManager.Instance.PlayerItemManager.ToggleEq(opened);
+            
+            if (!opened) UIManager.CloseUI(StructureUIKey(structureBase));
+            else
             {
-                spawnedStructureInteraction.SetActive(true);
-                return;
+                var totemUIInstance = UIManager.OpenUI<TotemInteractionUI>(StructureUIKey(structureBase), openStrategy, closeStrategy);
+                if (!structureBase.WasUsed) totemUIInstance.Setup(this, structureBase);
             }
-            
-            var prefab = GameManager.Instance.GetPrefab<TotemInteractionUI>(PrefabNames.TotemInteractionUI);
-            
-            //TODO: zunifikuj z uiManagerem
-            /*var spawned = Instantiate(prefab, UIManager.Instance.GameCanvas);
-            spawned.Setup(this);
-            spawnedStructureInteraction = spawned.gameObject;*/
         }
     }
 }

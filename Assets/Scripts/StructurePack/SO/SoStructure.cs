@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UIPack.CloseStrategies;
+using UIPack.OpenStrategies;
+using UnityEngine;
 
 namespace StructurePack.SO
 {
@@ -20,6 +22,8 @@ namespace StructurePack.SO
         public bool Reusable => reusable;
         public bool MaintainData => maintainData;
 
-        public abstract void OnInteract(StructureBase structureBase, ref GameObject spawnedInteraction);
+        public abstract void OnInteract(StructureBase structureBase, 
+            IOpenStrategy openStrategy,
+            ICloseStrategy closeStrategy);
     }
 }

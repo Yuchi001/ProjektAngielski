@@ -779,10 +779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3bd2483567404986536910e2038f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameCanvas: {fileID: 1883401382}
-  deathCanvas: {fileID: 0}
-  menuCanvas: {fileID: 0}
-  worldCanvas: {fileID: 936799114}
+  mainCanvas: {fileID: 1883401382}
 --- !u!4 &434654684
 Transform:
   m_ObjectHideFlags: 0
@@ -1205,7 +1202,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 330592185322976742, guid: e47a3e113abbb854d8e54c4078081bbd, type: 3}
   mainCamera: {fileID: 300432657}
   waveManager: {fileID: 598431559}
-  gameUiManager: {fileID: 434654683}
+  uiManager: {fileID: 434654683}
   baseCharacter: {fileID: 11400000, guid: b780849af7f3c624ba1f09cf3ddd7d28, type: 2}
   StageCount: 0
 --- !u!4 &748811588

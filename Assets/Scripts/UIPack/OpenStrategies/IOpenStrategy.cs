@@ -2,6 +2,6 @@
 {
     public interface IOpenStrategy
     {
-        public bool Open(out UIBase uiBase);
+        public bool Open(out UIBase uiBase, string key);
     }
 }

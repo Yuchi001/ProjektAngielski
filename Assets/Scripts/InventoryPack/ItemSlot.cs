@@ -1,9 +1,12 @@
-﻿using InventoryPack.WorldItemPack;
+﻿using System;
+using InventoryPack.WorldItemPack;
 using ItemPack.SO;
 using Managers;
 using Managers.Other;
 using PlayerPack;
 using UIPack;
+using UIPack.CloseStrategies;
+using UIPack.OpenStrategies;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -25,6 +28,10 @@ namespace InventoryPack
         private ItemInformationHover _informationPrefab;
         private ItemInformationHover _spawnedInformationInstance = null;
         private bool _drag = false;
+
+        private string INFORMATION_UI_KEY => $"InformationHover{GetInstanceID()}";
+        private IOpenStrategy _informationOpenStrategy;
+        private ICloseStrategy _informationCloseStrategy;
         
         public int Index { get; private set; }
 
@@ -39,7 +46,9 @@ namespace InventoryPack
             Index = index;
             _itemImage.color = Color.clear;
             _backgroundImage.color = enabled ? _tonedColor : _disabledColor;
-            _informationPrefab = GameManager.Instance.GetPrefab<ItemInformationHover>(PrefabNames.ItemInformationUI);
+            var informationPrefab = GameManager.Instance.GetPrefab<ItemInformationHover>(PrefabNames.ItemInformationUI);
+            _informationOpenStrategy = new CloseAllOfTypeOpenStrategy<ItemInformationHover>(informationPrefab, true);
+            _informationCloseStrategy = new DestroyCloseStrategy(INFORMATION_UI_KEY);
             if (!enabled) SetItem(null, -1);
         }
 
@@ -116,9 +125,8 @@ namespace InventoryPack
         {
             if (IsEmpty() || !_enabled || _drag || !_box.CanInteract() || _spawnedInformationInstance != null) return;
 
-            //TODO: Zunifikuj z uiManagerem
-            /*_spawnedInformationInstance = Instantiate(_informationPrefab, UIManager.Instance.GameCanvas);
-            _spawnedInformationInstance.Setup(_current, _level, _box);*/
+            _spawnedInformationInstance = UIManager.OpenUI<ItemInformationHover>(INFORMATION_UI_KEY, _informationOpenStrategy, _informationCloseStrategy);
+            _spawnedInformationInstance.Setup(_current, _level, _box);
         }
 
         public void OnPointerExit(PointerEventData eventData)

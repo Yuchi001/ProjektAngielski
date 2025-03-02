@@ -4,6 +4,6 @@ namespace UIPack.CloseStrategies
 {
     public interface ICloseStrategy
     {
-        public void Close();
+        public void Close(UIBase spawnedBase);
     }
 }

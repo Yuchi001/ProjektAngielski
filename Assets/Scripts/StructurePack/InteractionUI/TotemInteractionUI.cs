@@ -7,12 +7,13 @@ using Managers.Other;
 using PlayerPack;
 using StructurePack.SO;
 using TMPro;
+using UIPack;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace StructurePack.InteractionUI
 {
-    public class TotemInteractionUI : MonoBehaviour, IStructure
+    public class TotemInteractionUI : UIBase, IStructure
     {
         [SerializeField] private RectTransform enchantmentsHolder;
 
@@ -22,16 +23,18 @@ namespace StructurePack.InteractionUI
         private SoTotemStructure _totem;
         private int _rechargeCost;
 
-        private List<TotemSlotUI> _slotList = new();
+        private readonly List<TotemSlotUI> _slotList = new();
+        private StructureBase _structureBase;
 
         private void Awake()
         {
             _rechargeButtonText = rechargeButton.GetComponentInChildren<TextMeshProUGUI>();
         }
 
-        public void Setup(SoStructure structureData)
+        public void Setup(SoStructure structureData, StructureBase structureBase)
         {
             _slotList.Clear();
+            _structureBase = structureBase;
             _totem = (SoTotemStructure)structureData;
             _rechargeCost = _totem.BaseRechargeCost;
             var slotPrefab = GameManager.Instance.GetPrefab<TotemSlotUI>(PrefabNames.TotemSlot);
@@ -61,19 +64,23 @@ namespace StructurePack.InteractionUI
         private void Update()
         {
             rechargeButton.interactable = _rechargeCost <= PlayerManager.Instance.PlayerExp.StackedLevels;
-            if (Input.GetKeyDown(KeyCode.Escape)) Close();
+            if (Input.GetKeyDown(KeyCode.Escape)) OnClose();
         }
 
         public void Recharge()
         {
-            Setup(_totem);
+            Setup(_totem, _structureBase);
         }
 
-        public void Close()
+        public void ButtonCloseUI()
         {
-            Time.timeScale = 1;
-            gameObject.SetActive(false);
-            PlayerManager.Instance.PlayerItemManager.ToggleEq(false);
+            _structureBase.HandleInteraction();
+        }
+
+        public override void OnClose()
+        {
+            _structureBase.HandleCloseUI();
+            base.OnClose();
         }
     }
 }

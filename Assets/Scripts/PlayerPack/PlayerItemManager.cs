@@ -1,5 +1,4 @@
-﻿ using System;
- using System.Collections;
+﻿ using System.Collections;
  using System.Collections.Generic;
 using System.Linq;
 using InventoryPack;
@@ -7,7 +6,6 @@ using ItemPack;
 using ItemPack.SO;
 using PlayerPack.Enums;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace PlayerPack

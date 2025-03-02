@@ -196,6 +196,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330bfa6e48014cc9be2a98864fc1503f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  closeTime: 0.3
+  useAnim: 0
   enchantmentsHolder: {fileID: 2455314617407619660}
   rechargeButton: {fileID: 4014178976886684991}
 --- !u!1 &1925254650233567093
@@ -601,7 +604,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1534381753922485181}
         m_TargetAssemblyTypeName: StructurePack.InteractionUI.TotemInteractionUI,
           Assembly-CSharp
-        m_MethodName: Close
+        m_MethodName: ButtonCloseUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

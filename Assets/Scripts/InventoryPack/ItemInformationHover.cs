@@ -4,13 +4,14 @@ using System.Text;
 using ItemPack.Enums;
 using ItemPack.SO;
 using TMPro;
+using UIPack;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
 
 namespace InventoryPack
 {
-    public class ItemInformationHover : MonoBehaviour
+    public class ItemInformationHover : UIBase
     {
         [SerializeField] private TextMeshProUGUI levelField;
         [SerializeField] private TextMeshProUGUI nameField;

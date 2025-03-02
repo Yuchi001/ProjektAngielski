@@ -18,31 +18,52 @@ namespace UIPack
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
+
+            UIBaseList.Clear();
         }
 
-        public static void OpenUI(IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
+        public static T OpenUI<T>(string key, IOpenStrategy openStrategy, ICloseStrategy closeStrategy) where T: UIBase
         {
-            var opened = openStrategy.Open(out var uiBase);
-            if (!opened) return;
+            var opened = openStrategy.Open(out var uiBase, key);
+            if (!opened) return null;
+
+            AddUI(key, closeStrategy, uiBase);
+            return uiBase as T;
+        }
+
+        public static void CloseUI(string key, bool removeFromList = false)
+        {
+            var record = Instance.UIBaseList.FirstOrDefault(r => r.Key == key);
+            if (record == default || !record.Script.Open) return;
             
-            Instance.UIBaseList.Add(new UIRecord(uiBase, closeStrategy));
+            record.CloseStrategy.Close(record.Script);
+            if (removeFromList) RemoveUI(key);
         }
 
-        public static void CloseUI(UIBase uiBase)
+        public static void CloseAllUIs()
         {
-            Instance.UIBaseList
-                .FirstOrDefault(r => r.Script == uiBase)
-                ?.CloseStrategy.Close();
+            foreach (var record in Instance.UIBaseList.Where(record => record.Script.Open))
+            {
+                record.CloseStrategy.Close(record.Script);
+                RemoveUI(record.Key);
+            }
         }
 
         public static UIBase SpawnUI(UIBase uiBase)
         {
-            return Instantiate(uiBase, Instance.transform.position, Quaternion.identity, Instance.mainCanvas);
+            return Instantiate(uiBase, Instance.mainCanvas);
         }
 
-        public static void RemoveUI(UIBase uiBase)
+        private static void AddUI(string key, ICloseStrategy closeStrategy, UIBase spawnedUIBase)
         {
-            Instance.UIBaseList.RemoveAll(u => u.Script == uiBase);
+            var alreadyInList = Instance.UIBaseList.FirstOrDefault(r => r.Key == key) != default;
+            if (alreadyInList) return;
+            Instance.UIBaseList.Add(new UIRecord(key, spawnedUIBase, closeStrategy));
+        }
+
+        public static void RemoveUI(string key)
+        {
+            Instance.UIBaseList.RemoveAll(u => u.Key == key);
         }
 
         public static IEnumerable<UIRecord> GetCurrentUIBaseList()
@@ -52,11 +73,13 @@ namespace UIPack
 
         public record UIRecord
         {
+            public readonly string Key;
             public readonly UIBase Script;
             public readonly ICloseStrategy CloseStrategy;
 
-            public UIRecord(UIBase script, ICloseStrategy closeStrategy)
+            public UIRecord(string key, UIBase script, ICloseStrategy closeStrategy)
             {
+                Key = key;
                 CloseStrategy = closeStrategy;
                 Script = script;
             }

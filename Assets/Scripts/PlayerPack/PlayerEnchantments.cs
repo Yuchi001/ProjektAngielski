@@ -100,8 +100,6 @@ namespace PlayerPack
             if (except) validEnchantments.Remove(except);
             
             var randomIndex = Random.Range(0, validEnchantments.Count);
-            Debug.Log(validEnchantments.Count);
-            Debug.Log(randomIndex);
             var randomEnchantment = validEnchantments[randomIndex];
 
             _unusedEnchantments.Remove(randomEnchantment);
