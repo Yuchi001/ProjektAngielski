@@ -6,14 +6,15 @@ using WeaponPack.Enums;
 namespace ItemPack
 {
     [System.Serializable]
-    public class StatPair
+    public sealed class StatPair
     {
-        [SerializeField] protected EItemSelfStatType selfStatType;
-        [SerializeField] protected float statValue;
-        [SerializeField] protected bool canUpgrade;
-        [SerializeField] protected float? maximum;
-        [SerializeField] protected float? minimum;
-        [SerializeField] protected float mod;
+        [SerializeField] private EItemSelfStatType selfStatType;
+        [SerializeField] private float statValue;
+        [SerializeField] private bool canUpgrade;
+        [SerializeField] private float? maximum;
+        [SerializeField] private float? minimum;
+        [SerializeField] private float mod;
+        [SerializeField] private bool percentageGrowth;
 
         public float StatValue => statValue;
         public bool CanUpgrade => canUpgrade;
@@ -21,12 +22,14 @@ namespace ItemPack
         public float Minimum => minimum ?? 0.0f;
         public float Maximum => maximum ?? 0.0f;
         public float Mod => mod;
+        public bool PercentageGrowth => percentageGrowth;
 
         public StatPair(StatPair pair)
         {
             this.selfStatType = pair.selfStatType;
             this.statValue = 0;
             this.canUpgrade = pair.canUpgrade;
+            this.percentageGrowth = pair.percentageGrowth;
             this.maximum = pair.maximum;
             this.minimum = pair.minimum;
         }
@@ -36,6 +39,7 @@ namespace ItemPack
             this.selfStatType = 0;
             this.statValue = 0;
             this.canUpgrade = false;
+            this.percentageGrowth = false;
             this.minimum = null;
             this.maximum = null;
         }
@@ -52,6 +56,7 @@ namespace ItemPack
             public float? min;
             public float? max;
             public float mod;
+            public bool percentageGrowth;
         }
         public void SetUpgradeStats(UpgradeProps props)
         {
@@ -59,6 +64,7 @@ namespace ItemPack
             this.maximum = props.max;
             this.minimum = props.min;
             this.mod = props.mod;
+            this.percentageGrowth = props.percentageGrowth;
         }
 
         public void SetStatValue(float value)

@@ -18,6 +18,19 @@ namespace InventoryPack.Editor
             base.OnInspectorGUI();
             
             if (GUILayout.Button("Generate Slots")) box.SpawnSlots();
+            if (GUILayout.Button("Destroy Slots"))
+            {
+                box.DestroySlots();
+                MarkSceneAsDirty();
+            }
+        }
+        
+        private void MarkSceneAsDirty()
+        {
+            EditorUtility.SetDirty(box);
+
+            if (Application.isPlaying) return;
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(box.gameObject.scene);
         }
     }
 }

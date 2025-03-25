@@ -25,23 +25,29 @@ MonoBehaviour:
     statValue: 5
     canUpgrade: 1
     mod: -0.5
+    percentageGrowth: 0
   - selfStatType: 2
     statValue: 1
     canUpgrade: 0
     mod: 0
+    percentageGrowth: 0
   - selfStatType: 6
     statValue: 0.4
     canUpgrade: 1
     mod: 0.2
+    percentageGrowth: 0
   - selfStatType: 4
     statValue: 1
     canUpgrade: 1
     mod: 1
+    percentageGrowth: 0
   - selfStatType: 3
     statValue: 5
     canUpgrade: 0
     mod: 0
+    percentageGrowth: 0
   - selfStatType: 14
     statValue: 1
     canUpgrade: 1
     mod: 0.1
+    percentageGrowth: 0

@@ -34,7 +34,6 @@ namespace ItemPack.WeaponPack.Editor
         };
 
         private bool _startingStatsFoldout = false;
-        private bool _scalingFoldout = false;
         
         private void OnEnable()
         {
@@ -92,13 +91,14 @@ namespace ItemPack.WeaponPack.Editor
                     var current = new StatPair(
                         statType,
                         val
-                    );
+                        );
 
                     if (canUpgrade) current.SetUpgradeStats(new StatPair.UpgradeProps
                     {
                         min = EditorGUILayout.FloatField("Min", stat.Minimum),
                         max = EditorGUILayout.FloatField("Max", stat.Maximum),
                         mod = EditorGUILayout.FloatField("Mod", stat.Mod),
+                        percentageGrowth = EditorGUILayout.Toggle("Percentage Growth", stat.PercentageGrowth),
                     });
                     
                     if (GUILayout.Button("Remove")) RemoveStartingStat(index);

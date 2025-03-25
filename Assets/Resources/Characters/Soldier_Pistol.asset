@@ -30,10 +30,4 @@ MonoBehaviour:
     statValue: 0
   - statType: 5
     statValue: 0
-  - statType: 6
-    statValue: 0
-  - statType: 7
-    statValue: 0
-  - statType: 8
-    statValue: 0
   startingItem: {fileID: 0}

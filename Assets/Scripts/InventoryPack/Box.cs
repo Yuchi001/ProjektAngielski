@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ItemPack.SO;
 using Managers;
 using Managers.Other;
@@ -50,9 +51,23 @@ namespace InventoryPack
                 for (var i = 0; i < gridData.Capacity; i++)
                 {
                     var spawnedSlot = Instantiate(prefab, gridData.Grid);
-                    spawnedSlot.Setup(this, index);
+                    //spawnedSlot.Setup(this, index);
                     _itemSlots.Add(spawnedSlot);
                     index++;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Editor only function
+        /// </summary>
+        public void DestroySlots()
+        {
+            foreach (var gridTransform in gridDataList.Select(gridData => gridData.Grid.transform))
+            {
+                for (var i = gridTransform.childCount - 1; i >= 0; i--)
+                {
+                    DestroyImmediate(gridTransform.GetChild(i).gameObject);
                 }
             }
         }

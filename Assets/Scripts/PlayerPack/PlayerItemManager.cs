@@ -12,9 +12,7 @@ namespace PlayerPack
 {
     public class PlayerItemManager : Box
     {
-        [SerializeField] private int inventorySize = 8;
-        [SerializeField] private int topOpen = 8;
-        [SerializeField] private int topClosed = 8;
+        [SerializeField] private int maxItemCount = 30;
         [SerializeField] private RectTransform background;
         
         private readonly List<ItemLogicBase> _currentItems = new();
@@ -26,8 +24,7 @@ namespace PlayerPack
         public static event ItemAddDelegate OnItemAdd;
 
         private static int CAPACITY => PlayerManager.Instance.PlayerStatsManager.GetStatAsInt(EPlayerStatType.Capacity);
-        private GameObject EQ_GRID => gridDataList[2].Grid.gameObject;
-        private GameObject PASSIVE_GRID => gridDataList[1].Grid.gameObject;
+        private GameObject ITEMS_GRID => gridDataList[0].Grid.gameObject;
 
         private bool _canInteract;
 
@@ -38,21 +35,8 @@ namespace PlayerPack
             var weightItemList = _allItems.Select(item => (weight: 1f / item.ItemPrice, item: item)).ToList();
             weightSum = weightItemList.Sum(w => w.weight);
             _normalizedWeightItemList = weightItemList.Select(pair => (weight: pair.weight / weightSum, item: pair.item)).ToList();
-            
-            background.offsetMax = new Vector2(background.offsetMax.x, -topClosed);
-            EQ_GRID.SetActive(false);
-            PASSIVE_GRID.SetActive(false);
-        }
 
-        private IEnumerator Start()
-        {
-            yield return new WaitUntil(() => PlayerManager.Instance != null);
-
-            foreach (var slot in _itemSlots)
-            {
-                var index = slot.Index;
-                slot.SetEnabled(index == 0 || (index >= inventorySize && index < CAPACITY + inventorySize));
-            }
+            ITEMS_GRID.SetActive(true);
         }
 
         private void Update()
@@ -65,9 +49,6 @@ namespace PlayerPack
         public void ToggleEq(bool open)
         {
             _canInteract = open;
-            EQ_GRID.SetActive(_canInteract);
-            PASSIVE_GRID.SetActive(_canInteract);
-            background.offsetMax = new Vector2(background.offsetMax.x, _canInteract ? -topOpen : -topClosed);
         }
 
         public override bool CanInteract()

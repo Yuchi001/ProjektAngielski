@@ -59,8 +59,7 @@ namespace PlayerPack.Editor
                 var hasValue = _soCharacter.StatDict.TryGetValue(statType, out var current);
 
                 EditorGUILayout.BeginHorizontal();
-                var value = EditorGUILayout.FloatField(statType + $" |{PlayerStatUtils.DependencyToStr(statType)}|", hasValue ? current : 0);
-                EditorGUILayout.LabelField($"Calculated value: {dictHelper[statType].GetDependentValue(dictHelper)} {Dependencies(dictHelper[statType])}", EditorStyles.whiteMiniLabel);
+                var value = EditorGUILayout.FloatField(statType.ToString(), hasValue ? current : 0);
                 EditorGUILayout.EndHorizontal();
                 
                 stats.Add(new SoCharacter.PlayerStatPair(statType, value));
@@ -75,10 +74,5 @@ namespace PlayerPack.Editor
             EditorUtility.SetDirty(_soCharacter);
         }
 
-        private string Dependencies(PlayerStatsManager.Stat stat)
-        {
-            var dependencies = stat.GetDependencies();
-            return dependencies.Any() ? $"|{PlayerStatUtils.DependenciesToStr(dependencies)}|" : "";
-        }
     }
 }

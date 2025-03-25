@@ -15,8 +15,6 @@ namespace PlayerPack
         private void Awake()
         {
             _stats = ((EPlayerStatType[])(System.Enum.GetValues(typeof(EPlayerStatType)))).ToDictionary(v => v, v => new Stat());
-            
-            AddDependencies(_stats);
         }
 
         private IEnumerator Start()
@@ -29,28 +27,6 @@ namespace PlayerPack
             }
         }
 
-        private static void AddDependencies(Dictionary<EPlayerStatType, Stat> stats)
-        {
-            //DEXTERITY
-            stats[EPlayerStatType.MovementSpeed].AddDependency(EPlayerStatType.Dexterity, StaticOptions.MOVEMENT_SPEED_PER_DEXTERITY_POINT);
-            stats[EPlayerStatType.DashStacks].AsInt().AddDependency(EPlayerStatType.Dexterity, StaticOptions.DASH_STACK_PER_DEXTERITY_POINT);
-            
-            //STRENGTH
-            stats[EPlayerStatType.Capacity].AsInt().AddDependency(EPlayerStatType.Strength, StaticOptions.ADDITIONAL_CAPACITY_PER_STRENGTH_POINT);
-            stats[EPlayerStatType.MaxHealth].AsInt().AddDependency(EPlayerStatType.Strength, StaticOptions.MAX_HEALTH_PER_STRENGTH_POINT);
-            
-            //INTELIGENCE
-            stats[EPlayerStatType.CooldownReduction]
-                .AsInt()
-                .AddDependency(EPlayerStatType.Intelligence, StaticOptions.CDR_PER_INTELLIGENCE_POINT)
-                .SetLimit(StaticOptions.MAX_CDR_PERCENTAGE);
-
-            stats[EPlayerStatType.Strength].AsInt();
-            stats[EPlayerStatType.Dexterity].AsInt();
-            stats[EPlayerStatType.Intelligence].AsInt();
-            stats[EPlayerStatType.Health].AsInt();
-        }
-
         public static Dictionary<EPlayerStatType, Stat> EditorDictHelper(Dictionary<EPlayerStatType, float> dict)
         {
             var newDict = new Dictionary<EPlayerStatType, Stat>();
@@ -59,7 +35,6 @@ namespace PlayerPack
                 var hasValue = dict.TryGetValue(statType, out var current);
                 newDict.Add(statType, new Stat(hasValue ? current : 0));
             }
-            AddDependencies(newDict);
             return newDict;
         }
 
