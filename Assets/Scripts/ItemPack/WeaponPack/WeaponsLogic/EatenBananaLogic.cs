@@ -7,7 +7,6 @@ using Managers.Enums;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
 using UnityEngine;
-using WeaponPack.Enums;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {

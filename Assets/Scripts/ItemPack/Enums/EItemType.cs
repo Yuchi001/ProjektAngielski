@@ -1,8 +1,8 @@
-﻿namespace WeaponPack.Enums
+﻿namespace ItemPack.Enums
 {
     public enum EItemType 
     {
-        Weapon,
-        Item,
+        InventoryItem,
+        WorldOnlyItem,
     }
 }

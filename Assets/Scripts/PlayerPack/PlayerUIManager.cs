@@ -13,19 +13,16 @@ namespace PlayerPack
         [SerializeField] private TextMeshProUGUI expField;
         [SerializeField] private Image expBar;
 
-        private static PlayerExp PlayerExp => PlayerManager.Instance.PlayerExp;
         private static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
         
         private void Awake()
         {
-            PlayerExp.OnGainExp += UpdateExp;
             PlayerHealth.OnPlayerDamaged += UpdateHp;
             PlayerHealth.OnPlayerHeal += UpdateHp;
         }
 
         private void OnDisable()
         {
-            PlayerExp.OnGainExp -= UpdateExp;
             PlayerHealth.OnPlayerDamaged -= UpdateHp;
             PlayerHealth.OnPlayerHeal -= UpdateHp;
         }
@@ -34,16 +31,9 @@ namespace PlayerPack
         {
             yield return new WaitUntil(() => PlayerManager.Instance);
             
-            UpdateExp();
             UpdateHp();
         }
-
-        private void UpdateExp()
-        {
-            expField.text = $"{PlayerExp.CurrentExp}/{PlayerExp.NextLevelExp}";
-            expBar.fillAmount = (float)PlayerExp.CurrentExp / PlayerExp.NextLevelExp;
-        }
-
+        
         private void UpdateHp(int ignore)
         {
             UpdateHp();

@@ -12,7 +12,7 @@ namespace InventoryPack
         private Box _box;
         private Camera _cameraMain;
 
-        private SoItem Item => _itemSlot.ViewItem().item;
+        private SoInventoryItem InventoryItem => _itemSlot.ViewItem().item;
         private int Level => _itemSlot.ViewItem().level;
         private int Index => _itemSlot.Index;
         
@@ -49,21 +49,21 @@ namespace InventoryPack
                     return;
                 }
                 
-                _box.AddItemAtSlot(targetIndex, Item, Level);
+                _box.AddItemAtSlot(targetIndex, InventoryItem, Level);
                 _box.RemoveItemAtSlot(Index);
                 return;
             }
 
             if (targetBox.GetSlotAtIndex(targetIndex).IsEmpty())
             {
-                if (!targetBox.CanAdd(Item)) return;
+                if (!targetBox.CanAdd(InventoryItem)) return;
                 
-                targetBox.AddItemAtSlot(targetIndex, Item, Level);
+                targetBox.AddItemAtSlot(targetIndex, InventoryItem, Level);
                 _box.RemoveItemAtSlot(Index);
                 return;
             }
 
-            var item1 = Instantiate(Item);
+            var item1 = Instantiate(InventoryItem);
             var item1Level = Level;
             var item2 = targetBox.GetSlotAtIndex(targetIndex).ViewItem();
 

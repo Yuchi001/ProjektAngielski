@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2868755731190364515}
   - component: {fileID: 7905087189668896140}
   - component: {fileID: 7787685337975628636}
-  - component: {fileID: 8513629063015508182}
   - component: {fileID: -711591100249454349}
   - component: {fileID: -7132315555942854000}
   - component: {fileID: -3472622281808494032}
@@ -55,7 +54,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpriteRenderer: {fileID: 6528374986980264091}
-  playerItemManagerPrefab: {fileID: 8438015490973454161, guid: b29f4ee1c4a497548b142942e1a46664, type: 3}
   animator: {fileID: 7771533845673863798}
 --- !u!114 &7905087189668896140
 MonoBehaviour:
@@ -92,19 +90,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 6528374986980264091}
   zoneCheckPerSec: 4
   healParticles: {fileID: 688343070385823546, guid: 877920fa71092614cb362fb6205349c2, type: 3}
---- !u!114 &8513629063015508182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330592185322976742}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00e10621def44023add7980a4dd92d76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelOneCap: 4
 --- !u!114 &-711591100249454349
 MonoBehaviour:
   m_ObjectHideFlags: 0

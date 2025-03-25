@@ -13,6 +13,7 @@ namespace StructurePack.SO
         [SerializeField] private float structureScale = 1;
         [SerializeField] private bool reusable = true;
         [SerializeField] private bool maintainData = true;
+        [SerializeField] private string bottomHoverMessage = "Press E";
 
         public float StructureScale => structureScale;
         public string StructureName => structureName;
@@ -25,5 +26,10 @@ namespace StructurePack.SO
         public abstract void OnInteract(StructureBase structureBase, 
             IOpenStrategy openStrategy,
             ICloseStrategy closeStrategy);
+
+        public virtual string GetInteractionMessage(StructureBase structureBase)
+        {
+            return bottomHoverMessage;
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace EnchantmentPack.Enchantments
             PlayerItemManager.OnItemAdd += OnAdd;
         }
 
-        private void OnUpgrade(SoItem item)
+        private void OnUpgrade(SoInventoryItem inventoryItem)
         {
             Stacks++;
         }

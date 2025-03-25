@@ -10,7 +10,6 @@ using Managers.Enums;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
 using UnityEngine;
-using WeaponPack.Enums;
 using Random = UnityEngine.Random;
 
 namespace ItemPack.WeaponPack.WeaponsLogic

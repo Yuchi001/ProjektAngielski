@@ -3,6 +3,7 @@ using System.Linq;
 using ItemPack.SO;
 using PlayerPack.Enums;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PlayerPack.SO
 {
@@ -16,7 +17,7 @@ namespace PlayerPack.SO
         [SerializeField] private Color characterColor;
         [SerializeField] private List<PlayerStatPair> stats;
         
-        [SerializeField] private SoItem startingItem;
+        [FormerlySerializedAs("startingItem")] [SerializeField] private SoInventoryItem startingInventoryItem;
 
         public Color CharacterColor => characterColor;
         public Dictionary<EPlayerStatType, float> StatDict => stats.ToDictionary(s => s.StatType, s => s.StatValue);
@@ -24,7 +25,7 @@ namespace PlayerPack.SO
         public Sprite CharacterSprite => characterSprite;
         public AnimationClip WalkingAnimation => walkingAnim;
         public AnimationClip IdleAnimation => idleAnim;
-        public SoItem StartingItem => startingItem;
+        public SoInventoryItem StartingInventoryItem => startingInventoryItem;
 
         public void SetStats(List<PlayerStatPair> stats)
         {

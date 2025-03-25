@@ -16,8 +16,8 @@ namespace PlayerPack
         [SerializeField] private RectTransform background;
         
         private readonly List<ItemLogicBase> _currentItems = new();
-        private List<SoItem> _allItems = new();
-        private List<(float weight, SoItem item)> _normalizedWeightItemList = new();
+        private List<SoInventoryItem> _allItems = new();
+        private List<(float weight, SoInventoryItem item)> _normalizedWeightItemList = new();
         private float weightSum = 0;
 
         public delegate void ItemAddDelegate(ItemLogicBase itemLogicBase);
@@ -30,7 +30,7 @@ namespace PlayerPack
 
         protected override void Init()
         {
-            _allItems = Resources.LoadAll<SoItem>("Items").Select(Instantiate).ToList();
+            _allItems = Resources.LoadAll<SoInventoryItem>("Items").Select(Instantiate).ToList();
 
             var weightItemList = _allItems.Select(item => (weight: 1f / item.ItemPrice, item: item)).ToList();
             weightSum = weightItemList.Sum(w => w.weight);
@@ -56,22 +56,22 @@ namespace PlayerPack
             return _canInteract;
         }
 
-        private void AddItemLogic(SoItem itemToAdd, int level)
+        private void AddItemLogic(SoInventoryItem inventoryItemToAdd, int level)
         {
-            var itemLogic = Instantiate(itemToAdd.ItemPrefab);
+            var itemLogic = Instantiate(inventoryItemToAdd.ItemPrefab);
             itemLogic.transform.localPosition = Vector3.zero;
-            itemLogic.Setup(itemToAdd, level);
+            itemLogic.Setup(inventoryItemToAdd, level);
             _currentItems.Add(itemLogic);
 
             OnItemAdd?.Invoke(itemLogic);
         }
 
-        public override int AddItem(SoItem item, int level)
+        public override int AddItem(SoInventoryItem inventoryItem, int level)
         {
-            var index = base.AddItem(item, level);
+            var index = base.AddItem(inventoryItem, level);
             if (index == -1) return -1;
             
-            if (index < 7) AddItemLogic(item, level);
+            if (index < 7) AddItemLogic(inventoryItem, level);
             return index;
         }
 
@@ -92,9 +92,9 @@ namespace PlayerPack
             }
         }
 
-        public override void AddItemAtSlot(int index, SoItem item, int level)
+        public override void AddItemAtSlot(int index, SoInventoryItem inventoryItem, int level)
         {
-            base.AddItemAtSlot(index, item, level);
+            base.AddItemAtSlot(index, inventoryItem, level);
             RefreshInventory();
         }
 
@@ -104,9 +104,9 @@ namespace PlayerPack
             RefreshInventory();
         }
 
-        public IEnumerable<SoItem> GetRandomItems(int count, float percentage = 0.0f)
+        public IEnumerable<SoInventoryItem> GetRandomItems(int count, float percentage = 0.0f)
         {
-            var selectedItems = new List<SoItem>();
+            var selectedItems = new List<SoInventoryItem>();
 
             for (var i = 0; i < count; i++)
             {

@@ -6,7 +6,6 @@ using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Other.Enums;
 using UnityEngine;
-using WeaponPack.Enums;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {

@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ItemPack.Enums;
 using ItemPack.SO;
-using ItemPack.WeaponPack.SideClasses;
-using Managers;
-using PlayerPack.Enums;
 using UnityEditor;
 using UnityEngine;
-using WeaponPack.Enums;
 
 namespace ItemPack.WeaponPack.Editor
 {
-    [CustomEditor(typeof(SoItem))]
-    public class CeSoItem : UnityEditor.Editor
+    [CustomEditor(typeof(SoInventoryItem))]
+    public class CeSoInventoryItem : UnityEditor.Editor
     {
         private SerializedProperty itemName;
         private SerializedProperty itemDescription;
@@ -24,7 +19,7 @@ namespace ItemPack.WeaponPack.Editor
         private SerializedProperty itemType;
         private SerializedProperty itemPrice;
 
-        private SoItem _soItem;
+        private SoInventoryItem _soInventoryItem;
 
         private static readonly Dictionary<int, bool> foldouts = new()
         {
@@ -45,7 +40,7 @@ namespace ItemPack.WeaponPack.Editor
             itemPrefab = serializedObject.FindProperty("itemPrefab");
             itemTags = serializedObject.FindProperty("itemTags");
             itemType = serializedObject.FindProperty("itemType");
-            _soItem = target as SoItem;
+            _soInventoryItem = target as SoInventoryItem;
         }
 
         public override void OnInspectorGUI()
@@ -67,7 +62,7 @@ namespace ItemPack.WeaponPack.Editor
             GUILayout.BeginHorizontal();
             _startingStatsFoldout = EditorGUILayout.Foldout(_startingStatsFoldout, "Starting stats");
             
-            EditorGUI.BeginDisabledGroup(_soItem.StartingStats.FirstOrDefault(s => s.SelfStatType == EItemSelfStatType.None) != default);
+            EditorGUI.BeginDisabledGroup(_soInventoryItem.StartingStats.FirstOrDefault(s => s.SelfStatType == EItemSelfStatType.None) != default);
             if (GUILayout.Button("Add new stat")) AddStartingStat();
             EditorGUI.EndDisabledGroup();
             
@@ -77,7 +72,7 @@ namespace ItemPack.WeaponPack.Editor
             {
                 var editedStartingStats =  new List<StatPair>();
 
-                foreach (var (stat, index) in _soItem.StartingStats.Select((item, index) => (item, index)))
+                foreach (var (stat, index) in _soInventoryItem.StartingStats.Select((item, index) => (item, index)))
                 {
                     EditorGUILayout.Space();
                     EditorGUILayout.Space();
@@ -106,20 +101,20 @@ namespace ItemPack.WeaponPack.Editor
                     
                     EditorGUI.EndDisabledGroup();
                 }
-                _soItem.SetWeaponStartingStats(editedStartingStats);
+                _soInventoryItem.SetWeaponStartingStats(editedStartingStats);
             
                 serializedObject.ApplyModifiedProperties();
             }
             
             serializedObject.ApplyModifiedProperties();
             
-            EditorUtility.SetDirty(_soItem);
+            EditorUtility.SetDirty(_soInventoryItem);
         }
 
         private void AddStartingStat()
         {
-            var current = new List<StatPair>(_soItem.StartingStats) { new() };
-            _soItem.SetWeaponStartingStats(current);
+            var current = new List<StatPair>(_soInventoryItem.StartingStats) { new() };
+            _soInventoryItem.SetWeaponStartingStats(current);
             _startingStatsFoldout = true;
             
             serializedObject.ApplyModifiedProperties();
@@ -127,9 +122,9 @@ namespace ItemPack.WeaponPack.Editor
         
         private void RemoveStartingStat(int index)
         {
-            var current = new List<StatPair>(_soItem.StartingStats);
+            var current = new List<StatPair>(_soInventoryItem.StartingStats);
             current.RemoveAt(index);
-            _soItem.SetWeaponStartingStats(current);
+            _soInventoryItem.SetWeaponStartingStats(current);
             
             serializedObject.ApplyModifiedProperties();
         }

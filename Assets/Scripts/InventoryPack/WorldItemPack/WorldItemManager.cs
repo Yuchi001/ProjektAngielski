@@ -13,9 +13,10 @@ namespace InventoryPack.WorldItemPack
 {
     public class WorldItemManager : PoolManager
     {
-        [SerializeField] private List<CoinData> coinDataList;
-        
         private ObjectPool<WorldItem> _pool;
+        private List<SoCoinItem> _coins;
+        private SoHealingOrbItem _healingOrb;
+        private SoSoulItem _soulItem;
 
         #region Singleton
 
@@ -25,6 +26,11 @@ namespace InventoryPack.WorldItemPack
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
+
+            _soulItem = Resources.Load<SoSoulItem>("Items/Soul");
+            _healingOrb = Resources.Load<SoHealingOrbItem>("Items/HealingOrb");
+            _coins = Resources.LoadAll<SoCoinItem>("Items").ToList();
+            _coins.Sort((c1, c2) => c2.ItemPrice - c1.ItemPrice);
         }
 
         #endregion
@@ -32,8 +38,6 @@ namespace InventoryPack.WorldItemPack
         private IEnumerator Start()
         {
             yield return new WaitUntil(() => GameManager.Instance != null);
-            
-            coinDataList.Sort((c1, c2) => c2.CoinValue - c1.CoinValue);
 
             var prefab = GameManager.Instance.GetPrefab<WorldItem>(PrefabNames.WorldItem);
             _pool = PoolHelper.CreatePool(this, prefab, false);
@@ -41,30 +45,47 @@ namespace InventoryPack.WorldItemPack
             PrepareQueue();
         }
 
-        public static void SpawnItem(SoItem data, int level, Vector2 position)
+        private static void SpawnItem(SoItem data, Vector2 position, params int[] paramsArray)
         {
             var item = Instance.GetPoolObject<WorldItem>();
-            item.Setup(data, level, position);
+            item.Setup(data, position, paramsArray);
+        }
+
+        public static void SpawnInventoryItem(SoInventoryItem item, Vector2 position, int level)
+        {
+            SpawnItem(item, position, level);
+        }
+
+        public static void SpawnSouls(Vector2 position, int count)
+        {
+            for (var i = 0; i < count; i++)
+            {
+                SpawnItem(Instance._soulItem, position);
+            }
+        }
+        
+        public static void SpawnHealingOrb(Vector2 position)
+        {
+            SpawnItem(Instance._healingOrb, position);
+        }
+        
+        public static void SpawnCoins(int value, Vector2 position)
+        {
+            var coins = Instance._coins;
+            foreach (var coin in coins)
+            {
+                var count = value % coin.ItemPrice;
+                while (count > 0 && value >= coin.ItemPrice)
+                {
+                    SpawnItem(coin, position, coin.ItemPrice);
+                    count--;
+                }
+            }
         }
 
         private void Update()
         {
             RunUpdatePoolStack();
-        }
-
-        public static void SpawnCoins(int value, Vector2 position)
-        {
-            var coins = Instance.coinDataList;
-            foreach (var coin in coins)
-            {
-                var count = value % coin.CoinValue;
-                while (count > 0 && value >= coin.CoinValue)
-                {
-                    var item = Instance.GetPoolObject<WorldItem>();
-                    item.Setup(coin.CoinSprite, coin.CoinValue, position);
-                    count--;
-                }
-            }
         }
         
         protected override T GetPoolObject<T>()
@@ -80,10 +101,10 @@ namespace InventoryPack.WorldItemPack
         [System.Serializable]
         public struct CoinData
         {
-            [SerializeField] private Sprite coinSprite;
+            [SerializeField] private SoCoinItem coinItem;
             [SerializeField] private int coinValue;
 
-            public Sprite CoinSprite => coinSprite;
+            public SoCoinItem CoinItem => coinItem;
             public int CoinValue => coinValue;
         }
     }

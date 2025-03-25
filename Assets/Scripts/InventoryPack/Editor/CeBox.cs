@@ -16,8 +16,14 @@ namespace InventoryPack.Editor
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            
-            if (GUILayout.Button("Generate Slots")) box.SpawnSlots();
+
+            if (GUILayout.Button("Generate Slots"))
+            {
+                box.DestroySlots();
+                box.SpawnSlots();
+                MarkSceneAsDirty();
+            }
+
             if (GUILayout.Button("Destroy Slots"))
             {
                 box.DestroySlots();

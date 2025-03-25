@@ -252,17 +252,6 @@ MonoBehaviour:
   enemySpawnRateMultiplierPerKill: 0
   enemySpawnRate: 8
   maximumDifficultyTimeCap: 1000
-  gemRarityList:
-  - gemType: 0
-    weight: 1000
-  - gemType: 1
-    weight: 250
-  - gemType: 2
-    weight: 62
-  - gemType: 3
-    weight: 15
-  - gemType: 4
-    weight: 1
 --- !u!4 &155985568
 Transform:
   m_ObjectHideFlags: 0
@@ -406,6 +395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxUpdateStackDuration: 0.1
   <PoolSize>k__BackingField: 100
+  _currentQueueLength: 1
 --- !u!4 &288947034
 Transform:
   m_ObjectHideFlags: 0
@@ -842,11 +832,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1883401382}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0.0005493164, y: 0}
   m_SizeDelta: {x: 253.43994, y: 158}
-  m_Pivot: {x: 1, y: 0}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &456224869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2027,14 +2017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxUpdateStackDuration: 0.1
-  <PoolSize>k__BackingField: 10
-  coinDataList:
-  - coinSprite: {fileID: 21300000, guid: c23f17c0a3cc27d48b1fb746d3068b36, type: 3}
-    coinValue: 1
-  - coinSprite: {fileID: 21300000, guid: 220904cc989328640b189240e94bb0c2, type: 3}
-    coinValue: 3
-  - coinSprite: {fileID: 21300000, guid: 2439f7ab4b436e042b6d4899280b02eb, type: 3}
-    coinValue: 5
+  <PoolSize>k__BackingField: 100
 --- !u!4 &1954272737
 Transform:
   m_ObjectHideFlags: 0

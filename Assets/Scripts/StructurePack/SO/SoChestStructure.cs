@@ -15,18 +15,18 @@ namespace StructurePack.SO
         [SerializeField, Range(1, 100)] private int maxCashReward;
         [SerializeField, Range(1, 4)] private int maxWeaponCount;
 
-        private static IEnumerator SpawnItems(List<SoItem> items, Vector2 position)
+        private static IEnumerator SpawnItems(List<SoInventoryItem> items, Vector2 position)
         {
             foreach (var item in items)
             {
-                WorldItemManager.SpawnItem(item, 1, position);
+                WorldItemManager.SpawnInventoryItem(item, position, 1);
                 yield return new WaitForFixedUpdate();
             }
         }
 
         public override void OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
         {
-            var resultItems = new List<SoItem>();
+            var resultItems = new List<SoInventoryItem>();
             var calculatedCash = Random.Range(0, maxCashReward);
             var items = PlayerManager.Instance.PlayerItemManager.GetRandomItems(maxWeaponCount);
             foreach (var item in items)

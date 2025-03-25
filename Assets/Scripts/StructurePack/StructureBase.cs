@@ -1,21 +1,21 @@
 ﻿using Managers;
-using Managers.Other;
-using StructurePack.InteractionUI;
 using StructurePack.SO;
+using TMPro;
+using UIPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.Serialization;
 
 namespace StructurePack
 {
     [RequireComponent(typeof(CircleCollider2D))]
     public class StructureBase : MonoBehaviour
     {
-        [SerializeField] private GameObject interactionMessage;
+        [SerializeField] private TextMeshProUGUI bottomInteractionMessageField;
         [SerializeField] private SpriteRenderer structureSpriteRenderer;
         [SerializeField] private float collisionRange = 2;
+        [SerializeField] private string uiPrefabName;
         
         private SoStructure _structureData;
         private CircleCollider2D Collider => GetComponent<CircleCollider2D>();
@@ -29,11 +29,13 @@ namespace StructurePack
 
         private IOpenStrategy _openStrategy;
         private ICloseStrategy _closeStrategy;
+
+        private object _data;
         
         private void Awake()
         {
             Collider.isTrigger = true;
-            var prefab = GameManager.Instance.GetPrefab<TotemInteractionUI>(PrefabNames.TotemInteractionUI);
+            var prefab = GameManager.Instance.GetPrefab<UIBase>(uiPrefabName);
             _openStrategy = new CloseAllOfTypeOpenStrategy<IStructure>(prefab, false);
             _closeStrategy = new DefaultCloseStrategy();
         }
@@ -58,7 +60,7 @@ namespace StructurePack
             
             spriteTransform.localPosition = newPos;
             
-            interactionMessage.SetActive(false);
+            bottomInteractionMessageField.gameObject.SetActive(false);
         }
 
         private void Update()
@@ -69,7 +71,7 @@ namespace StructurePack
             {
                 structureSpriteRenderer.sprite = _structureData.UsedStructureSprite;
                 _spriteLight.enabled = false;
-                interactionMessage.SetActive(false);
+                bottomInteractionMessageField.gameObject.SetActive(false);
             }
             
             HandleInteraction();
@@ -79,6 +81,7 @@ namespace StructurePack
         {
             Toggle = !Toggle;
             _structureData.OnInteract(this, _openStrategy, _closeStrategy);
+            bottomInteractionMessageField.text = _structureData.GetInteractionMessage(this);
             WasUsed = true;
         }
 
@@ -89,12 +92,17 @@ namespace StructurePack
             WasUsed = true;
         }
 
+        public T GetData<T>() where T: class
+        {
+            return _data as T;
+        }
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.CompareTag("Player") || (WasUsed && !_structureData.Reusable)) return;
 
             _inRange = true;
-            interactionMessage.SetActive(true);
+            bottomInteractionMessageField.gameObject.SetActive(true);
         }
 
         private void OnTriggerExit2D(Collider2D other)
@@ -102,7 +110,7 @@ namespace StructurePack
             if (!other.CompareTag("Player")) return;
 
             _inRange = false;
-            interactionMessage.SetActive(false);
+            bottomInteractionMessageField.gameObject.SetActive(false);
         }
 
         private void OnDrawGizmos()

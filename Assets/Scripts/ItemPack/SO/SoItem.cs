@@ -1,47 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using ItemPack.Enums;
-using PlayerPack.Enums;
 using UnityEngine;
-using WeaponPack.Enums;
 
 namespace ItemPack.SO
 {
-    [CreateAssetMenu(fileName = "new Item", menuName = "Custom/Item")]
-    public class SoItem : ScriptableObject
+    public abstract class SoItem : ScriptableObject
     {
-        [SerializeField] private string itemName;
-        [SerializeField, TextArea] private string itemDescription;
-        [SerializeField] private int itemPrice;
-        [SerializeField] private Sprite itemSprite;
-        [SerializeField] private bool oneTimeSpawnLogic;
-        [SerializeField] private ItemLogicBase itemPrefab;
-        [SerializeField] private List<EItemTag> itemTags;
-        [SerializeField] private EItemType itemType;
+        [SerializeField] protected string itemName;
+        [SerializeField, TextArea] protected string itemDescription;
+        [SerializeField] protected int itemPrice;
+        [SerializeField] protected Sprite itemSprite;
+        [SerializeField] protected List<EItemTag> itemTags;
+        [SerializeField] protected EItemType itemType;
         
-        [SerializeField] private List<StatPair> startingStats = new();
-
         public string ItemName => itemName;
-        public float ItemPrice => itemPrice;
+        public int ItemPrice => itemPrice;
         public string ItemDescription => itemDescription;
-        public bool OneTimeSpawnLogic => oneTimeSpawnLogic;
         public List<EItemTag> ItemTags => itemTags;
         public EItemType ItemType => itemType;
-        public ItemLogicBase ItemPrefab => itemPrefab;
         public Sprite ItemSprite => itemSprite;
-        public List<StatPair> StartingStats => startingStats;
-        
-        public void SetWeaponStartingStats(List<StatPair> stats)
-        {
-            startingStats = new List<StatPair>(stats);
-        }
 
-        public float? GetStatValue(EItemSelfStatType statTypeType, int level)
-        {
-            var startingStat = StartingStats.FirstOrDefault(s => s.SelfStatType == statTypeType);
+        public abstract bool OnPickUp(params int[] paramArray);
 
-            return startingStat?.GetStatValue(level);
+        public virtual bool CanPickUp()
+        {
+            return true;
         }
     }
 }

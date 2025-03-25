@@ -19,7 +19,5 @@ MonoBehaviour:
   structureScale: 1
   reusable: 1
   maintainData: 1
-  enchantmentCount: 3
-  costModifierPerPurchase: 5
-  rechargeIncrementCost: 5
-  baseRechargeCost: 10
+  topHoverMessage: Pay $$ souls
+  bottomHoverMessage: 

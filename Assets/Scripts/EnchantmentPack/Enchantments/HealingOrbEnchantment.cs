@@ -1,7 +1,7 @@
-﻿using EnchantmentPack.Enchantments.SideClasses;
-using EnchantmentPack.Enums;
+﻿using EnchantmentPack.Enums;
 using EnemyPack;
 using EnemyPack.CustomEnemyLogic;
+using InventoryPack.WorldItemPack;
 using UnityEngine;
 
 namespace EnchantmentPack.Enchantments
@@ -29,8 +29,8 @@ namespace EnchantmentPack.Enchantments
                 x = Random.Range(-gemPosOffset, gemPosOffset),
                 y = Random.Range(-gemPosOffset, gemPosOffset)
             };
-            var orb = Instantiate(healingOrbPrefab, enemyLogic.transform.position + position, Quaternion.identity);
-            orb.GetComponent<HealingOrb>().Setup((int)parameters[EValueKey.Value]);           
+            
+            WorldItemManager.SpawnHealingOrb(position);
         }
     }
 }

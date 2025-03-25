@@ -7,7 +7,7 @@ using EnchantmentPack.Enums;
 using EnemyPack.Enums;
 using EnemyPack.SO;
 using EnemyPack.States;
-using ExpPackage;
+using InventoryPack.WorldItemPack;
 using ItemPack.WeaponPack.Other;
 using Managers.Enums;
 using Other;
@@ -179,7 +179,7 @@ namespace EnemyPack.CustomEnemyLogic
 
         public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)
         {
-            ExpPool.SpawnExpGem(EnemyData.ExpGemType, transform.position);
+            WorldItemManager.SpawnSouls(transform.position, EnemyData.Difficulty);
             rb2d.velocity = Vector2.zero;
             Collider2D.enabled = false;
             

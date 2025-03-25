@@ -22,15 +22,15 @@ namespace InventoryPack
         private Camera _cameraMain;
         private Box _box;
         
-        public void Setup(SoItem item, int level, Box box)
+        public void Setup(SoInventoryItem inventoryItem, int level, Box box)
         {
             _box = box;
             _cameraMain = Camera.main;
-            itemImage.sprite = item.ItemSprite;
-            nameField.text = item.ItemName;
+            itemImage.sprite = inventoryItem.ItemSprite;
+            nameField.text = inventoryItem.ItemName;
             levelField.text = LevelToStr(level);
-            descriptionField.text = item.ItemDescription;
-            categoriesField.text = CategoriesToString(item.ItemTags);
+            descriptionField.text = inventoryItem.ItemDescription;
+            categoriesField.text = CategoriesToString(inventoryItem.ItemTags);
             transform.SetPositionToMousePos(_cameraMain);
             
             gameObject.SetActive(true);

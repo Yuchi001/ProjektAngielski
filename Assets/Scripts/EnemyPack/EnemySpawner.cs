@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EnemyPack.CustomEnemyLogic;
-using EnemyPack.Enums;
 using EnemyPack.SO;
-using ExpPackage.Enums;
 using Managers;
 using Managers.Base;
 using Managers.Enums;
@@ -30,7 +28,7 @@ namespace EnemyPack
         [SerializeField] private float enemySpawnRate;
         [Space(10)]
         [SerializeField, Tooltip("In seconds")] private int maximumDifficultyTimeCap = 3600;
-        [SerializeField] private List<GemRarityTuple> gemRarityList;
+        
         private static PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
 
         private List<SoEnemy> _allEnemies = new();
@@ -113,19 +111,20 @@ namespace EnemyPack
 
         public override SoPoolObject GetRandomPoolData()
         {
-            var sum = gemRarityList.Sum(g => g.weight);
+            var sum = 55; // 10 + 9 + 8 ...
             var randomInt = Random.Range(0, sum + 1) * (1 - Mathf.Clamp(_difficultyTimer / maximumDifficultyTimeCap, 0, 1));
-            var pickedGemType = EExpGemType.Common;
-            gemRarityList.Sort((a, b) => a.weight - b.weight);
-            foreach (var gemRarityTuple in gemRarityList)
+            var difficultyList = new List<int> { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+            difficultyList.Sort();
+            var pickedDifficulty = 0;
+            foreach (var diff in difficultyList)
             {
-                if (randomInt <= gemRarityTuple.weight)
+                if (randomInt <= diff)
                 {
-                    pickedGemType = gemRarityTuple.gemType;
+                    pickedDifficulty = diff;
                     break;
                 }
 
-                randomInt -= gemRarityTuple.weight;
+                randomInt -= diff;
             }
 
             var enemies = GetValidEnemies();
@@ -136,16 +135,9 @@ namespace EnemyPack
             {
                 var current = new List<SoEnemy>();
                 foreach (var enemy in _allEnemies)
-                    if (enemy.ExpGemType == pickedGemType) current.Add(enemy);
+                    if (enemy.Difficulty <= pickedDifficulty) current.Add(enemy);
                 return current;
             }
         }
-    }
-
-    [System.Serializable]
-    public class GemRarityTuple
-    {
-        public EExpGemType gemType;
-        public int weight;
     }
 }

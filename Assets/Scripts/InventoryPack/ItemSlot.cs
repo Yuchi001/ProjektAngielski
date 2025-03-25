@@ -15,14 +15,14 @@ namespace InventoryPack
 {
     public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
     {
-        private SoItem _current = null;
+        private SoInventoryItem _current = null;
         private DragItemSlot _dragItemSlot;
         private Image _itemImage;
         private Image _backgroundImage;
         private int _level;
-        private static readonly Color _dragColor = new(0.5f, 0.5f, 0.5f, 0.3f);
-        private static readonly Color _tonedColor = new(0.5f, 0.5f, 0.5f, 1);
-        private static readonly Color _disabledColor = new(0.35f, 0.35f, 0.35f, 1);
+        [SerializeField] private Color _dragColor = new(0.5f, 0.5f, 0.5f, 0.3f);
+        [SerializeField] private Color _tonedColor = new(0.5f, 0.5f, 0.5f, 1);
+        [SerializeField] private Color _disabledColor = new(0.35f, 0.35f, 0.35f, 1);
         private bool _enabled = true;
         private Box _box;
         private ItemInformationHover _informationPrefab;
@@ -52,11 +52,11 @@ namespace InventoryPack
             if (!enabled) SetItem(null, -1);
         }
 
-        public bool TryAddNewItem(SoItem item, int level)
+        public bool TryAddNewItem(SoInventoryItem inventoryItem, int level)
         {
-            if (_current != null || item == null || !_enabled) return false;
+            if (_current != null || inventoryItem == null || !_enabled) return false;
 
-            SetItem(item, level);
+            SetItem(inventoryItem, level);
             return true;
         }
 
@@ -67,15 +67,15 @@ namespace InventoryPack
             if (!enabled) SetItem(null, -1);
         }
 
-        public void SetItem(SoItem item, int level)
+        public void SetItem(SoInventoryItem inventoryItem, int level)
         {
             _level = level;
-            _current = item ? Instantiate(item) : null;
+            _current = inventoryItem ? Instantiate(inventoryItem) : null;
             _itemImage.sprite = _current ? _current.ItemSprite : null;
             _itemImage.color = _current ? _tonedColor : Color.clear;
         }
 
-        public (SoItem item, int level) ViewItem()
+        public (SoInventoryItem item, int level) ViewItem()
         {
             return (item: _current, level: _level);
         }
@@ -114,7 +114,7 @@ namespace InventoryPack
 
             if (rayCastHitGO == null)
             {
-                WorldItemManager.SpawnItem(Instantiate(_current), _level, PlayerManager.Instance.PlayerPos);
+                WorldItemManager.SpawnInventoryItem(Instantiate(_current), PlayerManager.Instance.PlayerPos, _level);
                 SetItem(null, -1);
             }
             

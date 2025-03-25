@@ -8,7 +8,6 @@ using Managers;
 using Managers.Other;
 using PlayerPack;
 using UnityEngine;
-using WeaponPack.Enums;
 
 namespace ItemPack
 {
@@ -26,22 +25,22 @@ namespace ItemPack
         protected static Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
         protected static Transform PlayerTransform => GameManager.Instance.CurrentPlayer.transform;
         protected static Projectile Projectile => GameManager.Instance.GetPrefab<Projectile>(PrefabNames.Projectile);
-        public SoItem Item => _item;
-        private SoItem _item;
+        public SoInventoryItem InventoryItem => _inventoryItem;
+        private SoInventoryItem _inventoryItem;
 
         private float _timer = 0;
         private bool spawned = false;
         
-        public void Setup(SoItem item, int level)
+        public void Setup(SoInventoryItem inventoryItem, int level)
         {
-            _item = Instantiate(item);
+            _inventoryItem = Instantiate(inventoryItem);
             Level = level;
         }
         
         private void Update()
         {
             _timer += Time.deltaTime;
-            if (_timer < Cooldown || (spawned && _item.OneTimeSpawnLogic)) return;
+            if (_timer < Cooldown || (spawned && _inventoryItem.OneTimeSpawnLogic)) return;
             
             spawned = Use();
             _timer = spawned ? 0 : Cooldown;
@@ -51,7 +50,7 @@ namespace ItemPack
 
         protected float? GetStatValue(EItemSelfStatType statTypeType)
         {
-            return Item.GetStatValue(statTypeType, Level);
+            return InventoryItem.GetStatValue(statTypeType, Level);
         }
         
         protected virtual float CustomCooldownModifier()

@@ -69,9 +69,9 @@ namespace ItemPack.WeaponPack.Other
             fieldSprite.sprite = _sprites[_currentIndex];
         }
 
-        private void OnResetStats(SoItem item)
+        private void OnResetStats(SoInventoryItem inventoryItem)
         {
-            if (item.ItemName != _weaponName) return;
+            if (inventoryItem.ItemName != _weaponName) return;
             
             Destroy(gameObject);
         }

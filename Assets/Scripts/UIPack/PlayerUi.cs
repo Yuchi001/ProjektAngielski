@@ -23,7 +23,6 @@ namespace UIPack
 
         [SerializeField] private GameObject dashStack;
         
-        private static PlayerExp PlayerExp => PlayerManager.Instance.PlayerExp;
         private static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
         private static int PlayerMaxDashStacks => PlayerManager.Instance.PlayerMovement.MaxDashStacks;
         private static int CurrentPlayerDashStacks => PlayerManager.Instance.PlayerMovement.CurrentDashStacks;
@@ -87,8 +86,6 @@ namespace UIPack
             healthBar.fillAmount = PlayerHealth.CurrentHealth / (float)PlayerHealth.MaxHealth;
             healthText.text = $"{PlayerHealth.CurrentHealth}/{PlayerHealth.MaxHealth}";
 
-            expMeter.fillAmount = PlayerExp.CurrentExp / PlayerExp.NextLevelExp;
-            levelText.text = PlayerExp.StackedLevels + " LvL";
             _uiUpdateTimer = 0;
         }
     }

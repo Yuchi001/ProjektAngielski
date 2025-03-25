@@ -19,5 +19,7 @@ MonoBehaviour:
   structureScale: 0.5
   reusable: 0
   maintainData: 0
+  topHoverMessage: Open
+  bottomHoverMessage: 
   maxCashReward: 10
   maxWeaponCount: 3

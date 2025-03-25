@@ -17,6 +17,7 @@ namespace InventoryPack
         
         private void Awake()
         {
+            DestroySlots();
             CurrentCanvas = GetComponentInParent<Canvas>();
             
             var prefab = GameManager.Instance.GetPrefab<ItemSlot>(PrefabNames.ItemSlot);
@@ -83,16 +84,16 @@ namespace InventoryPack
             AddItemAtSlot(current, item2.item, item2.level);
         }
 
-        public virtual void AddItemAtSlot(int index, SoItem item, int level)
+        public virtual void AddItemAtSlot(int index, SoInventoryItem inventoryItem, int level)
         {
-            _itemSlots[index].SetItem(item, level);
+            _itemSlots[index].SetItem(inventoryItem, level);
         }
         
-        public virtual int AddItem(SoItem item, int level)
+        public virtual int AddItem(SoInventoryItem inventoryItem, int level)
         {
             foreach (var slot in _itemSlots)
             {
-                if (slot.TryAddNewItem(item, level)) return slot.Index;
+                if (slot.TryAddNewItem(inventoryItem, level)) return slot.Index;
             }
 
             return -1;
@@ -111,9 +112,9 @@ namespace InventoryPack
         /// <summary>
         /// Checks if item can be added to box.
         /// </summary>
-        /// <param name="item">New item to be added.</param>
+        /// <param name="inventoryItem">New item to be added.</param>
         /// <returns>true if it is possible to add and item</returns>
-        public virtual bool CanAdd(SoItem item)
+        public virtual bool CanAdd(SoInventoryItem inventoryItem)
         {
             return true;
         }
@@ -121,10 +122,10 @@ namespace InventoryPack
         /// <summary>
         /// Checks if item can be switched between boxes.
         /// </summary>
-        /// <param name="currentItem">Item in this box to be switched.</param>
-        /// <param name="newItem">Item in other box to be switched.</param>
+        /// <param name="currentInventoryItem">Item in this box to be switched.</param>
+        /// <param name="newInventoryItem">Item in other box to be switched.</param>
         /// <returns>true if it is possible to switch items</returns>
-        public virtual bool CanSwitch(SoItem currentItem, SoItem newItem)
+        public virtual bool CanSwitch(SoInventoryItem currentInventoryItem, SoInventoryItem newInventoryItem)
         {
             return true;
         }

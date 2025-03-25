@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
+using ItemPack.Enums;
 using ItemPack.SO;
 using Other;
 using PlayerPack;
+using PlayerPack.Enums;
 using PoolPack;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -24,11 +26,13 @@ namespace InventoryPack.WorldItemPack
         private Light2D _light2D;
         private Animator _anim;
         private SoItem _item;
-        private int _level;
-        private bool _isCoin = false;
         private bool _canPickUp = false;
 
         private PoolManager _poolManager;
+
+        private int[] _paramArray = Array.Empty<int>();
+
+        private bool _chasePlayer = false;
 
         public override void OnCreate(PoolManager poolManager)
         {
@@ -47,8 +51,6 @@ namespace InventoryPack.WorldItemPack
             base.OnRelease();
 
             _item = null;
-            _isCoin = false;
-            _level = 1;
             _canPickUp = false;
             _spriteRenderer.enabled = false;
             _light2D.enabled = false;
@@ -62,25 +64,13 @@ namespace InventoryPack.WorldItemPack
             _light2D.enabled = true;
         }
 
-        public void Setup(SoItem item, int level, Vector2 position)
+        public void Setup(SoItem item, Vector2 position, params int[] paramArray)
         {
             transform.position = position;
             _item = item;
-            _level = level;
-            _isCoin = false;
+            _paramArray = paramArray;
             _spriteRenderer.sprite = item.ItemSprite;
             _light2D.lightCookieSprite = item.ItemSprite;
-            
-            Ready();
-        }
-        
-        public void Setup(Sprite coinSprite, int value, Vector2 position)
-        {
-            transform.position = position;
-            _spriteRenderer.sprite = coinSprite;
-            _level = value;
-            _isCoin = true;
-            _light2D.lightCookieSprite = coinSprite;
             
             Ready();
         }
@@ -107,24 +97,20 @@ namespace InventoryPack.WorldItemPack
 
         public override void InvokeUpdate()
         {
-            if (PlayerManager.Instance.PlayerItemManager.IsFull() && !_isCoin || !_canPickUp) return;
+            if (!_canPickUp) return;
             
             var playerPos = PlayerManager.Instance.PlayerPos;
             var dist = transform.Distance(playerPos);
-            if (dist >= pickUpDistance) return;
+            if (dist > pickUpDistance && !_chasePlayer || !_item.CanPickUp()) return;
 
-            transform.MoveTowards(playerPos, movementSpeed);
+            _chasePlayer = true;
+            transform.MoveTowards(playerPos, movementSpeed + PlayerManager.Instance.PlayerStatsManager.GetStat(EPlayerStatType.MovementSpeed));
             if (dist >= getDistance) return;
 
-            if (_isCoin)
-            {
-                PlayerManager.Instance.PlayerItemManager.AddCoins(_level); 
-                _poolManager.ReleasePoolObject(this);
-                return;
-            }
+            var pickedUp = _item.OnPickUp(_paramArray);
+            if (!pickedUp) return;
             
-            var index = PlayerManager.Instance.PlayerItemManager.AddItem(Instantiate(_item), _level);
-            if (index != -1) _poolManager.ReleasePoolObject(this);
+            _poolManager.ReleasePoolObject(this);
         }
 
         private void OnDrawGizmos()

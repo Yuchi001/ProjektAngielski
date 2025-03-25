@@ -29,7 +29,6 @@ namespace PlayerPack
 
         public SoCharacter PickedCharacter { get; private set; }
 
-        public PlayerExp PlayerExp => GetComponent<PlayerExp>();
         public PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
         public PlayerItemManager PlayerItemManager { get; private set; }
         public PlayerMovement PlayerMovement => GetComponent<PlayerMovement>();
@@ -64,7 +63,7 @@ namespace PlayerPack
             var openStrategy = new SingletonOpenStrategy<PlayerItemManager>(playerItemManagerPrefab);
             var closeStrategy = new DefaultCloseStrategy();
             PlayerItemManager = UIManager.OpenUI<PlayerItemManager>("PlayerItemManager", openStrategy, closeStrategy);
-            PlayerItemManager.AddItem(pickedCharacter.StartingItem, 1);
+            PlayerItemManager.AddItem(pickedCharacter.StartingInventoryItem, 1);
             
             OnPlayerReady?.Invoke();
         }
@@ -72,7 +71,6 @@ namespace PlayerPack
         public void ManagePlayerDeath()
         {
             PlayerHealth.enabled = false;
-            PlayerExp.enabled = false;
             
             PlayerItemManager.DestroyAllItems();
             PlayerItemManager.enabled = false;

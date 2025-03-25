@@ -19,7 +19,7 @@ namespace ItemPack.WeaponPack.SideClasses
             SetScale(null);
         }
 
-        private void SetScale(SoItem item)
+        private void SetScale(SoInventoryItem inventoryItem)
         {
             var scale = _bookOfDestructionLogic.GetRange() / scaling;
             transform.localScale = Vector2.one * scale;

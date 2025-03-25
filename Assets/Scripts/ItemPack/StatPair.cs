@@ -1,7 +1,6 @@
 ﻿using ItemPack.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
-using WeaponPack.Enums;
 
 namespace ItemPack
 {
