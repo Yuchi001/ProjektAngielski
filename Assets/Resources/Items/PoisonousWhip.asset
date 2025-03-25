@@ -20,13 +20,4 @@ MonoBehaviour:
   itemPrefab: {fileID: 69511248730712365, guid: 1e1d7b61cf01f9247b83c3a717ab0b79, type: 3}
   itemTags: 
   itemType: 0
-  itemScalingPower: []
   startingStats: []
-  tieredStats:
-    _pairs:
-    - _level: 0
-      _stats: []
-    - _level: 1
-      _stats: []
-    - _level: 2
-      _stats: []

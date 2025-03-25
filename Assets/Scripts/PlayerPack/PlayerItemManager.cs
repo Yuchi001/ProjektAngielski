@@ -26,7 +26,8 @@ namespace PlayerPack
         public static event ItemAddDelegate OnItemAdd;
 
         private static int CAPACITY => PlayerManager.Instance.PlayerStatsManager.GetStatAsInt(EPlayerStatType.Capacity);
-        private GameObject EQ_GRID => gridDataList[1].Grid.gameObject;
+        private GameObject EQ_GRID => gridDataList[2].Grid.gameObject;
+        private GameObject PASSIVE_GRID => gridDataList[1].Grid.gameObject;
 
         private bool _canInteract;
 
@@ -40,6 +41,7 @@ namespace PlayerPack
             
             background.offsetMax = new Vector2(background.offsetMax.x, -topClosed);
             EQ_GRID.SetActive(false);
+            PASSIVE_GRID.SetActive(false);
         }
 
         private IEnumerator Start()
@@ -64,6 +66,7 @@ namespace PlayerPack
         {
             _canInteract = open;
             EQ_GRID.SetActive(_canInteract);
+            PASSIVE_GRID.SetActive(_canInteract);
             background.offsetMax = new Vector2(background.offsetMax.x, _canInteract ? -topOpen : -topClosed);
         }
 
