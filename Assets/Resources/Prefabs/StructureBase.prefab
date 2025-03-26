@@ -83,9 +83,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6abbd753434fa4a419efe70fea6a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionMessage: {fileID: 7028976056266625343}
+  bottomInteractionMessageField: {fileID: 7199081511623458797}
   structureSpriteRenderer: {fileID: 4468078251113208230}
   collisionRange: 1
+  uiPrefabName: 
 --- !u!210 &5487638955366577452
 SortingGroup:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             Physics2D.OverlapCircleNonAlloc(PlayerPos, Range, results);
             foreach (var hit in results)
             {
-                if(!hit.TryGetComponent(out EnemyLogic enemyLogic)) continue;
+                if(hit == null || !hit.TryGetComponent(out EnemyLogic enemyLogic)) continue;
 
                 var diff = enemyLogic.transform.position - (Vector3)PlayerPos;
                 diff = diff.normalized;

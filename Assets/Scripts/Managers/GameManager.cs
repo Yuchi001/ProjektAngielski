@@ -42,7 +42,7 @@ namespace Managers
        [SerializeField] private MainCamera mainCamera;
 
        [SerializeField] private WaveManager waveManager;
-       [FormerlySerializedAs("gameUiManager")] [SerializeField] private UIManager uiManager;
+       [SerializeField] private UIManager uiManager;
 
        [SerializeField] private SoCharacter baseCharacter; // TODO: usun
 

@@ -3,7 +3,6 @@
     public static class PrefabNames
     {
         public const string Enemy = "Enemy";
-        public const string ExpGem = "ExpGem";
         public const string Food = "Food";
         public const string LaserProjectile = "LaserProjectile";
         public const string MapGeneratorManager = "MapGeneratorManager";
@@ -19,7 +18,6 @@
         public const string ItemSlot = "ItemSlot";
         public const string ItemInformationUI = "ItemInformationUI";
         public const string TotemSlot = "TotemSlot";
-        public const string TotemInteractionUI = "TotemInteractionUI";
         public const string WorldItem = "WorldItem";
     }
 }

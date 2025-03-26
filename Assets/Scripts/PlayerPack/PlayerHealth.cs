@@ -115,7 +115,7 @@ namespace PlayerPack
             AudioManager.PlaySound(soundType);
             
             IndicatorManager.SpawnIndicator(PlayerManager.Instance.PlayerPos, value, false, false);
-            ParticleManager.SpawnParticles(EParticlesType.Blood, PlayerManager.Instance.PlayerPos);
+            ParticleManager.SpawnParticles(EParticlesType.Heal, PlayerManager.Instance.PlayerPos);
             
             _currentHealth = Mathf.Clamp(_currentHealth + value, 0, MaxHealth);
         }

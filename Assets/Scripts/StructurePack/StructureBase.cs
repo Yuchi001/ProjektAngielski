@@ -15,7 +15,6 @@ namespace StructurePack
         [SerializeField] private TextMeshProUGUI bottomInteractionMessageField;
         [SerializeField] private SpriteRenderer structureSpriteRenderer;
         [SerializeField] private float collisionRange = 2;
-        [SerializeField] private string uiPrefabName;
         
         private SoStructure _structureData;
         private CircleCollider2D Collider => GetComponent<CircleCollider2D>();
@@ -35,13 +34,17 @@ namespace StructurePack
         private void Awake()
         {
             Collider.isTrigger = true;
-            var prefab = GameManager.Instance.GetPrefab<UIBase>(uiPrefabName);
-            _openStrategy = new CloseAllOfTypeOpenStrategy<IStructure>(prefab, false);
-            _closeStrategy = new DefaultCloseStrategy();
         }
 
         public void Setup(SoStructure structureData)
         {
+            if (structureData.UsesUI)
+            {
+                var prefab = GameManager.Instance.GetPrefab<UIBase>(structureData.UIPrefabName);
+                _openStrategy = new CloseAllOfTypeOpenStrategy<IStructure>(prefab, false);
+                _closeStrategy = new DefaultCloseStrategy();
+            }
+
             var spriteTransform = structureSpriteRenderer.transform;
             _spriteLight = structureSpriteRenderer.GetComponent<Light2D>();
             

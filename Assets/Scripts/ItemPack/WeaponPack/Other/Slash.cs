@@ -75,7 +75,7 @@ namespace ItemPack.WeaponPack.Other
             Physics2D.OverlapAreaNonAlloc(topRight, bottomLeft, results);
             foreach (var t in results)
             {
-                if(!t.TryGetComponent<EnemyLogic>(out var enemy)) continue;
+                if(t == null || !t.TryGetComponent<EnemyLogic>(out var enemy)) continue;
                 
                 enemy.PushEnemy(Vector2.right * (mod * _pushForce), 0.3f);
                 enemy.GetDamaged(_damage);

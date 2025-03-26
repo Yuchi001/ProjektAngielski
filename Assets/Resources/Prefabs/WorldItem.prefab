@@ -51,9 +51,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 4
-  pickUpDistance: 0.5
+  pickUpDistance: 0.75
   getDistance: 0.19
-  movementSpeed: 5
+  movementSpeed: 10
+  movementAcceleration: 5
 --- !u!212 &4535698492429040940
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -116,7 +117,7 @@ Animator:
   m_GameObject: {fileID: 6224992851829802041}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1e73babf4b9054d4a943fd7c88012cba, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

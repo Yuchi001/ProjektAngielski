@@ -14,6 +14,8 @@ namespace StructurePack.SO
         [SerializeField] private bool reusable = true;
         [SerializeField] private bool maintainData = true;
         [SerializeField] private string bottomHoverMessage = "Press E";
+        [SerializeField] private bool usesUI = false;
+        [SerializeField] private string uIPrefabName = "";
 
         public float StructureScale => structureScale;
         public string StructureName => structureName;
@@ -22,6 +24,8 @@ namespace StructurePack.SO
         public Sprite UsedStructureSprite => usedStructureSprite;
         public bool Reusable => reusable;
         public bool MaintainData => maintainData;
+        public bool UsesUI => usesUI;
+        public string UIPrefabName => uIPrefabName;
 
         public abstract void OnInteract(StructureBase structureBase, 
             IOpenStrategy openStrategy,

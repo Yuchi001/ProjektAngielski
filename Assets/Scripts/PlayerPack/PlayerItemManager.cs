@@ -30,12 +30,13 @@ namespace PlayerPack
 
         protected override void Init()
         {
-            _allItems = Resources.LoadAll<SoInventoryItem>("Items").Select(Instantiate).ToList();
+            _allItems = Resources.LoadAll<SoInventoryItem>("InventoryItems").Select(Instantiate).ToList();
 
             var weightItemList = _allItems.Select(item => (weight: 1f / item.ItemPrice, item: item)).ToList();
             weightSum = weightItemList.Sum(w => w.weight);
             _normalizedWeightItemList = weightItemList.Select(pair => (weight: pair.weight / weightSum, item: pair.item)).ToList();
 
+            _canInteract = true;
             ITEMS_GRID.SetActive(true);
         }
 
