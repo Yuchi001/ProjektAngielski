@@ -20,5 +20,6 @@
         public const string TotemSlot = "TotemSlot";
         public const string WorldItem = "WorldItem";
         public const string EnchantmentDisplayUI = "EnchantmentDisplayUI";
+        public const string DashAnimSprite = "DashAnimSprite";
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Managers;
 using PlayerPack.Enums;
@@ -17,7 +18,7 @@ namespace PlayerPack.PlayerMovementPack
         [SerializeField] private float dashTime = 0.5f;
         [SerializeField] private float dashCooldown = 2f;
         [SerializeField] private Animator animator;
-        [SerializeField] private ParticleSystem dashParticles;
+        
         private PlayerStatsManager PlayerStatsManager => PlayerManager.Instance.PlayerStatsManager;
         private SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
         private PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
@@ -27,10 +28,14 @@ namespace PlayerPack.PlayerMovementPack
 
         private float _additionalMovementSpeed = 0;
 
-        private bool _lookingRight;
+        public bool LookingRight { get; private set; }
+
         public bool DuringDash { get; private set; } = false;
         private float _dashTimer = 0;
         private float _dashingTimer = 0;
+
+        private PlayerDashAnim _playerDashAnim;
+        
         public int CurrentDashStacks { get; private set; } = 0;
 
         public delegate void PlayerDashEndDelegate();
@@ -39,14 +44,8 @@ namespace PlayerPack.PlayerMovementPack
         public delegate void PlayerDashIncrement(int value);
         public static event PlayerDashIncrement OnPlayerDashIncrement;
 
-        private void Awake()
-        {
-            dashParticles.Stop();
-        }
-
         private void Start()
         {
-            dashParticles.textureSheetAnimation.SetSprite(0, PlayerManager.Instance.PickedCharacter.CharacterSprite);
             animator.speed = animationSpeed;
             _dashTimer = dashCooldown;
             CurrentDashStacks = MaxDashStacks;
@@ -57,6 +56,7 @@ namespace PlayerPack.PlayerMovementPack
                 { GameManager.DownBind, false },
                 { GameManager.RightBind, false },
             };
+            _playerDashAnim = GetComponent<PlayerDashAnim>();
         }
         public float GetDashProgress()
         {
@@ -97,11 +97,8 @@ namespace PlayerPack.PlayerMovementPack
 
             if (velocity.x == 0) return;
 
-            _lookingRight = velocity.x > 0;
-            playerSpriteTransform.rotation = Quaternion.Euler(0, _lookingRight ? 180 : 0, 0);
-
-            var mainModule = dashParticles.main;
-            mainModule.startRotationY = _lookingRight ? 180 : 0;
+            LookingRight = velocity.x > 0;
+            playerSpriteTransform.rotation = Quaternion.Euler(0, LookingRight ? 180 : 0, 0);
         }
 
         private void ManageDash()
@@ -111,7 +108,7 @@ namespace PlayerPack.PlayerMovementPack
                 _dashingTimer += Time.deltaTime;
                 if (_dashingTimer < dashTime) return;
                 
-                dashParticles.Stop();
+                _playerDashAnim.StopAnim();
                 DuringDash = false;
                 PlayerHealth.Invincible = false;
                 rb2d.velocity /= dashForceMultiplier;
@@ -132,7 +129,7 @@ namespace PlayerPack.PlayerMovementPack
 
             if (CurrentDashStacks == MaxDashStacks) _dashTimer = 0;
             
-            dashParticles.Play();
+            _playerDashAnim.StartAnim();
             DuringDash = true;
             CurrentDashStacks--;
             rb2d.velocity = rb2d.velocity.normalized * dashForceMultiplier;
