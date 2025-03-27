@@ -1,4 +1,5 @@
-﻿using Managers;
+﻿using DamageIndicatorPack;
+using Managers;
 using StructurePack.SO;
 using TMPro;
 using UIPack;
@@ -15,6 +16,7 @@ namespace StructurePack
         [SerializeField] private TextMeshProUGUI bottomInteractionMessageField;
         [SerializeField] private SpriteRenderer structureSpriteRenderer;
         [SerializeField] private float collisionRange = 2;
+        [SerializeField] private string uiPrefabName;
         
         private SoStructure _structureData;
         private CircleCollider2D Collider => GetComponent<CircleCollider2D>();
@@ -29,22 +31,20 @@ namespace StructurePack
         private IOpenStrategy _openStrategy;
         private ICloseStrategy _closeStrategy;
 
+        private int _interactionCount;
+        
         private object _data;
         
         private void Awake()
         {
             Collider.isTrigger = true;
+            var prefab = GameManager.Instance.GetPrefab<UIBase>(uiPrefabName);
+            _openStrategy = new CloseAllOfTypeOpenStrategy<IStructure>(prefab, false);
+            _closeStrategy = new DefaultCloseStrategy();
         }
 
         public void Setup(SoStructure structureData)
         {
-            if (structureData.UsesUI)
-            {
-                var prefab = GameManager.Instance.GetPrefab<UIBase>(structureData.UIPrefabName);
-                _openStrategy = new CloseAllOfTypeOpenStrategy<IStructure>(prefab, false);
-                _closeStrategy = new DefaultCloseStrategy();
-            }
-
             var spriteTransform = structureSpriteRenderer.transform;
             _spriteLight = structureSpriteRenderer.GetComponent<Light2D>();
             
@@ -82,9 +82,14 @@ namespace StructurePack
 
         public void HandleInteraction()
         {
+            var success = _structureData.OnInteract(this, _openStrategy, _closeStrategy);
+            if (!success)
+            {
+                IndicatorManager.SpawnIndicator(transform.position, _structureData.InteractionDeclineMessage, Color.red);
+                return;
+            }
+
             Toggle = !Toggle;
-            _structureData.OnInteract(this, _openStrategy, _closeStrategy);
-            bottomInteractionMessageField.text = _structureData.GetInteractionMessage(this);
             WasUsed = true;
         }
 
@@ -95,9 +100,15 @@ namespace StructurePack
             WasUsed = true;
         }
 
-        public T GetData<T>() where T: class
+        public T GetData<T>() where T: class, new()
         {
+            if (_data == null) _data = new T();
             return _data as T;
+        }
+
+        public void SetData(object data)
+        {
+            _data = data;
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -105,6 +116,8 @@ namespace StructurePack
             if (!other.CompareTag("Player") || (WasUsed && !_structureData.Reusable)) return;
 
             _inRange = true;
+            var message = _structureData.GetInteractionMessage(this);
+            bottomInteractionMessageField.text = message == "" ? "Press E" : message;
             bottomInteractionMessageField.gameObject.SetActive(true);
         }
 

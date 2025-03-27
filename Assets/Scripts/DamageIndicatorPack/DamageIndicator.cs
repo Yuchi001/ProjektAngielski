@@ -9,8 +9,6 @@ namespace DamageIndicatorPack
 {
     public class DamageIndicator : PoolObject
     {
-        [SerializeField] private Gradient damageColorGradient;
-        [SerializeField] private Color healColor;
         [SerializeField] private TextMeshProUGUI damageText;
         [SerializeField] private float lifeTime = 0.3f;
         
@@ -24,22 +22,19 @@ namespace DamageIndicatorPack
 
             _poolManager = (IndicatorManager)poolManager;
             
-            //TODO: Zunifikuj z uiManagerem
-            /*transform.SetParent(UIManager.Instance.WorldCanvas);*/
+            transform.SetParent(UIManager.WorldCanvas);
         }
 
-        public void Setup(Vector2 position, int damage, bool isDamage, bool isCrit)
+        public void Setup(Vector2 position, string message, Color color)
         {
             var randomX = Random.Range(-0.1f, 0.15f);
             position.x += randomX;
             position.y += 0.5f;
 
             transform.position = position;
-            
-            var scaledDamage = Mathf.Clamp(damage - 5, 0, 50);
-            damageText.color = isDamage ? damageColorGradient.Evaluate(scaledDamage / 50f) : healColor;
-            if (isCrit) damageText.color = Color.magenta;
-            damageText.text = !isCrit ? damage.ToString() : $"<i>{damage}</i>";
+
+            damageText.text = message;
+            damageText.color = color;
             
             OnGet(null);
             

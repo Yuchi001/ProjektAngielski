@@ -24,7 +24,7 @@ namespace MainCameraPack
             _player = player.transform;
         }
 
-        private void ShakeCamera()
+        private void ShakeCamera(int _, int __)
         {
             _cameraShaker.ShakeOnce(10, 10, 0.1f, 0.1f);
         }

@@ -17,9 +17,11 @@ MonoBehaviour:
   structureSprite: {fileID: 21300000, guid: 996ad7580c9bcd443ac4760dd60a4fa0, type: 3}
   usedStructureSprite: {fileID: 21300000, guid: 513c48af65d823f4b8095c1c90182a76, type: 3}
   structureScale: 0.5
-  reusable: 0
+  interactionLimit: 1
   maintainData: 0
-  topHoverMessage: Open
-  bottomHoverMessage: 
+  bottomHoverMessage: Open
+  interactionDeclineMessage: 
+  usesUI: 0
+  uIPrefabName: 
   maxCashReward: 10
   maxWeaponCount: 3

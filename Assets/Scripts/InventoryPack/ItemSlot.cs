@@ -112,13 +112,7 @@ namespace InventoryPack
             _itemImage.color = _current ? _tonedColor : Color.clear;
             _drag = false;
 
-            if (rayCastHitGO == null)
-            {
-                WorldItemManager.SpawnInventoryItem(Instantiate(_current), PlayerManager.Instance.PlayerPos, _level);
-                SetItem(null, -1);
-            }
-            
-            //OnPointerEnter(eventData);
+            if (rayCastHitGO == null) PlayerManager.Instance.PlayerItemManager.RemoveItemIntoWorldAtSlot(Index);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

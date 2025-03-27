@@ -22,7 +22,6 @@ namespace EnchantmentPack.Enchantments
             yield return new WaitUntil(() => PlayerManager.Instance != null);
             
             _timer = MaxCooldown;
-            Debug.Log(_timer);
             PlayerHealth.OnPlayerRevive += OnRevive;
         }
 

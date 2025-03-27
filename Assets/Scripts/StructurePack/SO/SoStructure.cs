@@ -11,9 +11,10 @@ namespace StructurePack.SO
         [SerializeField] private Sprite structureSprite;
         [SerializeField] private Sprite usedStructureSprite;
         [SerializeField] private float structureScale = 1;
-        [SerializeField] private bool reusable = true;
+        [SerializeField] private int interactionLimit;
         [SerializeField] private bool maintainData = true;
         [SerializeField] private string bottomHoverMessage = "Press E";
+        [SerializeField] private string interactionDeclineMessage = "";
         [SerializeField] private bool usesUI = false;
         [SerializeField] private string uIPrefabName = "";
 
@@ -22,12 +23,13 @@ namespace StructurePack.SO
         public string StructureDescription => structureDescription;
         public Sprite StructureSprite => structureSprite;
         public Sprite UsedStructureSprite => usedStructureSprite;
-        public bool Reusable => reusable;
+        public bool Reusable => interactionLimit > 1;
         public bool MaintainData => maintainData;
         public bool UsesUI => usesUI;
         public string UIPrefabName => uIPrefabName;
+        public string InteractionDeclineMessage => interactionDeclineMessage;
 
-        public abstract void OnInteract(StructureBase structureBase, 
+        public abstract bool OnInteract(StructureBase structureBase, 
             IOpenStrategy openStrategy,
             ICloseStrategy closeStrategy);
 

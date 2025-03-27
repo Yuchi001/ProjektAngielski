@@ -8,7 +8,7 @@ namespace ItemPack.SO
     {
         public override bool OnPickUp(params int[] paramArray)
         {
-            PlayerManager.Instance.PlayerItemManager.AddCoins(paramArray[0]);
+            PlayerManager.Instance.PlayerCoinManager.AddCoins(paramArray[0]);
             return true;
         }
     }

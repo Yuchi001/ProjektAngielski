@@ -24,7 +24,7 @@ namespace EnchantmentPack.Enchantments
             PlayerHealth.OnPlayerHeal -= TriggerFireHeal;
         }
 
-        private void TriggerFireHeal(int value)
+        private void TriggerFireHeal(int value, int current)
         {
             var position = PlayerManager.Instance.transform.position;
             var range = parameters[EValueKey.Range];

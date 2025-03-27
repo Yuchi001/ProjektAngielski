@@ -49,11 +49,17 @@ namespace PlayerPack
         {
             return EnchantmentValueDictionary[enchantmentName][paramName];
         }
+
+        public SoEnchantment AddRandomEnchantment()
+        {
+            var randomEnchantment = GetRandomEnchantment();
+            return AddEnchantment(randomEnchantment);
+        }
         
-        public void AddEnchantment(SoEnchantment enchantmentToAdd)
+        public SoEnchantment AddEnchantment(SoEnchantment enchantmentToAdd)
         {
             var alreadyIn = _currentEnchantments.ContainsKey(enchantmentToAdd.EnchantmentName);
-            if (alreadyIn) return;
+            if (alreadyIn) return null;
             
             if (enchantmentToAdd.HasRequirement)
             {
@@ -65,6 +71,8 @@ namespace PlayerPack
             _currentEnchantments.Add(enchantmentToAdd.EnchantmentName, enchantmentLogic);
             
             OnAddEnchantment?.Invoke(enchantmentToAdd, enchantmentLogic);
+
+            return enchantmentToAdd;
         }
 
         /// <summary>

@@ -9,8 +9,11 @@ namespace UIPack
     public class UIManager : MonoBehaviour
     {
         [SerializeField] private Transform mainCanvas;
+        [SerializeField] private Transform worldCanvas;
 
         private readonly List<UIRecord> UIBaseList = new();
+
+        public static Transform WorldCanvas => Instance.worldCanvas;
 
         private static UIManager Instance { get; set; }
 

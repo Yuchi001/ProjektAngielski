@@ -17,7 +17,12 @@ MonoBehaviour:
   structureSprite: {fileID: 21300000, guid: ba575929a00dcc541ad075e87083e4b0, type: 3}
   usedStructureSprite: {fileID: 0}
   structureScale: 1
-  reusable: 1
+  interactionLimit: 3
   maintainData: 1
-  topHoverMessage: Pay $$ souls
-  bottomHoverMessage: 
+  bottomHoverMessage: Sacrifice $x$ souls
+  interactionDeclineMessage: Not Enough Souls!
+  usesUI: 0
+  uIPrefabName: 
+  baseCost: 15
+  stageBaseMultiplier: 15
+  transactionMultiplier: 2

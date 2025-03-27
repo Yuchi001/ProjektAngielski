@@ -2,18 +2,19 @@
  using System.Collections.Generic;
 using System.Linq;
 using InventoryPack;
+using InventoryPack.WorldItemPack;
 using ItemPack;
 using ItemPack.SO;
 using PlayerPack.Enums;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace PlayerPack
 {
     public class PlayerItemManager : Box
     {
-        [SerializeField] private int maxItemCount = 30;
-        [SerializeField] private RectTransform background;
+        [SerializeField] private int functionalSlotIndexEnd;
         
         private readonly List<ItemLogicBase> _currentItems = new();
         private List<SoInventoryItem> _allItems = new();
@@ -25,6 +26,7 @@ namespace PlayerPack
 
         private static int CAPACITY => PlayerManager.Instance.PlayerStatsManager.GetStatAsInt(EPlayerStatType.Capacity);
         private GameObject ITEMS_GRID => gridDataList[0].Grid.gameObject;
+        private GameObject BACKPACK_GRID => gridDataList[1].Grid.gameObject;
 
         private bool _canInteract;
 
@@ -72,13 +74,8 @@ namespace PlayerPack
             var index = base.AddItem(inventoryItem, level);
             if (index == -1) return -1;
             
-            if (index < 7) AddItemLogic(inventoryItem, level);
+            if (index < functionalSlotIndexEnd) AddItemLogic(inventoryItem, level);
             return index;
-        }
-
-        public void AddCoins(int count)
-        {
-            // TODO: add coins
         }
 
         public void RefreshInventory()
@@ -86,7 +83,7 @@ namespace PlayerPack
             DestroyAllItems();
             foreach (var slot in _itemSlots)
             {
-                if (slot.Index >= 7) return; 
+                if (slot.Index >= functionalSlotIndexEnd) return; 
                 var itemPair = slot.ViewItem();
                 if (itemPair.item == null) continue;
                 AddItemLogic(itemPair.item, itemPair.level);
@@ -103,6 +100,13 @@ namespace PlayerPack
         {
             base.RemoveItemAtSlot(index);
             RefreshInventory();
+        }
+        
+        public void RemoveItemIntoWorldAtSlot(int index)
+        {
+            var current = _itemSlots[index].ViewItem();
+            WorldItemManager.SpawnInventoryItem(Instantiate(current.item), PlayerManager.Instance.PlayerPos, current.level);
+            RemoveItemAtSlot(index);
         }
 
         public IEnumerable<SoInventoryItem> GetRandomItems(int count, float percentage = 0.0f)

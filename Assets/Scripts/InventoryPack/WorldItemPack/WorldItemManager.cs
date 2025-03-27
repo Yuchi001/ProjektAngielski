@@ -74,12 +74,16 @@ namespace InventoryPack.WorldItemPack
             var coins = Instance._coins;
             foreach (var coin in coins)
             {
-                var count = value % coin.ItemPrice;
-                while (count > 0 && value >= coin.ItemPrice)
+                var count = value / coin.ItemPrice;
+                while (count > 0)
                 {
                     SpawnItem(coin, position, coin.ItemPrice);
                     count--;
                 }
+
+                value -= (value / coin.ItemPrice) * coin.ItemPrice;
+
+                if (value <= 0) return;
             }
         }
 

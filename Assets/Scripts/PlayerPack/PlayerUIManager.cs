@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,40 +8,52 @@ namespace PlayerPack
     public class PlayerUIManager : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI hpField;
+        [SerializeField] private TextMeshProUGUI coinField;
+        [SerializeField] private TextMeshProUGUI soulField;
         [SerializeField] private Image hpBar;
-        [SerializeField] private TextMeshProUGUI expField;
-        [SerializeField] private Image expBar;
 
-        private static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
+        private static int MaxHealth => PlayerManager.Instance.PlayerHealth.MaxHealth;
+        private static int CoinCount => PlayerManager.Instance.PlayerCoinManager.GetCurrentCount();
         
         private void Awake()
         {
             PlayerHealth.OnPlayerDamaged += UpdateHp;
             PlayerHealth.OnPlayerHeal += UpdateHp;
+            PlayerSoulManager.OnSoulCountChange += UpdateSoulCount;
+            PlayerCoinManager.OnCoinCountChange += UpdateCoinCount;
         }
 
         private void OnDisable()
         {
             PlayerHealth.OnPlayerDamaged -= UpdateHp;
             PlayerHealth.OnPlayerHeal -= UpdateHp;
+            PlayerSoulManager.OnSoulCountChange -= UpdateSoulCount;
+            PlayerCoinManager.OnCoinCountChange -= UpdateCoinCount;
         }
 
         private IEnumerator Start()
         {
             yield return new WaitUntil(() => PlayerManager.Instance);
             
-            UpdateHp();
+            UpdateHp(0, MaxHealth);
+            UpdateSoulCount(0, 0);
+            UpdateCoinCount(0, CoinCount);
         }
         
-        private void UpdateHp(int ignore)
+        private void UpdateHp(int value, int current)
         {
-            UpdateHp();
+            hpField.text = $"{current}/{MaxHealth}";
+            hpBar.fillAmount = (float)current / MaxHealth;
         }
 
-        private void UpdateHp()
+        private void UpdateSoulCount(int value, int current)
         {
-            hpField.text = $"{PlayerHealth.CurrentHealth}/{PlayerHealth.MaxHealth}";
-            hpBar.fillAmount = (float)PlayerHealth.CurrentHealth / PlayerHealth.MaxHealth;
+            coinField.text = $"x{current}";
+        }
+
+        private void UpdateCoinCount(int value, int current)
+        {
+            soulField.text = $"x{current}";
         }
     }
 }

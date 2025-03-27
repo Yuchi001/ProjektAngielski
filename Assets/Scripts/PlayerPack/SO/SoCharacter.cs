@@ -17,7 +17,7 @@ namespace PlayerPack.SO
         [SerializeField] private Color characterColor;
         [SerializeField] private List<PlayerStatPair> stats;
         
-        [FormerlySerializedAs("startingItem")] [SerializeField] private SoInventoryItem startingInventoryItem;
+        [SerializeField] private SoInventoryItem startingItem;
 
         public Color CharacterColor => characterColor;
         public Dictionary<EPlayerStatType, float> StatDict => stats.ToDictionary(s => s.StatType, s => s.StatValue);
@@ -25,7 +25,7 @@ namespace PlayerPack.SO
         public Sprite CharacterSprite => characterSprite;
         public AnimationClip WalkingAnimation => walkingAnim;
         public AnimationClip IdleAnimation => idleAnim;
-        public SoInventoryItem StartingInventoryItem => startingInventoryItem;
+        public SoInventoryItem StartingItem => startingItem;
 
         public void SetStats(List<PlayerStatPair> stats)
         {

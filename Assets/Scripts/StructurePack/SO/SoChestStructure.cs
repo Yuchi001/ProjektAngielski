@@ -24,7 +24,7 @@ namespace StructurePack.SO
             }
         }
 
-        public override void OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
+        public override bool OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
         {
             var resultItems = new List<SoInventoryItem>();
             var calculatedCash = Random.Range(0, maxCashReward);
@@ -40,6 +40,8 @@ namespace StructurePack.SO
             structureBase.StartCoroutine(SpawnItems(resultItems, spawnPos));
             
             Destroy(structureBase, 10f);
+
+            return true;
         }
     }
 }

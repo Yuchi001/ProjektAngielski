@@ -29,11 +29,66 @@ namespace PlayerPack
 
         public SoCharacter PickedCharacter { get; private set; }
 
-        public PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
+        private PlayerHealth _playerHealth;
+        public PlayerHealth PlayerHealth
+        {
+            get
+            {
+                if (_playerHealth == null) _playerHealth = GetComponent<PlayerHealth>();
+                return _playerHealth;
+            }
+        }
+
+        private PlayerSoulManager _playerSoulManager;
+        public PlayerSoulManager PlayerSoulManager
+        {
+            get
+            {
+                if (_playerSoulManager == null) _playerSoulManager = GetComponent<PlayerSoulManager>();
+                return _playerSoulManager;
+            }
+        }
+
         public PlayerItemManager PlayerItemManager { get; private set; }
-        public PlayerMovement PlayerMovement => GetComponent<PlayerMovement>();
-        public PlayerEnchantments PlayerEnchantments => GetComponent<PlayerEnchantments>();
-        public PlayerStatsManager PlayerStatsManager => GetComponent<PlayerStatsManager>();
+
+        private PlayerMovement _playerMovement;
+        public PlayerMovement PlayerMovement {
+            get
+            {
+                if (_playerMovement == null) _playerMovement = GetComponent<PlayerMovement>();
+                return _playerMovement;
+            }
+        }
+
+        private PlayerEnchantments _playerEnchantments;
+        public PlayerEnchantments PlayerEnchantments
+        {
+            get
+            {
+                if (_playerEnchantments == null) _playerEnchantments = GetComponent<PlayerEnchantments>();
+                return _playerEnchantments;
+            }
+        }
+
+        private PlayerStatsManager _playerStatsManager;
+        public PlayerStatsManager PlayerStatsManager {
+            get
+            {
+                if (_playerStatsManager == null) _playerStatsManager = GetComponent<PlayerStatsManager>();
+                return _playerStatsManager;
+            }
+        }
+
+        private PlayerCoinManager _playerCoinManager;
+        public PlayerCoinManager PlayerCoinManager
+        {
+            get
+            {
+                if (_playerCoinManager == null) _playerCoinManager = GetComponent<PlayerCoinManager>();
+                return _playerCoinManager;
+            }
+        }
+
         public Vector2 PlayerPos => transform.position;
         
         public delegate void PlayerDeathDelegate();
@@ -63,7 +118,7 @@ namespace PlayerPack
             var openStrategy = new SingletonOpenStrategy<PlayerItemManager>(playerItemManagerPrefab);
             var closeStrategy = new DefaultCloseStrategy();
             PlayerItemManager = UIManager.OpenUI<PlayerItemManager>("PlayerItemManager", openStrategy, closeStrategy);
-            PlayerItemManager.AddItem(pickedCharacter.StartingInventoryItem, 1);
+            PlayerItemManager.AddItem(pickedCharacter.StartingItem, 1);
             
             OnPlayerReady?.Invoke();
         }
