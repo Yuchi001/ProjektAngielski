@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DelaunatorSharp;
 using DelaunatorSharp.Unity;
@@ -67,44 +68,36 @@ namespace MapGeneratorPack
 
             if (!isInBounds)
             {
-                if (_wasInBounds) points.Add(FindNearestPoint(PlayerPos).ToPoint());
-                
-                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyUp(KeyCode.W) ||
-                    Input.GetKeyDown(KeyCode.S) || Input.GetKeyUp(KeyCode.S) ||
-                    Input.GetKeyDown(KeyCode.A) || Input.GetKeyUp(KeyCode.A) ||
-                    Input.GetKeyDown(KeyCode.D) || Input.GetKeyUp(KeyCode.D))
-                {
-                }
+                //if (_wasInBounds) _newPoints.Add(PlayerPos.ToPoint());
 
-                points.Add(PlayerPos.ToPoint());
+                _newPoints.Add(PlayerPos.ToPoint());
                 _wasInBounds = false;
                 return;
             }
 
-            points.Add(FindNearestPoint(PlayerPos).ToPoint());
+            _newPoints.Add(PlayerPos.ToPoint());
+
+            var nearestEntry = FindNearestPoint(_newPoints[0].ToVector2());
+            var nearestExit = FindNearestPoint(_newPoints[^1].ToVector2());
+
+            var temp = points.GetRange(0, nearestEntry.index + 1);
+            temp.AddRange(_newPoints);
+            temp.AddRange(points.GetRange(nearestExit.index, points.Count - nearestExit.index));
+            points = new List<IPoint>(temp);
+            
             _wasInBounds = true;
             var newMesh = CreateMesh(points);
-            var combine = new CombineInstance[2];
-            combine[0].mesh = meshFilter.mesh;
-            combine[0].transform = meshFilter.transform.localToWorldMatrix;
-            combine[1].mesh = newMesh;
-            combine[1].transform = Matrix4x4.identity;
-            var resultMesh = new Mesh();
-            resultMesh.CombineMeshes(combine);
-            resultMesh.RecalculateNormals();
-            resultMesh.RecalculateBounds();
-            resultMesh.Optimize();
-            meshFilter.mesh = resultMesh;
-            points.Clear();
+            meshFilter.mesh = newMesh;
+            _newPoints.Clear();
         }
 
-        private Vector3 FindNearestPoint(Vector3 point)
+        private (int index, Vector3 point) FindNearestPoint(Vector3 point)
         {
             var vertices = meshFilter.mesh.vertices;
 
-            vertices = vertices.Select(v => meshFilter.transform.TransformPoint(v)).ToArray();
+            (int index,Vector3 point)[] arr = vertices.Select((v, index) => (index, meshFilter.transform.TransformPoint(v))).ToArray();
 
-            return vertices.OrderBy(v => Vector3.SqrMagnitude(v - point)).First();
+            return arr.OrderBy(v => Vector3.SqrMagnitude(v.point - point)).First();
         }
         
 
