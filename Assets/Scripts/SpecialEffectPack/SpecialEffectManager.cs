@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Managers;
 using Managers.Other;
 using PoolPack;
@@ -43,9 +42,16 @@ namespace SpecialEffectPack
            PrepareQueue();
         }
 
+        private void Update()
+        {
+            RunUpdatePoolStack();
+        }
+
         public static void SpawnExplosion(ESpecialEffectType specialEffectType, Vector2 position, float range, Color color = default)
         {
-            Instance.GetPoolObject<ExplosionAnimation>().Setup(specialEffectType, range, color);
+            var anim = Instance.GetPoolObject<ExplosionAnimation>();
+            anim.Setup(specialEffectType, range, color);
+            anim.transform.position = position;
         }
     }
 }

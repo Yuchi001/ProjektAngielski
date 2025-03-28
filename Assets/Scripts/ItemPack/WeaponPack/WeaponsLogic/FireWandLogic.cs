@@ -54,7 +54,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
             if (range == null || damage == null) return;
             
-            StartCoroutine(BoomCoroutine(enemy, range.Value, (int)damage.Value));
+            if (this != null) StartCoroutine(BoomCoroutine(enemy, range.Value, (int)damage.Value));
         }
 
         private IEnumerator BoomCoroutine(GameObject impactEnemy, float range, int damage)

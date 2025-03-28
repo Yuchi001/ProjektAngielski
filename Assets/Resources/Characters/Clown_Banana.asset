@@ -25,9 +25,9 @@ MonoBehaviour:
   - statType: 2
     statValue: 30
   - statType: 3
-    statValue: 2
+    statValue: 4
   - statType: 4
     statValue: 30
   - statType: 5
     statValue: 0
-  startingItem: {fileID: 11400000, guid: 4109ca3d4823c824b82213e08386dca1, type: 2}
+  startingItem: {fileID: 11400000, guid: 556ec77cd5b0a8c4397abe375561f253, type: 2}

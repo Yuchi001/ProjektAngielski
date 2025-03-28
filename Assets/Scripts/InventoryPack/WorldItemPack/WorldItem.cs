@@ -25,7 +25,6 @@ namespace InventoryPack.WorldItemPack
         
         private SpriteRenderer _spriteRenderer;
         private Rigidbody2D _rigidbody2D;
-        private Light2D _light2D;
         private Animator _anim;
         private SoItem _item;
         private bool _canPickUp = false;
@@ -46,7 +45,6 @@ namespace InventoryPack.WorldItemPack
 
             _poolManager = poolManager;
             _anim = GetComponent<Animator>();
-            _light2D = GetComponent<Light2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _spriteRenderer.enabled = false;
@@ -59,7 +57,6 @@ namespace InventoryPack.WorldItemPack
             _item = null;
             _canPickUp = false;
             _spriteRenderer.enabled = false;
-            _light2D.enabled = false;
         }
 
         public override void OnGet(SoPoolObject so)
@@ -67,7 +64,6 @@ namespace InventoryPack.WorldItemPack
             base.OnGet(so);
             
             _spriteRenderer.enabled = true;
-            _light2D.enabled = true;
             _chasePlayer = false;
             _pickedUp = false;
             _cleanUp = false;
@@ -82,7 +78,6 @@ namespace InventoryPack.WorldItemPack
             _item = item;
             _paramArray = paramArray;
             _spriteRenderer.sprite = item.ItemSprite;
-            _light2D.lightCookieSprite = item.ItemSprite;
         }
 
         private void Ready()

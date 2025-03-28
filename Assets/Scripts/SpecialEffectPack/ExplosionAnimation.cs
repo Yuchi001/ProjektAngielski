@@ -15,7 +15,6 @@ namespace SpecialEffectPack
         [SerializeField] private List<ExplosionData> explosionDataList;
 
         private const string EXPLOSION_ANIMATION_TIMER_ID = "EXPLOSION_ANIMATION_TIMER_ID";
-
         private SpecialEffectManager _pool;
 
         private Dictionary<ESpecialEffectType, ExplosionData> _explosionDataDict = new();
@@ -24,6 +23,7 @@ namespace SpecialEffectPack
         {
             base.OnCreate(poolManager);
 
+            _pool = poolManager as SpecialEffectManager;
             _explosionDataDict = explosionDataList.ToDictionary(e => e.SpecialEffectType, e => e);
         }
 
@@ -48,12 +48,12 @@ namespace SpecialEffectPack
             var clip = animator.runtimeAnimatorController.animationClips[0];
             var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-            return clip.length / stateInfo.speed;
+            return clip.length / stateInfo.speed - 0.1f;
         }
 
         public override void InvokeUpdate()
         {
-            if (CheckTimer(EXPLOSION_ANIMATION_TIMER_ID) < GetLifeTime()) return;
+            if (CheckTimer(EXPLOSION_ANIMATION_TIMER_ID) <= GetLifeTime()) return;
             
             _pool.ReleasePoolObject(this);
         }
