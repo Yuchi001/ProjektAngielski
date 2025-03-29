@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Managers;
@@ -29,6 +30,8 @@ namespace AudioPack
         {
             if (Instance != this && Instance != null) Destroy(gameObject);
             else Instance = this;
+
+            GameManager.OnStartRun += SetThemeForStage;
         }
 
         #endregion
@@ -39,6 +42,17 @@ namespace AudioPack
             _sfxPool = PoolHelper.CreatePool(this, sfxPrefab, false);
             
             PrepareQueue();
+        }
+
+        private void OnDisable()
+        {
+            GameManager.OnStartRun -= SetThemeForStage;
+        }
+
+        private void SetThemeForStage()
+        {
+            // TODO: ustaw odpowiedni theme
+            SetTheme(EThemeType.Mines);
         }
 
         public static void PlaySound(ESoundType soundType)

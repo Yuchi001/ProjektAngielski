@@ -19,7 +19,7 @@ MonoBehaviour:
   movementSpeed: 1
   attackSpeed: 0
   damage: 5
-  expGemType: 4
+  difficulty: 2
   occurenceList: 
   spriteRotation: 2
   enemyBehaviour: 0

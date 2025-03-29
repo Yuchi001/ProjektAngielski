@@ -10,6 +10,7 @@ using UnityEngine;
 
 namespace StructurePack.SO
 {
+    [CreateAssetMenu(fileName = "new Chest Structure", menuName = "Custom/Structure/Chest")]
     public class SoChestStructure : SoStructure
     {
         [SerializeField, Range(1, 100)] private int maxCashReward;

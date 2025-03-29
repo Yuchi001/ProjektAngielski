@@ -5,7 +5,6 @@
         public const string Enemy = "Enemy";
         public const string Food = "Food";
         public const string LaserProjectile = "LaserProjectile";
-        public const string MapGeneratorManager = "MapGeneratorManager";
         public const string PlayerInventoryManager = "PlayerInventoryManager";
         public const string Projectile = "Projectile";
         public const string SlashAttack = "SlashAttack";
@@ -17,9 +16,9 @@
         public const string DamageIndicatorHolder = "DamageIndicatorHolder";
         public const string ItemSlot = "ItemSlot";
         public const string ItemInformationUI = "ItemInformationUI";
-        public const string TotemSlot = "TotemSlot";
         public const string WorldItem = "WorldItem";
         public const string EnchantmentDisplayUI = "EnchantmentDisplayUI";
         public const string DashAnimSprite = "DashAnimSprite";
+        public const string Zone = "Zone";
     }
 }

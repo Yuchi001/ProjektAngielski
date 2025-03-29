@@ -12,15 +12,20 @@ namespace Managers
     {
         [SerializeField] private List<SpawnerBase> spawners = new();
 
-        private EnemySpawner _enemySpawner;
-
-        public EnemySpawner EnemySpawner => _enemySpawner;
+        public EnemySpawner EnemySpawner { get; private set; }
 
         private void Awake()
         {
+            GameManager.OnStartRun += BeginSpawn;
+            
             var enemySpawner = spawners.FirstOrDefault(s => s.GetType() == typeof(EnemySpawner));
             if (enemySpawner == default) return;
-            _enemySpawner = enemySpawner as EnemySpawner;
+            EnemySpawner = enemySpawner as EnemySpawner;
+        }
+
+        private void OnDisable()
+        {
+            GameManager.OnStartRun -= BeginSpawn;
         }
 
         public void BeginSpawn()

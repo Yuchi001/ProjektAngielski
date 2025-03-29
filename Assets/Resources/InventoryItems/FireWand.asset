@@ -52,7 +52,7 @@ MonoBehaviour:
     mod: 0
     percentageGrowth: 0
   - selfStatType: 7
-    statValue: 6
+    statValue: 0.5
     canUpgrade: 0
     mod: 0
     percentageGrowth: 0

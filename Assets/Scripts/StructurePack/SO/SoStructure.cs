@@ -24,6 +24,7 @@ namespace StructurePack.SO
         public Sprite StructureSprite => structureSprite;
         public Sprite UsedStructureSprite => usedStructureSprite;
         public bool Reusable => interactionLimit > 1;
+        public int InteractionLimit => interactionLimit;
         public bool MaintainData => maintainData;
         public bool UsesUI => usesUI;
         public string UIPrefabName => uIPrefabName;

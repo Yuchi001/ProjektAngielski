@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using PlayerPack;
+using UnityEngine;
 
 namespace ItemPack.SO
 {
@@ -7,8 +8,8 @@ namespace ItemPack.SO
     {
         public override bool OnPickUp(params int[] paramArray)
         {
-            //TODO implementacja dusz
-            return false;
+            PlayerManager.Instance.PlayerSoulManager.AddSouls(1);
+            return true;
         }
     }
 }

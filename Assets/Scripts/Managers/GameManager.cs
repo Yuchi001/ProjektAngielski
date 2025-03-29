@@ -53,6 +53,9 @@ namespace Managers
        public EnemySpawner EnemySpawner => waveManager.EnemySpawner;
        public int StageCount = 0;
 
+       public delegate void StartRunDelegate();
+       public static event StartRunDelegate OnStartRun;
+
        #region Cached
 
        private Projectile _projectilePrefab;
@@ -80,19 +83,15 @@ namespace Managers
            StartRun(baseCharacter);
        }
 
-       public void StartRun(SoCharacter soCharacter)
+       private void StartRun(SoCharacter soCharacter)
        {
            var playerObj = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
            CurrentPlayer = playerObj.GetComponent<PlayerManager>();
            CurrentPlayer.Setup(soCharacter);
-           
-           mainCamera.Setup(playerObj);
-           
-           AudioManager.SetTheme(EThemeType.Mines);
-           
-           waveManager.BeginSpawn();
 
            Time.timeScale = 1;
+           
+           OnStartRun?.Invoke();
        }
 
        public T GetPrefab<T>(string prefName) where T: class

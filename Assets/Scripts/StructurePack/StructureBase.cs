@@ -70,7 +70,7 @@ namespace StructurePack
         {
             if (!_inRange || (WasUsed && !_structureData.Reusable) || !Input.GetKeyDown(KeyCode.E)) return;
 
-            if (!_structureData.Reusable)
+            if (!_structureData.Reusable || _interactionCount >= _structureData.InteractionLimit)
             {
                 structureSpriteRenderer.sprite = _structureData.UsedStructureSprite;
                 _spriteLight.enabled = false;
@@ -89,6 +89,8 @@ namespace StructurePack
                 return;
             }
 
+            _interactionCount++;
+            bottomInteractionMessageField.text = _structureData.GetInteractionMessage(this);
             Toggle = !Toggle;
             WasUsed = true;
         }

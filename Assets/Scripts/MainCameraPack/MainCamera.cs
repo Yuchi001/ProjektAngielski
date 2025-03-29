@@ -1,4 +1,5 @@
 ﻿using System;
+using Managers;
 using PlayerPack;
 using UnityEngine;
 
@@ -12,16 +13,18 @@ namespace MainCameraPack
         private void Awake()
         {
             PlayerHealth.OnPlayerDamaged += ShakeCamera;
+            GameManager.OnStartRun += Setup;
         }
 
         private void OnDisable()
         {
             PlayerHealth.OnPlayerDamaged -= ShakeCamera;
+            GameManager.OnStartRun -= Setup;
         }
 
-        public void Setup(GameObject player)
+        public void Setup()
         {
-            _player = player.transform;
+            _player = GameManager.Instance.CurrentPlayer.transform;
         }
 
         private void ShakeCamera(int _, int __)

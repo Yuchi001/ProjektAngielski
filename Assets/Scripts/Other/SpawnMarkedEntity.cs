@@ -29,7 +29,7 @@ namespace Other
             _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        public void SetReady(EEntityType entityType, SpawnerBase poolManager)
+        public void SetReady(EEntityType entityType, SpawnerBase poolManager, MarkerManager markerManager)
         {
             _poolManager = poolManager;
             
@@ -38,8 +38,14 @@ namespace Other
 
             _spriteRenderer.color = pair.color;
             SetTimer(SPAWN_TIMER_ID);
-            transform.position = MapGenerator.GetRandomPos();
+            var randomPosition = MapGenerator.GetRandomPos();
+            if (!randomPosition.HasValue)
+            {
+                markerManager.ReleasePoolObject(this);
+                return;
+            }
             
+            transform.position = randomPosition.Value;
             OnGet(null);
         }
 

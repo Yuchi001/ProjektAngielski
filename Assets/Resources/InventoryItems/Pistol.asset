@@ -16,17 +16,8 @@ MonoBehaviour:
   itemDescription: 
   itemPrice: 1
   itemSprite: {fileID: 21300000, guid: 77caf879fdc03a24facf7652360a16c2, type: 3}
-  oneTimeSpawnLogic: 0
-  itemPrefab: {fileID: 5679424887727705593, guid: 51b8214004e8c9246a98ad9ae5463170, type: 3}
   itemTags: 
   itemType: 0
-  itemScalingPower: []
+  oneTimeSpawnLogic: 0
+  itemPrefab: {fileID: 5679424887727705593, guid: 51b8214004e8c9246a98ad9ae5463170, type: 3}
   startingStats: []
-  tieredStats:
-    _pairs:
-    - _level: 0
-      _stats: []
-    - _level: 1
-      _stats: []
-    - _level: 2
-      _stats: []

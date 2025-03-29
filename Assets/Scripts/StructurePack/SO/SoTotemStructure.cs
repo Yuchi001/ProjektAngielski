@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace StructurePack.SO
 {
+    [CreateAssetMenu(fileName = "new Totem Structure", menuName = "Custom/Structure/Totem")]
     public class SoTotemStructure : SoStructure
     {
         [SerializeField] private int baseCost;
@@ -36,28 +37,30 @@ namespace StructurePack.SO
         public override string GetInteractionMessage(StructureBase structureBase)
         {
             var data = structureBase.GetData<TotemData>();
-            if (!data.IsInitialized()) data.Init(baseCost + GameManager.Instance.StageCount * stageBaseMultiplier);
+            if (!data.IsInitialized()) data.Init().InitPrice(baseCost + GameManager.Instance.StageCount * stageBaseMultiplier);
             return base.GetInteractionMessage(structureBase).Replace("$x$", data.GetCurrentPrice().ToString());
         }
         
-        private class TotemData
+        private class TotemData : BaseStructureData<TotemData>
         {
             private int _currentPrice = 0;
-            private bool _initialized = false;
 
             private IOpenStrategy _enchantmentDisplayOpenStrat;
             private ICloseStrategy _enchantmentDisplayCloseStrat;
 
             private string UI_KEY = "ENCHANTMENT_DISPLAY_KEY";
 
-            public void Init(int currentPrice)
+            public override TotemData Init()
             {
-                _currentPrice = currentPrice;
-                _initialized = true;
-
                 var prefab = GameManager.Instance.GetPrefab<EnchantmentDisplayUI>(PrefabNames.EnchantmentDisplayUI);
                 _enchantmentDisplayOpenStrat = new DefaultOpenStrategy(prefab);
                 _enchantmentDisplayCloseStrat = new DestroyCloseStrategy(UI_KEY, 0);
+                return base.Init();
+            }
+
+            public void InitPrice(int currentPrice)
+            {
+                _currentPrice = currentPrice;
             }
 
             public void DisplayEnchantment(SoEnchantment enchantment)
@@ -66,8 +69,6 @@ namespace StructurePack.SO
                     _enchantmentDisplayCloseStrat);
                 ui.SetData(enchantment);
             }
-
-            public bool IsInitialized() => _initialized;
 
             public void MultiplyCurrentPrice(int amount)
             {

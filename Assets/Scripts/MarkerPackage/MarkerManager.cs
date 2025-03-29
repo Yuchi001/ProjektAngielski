@@ -41,7 +41,7 @@ namespace MarkerPackage
 
         public static void SpawnMarker(SpawnerBase _spawnerPool, EEntityType entityType)
         {
-            Instance.GetPoolObject<SpawnMarkedEntity>().SetReady(entityType, _spawnerPool);
+            Instance.GetPoolObject<SpawnMarkedEntity>().SetReady(entityType, _spawnerPool, Instance);
         }
 
         public override void ReleasePoolObject(PoolObject poolObject)

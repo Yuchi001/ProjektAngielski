@@ -17,7 +17,7 @@ namespace EnemyPack.SO
         [SerializeField] private float movementSpeed;
         [SerializeField, Min(0.1f)] private float attackSpeed;
         [SerializeField] private int damage;
-        [SerializeField, Range(1, 10)] private int difficulty;
+        [SerializeField, Range(1, 10)] private int difficulty = 1;
         [SerializeField] private List<EStageType> occurenceList;
         [SerializeField] private ESpriteRotation spriteRotation = ESpriteRotation.RotateLeft;
         
