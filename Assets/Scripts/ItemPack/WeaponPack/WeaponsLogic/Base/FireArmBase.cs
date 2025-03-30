@@ -1,9 +1,10 @@
-﻿using AudioPack;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AudioPack;
 using EnchantmentPack.Enums;
 using EnemyPack.CustomEnemyLogic;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
-using Managers;
 using Managers.Enums;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
@@ -16,8 +17,18 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
         [SerializeField] protected float bulletScale = 0.2f;
         [SerializeField] protected float trailTime = 0.2f;
         [SerializeField] protected Sprite projectileSprite;
+        private float Spread => GetStatValue(EItemSelfStatType.Spread);
         
-        private float Spread => GetStatValue(EItemSelfStatType.Spread) ?? 1;
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            EItemSelfStatType.Spread
+        };
+
+        public override IEnumerable<EItemSelfStatType> GetUsedStats()
+        {
+            return base.GetUsedStats().Concat(_otherDefaultStatsNoPush);
+        }
+
         
         /// <summary>
         /// Base for fire arm bullet, options already set:

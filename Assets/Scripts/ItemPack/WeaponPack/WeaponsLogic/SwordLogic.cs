@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using EnchantmentPack.Enums;
 using EnemyPack.CustomEnemyLogic;
 using ItemPack.Enums;
@@ -15,8 +16,18 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         private const string HitEnemyCountName = "HitCount";
 
-        private float MaxRange => GetStatValue(EItemSelfStatType.ProjectileRange) ?? 0;
-        
+        private float MaxRange => GetStatValue(EItemSelfStatType.ProjectileRange);
+
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            EItemSelfStatType.ProjectileRange,
+        };
+
+        public override IEnumerable<EItemSelfStatType> GetUsedStats()
+        {
+            return base.GetUsedStats().Concat(_otherDefaultStatsNoPush);
+        }
+
         protected override bool Use()
         {
             var targetedEnemies = new List<int>();
@@ -27,7 +38,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 if (target == null) continue;
 
                 spawnedProjectiles++;
-                
+
                 var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
 
                 var enemyPos = target.transform.position;
@@ -44,15 +55,15 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                     .SetScale(0.4f)
                     .SetRange(MaxRange)
                     .SetOutOfRangeBehaviour(OnOutOfRange);
-                
+
                 if (PlayerEnchantments.Has(EEnchantmentName.Sharpness))
                 {
                     var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.Sharpness, EValueKey.Percentage);
                     if (Random.Range(0f, 1f) <= percentage) projectile.SetEffect(EEffectType.Bleed, 9999);
                 }
-                
+
                 projectile.SetReady();
-                
+
                 targetedEnemies.Add(target.GetInstanceID());
             }
 
@@ -70,7 +81,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         private void OnOutOfRange(Projectile projectile)
         {
             var newProjectile = Instantiate(Projectile, projectile.transform.position, Quaternion.identity);
-            
+
             newProjectile.Setup(Damage, Speed)
                 .SetTarget(PlayerTransform)
                 .SetDirection(PlayerPos, 0, true)
@@ -81,29 +92,29 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 .SetScale(0.4f)
                 .SetUpdate(BackProjectileUpdate)
                 .SetReady();
-            
+
             Destroy(projectile.gameObject);
         }
-        
+
         private void BackProjectileUpdate(Projectile projectile)
         {
             var projectilePos = projectile.transform.position;
             var playerPos = PlayerTransform.position;
-            
+
             var sr = projectile.GetSpriteRenderer().transform;
             UtilsMethods.LookAtObj(sr, PlayerPos);
-            sr.Rotate(0,0, 225);
-            
+            sr.Rotate(0, 0, 225);
+
             if (Vector2.Distance(projectilePos, playerPos) > 0.5f) return;
-            
+
             Destroy(projectile.gameObject);
         }
-        
+
         private void ProjectileUpdate(Projectile projectile)
         {
             var sr = projectile.GetSpriteRenderer().transform;
             UtilsMethods.LookAtObj(sr, PlayerPos);
-            sr.Rotate(0,0, 45);
+            sr.Rotate(0, 0, 45);
         }
     }
 }

@@ -1,4 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Other.Enums;
 using UnityEngine;
@@ -10,6 +13,17 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     {
         [SerializeField] private Sprite projectileSprite;
         [SerializeField] private float rotationSpeed;
+        
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            
+        };
+
+        public override IEnumerable<EItemSelfStatType> GetUsedStats()
+        {
+            return base.GetUsedStats().Concat(_otherDefaultStatsNoPush);
+        }
+
         protected override bool Use()
         {
             StartCoroutine(ThrowShurikens());

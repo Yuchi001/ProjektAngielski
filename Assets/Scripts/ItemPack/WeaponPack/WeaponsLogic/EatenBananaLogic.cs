@@ -1,4 +1,5 @@
-﻿using AudioPack;
+﻿using System.Collections.Generic;
+using AudioPack;
 using EnemyPack.CustomEnemyLogic;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
@@ -15,7 +16,12 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private Sprite projectileSprite;
         [SerializeField] private GameObject boomParticles;
 
-        private float BlastRange => GetStatValue(EItemSelfStatType.BlastRange) ?? 0;
+        private float BlastRange => GetStatValue(EItemSelfStatType.BlastRange);
+
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            EItemSelfStatType.BlastRange,
+        };
         
         protected override bool Use()
         {

@@ -22,47 +22,58 @@ MonoBehaviour:
   itemPrefab: {fileID: 7723958241839922233, guid: d121175665331e7439c184e59110ac7f, type: 3}
   startingStats:
   - selfStatType: 1
-    statValue: 1
+    statValue: 2
     canUpgrade: 0
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
     mod: 0
-    percentageGrowth: 0
   - selfStatType: 3
     statValue: 5
     canUpgrade: 0
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
     mod: 0
-    percentageGrowth: 0
   - selfStatType: 2
-    statValue: 30
-    canUpgrade: 0
-    mod: 0
-    percentageGrowth: 0
+    statValue: 10
+    canUpgrade: 1
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
+    mod: 2
   - selfStatType: 4
     statValue: 1
     canUpgrade: 0
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
     mod: 0
-    percentageGrowth: 0
-  - selfStatType: 5
-    statValue: 5
-    canUpgrade: 0
-    mod: 0
-    percentageGrowth: 0
-  - selfStatType: 6
-    statValue: 1
-    canUpgrade: 0
-    mod: 0
-    percentageGrowth: 0
-  - selfStatType: 7
-    statValue: 1
-    canUpgrade: 0
-    mod: 0
-    percentageGrowth: 0
   - selfStatType: 15
-    statValue: 2
-    canUpgrade: 0
-    mod: 0
-    percentageGrowth: 0
+    statValue: 1
+    canUpgrade: 1
+    useMax: 1
+    useMin: 0
+    maximum: 4
+    minimum: 0
+    mod: 0.3
+  - selfStatType: 7
+    statValue: 1.5
+    canUpgrade: 1
+    useMax: 1
+    useMin: 0
+    maximum: 4
+    minimum: 0
+    mod: 0.25
   - selfStatType: 8
-    statValue: 5
-    canUpgrade: 0
-    mod: 0
-    percentageGrowth: 0
+    statValue: 3
+    canUpgrade: 1
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
+    mod: 2

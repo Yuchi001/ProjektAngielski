@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AudioPack;
 using EnemyPack.CustomEnemyLogic;
 using ItemPack.Enums;
@@ -18,8 +19,20 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private GameObject flightParticles;
         [SerializeField] private GameObject onHitParticles;
 
-        private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration) ?? 0;
-        
+        private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration);
+
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            EItemSelfStatType.EffectDuration,
+            EItemSelfStatType.BlastRange,
+            EItemSelfStatType.BlastDamage
+        };
+
+        public override IEnumerable<EItemSelfStatType> GetUsedStats()
+        {
+            return base.GetUsedStats().Concat(_otherDefaultStatsNoPush);
+        }
+
         protected override bool Use()
         {
             var targetedEnemies = new List<int>();
@@ -50,11 +63,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         private void OnHitAction(GameObject enemy, Projectile projectile)
         {
             var range = GetStatValue(EItemSelfStatType.BlastRange);
-            var damage = GetStatValue(EItemSelfStatType.BlastDamage);
-
-            if (range == null || damage == null) return;
+            var damage = GetStatValueAsInt(EItemSelfStatType.BlastDamage);
             
-            if (this != null) StartCoroutine(BoomCoroutine(enemy, range.Value, (int)damage.Value));
+            if (this != null) StartCoroutine(BoomCoroutine(enemy, range, damage));
         }
 
         private IEnumerator BoomCoroutine(GameObject impactEnemy, float range, int damage)

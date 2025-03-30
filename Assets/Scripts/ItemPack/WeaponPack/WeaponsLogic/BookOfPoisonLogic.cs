@@ -15,14 +15,22 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private Sprite fieldSprite;
         [SerializeField] private float minimalFieldDistance = 0.4f;
 
-        private float Duration => GetStatValue(EItemSelfStatType.Duration) ?? 0;
-        private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale) ?? 0;
-        private float DamageRate => GetStatValue(EItemSelfStatType.DamageRate) ?? 1;
-        private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration) ?? 0;
+        private float Duration => GetStatValue(EItemSelfStatType.Duration);
+        private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale);
+        private float DamageRate => GetStatValue(EItemSelfStatType.DamageRate);
+        private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration);
 
         private const string DamageRateName = "DamageRate";
 
         private readonly List<Projectile> _poisonFields = new();
+
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            EItemSelfStatType.Duration,
+            EItemSelfStatType.ProjectileScale,
+            EItemSelfStatType.DamageRate,
+            EItemSelfStatType.EffectDuration
+        };
         
         protected override bool Use()
         {

@@ -1,4 +1,6 @@
-﻿using EnchantmentPack.Enums;
+﻿using System.Collections.Generic;
+using System.Linq;
+using EnchantmentPack.Enums;
 using ItemPack.Enums;
 using Other.Enums;
 using UnityEngine;
@@ -12,8 +14,18 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private Sprite projectileSprite;
         [FormerlySerializedAs("rotationSpeed")] [SerializeField] private float rotationSpeedModifier;
 
-        private float ProjectileScale => GetStatValue(EItemSelfStatType.ProjectileScale) ?? 0;
-        
+        private float ProjectileScale => GetStatValue(EItemSelfStatType.ProjectileScale);
+
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            EItemSelfStatType.ProjectileScale,
+        };
+
+        public override IEnumerable<EItemSelfStatType> GetUsedStats()
+        {
+            return base.GetUsedStats().Concat(_otherDefaultStats);
+        }
+
         protected override bool Use()
         {
             var spawnedProjectiles = 0;

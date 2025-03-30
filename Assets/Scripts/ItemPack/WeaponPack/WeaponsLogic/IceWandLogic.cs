@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ItemPack.Enums;
 using Other.Enums;
 using UnityEngine;
@@ -12,8 +13,18 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private float animSpeed;
         [SerializeField] private GameObject flightParticles;
 
-        private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration) ?? 0;
-        
+        private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration);
+
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            EItemSelfStatType.EffectDuration
+        };
+
+        public override IEnumerable<EItemSelfStatType> GetUsedStats()
+        {
+            return base.GetUsedStats().Concat(_otherDefaultStatsNoPush);
+        }
+
         protected override bool Use()
         {
             var targetedEnemies = new List<int>();

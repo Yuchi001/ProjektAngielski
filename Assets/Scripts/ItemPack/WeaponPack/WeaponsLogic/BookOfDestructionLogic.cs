@@ -17,14 +17,20 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     public class BookOfDestructionLogic : ItemLogicBase
     {
         [SerializeField] private GameObject destructionCirclePrefab;
-        private float Range => GetStatValue(EItemSelfStatType.BlastRange) ?? 0;
-        private float DropExpChance => GetStatValue(EItemSelfStatType.DropExpChance) ?? 0;
+        private float Range => GetStatValue(EItemSelfStatType.BlastRange);
+        private float DropExpChance => GetStatValue(EItemSelfStatType.DropExpChance);
 
         private void Start()
         {
             var prefab = Instantiate(destructionCirclePrefab);
             prefab.GetComponent<DestructionCircle>().Setup(this);
         }
+
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            EItemSelfStatType.BlastRange,
+            EItemSelfStatType.DropExpChance
+        };
 
         protected override bool Use()
         {

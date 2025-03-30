@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using UnityEngine;
@@ -11,8 +12,18 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private Sprite projectileSprite;
         [SerializeField] private float rotationSpeed;
 
-        private float Range => GetStatValue(EItemSelfStatType.ProjectileRange) ?? 2;
-        
+        private float Range => GetStatValue(EItemSelfStatType.ProjectileRange);
+
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            EItemSelfStatType.ProjectileRange
+        };
+
+        public override IEnumerable<EItemSelfStatType> GetUsedStats()
+        {
+            return base.GetUsedStats().Concat(_otherDefaultStats);
+        }
+
         protected override bool Use()
         {
             var targetedEnemies = new List<int>();

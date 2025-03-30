@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ItemPack.Enums;
 using PlayerPack;
@@ -17,18 +18,36 @@ namespace ItemPack.SO
 
         public bool OneTimeSpawnLogic => oneTimeSpawnLogic;
         public ItemLogicBase ItemPrefab => itemPrefab;
-        public List<StatPair> StartingStats => startingStats;
+
+        public IEnumerable<StatPair> StartingStats
+        {
+            get
+            {
+                if (ItemPrefab == null) return null;
+                var defaultStats = ItemPrefab.GetUsedStats();
+                startingStats.RemoveAll(e => !defaultStats.Contains(e.SelfStatType));
+                foreach (var statType in defaultStats)
+                {
+                    var stat = startingStats.FirstOrDefault(s => s.SelfStatType == statType);
+                    if (stat != default) continue;
+                    startingStats.Add(new StatPair(statType, 0));
+                }
+
+                return startingStats;
+            }
+        }
         
         public void SetWeaponStartingStats(List<StatPair> stats)
         {
             startingStats = new List<StatPair>(stats);
         }
 
-        public float? GetStatValue(EItemSelfStatType statTypeType, int level)
+        public float GetStatValue(EItemSelfStatType statType, int level)
         {
-            var startingStat = StartingStats.FirstOrDefault(s => s.SelfStatType == statTypeType);
+            var startingStat = startingStats.FirstOrDefault(s => s.SelfStatType == statType);
 
-            return startingStat?.GetStatValue(level);
+            if (startingStat == null) throw new NullReferenceException($"Stat {statType} not found for weapon: {this.itemName}");
+            return startingStat.GetStatValue(level);
         }
 
         public override bool OnPickUp(params int[] paramArray)

@@ -14,8 +14,14 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     {
         [SerializeField] private List<NotePair> noteList = new();
         
-        private float Accuracy => GetStatValue(EItemSelfStatType.Spread) ?? 1;
-        private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale) ?? 1;
+        private float Spread => GetStatValue(EItemSelfStatType.Spread);
+        private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale);
+        
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            EItemSelfStatType.ProjectileScale,
+            EItemSelfStatType.Spread
+        };
         
         protected override bool Use()
         {
@@ -64,8 +70,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         private Vector2 GetDirection(Vector2 pickedTargetPos)
         {
             var pos = pickedTargetPos;
-            pos.x += Random.Range(-Accuracy, Accuracy);
-            pos.y += Random.Range(-Accuracy, Accuracy);
+            pos.x += Random.Range(-Spread, Spread);
+            pos.y += Random.Range(-Spread, Spread);
             return pos;
         }
     }

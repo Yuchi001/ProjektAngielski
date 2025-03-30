@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using ItemPack.Enums;
 using UnityEngine;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
@@ -7,6 +9,17 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     public class MultiWandLogic : ItemLogicBase
     {
         [SerializeField] private Sprite projectileSprite;
+        
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            
+        };
+
+        public override IEnumerable<EItemSelfStatType> GetUsedStats()
+        {
+            return base.GetUsedStats().Concat(_otherDefaultStatsNoPush);
+        }
+
         protected override bool Use()
         {
             StartCoroutine(SpawnParticles());

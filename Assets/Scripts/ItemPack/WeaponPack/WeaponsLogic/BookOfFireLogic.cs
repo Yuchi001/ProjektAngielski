@@ -1,4 +1,5 @@
-﻿using EnchantmentPack.Enums;
+﻿using System.Collections.Generic;
+using EnchantmentPack.Enums;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using UnityEngine;
@@ -11,10 +12,17 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         
         private bool _spawned = false;
 
-        public float Range => GetStatValue(EItemSelfStatType.ProjectileRange) ?? 0;
-        public float DamageRate => (GetStatValue(EItemSelfStatType.DamageRate) ?? 0) * CustomRateModifier();
-        public float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration) ?? 0;
+        public float Range => GetStatValue(EItemSelfStatType.ProjectileRange);
+        public float DamageRate => GetStatValue(EItemSelfStatType.DamageRate) * CustomRateModifier();
+        public float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration);
         
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            EItemSelfStatType.ProjectileRange,
+            EItemSelfStatType.DamageRate,
+            EItemSelfStatType.EffectDuration,
+            EItemSelfStatType.Damage
+        };
 
         protected override bool Use()
         {

@@ -20,15 +20,6 @@ namespace ItemPack.WeaponPack.Editor
         private SerializedProperty itemPrice;
 
         private SoInventoryItem _soInventoryItem;
-
-        private static readonly Dictionary<int, bool> foldouts = new()
-        {
-            { 0 , false },
-            { 1 , false },
-            { 2 , false },
-        };
-
-        private bool _startingStatsFoldout = false;
         
         private void OnEnable()
         {
@@ -58,75 +49,83 @@ namespace ItemPack.WeaponPack.Editor
             
             EditorGUILayout.Space();
             EditorGUILayout.Space();
-            
-            GUILayout.BeginHorizontal();
-            _startingStatsFoldout = EditorGUILayout.Foldout(_startingStatsFoldout, "Starting stats");
-            
-            EditorGUI.BeginDisabledGroup(_soInventoryItem.StartingStats.FirstOrDefault(s => s.SelfStatType == EItemSelfStatType.None) != default);
-            if (GUILayout.Button("Add new stat")) AddStartingStat();
-            EditorGUI.EndDisabledGroup();
-            
-            GUILayout.EndHorizontal();
-            
-            if (_startingStatsFoldout)
+
+            var editedStartingStats =  new List<StatPair>();
+
+            var stats = _soInventoryItem.StartingStats;
+            if (stats == null) return;
+
+            EditorGUILayout.LabelField("Stats settings", EditorStyles.boldLabel);      
+            foreach (var stat in stats)
             {
-                var editedStartingStats =  new List<StatPair>();
-
-                foreach (var (stat, index) in _soInventoryItem.StartingStats.Select((item, index) => (item, index)))
+                if (_soInventoryItem.OneTimeSpawnLogic && stat.SelfStatType == EItemSelfStatType.Cooldown)
                 {
-                    EditorGUILayout.Space();
-                    EditorGUILayout.Space();
-                    
-                    var statType = (EItemSelfStatType)EditorGUILayout.EnumPopup("Stat type", stat.SelfStatType);
-                    EditorGUI.BeginDisabledGroup(statType == EItemSelfStatType.None);
-                    
-                    var val = EditorGUILayout.FloatField("Stat value", stat.StatValue);
-                    var canUpgrade = EditorGUILayout.Toggle("Can Upgrade", stat.CanUpgrade);
-                    
-                    var current = new StatPair(
-                        statType,
-                        val
-                        );
-
-                    if (canUpgrade) current.SetUpgradeStats(new StatPair.UpgradeProps
-                    {
-                        min = EditorGUILayout.FloatField("Min", stat.Minimum),
-                        max = EditorGUILayout.FloatField("Max", stat.Maximum),
-                        mod = EditorGUILayout.FloatField("Mod", stat.Mod),
-                        percentageGrowth = EditorGUILayout.Toggle("Percentage Growth", stat.PercentageGrowth),
-                    });
-                    
-                    if (GUILayout.Button("Remove")) RemoveStartingStat(index);
-                    else editedStartingStats.Add(current);
-                    
-                    EditorGUI.EndDisabledGroup();
+                    editedStartingStats.Add(new StatPair(EItemSelfStatType.Cooldown, 0));
+                    continue;
                 }
-                _soInventoryItem.SetWeaponStartingStats(editedStartingStats);
+                
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
+                    
+                EditorGUILayout.LabelField(stat.SelfStatType.ToString(), EditorStyles.boldLabel);                
+                    
+                var val = EditorGUILayout.FloatField("Stat value", stat.StatValue);
+                var canUpgrade = EditorGUILayout.Toggle("Can Upgrade", stat.CanUpgrade);
+                    
+                var current = new StatPair(
+                    stat.SelfStatType,
+                    val
+                );
+                    
+                if (canUpgrade)
+                {
+                    float? scaled = null;
+                    
+                    GUILayout.BeginHorizontal();
+
+                    var useMin = EditorGUILayout.Toggle("Use min", stat.HasMinimum);
+                    if (useMin && GUILayout.Button("Scale with min")) scaled = (stat.Minimum - stat.StatValue) / 10;
+
+                    GUILayout.EndHorizontal();
+                    
+                    GUILayout.BeginHorizontal();
+
+                    var useMax = EditorGUILayout.Toggle("Use max", stat.HasMaximum);
+                    if (useMax && GUILayout.Button("Scale with max")) scaled = (stat.Maximum - stat.StatValue) / 10;
+
+                    GUILayout.EndHorizontal();
+
+                    current.SetUpgradeStats(new StatPair.UpgradeProps
+                    {
+                        useMin = useMin,
+                        useMax = useMax,
+                        min = stat.HasMinimum ? EditorGUILayout.FloatField("Min", stat.Minimum) : 0,
+                        max = stat.HasMaximum ? EditorGUILayout.FloatField("Max", stat.Maximum) : 0,
+                        mod = scaled ?? EditorGUILayout.FloatField("Mod", stat.Mod),
+                    });
+                }
+
+                editedStartingStats.Add(current);
+
+                EditorGUI.EndDisabledGroup();
+            }
+
+            _soInventoryItem.SetWeaponStartingStats(editedStartingStats);
             
-                serializedObject.ApplyModifiedProperties();
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+
+            if (GUILayout.Button("Restore Defaults"))
+            {
+                GUIUtility.keyboardControl = 0;
+                _soInventoryItem.SetWeaponStartingStats(new List<StatPair>());
             }
             
             serializedObject.ApplyModifiedProperties();
             
+            serializedObject.ApplyModifiedProperties();
+            
             EditorUtility.SetDirty(_soInventoryItem);
-        }
-
-        private void AddStartingStat()
-        {
-            var current = new List<StatPair>(_soInventoryItem.StartingStats) { new() };
-            _soInventoryItem.SetWeaponStartingStats(current);
-            _startingStatsFoldout = true;
-            
-            serializedObject.ApplyModifiedProperties();
-        }
-        
-        private void RemoveStartingStat(int index)
-        {
-            var current = new List<StatPair>(_soInventoryItem.StartingStats);
-            current.RemoveAt(index);
-            _soInventoryItem.SetWeaponStartingStats(current);
-            
-            serializedObject.ApplyModifiedProperties();
         }
     }
 }

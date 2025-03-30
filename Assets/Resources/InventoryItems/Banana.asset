@@ -16,36 +16,56 @@ MonoBehaviour:
   itemDescription: Banana
   itemPrice: 1
   itemSprite: {fileID: 21300000, guid: c920ceccbb8f309418a84f2c2f97ab8d, type: 3}
-  oneTimeSpawnLogic: 0
-  itemPrefab: {fileID: 2880022480226449138, guid: d6c41f141806b284fa3d9a90abb65612, type: 3}
   itemTags: 08000000
   itemType: 0
+  oneTimeSpawnLogic: 0
+  itemPrefab: {fileID: 2880022480226449138, guid: d6c41f141806b284fa3d9a90abb65612, type: 3}
   startingStats:
   - selfStatType: 1
     statValue: 0.7
     canUpgrade: 1
-    mod: -0.1
+    useMax: 0
+    useMin: 1
+    maximum: 0
+    minimum: 1
+    mod: -0.06
   - selfStatType: 2
-    statValue: 0.3
+    statValue: 3
     canUpgrade: 1
-    mod: 0.05
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
+    mod: 1
   - selfStatType: 3
     statValue: 3
     canUpgrade: 1
-    mod: -0.5
+    useMax: 0
+    useMin: 1
+    maximum: 0
+    minimum: 1
+    mod: -0.2
   - selfStatType: 4
     statValue: 1
     canUpgrade: 0
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
     mod: 0
   - selfStatType: 5
     statValue: 2
     canUpgrade: 0
-    mod: 0
-  - selfStatType: 6
-    statValue: 1
-    canUpgrade: 0
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
     mod: 0
   - selfStatType: 14
     statValue: 2
     canUpgrade: 0
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
     mod: 0

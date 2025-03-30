@@ -1,4 +1,5 @@
-﻿using ItemPack.Enums;
+﻿using System.Collections.Generic;
+using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Managers;
 using Managers.Other;
@@ -13,10 +14,17 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         private static Laser LaserProjectile => GameManager.Instance.GetPrefab<Laser>(PrefabNames.LaserProjectile);
 
-        private float Duration => GetStatValue(EItemSelfStatType.Duration) ?? 0;
-        private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale) ?? 1;
-        private float DamageRate => GetStatValue(EItemSelfStatType.DamageRate) ?? 1;
-        
+        private float Duration => GetStatValue(EItemSelfStatType.Duration);
+        private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale);
+        private float DamageRate => GetStatValue(EItemSelfStatType.DamageRate);
+
+        protected override List<EItemSelfStatType> UsedStats { get; } = new()
+        {
+            EItemSelfStatType.Duration,
+            EItemSelfStatType.ProjectileScale,
+            EItemSelfStatType.DamageRate,
+        };
+
         protected override bool Use()
         {
             var target = UtilsMethods.FindFurthestTarget(PlayerPos);

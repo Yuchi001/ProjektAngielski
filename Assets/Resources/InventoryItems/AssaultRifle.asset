@@ -24,25 +24,40 @@ MonoBehaviour:
   - selfStatType: 2
     statValue: 20
     canUpgrade: 1
-    mod: 0.1
-    percentageGrowth: 1
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
+    mod: 1
   - selfStatType: 1
-    statValue: 2
+    statValue: 4
     canUpgrade: 1
+    useMax: 0
+    useMin: 1
+    maximum: 0
+    minimum: 1
     mod: -0.3
-    percentageGrowth: 0
   - selfStatType: 9
-    statValue: 0.5
+    statValue: 1
     canUpgrade: 1
+    useMax: 0
+    useMin: 1
+    maximum: 0
+    minimum: 0
     mod: -0.1
-    percentageGrowth: 0
   - selfStatType: 4
     statValue: 20
     canUpgrade: 1
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
     mod: 5
-    percentageGrowth: 0
   - selfStatType: 3
     statValue: 5
     canUpgrade: 0
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
     mod: 0
-    percentageGrowth: 0
