@@ -7,6 +7,7 @@ using ItemPack.WeaponPack.Other;
 using MainCameraPack;
 using Managers.Enums;
 using Managers.Other;
+using MapGeneratorPack;
 using PlayerPack;
 using PlayerPack.SO;
 using UIPack;
@@ -44,6 +45,7 @@ namespace Managers
        [SerializeField] private WaveManager waveManager;
        [SerializeField] private UIManager uiManager;
 
+       [SerializeField] private MapGeneratorManager mapGeneratorManager;
        [SerializeField] private SoCharacter baseCharacter; // TODO: usun
 
        private readonly Dictionary<string, GameObject> _prefabs = new();
@@ -92,6 +94,8 @@ namespace Managers
            Time.timeScale = 1;
            
            OnStartRun?.Invoke();
+           
+           mapGeneratorManager.GenerateBaseZone();
        }
 
        public T GetPrefab<T>(string prefName) where T: class

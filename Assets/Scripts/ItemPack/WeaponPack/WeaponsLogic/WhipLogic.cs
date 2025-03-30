@@ -31,13 +31,10 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         protected override List<EItemSelfStatType> UsedStats { get; } = new()
         {
             EItemSelfStatType.EffectDuration,
-            EItemSelfStatType.ProjectileScale
+            EItemSelfStatType.ProjectileScale,
+            EItemSelfStatType.PushForce,
+            EItemSelfStatType.ProjectilesCount
         };
-
-        public override IEnumerable<EItemSelfStatType> GetUsedStats()
-        {
-            return base.GetUsedStats().Concat(_otherDefaultStats);
-        }
 
         protected override bool Use()
         {

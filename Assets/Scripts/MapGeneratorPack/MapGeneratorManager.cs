@@ -34,7 +34,7 @@ namespace MapGeneratorPack
             GameManager.OnStartRun -= GenerateBaseZone;
         }
 
-        private void GenerateBaseZone()
+        public void GenerateBaseZone()
         {
             _zonePrefab = GameManager.Instance.GetPrefab<Zone>(PrefabNames.Zone);
             _zoneDict = new Dictionary<string, Zone>();

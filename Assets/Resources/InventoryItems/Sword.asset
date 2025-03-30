@@ -16,17 +16,48 @@ MonoBehaviour:
   itemDescription: 
   itemPrice: 1
   itemSprite: {fileID: 21300000, guid: 962e9e936d4e0bd42bc6c82ceff146e2, type: 3}
-  oneTimeSpawnLogic: 0
-  itemPrefab: {fileID: 2265100316909724686, guid: 311f0087cefd9f64b88b94b7f70dc9c7, type: 3}
   itemTags: 
   itemType: 0
-  itemScalingPower: []
-  startingStats: []
-  tieredStats:
-    _pairs:
-    - _level: 0
-      _stats: []
-    - _level: 1
-      _stats: []
-    - _level: 2
-      _stats: []
+  oneTimeSpawnLogic: 0
+  itemPrefab: {fileID: 2265100316909724686, guid: 311f0087cefd9f64b88b94b7f70dc9c7, type: 3}
+  startingStats:
+  - selfStatType: 5
+    statValue: 1
+    canUpgrade: 1
+    useMax: 1
+    useMin: 0
+    maximum: 3
+    minimum: 0
+    mod: 0.2
+  - selfStatType: 2
+    statValue: 10
+    canUpgrade: 1
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
+    mod: 2
+  - selfStatType: 1
+    statValue: 0
+    canUpgrade: 0
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
+    mod: 0
+  - selfStatType: 4
+    statValue: 1
+    canUpgrade: 0
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
+    mod: 0
+  - selfStatType: 3
+    statValue: 2
+    canUpgrade: 1
+    useMax: 1
+    useMin: 0
+    maximum: 10
+    minimum: 0
+    mod: 0.8
