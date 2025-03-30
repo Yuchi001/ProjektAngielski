@@ -9,6 +9,7 @@ namespace StructurePack.SO
         [SerializeField] private string structureName;
         [SerializeField, TextArea(3, 10)] private string structureDescription;
         [SerializeField] private Sprite structureSprite;
+        [SerializeField] private Sprite activeSprite;
         [SerializeField] private Sprite usedStructureSprite;
         [SerializeField] private float structureScale = 1;
         [SerializeField] private int interactionLimit;
@@ -21,8 +22,6 @@ namespace StructurePack.SO
         public float StructureScale => structureScale;
         public string StructureName => structureName;
         public string StructureDescription => structureDescription;
-        public Sprite StructureSprite => structureSprite;
-        public Sprite UsedStructureSprite => usedStructureSprite;
         public bool Reusable => interactionLimit > 1;
         public int InteractionLimit => interactionLimit;
         public bool MaintainData => maintainData;
@@ -37,6 +36,21 @@ namespace StructurePack.SO
         public virtual string GetInteractionMessage(StructureBase structureBase)
         {
             return bottomHoverMessage;
+        }
+
+        public Sprite GetSprite(EState state) => state switch
+        {
+            EState.NOT_USED => structureSprite,
+            EState.ACTIVE => activeSprite != null ? activeSprite : structureSprite,
+            EState.USED => usedStructureSprite != null ? usedStructureSprite : structureSprite,
+            _ => structureSprite
+        };
+
+        public enum EState
+        {
+            NOT_USED,
+            ACTIVE,
+            USED,
         }
     }
 }

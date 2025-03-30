@@ -32,7 +32,7 @@ MonoBehaviour:
     mod: 0
     percentageGrowth: 0
   - selfStatType: 2
-    statValue: 5
+    statValue: 30
     canUpgrade: 0
     mod: 0
     percentageGrowth: 0
@@ -52,7 +52,7 @@ MonoBehaviour:
     mod: 0
     percentageGrowth: 0
   - selfStatType: 7
-    statValue: 0.5
+    statValue: 1
     canUpgrade: 0
     mod: 0
     percentageGrowth: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
     mod: 0
     percentageGrowth: 0
   - selfStatType: 8
-    statValue: 3
+    statValue: 5
     canUpgrade: 0
     mod: 0
     percentageGrowth: 0

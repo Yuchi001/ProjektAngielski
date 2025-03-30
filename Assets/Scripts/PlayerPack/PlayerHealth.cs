@@ -78,7 +78,7 @@ namespace PlayerPack
             if (_zoneTimer < 1f / zoneCheckPerSec) return;
 
             _zoneTimer = 0;
-            var inBounds = MapGenerator.ContainsEntity(transform.position);
+            var inBounds = MapGeneratorManager.ContainsEntity(transform.position);
             if (!inBounds) GetDamaged(MaxHealth / 10);
         }
 

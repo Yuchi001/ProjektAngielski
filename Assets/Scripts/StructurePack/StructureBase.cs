@@ -51,12 +51,13 @@ namespace StructurePack
             Collider.radius = collisionRange * structureData.StructureScale;
             
             _structureData = structureData;
-            structureSpriteRenderer.sprite = structureData.StructureSprite;
+            var basicSprite = _structureData.GetSprite(SoStructure.EState.NOT_USED);
+            structureSpriteRenderer.sprite = basicSprite;
             spriteTransform.localScale *= structureData.StructureScale;
 
-            _spriteLight.lightCookieSprite = structureData.StructureSprite;
+            _spriteLight.lightCookieSprite = basicSprite;
 
-            var height = structureData.StructureSprite.rect.height;
+            var height = basicSprite.rect.height;
             var offsetY = 0.5f * (height / 16.0f) * structureData.StructureScale;
 
             var newPos = new Vector3(0, offsetY);
@@ -70,13 +71,6 @@ namespace StructurePack
         {
             if (!_inRange || (WasUsed && !_structureData.Reusable) || !Input.GetKeyDown(KeyCode.E)) return;
 
-            if (!_structureData.Reusable || _interactionCount >= _structureData.InteractionLimit)
-            {
-                structureSpriteRenderer.sprite = _structureData.UsedStructureSprite;
-                _spriteLight.enabled = false;
-                bottomInteractionMessageField.gameObject.SetActive(false);
-            }
-            
             HandleInteraction();
         }
 
@@ -88,6 +82,14 @@ namespace StructurePack
                 IndicatorManager.SpawnIndicator(transform.position, _structureData.InteractionDeclineMessage, Color.red);
                 return;
             }
+
+            if (!_structureData.Reusable || _interactionCount >= _structureData.InteractionLimit)
+            {
+                structureSpriteRenderer.sprite = _structureData.GetSprite(SoStructure.EState.USED);
+                _spriteLight.enabled = false;
+                bottomInteractionMessageField.gameObject.SetActive(false);
+            }
+            else structureSpriteRenderer.sprite = _structureData.GetSprite(SoStructure.EState.ACTIVE);
 
             _interactionCount++;
             bottomInteractionMessageField.text = _structureData.GetInteractionMessage(this);

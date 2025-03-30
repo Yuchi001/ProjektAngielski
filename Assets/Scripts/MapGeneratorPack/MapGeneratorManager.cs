@@ -8,11 +8,11 @@ using Random = UnityEngine.Random;
 
 namespace MapGeneratorPack
 {
-    public class MapGenerator : MonoBehaviour
+    public class MapGeneratorManager : MonoBehaviour
     {
-         #region Singleton
+        #region Singleton
 
-        private static MapGenerator Instance { get; set; }
+        private static MapGeneratorManager Instance { get; set; }
 
         private void Awake()
         {
@@ -20,7 +20,6 @@ namespace MapGeneratorPack
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
         }
-
         #endregion
 
         [SerializeField] private float baseZoneScale;

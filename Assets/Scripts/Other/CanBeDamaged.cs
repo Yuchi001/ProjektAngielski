@@ -52,7 +52,7 @@ namespace Other
         public virtual void GetDamaged(int value, Color? flashColor = null)
         {
             flashColor ??= Color.white;
-            _currentCoroutine ??= StartCoroutine(DamageAnim(flashColor.Value));
+            if (isActiveAndEnabled) _currentCoroutine ??= StartCoroutine(DamageAnim(flashColor.Value));
 
             SpawnBlood();
         }
@@ -67,7 +67,7 @@ namespace Other
             Dead = true;
             _spriteMaterial.SetColor("_FlashColor", Color.red);
             _spriteMaterial.SetFloat("_FlashAmmount", 1);
-            StartCoroutine(Die(destroyObj, poolManager));
+            if (isActiveAndEnabled) StartCoroutine(Die(destroyObj, poolManager));
         }
 
         private IEnumerator Die(bool destroyObj, PoolManager poolManager)
