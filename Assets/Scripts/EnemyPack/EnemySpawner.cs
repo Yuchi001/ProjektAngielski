@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EnemyPack.CustomEnemyLogic;
 using EnemyPack.SO;
@@ -45,8 +46,18 @@ namespace EnemyPack
         private float EnemySpawnRate => enemySpawnRate + 1f * enemySpawnRateMultiplierPerKill * DeadEnemies;
         protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * EnemySpawnRate);
         public float EnemiesHpScale => enemiesHpScale + Mathf.Pow(1f + DeadEnemies * enemiesHpScaleMultiplierPerKill, 2) - 1;
-        
-        private void Start()
+
+        private void Awake()
+        {
+            GameManager.OnInit += Init;
+        }
+
+        private void OnDisable()
+        {
+            GameManager.OnInit -= Init;
+        }
+
+        private void Init()
         {
             GetComponent<EnemyManager>().Setup(ActiveObjects);
             

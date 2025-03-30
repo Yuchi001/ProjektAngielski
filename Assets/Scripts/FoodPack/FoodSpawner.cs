@@ -30,9 +30,19 @@ namespace FoodPack
         private readonly List<(float weight, SoFood food)> _foodWeightList = new();
 
         protected override float MaxTimer => trySpawnRate;
-        private PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
-        
+        private static PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
+
         private void Awake()
+        {
+            GameManager.OnInit += Init;
+        }
+
+        private void OnDisable()
+        {
+            GameManager.OnInit -= Init;
+        }
+
+        private void Init()
         {
             var foodList = Resources.LoadAll<SoFood>("Food").Select(Instantiate).ToList();
             foodList.Sort((a, b) => a.SaturationValue - b.SaturationValue);
@@ -44,10 +54,7 @@ namespace FoodPack
                 _weightSum += weight;
             }
             _foodWeightList.Sort((a, b) => (int)a.weight - (int)b.weight);
-        }
-
-        private void Start()
-        {
+            
             var foodPrefab = GameManager.Instance.GetPrefab<Food>(PrefabNames.Food);
             _foodPool = PoolHelper.CreatePool(this, foodPrefab, true);
         }

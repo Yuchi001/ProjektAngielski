@@ -1,4 +1,5 @@
-﻿using Managers;
+﻿using System;
+using Managers;
 using Managers.Base;
 using Managers.Other;
 using Other;
@@ -19,9 +20,16 @@ namespace MarkerPackage
         {
             if (Instance != this && Instance != null) Destroy(gameObject);
             else Instance = this;
+
+            GameManager.OnInit += Init;
         }
 
-        private void Start()
+        private void OnDisable()
+        {
+            GameManager.OnInit -= Init;
+        }
+
+        private void Init()
         {
             var markerPrefab = GameManager.Instance.GetPrefab<SpawnMarkedEntity>(PrefabNames.SpawnIndicator);
             _markers = PoolHelper.CreatePool(this, markerPrefab, false);

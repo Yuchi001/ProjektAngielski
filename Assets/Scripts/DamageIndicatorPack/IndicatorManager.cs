@@ -22,13 +22,20 @@ namespace DamageIndicatorPack
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
+
+            GameManager.OnInit += Init;
         }
 
         #endregion
-        
+
+        private void OnDisable()
+        {
+            GameManager.OnInit -= Init;
+        }
+
         private ObjectPool<DamageIndicator> _pool;
 
-        private void Start()
+        private void Init()
         {
             var prefab = GameManager.Instance.GetPrefab<DamageIndicator>(PrefabNames.DamageIndicatorHolder);
             _pool = PoolHelper.CreatePool(this, prefab, false);

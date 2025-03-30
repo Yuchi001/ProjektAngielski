@@ -16,9 +16,9 @@ namespace MapGeneratorPack
 
         private void Awake()
         {
-            GameManager.OnStartRun += GenerateBaseZone;
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
+            GameManager.OnStartRun += GenerateBaseZone;
         }
         #endregion
 
@@ -34,7 +34,7 @@ namespace MapGeneratorPack
             GameManager.OnStartRun -= GenerateBaseZone;
         }
 
-        public void GenerateBaseZone()
+        private void GenerateBaseZone()
         {
             _zonePrefab = GameManager.Instance.GetPrefab<Zone>(PrefabNames.Zone);
             _zoneDict = new Dictionary<string, Zone>();

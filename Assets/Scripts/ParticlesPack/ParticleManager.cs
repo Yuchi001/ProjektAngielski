@@ -36,7 +36,7 @@ namespace ParticlesPack
             {
                 var manager = new GameObject(so.ParticlesType + "Manager");
                 var script = manager.AddComponent<ParticlePool>();
-                script.Setup(so);
+                script.Init(so);
                 _particlesDict.Add(so.ParticlesType, script);
                 yield return new WaitForEndOfFrame();
             }
@@ -54,7 +54,7 @@ namespace ParticlesPack
             private ObjectPool<ParticlesPoolObject> _pool;
             private SoParticles _data;
             
-            public void Setup(SoParticles data)
+            public void Init(SoParticles data)
             {
                 _data = data;
                 PoolSize = data.PoolSize;

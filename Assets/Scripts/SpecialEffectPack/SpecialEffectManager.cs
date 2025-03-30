@@ -18,10 +18,17 @@ namespace SpecialEffectPack
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
+
+            GameManager.OnInit += Init;
         }
 
         #endregion
-        
+
+        private void OnDisable()
+        {
+            GameManager.OnInit -= Init;
+        }
+
         private ObjectPool<ExplosionAnimation> _explosionPool;
         
         protected override T GetPoolObject<T>()
@@ -34,7 +41,7 @@ namespace SpecialEffectPack
             _explosionPool.Release(poolObject as ExplosionAnimation);
         }
         
-        private void Start()
+        private void Init()
         {
             var prefab = GameManager.Instance.GetPrefab<ExplosionAnimation>(PrefabNames.ExplosionBase);
             _explosionPool = PoolHelper.CreatePool(this, prefab, false);

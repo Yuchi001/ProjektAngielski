@@ -32,11 +32,12 @@ namespace AudioPack
             else Instance = this;
 
             GameManager.OnStartRun += SetThemeForStage;
+            GameManager.OnInit += Init;
         }
 
         #endregion
 
-        private void Start()
+        private void Init()
         {
             var sfxPrefab = GameManager.Instance.GetPrefab<SFXPoolObject>(PrefabNames.SFX);
             _sfxPool = PoolHelper.CreatePool(this, sfxPrefab, false);
@@ -47,6 +48,7 @@ namespace AudioPack
         private void OnDisable()
         {
             GameManager.OnStartRun -= SetThemeForStage;
+            GameManager.OnInit -= Init;
         }
 
         private void SetThemeForStage()

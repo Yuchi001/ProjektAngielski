@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AudioPack;
 using EffectPack.SO;
 using EnchantmentPack;
@@ -26,8 +27,6 @@ namespace Managers
        {
            if (Instance != this && Instance != null) Destroy(gameObject);
            else Instance = this;
-
-           Init();
        }
        
        #endregion
@@ -45,7 +44,6 @@ namespace Managers
        [SerializeField] private WaveManager waveManager;
        [SerializeField] private UIManager uiManager;
 
-       [SerializeField] private MapGeneratorManager mapGeneratorManager;
        [SerializeField] private SoCharacter baseCharacter; // TODO: usun
 
        private readonly Dictionary<string, GameObject> _prefabs = new();
@@ -57,6 +55,9 @@ namespace Managers
 
        public delegate void StartRunDelegate();
        public static event StartRunDelegate OnStartRun;
+       
+       public delegate void InitDelegate();
+       public static event InitDelegate OnInit;
 
        #region Cached
 
@@ -70,7 +71,13 @@ namespace Managers
        public IEnumerable<SoEnchantment> EnchantmentList => _enchantments ??= Resources.LoadAll<SoEnchantment>("Enchantments");
        
        #endregion
-       
+
+       private void Start()
+       {
+           Init();
+           StartRun(baseCharacter);
+       }
+
        private void Init()
        {
            _prefabs.Clear();
@@ -82,7 +89,7 @@ namespace Managers
            
            LeanTween.init(100, 100);
            
-           StartRun(baseCharacter);
+           OnInit?.Invoke();
        }
 
        private void StartRun(SoCharacter soCharacter)
@@ -94,8 +101,6 @@ namespace Managers
            Time.timeScale = 1;
            
            OnStartRun?.Invoke();
-           
-           mapGeneratorManager.GenerateBaseZone();
        }
 
        public T GetPrefab<T>(string prefName) where T: class

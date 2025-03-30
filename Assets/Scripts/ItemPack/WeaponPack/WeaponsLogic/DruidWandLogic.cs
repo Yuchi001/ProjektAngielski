@@ -15,7 +15,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         protected override List<EItemSelfStatType> UsedStats { get; } = new()
         {
             EItemSelfStatType.BlastRange,
-            EItemSelfStatType.HealValue
+            EItemSelfStatType.HealValue,
+            EItemSelfStatType.PushForce
         };
 
         public override IEnumerable<EItemSelfStatType> GetUsedStats()
