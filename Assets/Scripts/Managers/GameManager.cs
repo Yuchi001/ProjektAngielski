@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using AudioPack;
+﻿using System.Collections.Generic;
 using EffectPack.SO;
 using EnchantmentPack;
-using EnemyPack;
 using ItemPack.WeaponPack.Other;
 using MainCameraPack;
-using Managers.Enums;
 using Managers.Other;
-using MapGeneratorPack;
 using PlayerPack;
 using PlayerPack.SO;
 using UIPack;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Managers
 {
@@ -38,19 +32,10 @@ namespace Managers
        public static KeyCode AcceptBind => KeyCode.O;
        public static KeyCode DeclineBind => KeyCode.K;
        
-       [SerializeField] private GameObject playerPrefab;
-       [SerializeField] private MainCamera mainCamera;
-
-       [SerializeField] private WaveManager waveManager;
-       [SerializeField] private UIManager uiManager;
-
        [SerializeField] private SoCharacter baseCharacter; // TODO: usun
 
        private readonly Dictionary<string, GameObject> _prefabs = new();
-       
-       public PlayerManager CurrentPlayer { get; private set; }
-       public WaveManager WaveManager => waveManager;
-       public EnemySpawner EnemySpawner => waveManager.EnemySpawner;
+
        public int StageCount = 0;
 
        public delegate void StartRunDelegate();
@@ -58,19 +43,6 @@ namespace Managers
        
        public delegate void InitDelegate();
        public static event InitDelegate OnInit;
-
-       #region Cached
-
-       private Projectile _projectilePrefab;
-       public Projectile ProjectilePrefab => _projectilePrefab ??= GetPrefab<Projectile>(PrefabNames.Projectile);
-
-       private IEnumerable<SoEffectBase> _effects = null;
-       public IEnumerable<SoEffectBase> EffectList => _effects ??= Resources.LoadAll<SoEffectBase>("EffectStatus");
-
-       private IEnumerable<SoEnchantment> _enchantments = null;
-       public IEnumerable<SoEnchantment> EnchantmentList => _enchantments ??= Resources.LoadAll<SoEnchantment>("Enchantments");
-       
-       #endregion
 
        private void Start()
        {
@@ -94,9 +66,8 @@ namespace Managers
 
        private void StartRun(SoCharacter soCharacter)
        {
-           var playerObj = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
-           CurrentPlayer = playerObj.GetComponent<PlayerManager>();
-           CurrentPlayer.Setup(soCharacter);
+           var playerPrefab = GetPrefab<PlayerManager>(PrefabNames.GamePlayer);
+           Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).Setup(soCharacter);
 
            Time.timeScale = 1;
            

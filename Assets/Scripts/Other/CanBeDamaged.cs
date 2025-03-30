@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Other
 {
     
-    //TODO: Refactor
+//TODO: Optimize canBeDamaged for pool mechanism
     public abstract class CanBeDamaged : PoolObject
     {
         [SerializeField] private SpriteRenderer spriteRenderer;

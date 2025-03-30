@@ -30,7 +30,7 @@ namespace FoodPack
         private readonly List<(float weight, SoFood food)> _foodWeightList = new();
 
         protected override float MaxTimer => trySpawnRate;
-        private static PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
+        private static PlayerManager PlayerManager => PlayerManager.Instance;
 
         private void Awake()
         {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AccessorPack;
 using EnemyPack.CustomEnemyLogic;
 using Managers;
 using PoolPack;
@@ -77,7 +78,7 @@ namespace Utils
         {
             usedTargets ??= new List<int>();
             
-            var enemies = GameManager.Instance.EnemySpawner.GetActiveEnemies();
+            var enemies = MainSceneAccessor.EnemySpawner.GetActiveEnemies();
             enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
             if (enemies.Count == 0) return null;
 
@@ -98,7 +99,7 @@ namespace Utils
         {
             usedTargets ??= new List<int>();
             
-            var enemies = GameManager.Instance.EnemySpawner.GetActiveEnemies();
+            var enemies = MainSceneAccessor.EnemySpawner.GetActiveEnemies();
             enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
             if (enemies.Count == 0) return null;
 
@@ -117,7 +118,7 @@ namespace Utils
         
         public static EnemyLogic FindTargetInBiggestGroup(Vector2 position, float? xRange = null, float? yRange = null)
         {
-            var enemies = GameManager.Instance.EnemySpawner.GetActiveEnemies();
+            var enemies = MainSceneAccessor.EnemySpawner.GetActiveEnemies();
             if (enemies.Count == 0) return null;
 
             var left = new List<PoolObject>();
@@ -159,7 +160,7 @@ namespace Utils
         {
             usedTargets ??= new List<int>();
             
-            var enemies = GameManager.Instance.EnemySpawner.GetActiveEnemies();
+            var enemies = MainSceneAccessor.EnemySpawner.GetActiveEnemies();
             enemies = enemies.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
             if (enemies.Count == 0) return null;
 

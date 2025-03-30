@@ -24,7 +24,7 @@ namespace MainCameraPack
 
         public void Setup()
         {
-            _player = GameManager.Instance.CurrentPlayer.transform;
+            _player = PlayerManager.Instance.transform;
         }
 
         private void ShakeCamera(int _, int __)

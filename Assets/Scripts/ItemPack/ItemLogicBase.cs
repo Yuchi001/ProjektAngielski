@@ -20,9 +20,10 @@ namespace ItemPack
         protected float PushForce => GetStatValue(EItemSelfStatType.PushForce);
         protected float Cooldown => GetStatValue(EItemSelfStatType.Cooldown) * CustomCooldownModifier();
 
-        protected static PlayerEnchantments PlayerEnchantments => GameManager.Instance.CurrentPlayer.PlayerEnchantments;
-        protected static Vector2 PlayerPos => GameManager.Instance.CurrentPlayer.transform.position;
-        protected static Transform PlayerTransform => GameManager.Instance.CurrentPlayer.transform;
+        protected static PlayerManager PlayerManager => PlayerManager.Instance;
+        protected static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
+        protected static Vector2 PlayerPos => PlayerManager.PlayerPos;
+        protected static Transform PlayerTransform => PlayerManager.transform;
         protected static Projectile Projectile => GameManager.Instance.GetPrefab<Projectile>(PrefabNames.Projectile);
         public SoInventoryItem InventoryItem => _inventoryItem;
         private SoInventoryItem _inventoryItem;

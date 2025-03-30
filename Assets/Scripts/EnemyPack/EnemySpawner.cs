@@ -30,7 +30,7 @@ namespace EnemyPack
         [Space(10)]
         [SerializeField, Tooltip("In seconds")] private int maximumDifficultyTimeCap = 3600;
         
-        private static PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
+        private static PlayerManager PlayerManager => PlayerManager.Instance;
 
         private List<SoEnemy> _allEnemies = new();
         

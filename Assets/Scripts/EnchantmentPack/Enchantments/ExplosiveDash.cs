@@ -1,4 +1,5 @@
-﻿using AudioPack;
+﻿using AccessorPack;
+using AudioPack;
 using EnchantmentPack.Enums;
 using EnemyPack.CustomEnemyLogic;
 using Managers;
@@ -14,7 +15,7 @@ namespace EnchantmentPack.Enchantments
     public class ExplosiveDash : EnchantmentBase
     {
         [SerializeField] private GameObject boomParticles;
-        private static float enemyHpScale => GameManager.Instance.EnemySpawner.EnemiesHpScale;
+        private static float enemyHpScale => MainSceneAccessor.EnemySpawner.EnemiesHpScale;
         
         private void Awake()
         {

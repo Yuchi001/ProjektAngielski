@@ -20,5 +20,6 @@
         public const string EnchantmentDisplayUI = "EnchantmentDisplayUI";
         public const string DashAnimSprite = "DashAnimSprite";
         public const string Zone = "Zone";
+        public const string GamePlayer = "GamePlayer";
     }
 }

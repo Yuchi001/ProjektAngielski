@@ -27,20 +27,6 @@ namespace MapGeneratorPack
         private void GenerateStructures()
         {
             // TODO: Structure generation 
-
-            var structurePrefab = GameManager.Instance.GetPrefab<StructureBase>(PrefabNames.StructureBase);
-            for (var i = 0; i < 5; i++)
-            {
-                foreach (var structure in _structures)
-                {
-                    var randomOffsetX = Random.Range(-3f, 3f);
-                    var randomOffsetY = Random.Range(-3f, 3f);
-                    var newPos = transform.position;
-                    newPos.x = randomOffsetX;
-                    newPos.y = randomOffsetY;
-                    Instantiate(structurePrefab, newPos, Quaternion.identity).Setup(structure);
-                }
-            }
         }
     }
 }

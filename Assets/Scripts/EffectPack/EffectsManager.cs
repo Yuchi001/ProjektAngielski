@@ -8,6 +8,7 @@ using Other;
 using Other.Enums;
 using UnityEngine;
 
+//TODO: Optimize effects manager for pool mechanism
 namespace EffectPack
 {
     public class EffectsManager : MonoBehaviour
@@ -20,9 +21,12 @@ namespace EffectPack
         public bool Slowed => HasEffect(EEffectType.Slow);
 
         private CanBeDamaged _canBeDamaged;
-        
-        private void Start()
+        private IEnumerable<SoEffectBase> _effects;
+
+        private void Awake()
         {
+            _effects = Resources.LoadAll<SoEffectBase>("EffectStatus");
+
             var effectStatusPrefab = GameManager.Instance.GetPrefab<EffectStatusObject>(PrefabNames.EffectStatus);
             foreach (var effectType in (EEffectType[])System.Enum.GetValues(typeof(EEffectType)))
             {
@@ -30,16 +34,16 @@ namespace EffectPack
                 prefab.SpawnSetup(GetEffect(effectType), this, _canBeDamaged);
                 _statuses.Add(effectType, prefab);
             }
-            
-            SoEffectBase GetEffect(EEffectType effectType)
+        }
+        
+        private SoEffectBase GetEffect(EEffectType effectType)
+        {
+            foreach (var effectBase in _effects)
             {
-                foreach (var effectBase in GameManager.Instance.EffectList)
-                {
-                    if (effectBase.EffectType == effectType) return effectBase;
-                }
-
-                return null;
+                if (effectBase.EffectType == effectType) return effectBase;
             }
+
+            return null;
         }
 
         public void Setup(CanBeDamaged canBeDamaged)
