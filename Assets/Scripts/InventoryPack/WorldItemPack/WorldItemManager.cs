@@ -27,24 +27,24 @@ namespace InventoryPack.WorldItemPack
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
 
-            GameManager.OnInit += Init;
+            GameManager.OnGMStart += GmStart;
         }
 
         #endregion
 
         private void OnDisable()
         {
-            GameManager.OnInit -= Init;
+            GameManager.OnGMStart -= GmStart;
         }
 
-        private void Init()
+        private void GmStart()
         {
             _soulItem = Resources.Load<SoSoulItem>("Items/Soul");
             _healingOrb = Resources.Load<SoHealingOrbItem>("Items/HealingOrb");
             _coins = Resources.LoadAll<SoCoinItem>("Items").ToList();
             _coins.Sort((c1, c2) => c2.ItemPrice - c1.ItemPrice);
             
-            var prefab = GameManager.Instance.GetPrefab<WorldItem>(PrefabNames.WorldItem);
+            var prefab = GameManager.GetPrefab<WorldItem>(PrefabNames.WorldItem);
             _pool = PoolHelper.CreatePool(this, prefab, false);
             
             PrepareQueue();

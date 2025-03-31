@@ -37,7 +37,7 @@ namespace StructurePack.SO
         public override string GetInteractionMessage(StructureBase structureBase)
         {
             var data = structureBase.GetData<TotemData>();
-            if (!data.IsInitialized()) data.Init().InitPrice(baseCost + GameManager.Instance.StageCount * stageBaseMultiplier);
+            if (!data.IsInitialized()) data.Init().InitPrice(baseCost + GameManager.StageCount * stageBaseMultiplier);
             return base.GetInteractionMessage(structureBase).Replace("$x$", data.GetCurrentPrice().ToString());
         }
         
@@ -52,7 +52,7 @@ namespace StructurePack.SO
 
             public override TotemData Init()
             {
-                var prefab = GameManager.Instance.GetPrefab<EnchantmentDisplayUI>(PrefabNames.EnchantmentDisplayUI);
+                var prefab = GameManager.GetPrefab<EnchantmentDisplayUI>(PrefabNames.EnchantmentDisplayUI);
                 _enchantmentDisplayOpenStrat = new DefaultOpenStrategy(prefab);
                 _enchantmentDisplayCloseStrat = new DestroyCloseStrategy(UI_KEY, 0);
                 return base.Init();

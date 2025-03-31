@@ -37,7 +37,7 @@ namespace StructurePack.SO
         public override string GetInteractionMessage(StructureBase structureBase)
         {
             var data = structureBase.GetData<VisionStructureData>();
-            if (!data.IsInitialized()) data.Init().InitPrice(baseCost + GameManager.Instance.StageCount * stageBaseMultiplier, structureBase.GetInstanceID());
+            if (!data.IsInitialized()) data.Init().InitPrice(baseCost + GameManager.StageCount * stageBaseMultiplier, structureBase.GetInstanceID());
             return base.GetInteractionMessage(structureBase).Replace("$x$", data.GetCurrentPrice().ToString());
         }
 

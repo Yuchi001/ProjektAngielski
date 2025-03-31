@@ -36,7 +36,7 @@ namespace MapGeneratorPack
 
         private void GenerateBaseZone()
         {
-            _zonePrefab = GameManager.Instance.GetPrefab<Zone>(PrefabNames.Zone);
+            _zonePrefab = GameManager.GetPrefab<Zone>(PrefabNames.Zone);
             _zoneDict = new Dictionary<string, Zone>();
             GenerateZone(PlayerManager.Instance.PlayerPos, "MAIN", baseZoneScale);
         }

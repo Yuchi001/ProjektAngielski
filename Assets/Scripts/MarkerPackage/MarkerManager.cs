@@ -21,17 +21,17 @@ namespace MarkerPackage
             if (Instance != this && Instance != null) Destroy(gameObject);
             else Instance = this;
 
-            GameManager.OnInit += Init;
+            GameManager.OnGMStart += GmStart;
         }
 
         private void OnDisable()
         {
-            GameManager.OnInit -= Init;
+            GameManager.OnGMStart -= GmStart;
         }
 
-        private void Init()
+        private void GmStart()
         {
-            var markerPrefab = GameManager.Instance.GetPrefab<SpawnMarkedEntity>(PrefabNames.SpawnIndicator);
+            var markerPrefab = GameManager.GetPrefab<SpawnMarkedEntity>(PrefabNames.SpawnIndicator);
             _markers = PoolHelper.CreatePool(this, markerPrefab, false);
             
             PrepareQueue();

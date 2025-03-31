@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Managers;
 using Other;
@@ -12,24 +13,25 @@ namespace ParticlesPack
 {
     public class ParticleManager : MonoBehaviour
     {
-        #region Singleton
-
-        public static ParticleManager Instance { get; private set; }
+        private readonly Dictionary<EParticlesType, ParticlePool> _particlesDict = new();
+        
+        private static ParticleManager Instance { get; set; }
 
         private void Awake()
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
+
+            GameManager.OnGMStart += Init;
         }
 
-        #endregion
-
-        private readonly Dictionary<EParticlesType, ParticlePool> _particlesDict = new();
-        
-        private IEnumerator Start()
+        private void OnDisable()
         {
-            yield return new WaitUntil(() => GameManager.Instance != null);
+            GameManager.OnGMStart -= Init;
+        }
 
+        private void Init()
+        {
             var soList = Resources.LoadAll<SoParticles>("ParticleSystems");
             
             foreach (var so in soList)
@@ -38,7 +40,6 @@ namespace ParticlesPack
                 var script = manager.AddComponent<ParticlePool>();
                 script.Init(so);
                 _particlesDict.Add(so.ParticlesType, script);
-                yield return new WaitForEndOfFrame();
             }
         }
 

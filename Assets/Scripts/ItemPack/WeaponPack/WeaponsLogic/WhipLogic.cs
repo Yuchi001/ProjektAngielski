@@ -15,12 +15,11 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private EEffectType effectType;
 
         private static Slash _slashPrefab;
-
         private static Slash SlashPrefab
         {
             get
             {
-                if (_slashPrefab == null) _slashPrefab = GameManager.Instance.GetPrefab<Slash>(PrefabNames.SlashAttack);
+                if (_slashPrefab == null) _slashPrefab = GameManager.GetPrefab<Slash>(PrefabNames.SlashAttack);
                 return _slashPrefab;
             }
         }

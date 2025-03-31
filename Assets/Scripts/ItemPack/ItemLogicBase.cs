@@ -24,7 +24,16 @@ namespace ItemPack
         protected static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
         protected static Vector2 PlayerPos => PlayerManager.PlayerPos;
         protected static Transform PlayerTransform => PlayerManager.transform;
-        protected static Projectile Projectile => GameManager.Instance.GetPrefab<Projectile>(PrefabNames.Projectile);
+        private Projectile _projectile;
+
+        protected Projectile Projectile
+        {
+            get
+            {
+                if (_projectile == null) _projectile = GameManager.GetPrefab<Projectile>(PrefabNames.Projectile);
+                return _projectile;
+            }
+        }
         public SoInventoryItem InventoryItem => _inventoryItem;
         private SoInventoryItem _inventoryItem;
 

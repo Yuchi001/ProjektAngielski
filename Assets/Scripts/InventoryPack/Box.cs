@@ -20,7 +20,7 @@ namespace InventoryPack
             DestroySlots();
             CurrentCanvas = GetComponentInParent<Canvas>();
             
-            var prefab = GameManager.Instance.GetPrefab<ItemSlot>(PrefabNames.ItemSlot);
+            var prefab = GameManager.GetPrefab<ItemSlot>(PrefabNames.ItemSlot);
             SpawnSlots(prefab);
             Init();
         }

@@ -12,7 +12,15 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     {
         [SerializeField] private float animTime = 0.1f;
 
-        private static Laser LaserProjectile => GameManager.Instance.GetPrefab<Laser>(PrefabNames.LaserProjectile);
+        private Laser laserProjectile;
+        private Laser LaserProjectile
+        {
+            get
+            {
+                if (laserProjectile == null) laserProjectile =GameManager.GetPrefab<Laser>(PrefabNames.LaserProjectile);
+                return laserProjectile;
+            }
+        }
 
         private float Duration => GetStatValue(EItemSelfStatType.Duration);
         private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale);

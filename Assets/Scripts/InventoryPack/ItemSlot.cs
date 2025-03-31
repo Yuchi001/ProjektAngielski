@@ -46,7 +46,7 @@ namespace InventoryPack
             Index = index;
             _itemImage.color = Color.clear;
             _backgroundImage.color = enabled ? _tonedColor : _disabledColor;
-            var informationPrefab = GameManager.Instance.GetPrefab<ItemInformationHover>(PrefabNames.ItemInformationUI);
+            var informationPrefab = GameManager.GetPrefab<ItemInformationHover>(PrefabNames.ItemInformationUI);
             _informationOpenStrategy = new CloseAllOfTypeOpenStrategy<ItemInformationHover>(informationPrefab, true);
             _informationCloseStrategy = new DestroyCloseStrategy(INFORMATION_UI_KEY);
             if (!enabled) SetItem(null, -1);

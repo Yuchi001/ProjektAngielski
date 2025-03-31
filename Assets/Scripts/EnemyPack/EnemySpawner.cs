@@ -49,15 +49,15 @@ namespace EnemyPack
 
         private void Awake()
         {
-            GameManager.OnInit += Init;
+            GameManager.OnGMStart += GmStart;
         }
 
         private void OnDisable()
         {
-            GameManager.OnInit -= Init;
+            GameManager.OnGMStart -= GmStart;
         }
 
-        private void Init()
+        private void GmStart()
         {
             GetComponent<EnemyManager>().Setup(ActiveObjects);
             
@@ -65,7 +65,7 @@ namespace EnemyPack
 
             _allEnemies = Resources.LoadAll<SoEnemy>("Enemies").Select(Instantiate).ToList();
             
-            var enemyPrefab = GameManager.Instance.GetPrefab<EnemyLogic>(PrefabNames.Enemy);
+            var enemyPrefab = GameManager.GetPrefab<EnemyLogic>(PrefabNames.Enemy);
             _enemyPool = PoolHelper.CreatePool(this, enemyPrefab, true);
             PrepareQueue();
         }

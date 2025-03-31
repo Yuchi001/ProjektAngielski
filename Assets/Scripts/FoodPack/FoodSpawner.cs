@@ -34,15 +34,15 @@ namespace FoodPack
 
         private void Awake()
         {
-            GameManager.OnInit += Init;
+            GameManager.OnGMStart += GmStart;
         }
 
         private void OnDisable()
         {
-            GameManager.OnInit -= Init;
+            GameManager.OnGMStart -= GmStart;
         }
 
-        private void Init()
+        private void GmStart()
         {
             var foodList = Resources.LoadAll<SoFood>("Food").Select(Instantiate).ToList();
             foodList.Sort((a, b) => a.SaturationValue - b.SaturationValue);
@@ -55,7 +55,7 @@ namespace FoodPack
             }
             _foodWeightList.Sort((a, b) => (int)a.weight - (int)b.weight);
             
-            var foodPrefab = GameManager.Instance.GetPrefab<Food>(PrefabNames.Food);
+            var foodPrefab = GameManager.GetPrefab<Food>(PrefabNames.Food);
             _foodPool = PoolHelper.CreatePool(this, foodPrefab, true);
         }
 

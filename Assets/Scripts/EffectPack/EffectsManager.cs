@@ -27,7 +27,7 @@ namespace EffectPack
         {
             _effects = Resources.LoadAll<SoEffectBase>("EffectStatus");
 
-            var effectStatusPrefab = GameManager.Instance.GetPrefab<EffectStatusObject>(PrefabNames.EffectStatus);
+            var effectStatusPrefab = GameManager.GetPrefab<EffectStatusObject>(PrefabNames.EffectStatus);
             foreach (var effectType in (EEffectType[])System.Enum.GetValues(typeof(EEffectType)))
             {
                 var prefab = Instantiate(effectStatusPrefab, statusesHolder);

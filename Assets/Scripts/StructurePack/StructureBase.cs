@@ -38,7 +38,7 @@ namespace StructurePack
         private void Awake()
         {
             Collider.isTrigger = true;
-            var prefab = GameManager.Instance.GetPrefab<UIBase>(uiPrefabName);
+            var prefab = GameManager.GetPrefab<UIBase>(uiPrefabName);
             _openStrategy = new CloseAllOfTypeOpenStrategy<IStructure>(prefab, false);
             _closeStrategy = new DefaultCloseStrategy();
         }

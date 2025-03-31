@@ -114,7 +114,7 @@ namespace PlayerPack
             aoc.ApplyOverrides(anims);
             animator.runtimeAnimatorController = aoc;
             
-            var playerItemManagerPrefab = GameManager.Instance.GetPrefab<PlayerItemManager>(PrefabNames.PlayerInventoryManager);
+            var playerItemManagerPrefab = GameManager.GetPrefab<PlayerItemManager>(PrefabNames.PlayerInventoryManager);
             var openStrategy = new SingletonOpenStrategy<PlayerItemManager>(playerItemManagerPrefab);
             var closeStrategy = new DefaultCloseStrategy();
             PlayerItemManager = UIManager.OpenUI<PlayerItemManager>("PlayerItemManager", openStrategy, closeStrategy);
