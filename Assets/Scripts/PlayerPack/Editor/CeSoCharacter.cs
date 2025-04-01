@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using PlayerPack.Enums;
 using PlayerPack.SO;
+using StructurePack.SO;
 using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEngine;
 
 namespace PlayerPack.Editor
 {
@@ -72,7 +74,8 @@ namespace PlayerPack.Editor
             serializedObject.ApplyModifiedProperties();
             
             EditorUtility.SetDirty(_soCharacter);
-        }
 
+            if (GUILayout.Button("Generate Character Structure")) SOCharacterStructure.CreateCharacterStructureAsset(_soCharacter);
+        }
     }
 }

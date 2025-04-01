@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace StructurePack.SO
 {
+    [CreateAssetMenu(fileName = "new Character Structure", menuName = "Custom/Structure/Character")]
     public class SOCharacterStructure : SoStructure
     {
         [SerializeField] private SoCharacter character;
@@ -13,6 +14,11 @@ namespace StructurePack.SO
         {
             MissionManager.PickCharacter(character);
             return true;
+        }
+
+        public static void CreateCharacterStructureAsset(SoCharacter character)
+        {
+            
         }
     }
 }
