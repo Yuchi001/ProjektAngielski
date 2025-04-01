@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b2cdeeb64054534907f59e669f9eced, type: 3}
   m_Name: Ninja_Jack
   m_EditorClassIdentifier: 
+  id: jack
   characterName: Jack the Ninja
   characterSprite: {fileID: 1651108257, guid: 67e9df599967b744693bc60cfdeae1c8, type: 3}
   walkingAnim: {fileID: 7400000, guid: e55b73caff741bb4eb6cfc86e9cc3a90, type: 2}
@@ -30,4 +31,4 @@ MonoBehaviour:
     statValue: 0
   - statType: 5
     statValue: 0
-  startingItem: {fileID: 0}
+  startingItem: {fileID: 11400000, guid: 4764bd874f96e7f439a0e4d49ab70a5a, type: 2}

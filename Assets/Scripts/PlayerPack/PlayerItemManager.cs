@@ -61,6 +61,8 @@ namespace PlayerPack
 
         private void AddItemLogic(SoInventoryItem inventoryItemToAdd, int level)
         {
+            if (PlayerManager.Instance.CurrentState == PlayerManager.State.IN_TAVERN) return;
+            
             var itemLogic = Instantiate(inventoryItemToAdd.ItemPrefab);
             itemLogic.transform.localPosition = Vector3.zero;
             itemLogic.Setup(inventoryItemToAdd, level);

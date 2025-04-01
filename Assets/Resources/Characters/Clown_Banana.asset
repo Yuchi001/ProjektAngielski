@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b2cdeeb64054534907f59e669f9eced, type: 3}
   m_Name: Clown_Banana
   m_EditorClassIdentifier: 
+  id: clown
   characterName: Bozo the Clown
   characterSprite: {fileID: -1623650543, guid: 40d668d3e0c4ebd49863ccd39521dc46, type: 3}
   walkingAnim: {fileID: 7400000, guid: 5018528ef50aec748bad7d6ae584b800, type: 2}

@@ -1,46 +1,48 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PlayerPack;
 using PlayerPack.SO;
 using SavePack;
+using StructurePack.SO;
 using UnityEngine;
 
 namespace Managers
 {
     public class MissionManager : MonoBehaviour, IPersistentData
     {
-        [SerializeField] private SoCharacter defaultCharacter;
+        [SerializeField] private List<Transform> characterStructuresSpawnPositions;
         private static MissionManager Instance { get; set; }
 
-        private SoCharacter _pickedCharacter;
-
+        private List<SOCharacterStructure> _allCharacters = new();
+        
         private void Awake()
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
+
+            _allCharacters = Resources.LoadAll<SOCharacterStructure>("Structures").ToList();
         }
 
         public static void PickCharacter(SoCharacter character)
         {
-            // TODO: Pick character logic
-            Instance._pickedCharacter = character;
+            PlayerManager.Instance.ChangeCharacter(character);
         }
 
         public static void StartMission()
         {
             // TODO: start mission logic
-            GameManager.StartRun(Instance._pickedCharacter);
+            GameManager.StartRun();
         }
 
         public void OnLoadData(SaveManager.PlayerSaveData playerSaveData)
         {
-            var allCharacters = Resources.LoadAll<SoCharacter>("Characters");
-            _pickedCharacter = allCharacters.FirstOrDefault(p => p.CharacterName == playerSaveData.pickedCharacterID) ?? defaultCharacter;
+            
         }
 
         public void OnSaveData(ref SaveManager.PlayerSaveData playerSaveData)
         {
-            playerSaveData.pickedCharacterID = PlayerManager.Instance.PickedCharacter.CharacterName;
+            playerSaveData.pickedCharacterID = PlayerManager.Instance.PickedCharacter.ID;
         }
     }
 }

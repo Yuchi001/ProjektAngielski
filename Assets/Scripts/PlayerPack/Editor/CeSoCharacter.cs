@@ -14,6 +14,7 @@ namespace PlayerPack.Editor
     public class CeSoCharacter : UnityEditor.Editor
     {
         private SerializedProperty characterName;
+        private SerializedProperty id;
         private SerializedProperty characterSprite;
         private SerializedProperty walkingAnim;
         private SerializedProperty idleAnim;
@@ -27,6 +28,7 @@ namespace PlayerPack.Editor
             _soCharacter = target as SoCharacter;
             
             characterName = serializedObject.FindProperty("characterName");
+            id = serializedObject.FindProperty("id");
             characterSprite = serializedObject.FindProperty("characterSprite");
             walkingAnim = serializedObject.FindProperty("walkingAnim");
             idleAnim = serializedObject.FindProperty("idleAnim");
@@ -38,6 +40,7 @@ namespace PlayerPack.Editor
         {
             EditorGUILayout.LabelField("General", EditorStyles.boldLabel);
             EditorGUILayout.Space();
+            EditorGUILayout.PropertyField(id);
             EditorGUILayout.PropertyField(characterName);
             EditorGUILayout.PropertyField(characterSprite);
             EditorGUILayout.PropertyField(walkingAnim);
@@ -49,7 +52,6 @@ namespace PlayerPack.Editor
             EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
             EditorGUILayout.Space();
             var stats = new List<SoCharacter.PlayerStatPair>();
-            var dictHelper = PlayerStatsManager.EditorDictHelper(_soCharacter.StatDict);
             foreach (var statType in (EPlayerStatType[])System.Enum.GetValues(typeof(EPlayerStatType)))
             {
                 if (statType == EPlayerStatType.Health)

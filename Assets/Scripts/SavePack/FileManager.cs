@@ -41,5 +41,24 @@ namespace SavePack
                 throw;
             }
         }
+        
+        public static void DeletePlayerData()
+        {
+            try
+            {
+                if (File.Exists(SAVE_FILE_PATH))
+                {
+                    File.Delete(SAVE_FILE_PATH);
+                    Debug.Log("Deleted file: " + SAVE_FILE_PATH);
+                    return;
+                }
+                Debug.LogWarning("No save file found in: " + SAVE_FILE_PATH);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                throw;
+            }
+        }
     }
 }

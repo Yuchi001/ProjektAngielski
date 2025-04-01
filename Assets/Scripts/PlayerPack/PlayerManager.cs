@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Managers;
 using Managers.Other;
 using PlayerPack.PlayerMovementPack;
@@ -97,9 +98,28 @@ namespace PlayerPack
         public delegate void PlayerReadyDelegate();
         public static event PlayerReadyDelegate OnPlayerReady;
 
-        public PlayerManager Setup(SoCharacter pickedCharacter)
+        private State _currentState;
+        public State CurrentState => _currentState;
+
+        public PlayerManager Setup(SoCharacter pickedCharacter, State defaultState)
         {
-            PickedCharacter = pickedCharacter;
+            ChangeCharacter(pickedCharacter);
+            
+            var playerItemManagerPrefab = GameManager.GetPrefab<PlayerItemManager>(PrefabNames.PlayerInventoryManager);
+            var openStrategy = new SingletonOpenStrategy<PlayerItemManager>(playerItemManagerPrefab);
+            var closeStrategy = new DefaultCloseStrategy();
+            PlayerItemManager = UIManager.OpenUI<PlayerItemManager>("PlayerItemManager", openStrategy, closeStrategy);
+            PlayerItemManager.AddItem(pickedCharacter.StartingItem, 1);
+            SetPlayerState(defaultState);
+            
+            OnPlayerReady?.Invoke();
+
+            return this;
+        }
+
+        public void ChangeCharacter(SoCharacter newCharacter)
+        {
+            PickedCharacter = newCharacter;
             playerSpriteRenderer.sprite = PickedCharacter.CharacterSprite;
 
             foreach (var mono in GetComponentsInChildren<MonoBehaviour>())
@@ -113,16 +133,22 @@ namespace PlayerPack
                     PickedCharacter.WalkingAnimation));
             aoc.ApplyOverrides(anims);
             animator.runtimeAnimatorController = aoc;
-            
-            var playerItemManagerPrefab = GameManager.GetPrefab<PlayerItemManager>(PrefabNames.PlayerInventoryManager);
-            var openStrategy = new SingletonOpenStrategy<PlayerItemManager>(playerItemManagerPrefab);
-            var closeStrategy = new DefaultCloseStrategy();
-            PlayerItemManager = UIManager.OpenUI<PlayerItemManager>("PlayerItemManager", openStrategy, closeStrategy);
-            PlayerItemManager.AddItem(pickedCharacter.StartingItem, 1);
-            
-            OnPlayerReady?.Invoke();
+        }
 
-            return this;
+        public void SetPlayerState(State state)
+        {
+            _currentState = state;
+            switch (state)
+            {
+                case State.IN_TAVERN:
+                    PlayerItemManager.DestroyAllItems();
+                    break;
+                case State.ON_MISSION:
+                    PlayerItemManager.RefreshInventory();
+                    break;
+                default:
+                    throw new Exception($"State {state} not implemented in PlayerManager.SetState");
+            }
         }
 
         public void LockKeys()
@@ -143,6 +169,12 @@ namespace PlayerPack
             PlayerItemManager.enabled = false;
 
             OnPlayerDeath?.Invoke();
+        }
+
+        public enum State
+        {
+            IN_TAVERN,
+            ON_MISSION,
         }
     }
 }

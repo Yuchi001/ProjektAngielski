@@ -65,6 +65,8 @@ namespace StructurePack
             spriteTransform.localPosition = newPos;
             
             bottomInteractionMessageField.gameObject.SetActive(false);
+            
+            _structureData.OnSetup(this);
         }
 
         private void Update()

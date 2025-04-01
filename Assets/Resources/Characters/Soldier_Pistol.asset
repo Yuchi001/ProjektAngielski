@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b2cdeeb64054534907f59e669f9eced, type: 3}
   m_Name: Soldier_Pistol
   m_EditorClassIdentifier: 
+  id: rick
   characterName: Rick the Soldier
   characterSprite: {fileID: 1494473444, guid: 4bd6c6e84fa1f7243958426dba45b8c3, type: 3}
   walkingAnim: {fileID: 7400000, guid: 0d0b0e488b7407e42ad83378291f6997, type: 2}
@@ -30,4 +31,4 @@ MonoBehaviour:
     statValue: 0
   - statType: 5
     statValue: 0
-  startingItem: {fileID: 0}
+  startingItem: {fileID: 11400000, guid: 5e66022bca6ab6141ae261e06b2d3aa7, type: 2}

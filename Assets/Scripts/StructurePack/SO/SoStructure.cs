@@ -6,18 +6,18 @@ namespace StructurePack.SO
 {
     public abstract class SoStructure : ScriptableObject
     {
-        [SerializeField] private string structureName;
-        [SerializeField, TextArea(3, 10)] private string structureDescription;
-        [SerializeField] private Sprite structureSprite;
-        [SerializeField] private Sprite activeSprite;
-        [SerializeField] private Sprite usedStructureSprite;
-        [SerializeField] private float structureScale = 1;
-        [SerializeField] private int interactionLimit;
-        [SerializeField] private bool maintainData = true;
-        [SerializeField] private string bottomHoverMessage = "Press E";
-        [SerializeField] private string interactionDeclineMessage = "";
-        [SerializeField] private bool usesUI = false;
-        [SerializeField] private string uIPrefabName = "";
+        [SerializeField] protected string structureName;
+        [SerializeField, TextArea(3, 10)] protected string structureDescription;
+        [SerializeField] protected Sprite structureSprite;
+        [SerializeField] protected Sprite activeSprite;
+        [SerializeField] protected Sprite usedStructureSprite;
+        [SerializeField] protected float structureScale = 1;
+        [SerializeField] protected int interactionLimit;
+        [SerializeField] protected bool maintainData = true;
+        [SerializeField] protected string bottomHoverMessage = "Press E";
+        [SerializeField] protected string interactionDeclineMessage = "";
+        [SerializeField] protected bool usesUI = false;
+        [SerializeField] protected string uIPrefabName = "";
 
         public float StructureScale => structureScale;
         public string StructureName => structureName;
@@ -28,6 +28,11 @@ namespace StructurePack.SO
         public bool UsesUI => usesUI;
         public string UIPrefabName => uIPrefabName;
         public string InteractionDeclineMessage => interactionDeclineMessage;
+
+        public virtual void OnSetup(StructureBase structureBase)
+        {
+            
+        }
 
         public abstract bool OnInteract(StructureBase structureBase, 
             IOpenStrategy openStrategy,

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using EffectPack.SO;
 using EnchantmentPack;
 using ItemPack.WeaponPack.Other;
@@ -56,8 +57,12 @@ namespace Managers
             LeanTween.init(100, 100);
 
             playerSaveData = SaveManager.LoadData();
-
+            var allCharacters = Resources.LoadAll<SoCharacter>("Characters");
+            var soCharacter = allCharacters.FirstOrDefault(e => e.ID == playerSaveData.pickedCharacterID) ?? allCharacters[0];
+            
             SceneManager.LoadScene((int)EScene.TAVERN);
+            var playerPrefab = GetPrefab<PlayerManager>(PrefabNames.GamePlayer);
+            Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).Setup(soCharacter, PlayerManager.State.IN_TAVERN).LockKeys();
         }
 
         private void Start()
@@ -65,11 +70,9 @@ namespace Managers
             OnGMStart?.Invoke();
         }
 
-        public static void StartRun(SoCharacter soCharacter)
+        public static void StartRun()
         {
             var asyncOperation = SceneManager.UnloadSceneAsync((int)EScene.TAVERN);
-            var playerPrefab = GetPrefab<PlayerManager>(PrefabNames.GamePlayer);
-            Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).Setup(soCharacter).LockKeys();
             var transitionUIPrefab = GetPrefab<TransitionUI>(PrefabNames.TransitionUI);
             var openStrat = new DefaultOpenStrategy(transitionUIPrefab);
             var closeStrat = new DestroyCloseStrategy(TRANSITION_UI_KEY);
@@ -90,6 +93,7 @@ namespace Managers
             UIManager.CloseUI(TRANSITION_UI_KEY);
             yield return new WaitForSeconds(0.3f);
             PlayerManager.Instance.UnlockKeys();
+            PlayerManager.Instance.SetPlayerState(PlayerManager.State.ON_MISSION);
         }
 
         public static T GetPrefab<T>(string prefName) where T : class

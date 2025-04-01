@@ -103,6 +103,8 @@ namespace PlayerPack.PlayerMovementPack
 
         private void ManageDash()
         {
+            if (PlayerManager.Instance.CurrentState == PlayerManager.State.IN_TAVERN) return;
+            
             if (DuringDash)
             {
                 _dashingTimer += Time.deltaTime;

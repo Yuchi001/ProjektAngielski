@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b2cdeeb64054534907f59e669f9eced, type: 3}
   m_Name: Mage_FireWand
   m_EditorClassIdentifier: 
+  id: blaise
   characterName: Blaise the Mage
   characterSprite: {fileID: 1518198837, guid: c7207e25d42ced9488b624047355cbf9, type: 3}
   walkingAnim: {fileID: 7400000, guid: c2d50461fea37ad4aa744cad977f0b3c, type: 2}
@@ -30,4 +31,4 @@ MonoBehaviour:
     statValue: 0
   - statType: 5
     statValue: 0
-  startingItem: {fileID: 0}
+  startingItem: {fileID: 11400000, guid: 556ec77cd5b0a8c4397abe375561f253, type: 2}
