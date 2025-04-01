@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EffectPack.SO;
 using EnchantmentPack;
 using ItemPack.WeaponPack.Other;
@@ -6,6 +7,7 @@ using MainCameraPack;
 using Managers.Other;
 using PlayerPack;
 using PlayerPack.SO;
+using SavePack;
 using UIPack;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -47,6 +49,8 @@ namespace Managers
            }
            
            LeanTween.init(100, 100);
+           
+           SaveManager.LoadData();
        }
 
        private void Start()
@@ -70,6 +74,11 @@ namespace Managers
        {
            var hasValue = Instance._prefabs.TryGetValue(prefName, out var prefab);
            return hasValue ? prefab.GetComponent<T>() : null;
+       }
+
+       private void OnApplicationQuit()
+       {
+           SaveManager.SaveData();
        }
 
        private enum EScene
