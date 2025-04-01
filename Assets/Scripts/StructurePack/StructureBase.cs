@@ -38,9 +38,6 @@ namespace StructurePack
         private void Awake()
         {
             Collider.isTrigger = true;
-            var prefab = GameManager.GetPrefab<UIBase>(uiPrefabName);
-            _openStrategy = new CloseAllOfTypeOpenStrategy<IStructure>(prefab, false);
-            _closeStrategy = new DefaultCloseStrategy();
         }
 
         public void Setup(SoStructure structureData)
@@ -67,6 +64,9 @@ namespace StructurePack
             bottomInteractionMessageField.gameObject.SetActive(false);
             
             _structureData.OnSetup(this);
+
+            _openStrategy = _structureData.GetOpenStrategy(this);
+            _closeStrategy = _structureData.GetCloseStrategy();
         }
 
         private void Update()
@@ -96,13 +96,6 @@ namespace StructurePack
             _interactionCount++;
             bottomInteractionMessageField.text = _structureData.GetInteractionMessage(this);
             Toggle = !Toggle;
-            WasUsed = true;
-        }
-
-        public void HandleCloseUI()
-        {
-            Time.timeScale = 1;
-            Toggle = false;
             WasUsed = true;
         }
 

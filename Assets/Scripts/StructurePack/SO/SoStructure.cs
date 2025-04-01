@@ -1,4 +1,6 @@
-﻿using UIPack.CloseStrategies;
+﻿using Managers;
+using UIPack;
+using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
 using UnityEngine;
 
@@ -24,14 +26,25 @@ namespace StructurePack.SO
         public string StructureDescription => structureDescription;
         public bool Reusable => interactionLimit > 1;
         public int InteractionLimit => interactionLimit;
-        public bool MaintainData => maintainData;
-        public bool UsesUI => usesUI;
-        public string UIPrefabName => uIPrefabName;
         public string InteractionDeclineMessage => interactionDeclineMessage;
 
         public virtual void OnSetup(StructureBase structureBase)
         {
             
+        }
+
+        public virtual IOpenStrategy GetOpenStrategy(StructureBase structureBase)
+        {
+            if (!usesUI) return null;
+
+            var uiPrefab = GameManager.GetPrefab<IStructure>(uIPrefabName);
+            uiPrefab.Setup(this, structureBase);
+            return new CloseAllOfTypeOpenStrategy<IStructure>((UIBase)uiPrefab, false);
+        }
+
+        public virtual ICloseStrategy GetCloseStrategy()
+        {
+            return !usesUI ? null : new DefaultCloseStrategy();
         }
 
         public abstract bool OnInteract(StructureBase structureBase, 
