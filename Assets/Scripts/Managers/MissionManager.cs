@@ -20,16 +20,16 @@ namespace Managers
             else Instance = this;
         }
 
-        public void PickCharacter(SoCharacter character)
+        public static void PickCharacter(SoCharacter character)
         {
             // TODO: Pick character logic
-            _pickedCharacter = character;
+            Instance._pickedCharacter = character;
         }
 
-        public void StartMission()
+        public static void StartMission()
         {
             // TODO: start mission logic
-            GameManager.StartRun(_pickedCharacter);
+            GameManager.StartRun(Instance._pickedCharacter);
         }
 
         public void OnLoadData(SaveManager.PlayerSaveData playerSaveData)

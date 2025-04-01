@@ -54,7 +54,7 @@ namespace StructurePack.SO
             {
                 var prefab = GameManager.GetPrefab<EnchantmentDisplayUI>(PrefabNames.EnchantmentDisplayUI);
                 _enchantmentDisplayOpenStrat = new DefaultOpenStrategy(prefab);
-                _enchantmentDisplayCloseStrat = new DestroyCloseStrategy(UI_KEY, 0);
+                _enchantmentDisplayCloseStrat = new DestroyCloseStrategy(UI_KEY);
                 return base.Init();
             }
 

@@ -396,9 +396,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8884b3181f404ce2a1b65615a679f2ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  closeTime: 0
-  useAnim: 0
+  animTime: 0.3
+  useAnim: 1
   textField: {fileID: 2360268030708514873}
   image: {fileID: 7598628374951752849}
 --- !u!1 &6980569288636084423

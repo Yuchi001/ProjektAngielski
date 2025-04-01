@@ -39,7 +39,7 @@ namespace MapGeneratorPack
             var scale = transform.localScale;
             scale.x *= 1 + percentage * randomDivision;
             scale.y *= 1 + percentage * (1 - randomDivision);
-            transform.LeanScale(scale, 0.3f).setEaseInElastic().setEaseOutBounce();
+            transform.LeanScale(scale, 0.3f).setEaseInBack().setEaseOutBack();
         }
 
         public void SetSize(float scale, bool anim)

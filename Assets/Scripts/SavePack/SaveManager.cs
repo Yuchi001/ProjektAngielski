@@ -18,22 +18,25 @@ namespace SavePack
             else Instance = this;
         }
 
-        public static void LoadData()
+        public static PlayerSaveData LoadData()
         {
             Instance._data = FileManager.GetPlayerData();
             foreach (var obj in GetSubscribers())
             {
                 obj.OnLoadData(Instance._data);
             }
+
+            return Instance._data;
         }
 
-        public static void SaveData()
+        public static PlayerSaveData SaveData()
         {
             foreach (var obj in GetSubscribers())
             {
                 obj.OnSaveData(ref Instance._data);
             }
             FileManager.SavePlayerData(Instance._data);
+            return Instance._data;
         }
 
         private static IEnumerable<IPersistentData> GetSubscribers()

@@ -97,7 +97,7 @@ namespace PlayerPack
         public delegate void PlayerReadyDelegate();
         public static event PlayerReadyDelegate OnPlayerReady;
 
-        public void Setup(SoCharacter pickedCharacter)
+        public PlayerManager Setup(SoCharacter pickedCharacter)
         {
             PickedCharacter = pickedCharacter;
             playerSpriteRenderer.sprite = PickedCharacter.CharacterSprite;
@@ -121,6 +121,18 @@ namespace PlayerPack
             PlayerItemManager.AddItem(pickedCharacter.StartingItem, 1);
             
             OnPlayerReady?.Invoke();
+
+            return this;
+        }
+
+        public void LockKeys()
+        {
+            
+        }
+
+        public void UnlockKeys()
+        {
+            
         }
 
         public void ManagePlayerDeath()

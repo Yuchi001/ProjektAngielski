@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 
 namespace InventoryPack.WorldItemPack
 {
-    [RequireComponent(typeof(CircleCollider2D)), RequireComponent(typeof(Animator), typeof(Rigidbody2D), typeof(SpriteRenderer))]
+    [RequireComponent(typeof(CircleCollider2D)), RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
     public class WorldItem : PoolObject
     {
         [SerializeField] private float forceMagnitude = 0.5f;
@@ -24,7 +24,6 @@ namespace InventoryPack.WorldItemPack
         [SerializeField] private float pickUpCooldown = 0.75f;
         
         private SpriteRenderer _spriteRenderer;
-        private Rigidbody2D _rigidbody2D;
         private Animator _anim;
         private SoItem _item;
         private bool _canPickUp = false;
@@ -39,6 +38,11 @@ namespace InventoryPack.WorldItemPack
         private bool _pickedUp = false;
         private bool _cleanUp = false;
 
+        private float _currentSpeed;
+        private bool _ready = false;
+
+        private Vector2 _randomDir;
+        
         public override void OnCreate(PoolManager poolManager)
         {
             base.OnCreate(poolManager);
@@ -46,7 +50,6 @@ namespace InventoryPack.WorldItemPack
             _poolManager = poolManager;
             _anim = GetComponent<Animator>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
-            _rigidbody2D = GetComponent<Rigidbody2D>();
             _spriteRenderer.enabled = false;
         }
 
@@ -62,7 +65,9 @@ namespace InventoryPack.WorldItemPack
         public override void OnGet(SoPoolObject so)
         {
             base.OnGet(so);
-            
+
+            _ready = false;
+            _currentSpeed = movementSpeed;
             _spriteRenderer.enabled = true;
             _chasePlayer = false;
             _pickedUp = false;
@@ -84,12 +89,12 @@ namespace InventoryPack.WorldItemPack
         {
             OnGet(null);
 
-            var randomDir = new Vector2
+            _randomDir = new Vector2
             {
                 x = Random.Range(-1f, 1f),
                 y = Random.Range(-1f, 1f),
             }.normalized;
-            _rigidbody2D.AddForce(randomDir * forceMagnitude, ForceMode2D.Impulse);
+            _ready = true;
             StartCoroutine(SetCanPickUp());
         }
 
@@ -102,6 +107,15 @@ namespace InventoryPack.WorldItemPack
 
         public override void InvokeUpdate()
         {
+            if (!_ready) return;
+
+            if (_currentSpeed > 0 && !_canPickUp)
+            {
+                transform.Translate(_randomDir * _currentSpeed);
+                _currentSpeed -= movementSpeed * Time.deltaTime;
+                return;
+            }
+            
             if (!_canPickUp) return;
 
             var playerPos = PlayerManager.Instance.PlayerPos;

@@ -21,5 +21,6 @@
         public const string DashAnimSprite = "DashAnimSprite";
         public const string Zone = "Zone";
         public const string GamePlayer = "GamePlayer";
+        public const string TransitionUI = "TransitionUI";
     }
 }
