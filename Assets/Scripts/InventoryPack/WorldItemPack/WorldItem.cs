@@ -16,7 +16,6 @@ namespace InventoryPack.WorldItemPack
     [RequireComponent(typeof(CircleCollider2D)), RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
     public class WorldItem : PoolObject
     {
-        [SerializeField] private float forceMagnitude = 0.5f;
         [SerializeField] private float pickUpDistance = 0.5f;
         [SerializeField] private float getDistance = 0.1f;
         [SerializeField] private float movementSpeed = 3f;

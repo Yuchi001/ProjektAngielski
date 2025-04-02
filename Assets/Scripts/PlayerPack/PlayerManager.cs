@@ -8,6 +8,7 @@ using UIPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
 using UnityEngine;
+using Utils;
 
 namespace PlayerPack
 {
@@ -29,6 +30,7 @@ namespace PlayerPack
         [SerializeField] private Animator animator;
 
         public SoCharacter PickedCharacter { get; private set; }
+        
 
         private PlayerHealth _playerHealth;
         public PlayerHealth PlayerHealth
@@ -98,8 +100,7 @@ namespace PlayerPack
         public delegate void PlayerReadyDelegate();
         public static event PlayerReadyDelegate OnPlayerReady;
 
-        private State _currentState;
-        public State CurrentState => _currentState;
+        public State CurrentState { get; private set; }
 
         public PlayerManager Setup(SoCharacter pickedCharacter, State defaultState)
         {
@@ -121,23 +122,16 @@ namespace PlayerPack
         {
             PickedCharacter = newCharacter;
             playerSpriteRenderer.sprite = PickedCharacter.CharacterSprite;
+            PlayerStatsManager.SetCharacter(newCharacter);
 
             foreach (var mono in GetComponentsInChildren<MonoBehaviour>())
                 mono.enabled = true;
             
-            var aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
-            var anims = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-            foreach (var a in aoc.animationClips)
-                anims.Add(new KeyValuePair<AnimationClip, AnimationClip>(a, a.name == "DwarfAIdle" ? 
-                    PickedCharacter.IdleAnimation : 
-                    PickedCharacter.WalkingAnimation));
-            aoc.ApplyOverrides(anims);
-            animator.runtimeAnimatorController = aoc;
+            animator.SetCharacterAnimations(newCharacter);
         }
-
         public void SetPlayerState(State state)
         {
-            _currentState = state;
+            CurrentState = state;
             switch (state)
             {
                 case State.IN_TAVERN:

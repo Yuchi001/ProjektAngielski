@@ -1,5 +1,8 @@
-﻿using DamageIndicatorPack;
+﻿using System;
+using DamageIndicatorPack;
 using Managers;
+using MapGeneratorPack;
+using PlayerPack;
 using StructurePack.SO;
 using TMPro;
 using UIPack;
@@ -21,10 +24,10 @@ namespace StructurePack
         private SoStructure _structureData;
         private CircleCollider2D Collider => GetComponent<CircleCollider2D>();
 
-        private bool _inRange = false;
 
         public bool Toggle { get; private set; } = false;
         public bool WasUsed { get; private set; } = false;
+        public float OffsetY { get; private set; }
 
         private Light2D _spriteLight;
 
@@ -32,6 +35,8 @@ namespace StructurePack
         private ICloseStrategy _closeStrategy;
 
         private int _interactionCount;
+        
+        public bool CanInteract { get; private set; }
         
         private object _data;
         
@@ -55,9 +60,10 @@ namespace StructurePack
             _spriteLight.lightCookieSprite = basicSprite;
 
             var height = basicSprite.rect.height;
-            var offsetY = 0.5f * (height / 16.0f) * structureData.StructureScale;
+            OffsetY = 0.5f * (height / 16.0f) * structureData.StructureScale * (16f / basicSprite.pixelsPerUnit);
+            Collider.offset = new Vector2(0, OffsetY);
 
-            var newPos = new Vector3(0, offsetY);
+            var newPos = new Vector3(0, OffsetY);
             
             spriteTransform.localPosition = newPos;
             
@@ -67,13 +73,6 @@ namespace StructurePack
 
             _openStrategy = _structureData.GetOpenStrategy(this);
             _closeStrategy = _structureData.GetCloseStrategy();
-        }
-
-        private void Update()
-        {
-            if (!_inRange || (WasUsed && !_structureData.Reusable) || !Input.GetKeyDown(KeyCode.E)) return;
-
-            HandleInteraction();
         }
 
         public void HandleInteraction()
@@ -90,6 +89,7 @@ namespace StructurePack
                 structureSpriteRenderer.sprite = _structureData.GetSprite(SoStructure.EState.USED);
                 _spriteLight.enabled = false;
                 bottomInteractionMessageField.gameObject.SetActive(false);
+                StructureManager.RemoveFromQueue(this);
             }
             else structureSpriteRenderer.sprite = _structureData.GetSprite(SoStructure.EState.ACTIVE);
 
@@ -99,38 +99,52 @@ namespace StructurePack
             WasUsed = true;
         }
 
+        public void SetCanInteract(bool canInteract)
+        {
+            CanInteract = canInteract;
+        }
+
         public T GetData<T>() where T: class, new()
         {
             if (_data == null) _data = new T();
             return _data as T;
         }
 
-        public void SetData(object data)
+        private void Update()
         {
-            _data = data;
+            var isFocused = StructureManager.IsFocused(this);
+            if (!bottomInteractionMessageField.gameObject.activeSelf)
+            {
+                var message = _structureData.GetInteractionMessage(this);
+                bottomInteractionMessageField.text = message == "" ? "Press E" : message;
+            }
+            bottomInteractionMessageField.gameObject.SetActive(isFocused);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.CompareTag("Player") || (WasUsed && !_structureData.Reusable)) return;
-
-            _inRange = true;
-            var message = _structureData.GetInteractionMessage(this);
-            bottomInteractionMessageField.text = message == "" ? "Press E" : message;
-            bottomInteractionMessageField.gameObject.SetActive(true);
+            
+            
+            StructureManager.AddToQueue(this);
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
             if (!other.CompareTag("Player")) return;
-
-            _inRange = false;
+            
             bottomInteractionMessageField.gameObject.SetActive(false);
+            StructureManager.RemoveFromQueue(this);
         }
 
         private void OnDrawGizmos()
         {
             Gizmos.DrawWireSphere(transform.position, collisionRange);
+        }
+
+        private void OnDisable()
+        {
+            StructureManager.RemoveFromQueue(this);
         }
     }
 }

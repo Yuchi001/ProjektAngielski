@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Managers;
 using MapGeneratorPack;
 using PlayerPack;
+using PlayerPack.Enums;
 using PlayerPack.SO;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
 using Unity.VisualScripting;
 using UnityEngine;
+using Utils;
 
 #if UNITY_EDITOR
 using System.IO;
@@ -20,36 +23,70 @@ namespace StructurePack.SO
     {
         [SerializeField] private SoCharacter character;
         [SerializeField] private RuntimeAnimatorController playerAnimController;
+
+        public bool Is(SoCharacter c)
+        {
+            return c.ID == character.ID;
+        }
         
         public override bool OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
         {
             // TODO: Add transitions
-            var newStructure = StructureGeneratorManager.GetStructure(a =>
-            {
-                if (a is SOCharacterStructure so) return so.character.ID == PlayerManager.Instance.PickedCharacter.ID;
-                return false;
-            });
-            StructureGeneratorManager.SpawnStructure(newStructure, structureBase.transform.position);
+            var oldCharacter = PlayerManager.Instance.PickedCharacter;
             MissionManager.PickCharacter(character);
-            Destroy(structureBase.gameObject);
+            
+            var playerTransform = PlayerManager.Instance.transform;
+            var structureTransform = structureBase.transform;
+            
+            var playerPos = playerTransform.position;
+            var structurePos = structureTransform.GetChild(0).position;
+            
+            playerTransform.position = structurePos;
+            structureTransform.position = playerPos;
+            
+            var spriteTransform = structureBase.transform.GetChild(1);
+            var animator = spriteTransform.GetComponent<Animator>();
+            animator.SetCharacterAnimations(oldCharacter);
+            animator.SetBool("isWalking", true);
+            animator.speed = 0.5f;
+            spriteTransform.rotation = new Quaternion(0, structurePos.x < playerPos.x ? 0 : 1, 0, 0);
+            structureBase.StartCoroutine(GoBackToSpawn(oldCharacter, structureBase, structurePos));
             return true;
         }
 
         public override void OnSetup(StructureBase structureBase)
         {
-            var animator = structureBase.AddComponent<Animator>();
-            animator.runtimeAnimatorController = Instantiate(playerAnimController);
-            var aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
-            var anims = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-            foreach (var a in aoc.animationClips)
-                anims.Add(new KeyValuePair<AnimationClip, AnimationClip>(a, a.name == "DwarfAIdle" ? 
-                    character.IdleAnimation : 
-                    character.WalkingAnimation));
-            aoc.ApplyOverrides(anims);
-            animator.runtimeAnimatorController = aoc;
+            var spriteTransform = structureBase.transform.GetChild(1);
+            spriteTransform.rotation = new Quaternion(0,Random.Range(0, 2),0,0);
+            var animator = spriteTransform.AddComponent<Animator>();
+            animator.SetCharacterAnimations(character);
             animator.SetBool("isWalking", false);
+            var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            var normalizedTime = Random.Range(0f, 1f) / stateInfo.length;
+            animator.Play(stateInfo.fullPathHash, 0, normalizedTime);
+            animator.speed = 0.5f;
         }
 
+        private static IEnumerator GoBackToSpawn(SoCharacter asCharacter, StructureBase structureBase, Vector2 destination)
+        {
+            structureBase.SetCanInteract(false);
+            var speed = asCharacter.StatDict[EPlayerStatType.MovementSpeed];
+            while (Vector2.Distance(destination, structureBase.transform.position) > 0.01f)
+            {
+                structureBase.transform.position = Vector2.MoveTowards(structureBase.transform.position, destination,
+                    Time.deltaTime * 0.5f);
+                yield return new WaitForEndOfFrame();
+            }
+            
+            var newStructure = StructureManager.GetStructure(a =>
+            {
+                if (a is SOCharacterStructure so) return so.character.ID == asCharacter.ID;
+                return false;
+            });
+            StructureManager.SpawnStructure(newStructure, structureBase.transform.position);
+            Destroy(structureBase.gameObject);
+        }
+        
         #if UNITY_EDITOR
         
         /// <summary>

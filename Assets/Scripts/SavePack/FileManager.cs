@@ -7,7 +7,8 @@ namespace SavePack
 {
     public static class FileManager
     {
-        private static readonly string SAVE_FILE_PATH = Path.Combine(Application.persistentDataPath, "playerSave");
+        private static readonly string SAVE_DIR_PATH = Path.Combine(Application.persistentDataPath, "playerSave");
+        private static readonly string SAVE_FILE_PATH = Path.Combine(Application.persistentDataPath, "playerSave/baseData.txt");
         public static SaveManager.PlayerSaveData GetPlayerData()
         {
             if (!File.Exists(SAVE_FILE_PATH)) return new SaveManager.PlayerSaveData();
@@ -29,7 +30,7 @@ namespace SavePack
         {
             try
             {
-                Directory.CreateDirectory(SAVE_FILE_PATH);
+                Directory.CreateDirectory(SAVE_DIR_PATH);
                 var data = JsonUtility.ToJson(saveData, true);
                 using var fileStream = new FileStream(SAVE_FILE_PATH, FileMode.Create);
                 using var writer = new StreamWriter(fileStream);

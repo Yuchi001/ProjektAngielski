@@ -29,6 +29,7 @@ namespace Managers
         public static KeyCode DeclineBind => KeyCode.K;
 
         private readonly Dictionary<string, GameObject> _prefabs = new();
+        public static bool HasInstance() => Instance != null;
 
         private int stageCount = 0;
         public static int StageCount => Instance.stageCount;
@@ -44,6 +45,7 @@ namespace Managers
         private static GameManager Instance { get; set; }
 
         private static readonly string TRANSITION_UI_KEY;
+        
 
         private void Awake()
         {
@@ -60,7 +62,7 @@ namespace Managers
             var allCharacters = Resources.LoadAll<SoCharacter>("Characters");
             var soCharacter = allCharacters.FirstOrDefault(e => e.ID == playerSaveData.pickedCharacterID) ?? allCharacters[0];
             
-            SceneManager.LoadScene((int)EScene.TAVERN);
+            SceneManager.LoadScene((int)EScene.TAVERN, LoadSceneMode.Additive);
             var playerPrefab = GetPrefab<PlayerManager>(PrefabNames.GamePlayer);
             Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).Setup(soCharacter, PlayerManager.State.IN_TAVERN).LockKeys();
         }
@@ -94,6 +96,11 @@ namespace Managers
             yield return new WaitForSeconds(0.3f);
             PlayerManager.Instance.UnlockKeys();
             PlayerManager.Instance.SetPlayerState(PlayerManager.State.ON_MISSION);
+        }
+
+        public static void LoadGameScene()
+        {
+            SceneManager.LoadScene((int)EScene.MAIN_GAME);
         }
 
         public static T GetPrefab<T>(string prefName) where T : class

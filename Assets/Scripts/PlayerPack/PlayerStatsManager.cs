@@ -2,48 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using PlayerPack.Enums;
+using PlayerPack.SO;
 using UnityEngine;
 
 namespace PlayerPack
 {
+    //TODO: refactor this monstrosity
     public class PlayerStatsManager : MonoBehaviour
     {
         private Dictionary<EPlayerStatType, Stat> _stats = new();
-
-        private void Awake()
+        
+        public void SetCharacter(SoCharacter soCharacter)
         {
             _stats = ((EPlayerStatType[])(System.Enum.GetValues(typeof(EPlayerStatType)))).ToDictionary(v => v, v => new Stat());
-        }
-
-        private IEnumerator Start()
-        {
-            yield return new WaitUntil(() => PlayerManager.Instance != null);
-
             foreach (var stat in PlayerManager.Instance.PickedCharacter.StatDict)
             {
                 _stats[stat.Key].ModifyValue(stat.Value);
             }
         }
 
-        public static Dictionary<EPlayerStatType, Stat> EditorDictHelper(Dictionary<EPlayerStatType, float> dict)
-        {
-            var newDict = new Dictionary<EPlayerStatType, Stat>();
-            foreach (var statType in (EPlayerStatType[])System.Enum.GetValues(typeof(EPlayerStatType)))
-            {
-                var hasValue = dict.TryGetValue(statType, out var current);
-                newDict.Add(statType, new Stat(hasValue ? current : 0));
-            }
-            return newDict;
-        }
-
         public float GetStat(EPlayerStatType statType) 
         {
-            return _stats[statType].GetDependentValue(_stats);
+            return _stats[statType].Value;
         }
 
         public int GetStatAsInt(EPlayerStatType statType)
         {
-            return Mathf.CeilToInt(_stats[statType].GetDependentValue(_stats));
+            return Mathf.CeilToInt(_stats[statType].Value);
         }
 
         public float ModifyStat(EPlayerStatType statType, float modifier)
@@ -75,22 +60,6 @@ namespace PlayerPack
             {
                 _isInt = true;
                 return this;
-            }
-            
-            public float GetDependentValue(Dictionary<EPlayerStatType, Stat> stats)
-            {
-                var val = Value;
-                foreach (var pair in _dependencies)
-                {
-                    val += stats[pair.stat].Value * pair.factor;
-
-                    if (!limit.HasValue || Value < limit) continue;
-
-                    val = limit.Value;
-                    break;
-                }
-
-                return _isInt ? Mathf.CeilToInt(val) : val;
             }
 
             public float ModifyValue(float modifier)
