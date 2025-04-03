@@ -57,6 +57,8 @@ namespace MainCameraPack
             }
             halfAction.Invoke();
 
+            yield return new WaitForSeconds(0.1f);
+
             i = 0f;
             while (i < halfTime)
             {

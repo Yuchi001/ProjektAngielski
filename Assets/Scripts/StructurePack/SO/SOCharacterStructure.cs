@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MainCameraPack;
 using Managers;
 using MapGeneratorPack;
 using PlayerPack;
@@ -32,25 +33,32 @@ namespace StructurePack.SO
         public override bool OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
         {
             // TODO: Add transitions
-            var oldCharacter = PlayerManager.Instance.PickedCharacter;
-            MissionManager.PickCharacter(character);
+            MainCamera.InOutAnim(0.6f, () =>
+            {
+                PlayerManager.Instance.LockKeys();
+                var oldCharacter = PlayerManager.Instance.PickedCharacter;
+                MissionManager.PickCharacter(character);
             
-            var playerTransform = PlayerManager.Instance.transform;
-            var structureTransform = structureBase.transform;
+                var playerTransform = PlayerManager.Instance.transform;
+                var structureTransform = structureBase.transform;
             
-            var playerPos = playerTransform.position;
-            var structurePos = structureTransform.GetChild(0).position;
+                var playerPos = playerTransform.position;
+                var structurePos = structureTransform.position;
             
-            playerTransform.position = structurePos;
-            structureTransform.position = playerPos;
+                playerTransform.position = structureTransform.GetChild(1).position;
+                structureTransform.position = playerPos;
             
-            var spriteTransform = structureBase.transform.GetChild(1);
-            var animator = spriteTransform.GetComponent<Animator>();
-            animator.SetCharacterAnimations(oldCharacter);
-            animator.SetBool("isWalking", true);
-            animator.speed = 0.5f;
-            spriteTransform.rotation = new Quaternion(0, structurePos.x < playerPos.x ? 0 : 1, 0, 0);
-            structureBase.StartCoroutine(GoBackToSpawn(oldCharacter, structureBase, structurePos));
+                var spriteTransform = structureBase.transform.GetChild(1);
+                var animator = spriteTransform.GetComponent<Animator>();
+                animator.SetCharacterAnimations(oldCharacter);
+                animator.SetBool("isWalking", true);
+                animator.speed = 0.5f;
+                spriteTransform.rotation = new Quaternion(0, structurePos.x < playerPos.x ? 0 : 1, 0, 0);
+                structureBase.StartCoroutine(GoBackToSpawn(oldCharacter, structureBase, structurePos));
+            }, () =>
+            {
+                PlayerManager.Instance.UnlockKeys();
+            });
             return true;
         }
 
