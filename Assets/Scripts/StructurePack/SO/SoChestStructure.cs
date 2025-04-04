@@ -29,7 +29,7 @@ namespace StructurePack.SO
         {
             var resultItems = new List<SoInventoryItem>();
             var calculatedCash = Random.Range(0, maxCashReward);
-            var items = PlayerManager.Instance.PlayerItemManager.GetRandomItems(maxWeaponCount);
+            var items = PlayerManager.PlayerItemManager.GetRandomItems(maxWeaponCount);
             foreach (var item in items)
             {
                 resultItems.Add(item);

@@ -13,7 +13,7 @@ namespace ItemPack.WeaponPack.Other
         [SerializeField] private float animTime = 0.2f;
         [SerializeField] private SpriteRenderer spriteRenderer;
 
-        private Vector2 PlayerPos => PlayerManager.Instance.transform.position;
+        private static Vector2 PlayerPos => PlayerManager.PlayerPos;
         
         private EEffectType? _effectType = null;
 

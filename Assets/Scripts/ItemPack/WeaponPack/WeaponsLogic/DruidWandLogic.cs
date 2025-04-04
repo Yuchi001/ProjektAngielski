@@ -39,7 +39,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 enemyLogic.PushEnemy(diff * PushForce, 0.3f);
             }
             
-            PlayerManager.Instance.PlayerHealth.Heal((int)HealValue);
+            PlayerManager.PlayerHealth.Heal((int)HealValue);
 
             return true;
         }

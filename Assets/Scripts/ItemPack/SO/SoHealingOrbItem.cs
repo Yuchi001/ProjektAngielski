@@ -11,13 +11,13 @@ namespace ItemPack.SO
         [SerializeField] private int healValue;
         public override bool OnPickUp(params int[] paramArray)
         {
-            PlayerManager.Instance.PlayerHealth.Heal(healValue, ESoundType.HealOrb);
+            PlayerManager.PlayerHealth.Heal(healValue, ESoundType.HealOrb);
             return true;
         }
 
         public override bool CanPickUp()
         {
-            var sm = PlayerManager.Instance.PlayerStatsManager;
+            var sm = PlayerManager.PlayerStatsManager;
             return sm.GetStatAsInt(EPlayerStatType.Health) + healValue <= sm.GetStatAsInt(EPlayerStatType.MaxHealth);
         }
     }

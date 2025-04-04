@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EnemyPack.CustomEnemyLogic;
 using EnemyPack.SO;
@@ -30,7 +29,6 @@ namespace EnemyPack
         [Space(10)]
         [SerializeField, Tooltip("In seconds")] private int maximumDifficultyTimeCap = 3600;
         
-        private static PlayerManager PlayerManager => PlayerManager.Instance;
 
         private List<SoEnemy> _allEnemies = new();
         
@@ -88,7 +86,7 @@ namespace EnemyPack
 
         protected override void SpawnLogic()
         {
-            if (PlayerManager == null || _enemyPool == null) return;
+            if (!PlayerManager.HasInstance() || _enemyPool == null) return;
 
             MarkerManager.SpawnMarker(this, EEntityType.Negative);
         }

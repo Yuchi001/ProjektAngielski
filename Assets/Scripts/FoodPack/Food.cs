@@ -15,7 +15,7 @@ namespace FoodPack
         private FoodSpawner _foodSpawner;
 
         private CircleCollider2D CircleCollider2D => GetComponent<CircleCollider2D>();
-        private PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
+        private static PlayerHealth PlayerHealth => PlayerManager.PlayerHealth;
 
         private void OnDrawGizmos()
         {

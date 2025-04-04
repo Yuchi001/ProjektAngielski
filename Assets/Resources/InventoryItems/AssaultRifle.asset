@@ -22,7 +22,7 @@ MonoBehaviour:
   itemPrefab: {fileID: 5679424887727705593, guid: 51b8214004e8c9246a98ad9ae5463170, type: 3}
   startingStats:
   - selfStatType: 2
-    statValue: 20
+    statValue: 2
     canUpgrade: 1
     useMax: 0
     useMin: 0

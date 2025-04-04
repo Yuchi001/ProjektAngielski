@@ -7,7 +7,6 @@ using ItemPack;
 using ItemPack.SO;
 using PlayerPack.Enums;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace PlayerPack
@@ -24,7 +23,7 @@ namespace PlayerPack
         public delegate void ItemAddDelegate(ItemLogicBase itemLogicBase);
         public static event ItemAddDelegate OnItemAdd;
 
-        private static int CAPACITY => PlayerManager.Instance.PlayerStatsManager.GetStatAsInt(EPlayerStatType.Capacity);
+        private static int CAPACITY => PlayerManager.PlayerStatsManager.GetStatAsInt(EPlayerStatType.Capacity);
         private GameObject ITEMS_GRID => gridDataList[0].Grid.gameObject;
         private GameObject BACKPACK_GRID => gridDataList[1].Grid.gameObject;
 
@@ -61,7 +60,7 @@ namespace PlayerPack
 
         private void AddItemLogic(SoInventoryItem inventoryItemToAdd, int level)
         {
-            if (PlayerManager.Instance.CurrentState == PlayerManager.State.IN_TAVERN) return;
+            if (PlayerManager.CurrentState != PlayerManager.State.ON_MISSION) return;
             
             var itemLogic = Instantiate(inventoryItemToAdd.ItemPrefab);
             itemLogic.transform.localPosition = Vector3.zero;
@@ -78,6 +77,15 @@ namespace PlayerPack
             
             if (index < functionalSlotIndexEnd) AddItemLogic(inventoryItem, level);
             return index;
+        }
+
+        public void CleanInventory()
+        {
+            DestroyAllItems();
+            foreach (var slot in _itemSlots)
+            {
+                slot.SetItem(null, -1);
+            }
         }
 
         public void RefreshInventory()
@@ -107,7 +115,7 @@ namespace PlayerPack
         public void RemoveItemIntoWorldAtSlot(int index)
         {
             var current = _itemSlots[index].ViewItem();
-            WorldItemManager.SpawnInventoryItem(Instantiate(current.item), PlayerManager.Instance.PlayerPos, current.level);
+            WorldItemManager.SpawnInventoryItem(Instantiate(current.item), PlayerManager.PlayerPos, current.level);
             RemoveItemAtSlot(index);
         }
 

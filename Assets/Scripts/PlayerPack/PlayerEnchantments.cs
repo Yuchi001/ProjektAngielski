@@ -151,6 +151,5 @@ namespace PlayerPack
 
             return value is ICooldownEnchantment cooldownEnchantment && cooldownEnchantment.Ready();
         }
-        
     }
 }

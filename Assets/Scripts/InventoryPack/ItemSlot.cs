@@ -1,6 +1,4 @@
-﻿using System;
-using InventoryPack.WorldItemPack;
-using ItemPack.SO;
+﻿using ItemPack.SO;
 using Managers;
 using Managers.Other;
 using PlayerPack;
@@ -112,7 +110,7 @@ namespace InventoryPack
             _itemImage.color = _current ? _tonedColor : Color.clear;
             _drag = false;
 
-            if (rayCastHitGO == null) PlayerManager.Instance.PlayerItemManager.RemoveItemIntoWorldAtSlot(Index);
+            if (rayCastHitGO == null) PlayerManager.PlayerItemManager.RemoveItemIntoWorldAtSlot(Index);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

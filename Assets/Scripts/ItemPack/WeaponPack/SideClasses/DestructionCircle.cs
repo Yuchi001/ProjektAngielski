@@ -27,8 +27,8 @@ namespace ItemPack.WeaponPack.SideClasses
 
         private void Update()
         {
-            if (PlayerManager.Instance == null) return;
-            transform.position = PlayerManager.Instance.transform.position;
+            if (!PlayerManager.HasInstance()) return;
+            transform.position = PlayerManager.PlayerPos;
             animator.speed = (1 - _bookOfDestructionLogic.TimerScaled) * animSpeed;
         }
 

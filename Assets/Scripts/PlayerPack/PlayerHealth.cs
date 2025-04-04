@@ -20,9 +20,8 @@ namespace PlayerPack
     public class PlayerHealth : CanBeDamaged
     {
         [SerializeField] private float zoneCheckPerSec = 4;
-        [SerializeField] private GameObject healParticles;
 
-        private static PlayerStatsManager PlayerStatsManager => PlayerManager.Instance.PlayerStatsManager;
+        private static PlayerStatsManager PlayerStatsManager => PlayerManager.PlayerStatsManager;
         public override int MaxHealth => PlayerStatsManager.GetStatAsInt(EPlayerStatType.MaxHealth);
         public override int CurrentHealth => _currentHealth;
         
@@ -35,9 +34,8 @@ namespace PlayerPack
         public delegate void PlayerDamagedDelegate(int damage, int current);
         public static event PlayerDamagedDelegate OnPlayerDamaged;
 
-        private static PlayerEnchantments PlayerEnchantments =>
-            PlayerManager.Instance.PlayerEnchantments;
-        private static SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
+        private static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
+        private static SoCharacter PickedCharacter => PlayerManager.PickedCharacter;
 
         public delegate void PlayerHealDelegate(int healed, int current);
         public static event PlayerHealDelegate OnPlayerHeal;
@@ -58,7 +56,7 @@ namespace PlayerPack
             Invincible = false;
         }
 
-        IEnumerator Start()
+        private IEnumerator Start()
         {
             yield return new WaitUntil(() => PlayerStatsManager != null);
             
@@ -113,8 +111,8 @@ namespace PlayerPack
             
             AudioManager.PlaySound(soundType);
             
-            IndicatorManager.SpawnIndicator(PlayerManager.Instance.PlayerPos, value, false, false);
-            ParticleManager.SpawnParticles(EParticlesType.Heal, PlayerManager.Instance.PlayerPos);
+            IndicatorManager.SpawnIndicator(PlayerManager.PlayerPos, value, false, false);
+            ParticleManager.SpawnParticles(EParticlesType.Heal, PlayerManager.PlayerPos);
             
             _currentHealth = Mathf.Clamp(_currentHealth + value, 0, MaxHealth);
             
@@ -131,7 +129,7 @@ namespace PlayerPack
             }
             
             AudioManager.PlaySound(ESoundType.PlayerDeath);
-            PlayerManager.Instance.ManagePlayerDeath();
+            PlayerManager.ManagePlayerDeath();
             
             base.OnDie(destroyObj);
         }

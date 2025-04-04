@@ -19,11 +19,10 @@ namespace ItemPack
         protected int ProjectileCount => GetStatValueAsInt(EItemSelfStatType.ProjectilesCount);
         protected float PushForce => GetStatValue(EItemSelfStatType.PushForce);
         protected float Cooldown => GetStatValue(EItemSelfStatType.Cooldown) * CustomCooldownModifier();
-
-        protected static PlayerManager PlayerManager => PlayerManager.Instance;
+        
         protected static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
         protected static Vector2 PlayerPos => PlayerManager.PlayerPos;
-        protected static Transform PlayerTransform => PlayerManager.transform;
+        protected static Transform PlayerTransform => PlayerManager.GetTransform();
         private Projectile _projectile;
 
         protected Projectile Projectile

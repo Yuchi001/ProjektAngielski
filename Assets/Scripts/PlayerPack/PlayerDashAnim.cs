@@ -17,16 +17,6 @@ namespace PlayerPack
 
         private void Awake()
         {
-            GameManager.OnGMStart += Init;
-        }
-
-        private void OnDisable()
-        {
-            GameManager.OnGMStart -= Init;
-        }
-
-        private void Init()
-        {
             _playerDashSpritePrefab = GameManager.GetPrefab<PlayerDashSprite>(PrefabNames.DashAnimSprite);
         }
 

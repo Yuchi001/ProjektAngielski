@@ -12,7 +12,7 @@ namespace EffectPack.SO
         
         public override void OnResolve(EffectsManager effectsManager, int stacks, CanBeDamaged canBeDamaged)
         {
-            var canStack = PlayerManager.Instance.PlayerEnchantments.Has(EEnchantmentName.PoisonCanStack);
+            var canStack = PlayerManager.PlayerEnchantments.Has(EEnchantmentName.PoisonCanStack);
             stacks = canStack ? stacks : 1;
             canBeDamaged.GetDamaged(poisonDamage * stacks);
         }

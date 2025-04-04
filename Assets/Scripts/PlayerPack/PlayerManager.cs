@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using Managers;
 using Managers.Other;
-using PlayerPack.PlayerMovementPack;
 using PlayerPack.SO;
 using UIPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Utils;
 
 namespace PlayerPack
@@ -16,7 +16,7 @@ namespace PlayerPack
     {
         #region Singleton
         
-        public static PlayerManager Instance { get; private set; }
+        private static PlayerManager Instance { get; set; }
 
         private void Awake()
         {
@@ -29,70 +29,86 @@ namespace PlayerPack
         [SerializeField] private SpriteRenderer playerSpriteRenderer;
         [SerializeField] private Animator animator;
 
-        public SoCharacter PickedCharacter { get; private set; }
-        
+        private SoCharacter _pickedCharacter;
+        public static SoCharacter PickedCharacter => Instance._pickedCharacter;
 
-        private PlayerHealth _playerHealth;
-        public PlayerHealth PlayerHealth
+        public static bool HasInstance() => Instance != null;
+        public static Transform GetTransform() => Instance.transform;
+        public static bool CanInteract() => PlayerInput.actions.enabled;
+
+
+        private PlayerInput _playerInput;
+        public static PlayerInput PlayerInput
         {
             get
             {
-                if (_playerHealth == null) _playerHealth = GetComponent<PlayerHealth>();
-                return _playerHealth;
+                if (Instance._playerInput == null) Instance._playerInput = Instance.GetComponent<PlayerInput>();
+                return Instance._playerInput;
+            }
+        }
+        
+        private PlayerHealth _playerHealth;
+        public static PlayerHealth PlayerHealth
+        {
+            get
+            {
+                if (Instance._playerHealth == null) Instance._playerHealth = Instance.GetComponent<PlayerHealth>();
+                return Instance._playerHealth;
             }
         }
 
         private PlayerSoulManager _playerSoulManager;
-        public PlayerSoulManager PlayerSoulManager
+        public static PlayerSoulManager PlayerSoulManager
         {
             get
             {
-                if (_playerSoulManager == null) _playerSoulManager = GetComponent<PlayerSoulManager>();
-                return _playerSoulManager;
+                if (Instance._playerSoulManager == null) Instance._playerSoulManager = Instance.GetComponent<PlayerSoulManager>();
+                return Instance._playerSoulManager;
             }
         }
 
-        public PlayerItemManager PlayerItemManager { get; private set; }
+        private PlayerItemManager _playerItemManager;
+        public static PlayerItemManager PlayerItemManager => Instance._playerItemManager;
 
         private PlayerMovement _playerMovement;
-        public PlayerMovement PlayerMovement {
+        public static PlayerMovement PlayerMovement {
             get
             {
-                if (_playerMovement == null) _playerMovement = GetComponent<PlayerMovement>();
-                return _playerMovement;
+                if (Instance._playerMovement == null) Instance._playerMovement = Instance.GetComponent<PlayerMovement>();
+                return Instance._playerMovement;
             }
         }
 
         private PlayerEnchantments _playerEnchantments;
-        public PlayerEnchantments PlayerEnchantments
+        public static PlayerEnchantments PlayerEnchantments
         {
             get
             {
-                if (_playerEnchantments == null) _playerEnchantments = GetComponent<PlayerEnchantments>();
-                return _playerEnchantments;
+                if (Instance._playerEnchantments == null) Instance._playerEnchantments = Instance.GetComponent<PlayerEnchantments>();
+                return Instance._playerEnchantments;
             }
         }
 
         private PlayerStatsManager _playerStatsManager;
-        public PlayerStatsManager PlayerStatsManager {
+        public static PlayerStatsManager PlayerStatsManager {
             get
             {
-                if (_playerStatsManager == null) _playerStatsManager = GetComponent<PlayerStatsManager>();
-                return _playerStatsManager;
+                if (Instance._playerStatsManager == null) Instance._playerStatsManager = Instance.GetComponent<PlayerStatsManager>();
+                return Instance._playerStatsManager;
             }
         }
 
         private PlayerCoinManager _playerCoinManager;
-        public PlayerCoinManager PlayerCoinManager
+        public static PlayerCoinManager PlayerCoinManager
         {
             get
             {
-                if (_playerCoinManager == null) _playerCoinManager = GetComponent<PlayerCoinManager>();
-                return _playerCoinManager;
+                if (Instance._playerCoinManager == null) Instance._playerCoinManager = Instance.GetComponent<PlayerCoinManager>();
+                return Instance._playerCoinManager;
             }
         }
 
-        public Vector2 PlayerPos => transform.position;
+        public static Vector2 PlayerPos => Instance.transform.position;
         
         public delegate void PlayerDeathDelegate();
         public static event PlayerDeathDelegate OnPlayerDeath;
@@ -100,62 +116,84 @@ namespace PlayerPack
         public delegate void PlayerReadyDelegate();
         public static event PlayerReadyDelegate OnPlayerReady;
 
-        public State CurrentState { get; private set; }
+        public delegate void ChangeStateDelegate(State newState);
+        public static event ChangeStateDelegate OnChangeState;
 
-        public PlayerManager Setup(SoCharacter pickedCharacter, State defaultState)
+        private State _currentState;
+        public static State CurrentState => Instance._currentState;
+
+        public void Setup(SoCharacter pickedCharacter, State defaultState)
         {
-            ChangeCharacter(pickedCharacter);
-            
             var playerItemManagerPrefab = GameManager.GetPrefab<PlayerItemManager>(PrefabNames.PlayerInventoryManager);
             var openStrategy = new SingletonOpenStrategy<PlayerItemManager>(playerItemManagerPrefab);
             var closeStrategy = new DefaultCloseStrategy();
-            PlayerItemManager = UIManager.OpenUI<PlayerItemManager>("PlayerItemManager", openStrategy, closeStrategy);
+            _playerItemManager = UIManager.OpenUI<PlayerItemManager>("PlayerItemManager", openStrategy, closeStrategy);
+            ChangeCharacter(pickedCharacter);
             PlayerItemManager.AddItem(pickedCharacter.StartingItem, 1);
             SetPlayerState(defaultState);
             
             OnPlayerReady?.Invoke();
-
-            return this;
         }
 
-        public void ChangeCharacter(SoCharacter newCharacter)
+        public static void SetPosition(Vector2 position)
         {
-            PickedCharacter = newCharacter;
-            playerSpriteRenderer.sprite = PickedCharacter.CharacterSprite;
+            Instance.transform.position = position;
+            Instance.transform.AdjustForPivot(Instance.playerSpriteRenderer);
+        }
+
+        public static void ChangeCharacter(SoCharacter newCharacter)
+        {
+            Instance._pickedCharacter = newCharacter;
+            Instance.playerSpriteRenderer.sprite = PickedCharacter.CharacterSprite;
             PlayerStatsManager.SetCharacter(newCharacter);
 
-            foreach (var mono in GetComponentsInChildren<MonoBehaviour>())
+            foreach (var mono in Instance.GetComponentsInChildren<MonoBehaviour>())
                 mono.enabled = true;
             
-            animator.SetCharacterAnimations(newCharacter);
+            Instance.animator.SetCharacterAnimations(newCharacter);
+            PlayerItemManager.CleanInventory();
+            PlayerItemManager.AddItem(PickedCharacter.StartingItem, 1);
         }
-        public void SetPlayerState(State state)
+        
+        public static void SetPlayerState(State state)
         {
-            CurrentState = state;
+            Instance._currentState = state;
             switch (state)
             {
                 case State.IN_TAVERN:
                     PlayerItemManager.DestroyAllItems();
+                    UnlockKeys();
                     break;
                 case State.ON_MISSION:
                     PlayerItemManager.RefreshInventory();
+                    UnlockKeys();
+                    break;
+                case State.IN_MENU:
+                    PlayerItemManager.DestroyAllItems();
+                    LockKeys();
+                    break;
+                case State.IN_MAP:
+                    PlayerItemManager.DestroyAllItems();
+                    UnlockKeys();
                     break;
                 default:
                     throw new Exception($"State {state} not implemented in PlayerManager.SetState");
             }
+
+            OnChangeState?.Invoke(CurrentState);
         }
 
-        public void LockKeys()
+        public static void LockKeys()
         {
-            
+            PlayerInput.actions.Disable();
         }
 
-        public void UnlockKeys()
+        public static void UnlockKeys()
         {
-            
+            PlayerInput.actions.Enable();
         }
 
-        public void ManagePlayerDeath()
+        public static void ManagePlayerDeath()
         {
             PlayerHealth.enabled = false;
             
@@ -169,6 +207,8 @@ namespace PlayerPack
         {
             IN_TAVERN,
             ON_MISSION,
+            IN_MENU,
+            IN_MAP,
         }
     }
 }

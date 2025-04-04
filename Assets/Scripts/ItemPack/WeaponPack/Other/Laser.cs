@@ -12,7 +12,7 @@ namespace ItemPack.WeaponPack.Other
         [SerializeField] private LineCollision lineCollision;
         [SerializeField] private LineRenderer lineRenderer;
         [SerializeField] private GameObject laserParticlesPrefab;
-        private Vector2 PlayerPos => PlayerManager.Instance.transform.position;
+        private static Vector2 PlayerPos => PlayerManager.PlayerPos;
 
         private Vector2 _target;
 

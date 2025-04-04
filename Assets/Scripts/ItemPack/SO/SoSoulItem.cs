@@ -8,7 +8,7 @@ namespace ItemPack.SO
     {
         public override bool OnPickUp(params int[] paramArray)
         {
-            PlayerManager.Instance.PlayerSoulManager.AddSouls(1);
+            PlayerManager.PlayerSoulManager.AddSouls(1);
             return true;
         }
     }

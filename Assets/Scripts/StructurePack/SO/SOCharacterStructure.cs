@@ -30,22 +30,25 @@ namespace StructurePack.SO
             return c.ID == character.ID;
         }
         
+        public bool Is(string id)
+        {
+            return id == character.ID;
+        }
+        
         public override bool OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
         {
-            // TODO: Add transitions
             MainCamera.InOutAnim(0.6f, () =>
             {
-                PlayerManager.Instance.LockKeys();
-                var oldCharacter = PlayerManager.Instance.PickedCharacter;
-                MissionManager.PickCharacter(character);
-            
-                var playerTransform = PlayerManager.Instance.transform;
+                PlayerManager.LockKeys();
+                var oldCharacter = PlayerManager.PickedCharacter;
+                TavernManager.PickCharacter(character);
+                
                 var structureTransform = structureBase.transform;
-            
-                var playerPos = playerTransform.position;
+
+                var playerPos = PlayerManager.PlayerPos;
                 var structurePos = structureTransform.position;
             
-                playerTransform.position = structureTransform.GetChild(1).position;
+                PlayerManager.SetPosition(structureTransform.GetChild(1).position);
                 structureTransform.position = playerPos;
             
                 var spriteTransform = structureBase.transform.GetChild(1);
@@ -55,10 +58,7 @@ namespace StructurePack.SO
                 animator.speed = 0.5f;
                 spriteTransform.rotation = new Quaternion(0, structurePos.x < playerPos.x ? 0 : 1, 0, 0);
                 structureBase.StartCoroutine(GoBackToSpawn(oldCharacter, structureBase, structurePos));
-            }, () =>
-            {
-                PlayerManager.Instance.UnlockKeys();
-            });
+            }, PlayerManager.UnlockKeys);
             return true;
         }
 

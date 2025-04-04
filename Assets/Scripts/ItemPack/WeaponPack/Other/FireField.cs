@@ -24,13 +24,13 @@ namespace ItemPack.WeaponPack.Other
 
         private void Update()
         {
-            if (PlayerManager.Instance == null) return;
+            if (!PlayerManager.HasInstance()) return;
             
             var scale = _bookOfFireLogic.Range / rangeScaler;
             var vectorScale = Vector2.one * scale;
             transform.localScale = vectorScale;
             particles.transform.localScale = vectorScale;
-            transform.position = PlayerManager.Instance.transform.position;
+            transform.position = PlayerManager.PlayerPos;
             _timer += Time.deltaTime;
 
             if (_timer < 1f / _bookOfFireLogic.DamageRate) return;
@@ -42,7 +42,7 @@ namespace ItemPack.WeaponPack.Other
         private void TriggerBurn()
         {
             var results = new Collider2D[50];
-            var playerPos = PlayerManager.Instance.transform.position;
+            var playerPos = PlayerManager.PlayerPos;
             var range = _bookOfFireLogic.Range;
             Physics2D.OverlapCircleNonAlloc(playerPos, range, results);
             

@@ -5,7 +5,6 @@ using EnemyPack.CustomEnemyLogic;
 using Managers;
 using Managers.Enums;
 using PlayerPack;
-using PlayerPack.PlayerMovementPack;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
 using UnityEngine;
@@ -30,7 +29,7 @@ namespace EnchantmentPack.Enchantments
         private void TriggerExplosion()
         {
             var results = new Collider2D[50];
-            var playerPos = PlayerManager.Instance.transform.position;
+            var playerPos = PlayerManager.PlayerPos;
             var range = parameters[EValueKey.Range];
             Physics2D.OverlapCircleNonAlloc(playerPos, range, results);
 

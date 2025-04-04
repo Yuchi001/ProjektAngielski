@@ -1,15 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Managers;
 using PlayerPack.Enums;
-using PlayerPack.SO;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-namespace PlayerPack.PlayerMovementPack
+namespace PlayerPack
 {
     [RequireComponent(typeof(PlayerHealth))]
-    public partial class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private Rigidbody2D rb2d;
         [SerializeField] private Transform playerSpriteTransform;
@@ -19,11 +16,9 @@ namespace PlayerPack.PlayerMovementPack
         [SerializeField] private float dashCooldown = 2f;
         [SerializeField] private Animator animator;
         
-        private PlayerStatsManager PlayerStatsManager => PlayerManager.Instance.PlayerStatsManager;
-        private SoCharacter PickedCharacter => PlayerManager.Instance.PickedCharacter;
         private PlayerHealth PlayerHealth => GetComponent<PlayerHealth>();
-        private float MovementSpeed => PlayerStatsManager.GetStat(EPlayerStatType.MovementSpeed);
-        public int MaxDashStacks => PlayerStatsManager.GetStatAsInt(EPlayerStatType.DashStacks) + _additionalDashStacks;
+        private static float MovementSpeed => PlayerManager.PlayerStatsManager.GetStat(EPlayerStatType.MovementSpeed);
+        public int MaxDashStacks => PlayerManager.PlayerStatsManager.GetStatAsInt(EPlayerStatType.DashStacks) + _additionalDashStacks;
         private int _additionalDashStacks = 0;
 
         private float _additionalMovementSpeed = 0;
@@ -34,6 +29,7 @@ namespace PlayerPack.PlayerMovementPack
         private float _dashTimer = 0;
         private float _dashingTimer = 0;
 
+        private Vector2 _movementInput;
         private PlayerDashAnim _playerDashAnim;
         
         public int CurrentDashStacks { get; private set; } = 0;
@@ -44,20 +40,17 @@ namespace PlayerPack.PlayerMovementPack
         public delegate void PlayerDashIncrement(int value);
         public static event PlayerDashIncrement OnPlayerDashIncrement;
 
+        public delegate void PlayerDashDelegate(int currentDashStacks);
+        public static event PlayerDashDelegate OnPlayerDash;
+
         private void Start()
         {
             animator.speed = animationSpeed;
             _dashTimer = dashCooldown;
             CurrentDashStacks = MaxDashStacks;
-            _buttonsActive = new Dictionary<KeyCode, bool>
-            {
-                { GameManager.UpBind, false },
-                { GameManager.LeftBind, false },
-                { GameManager.DownBind, false },
-                { GameManager.RightBind, false },
-            };
             _playerDashAnim = GetComponent<PlayerDashAnim>();
         }
+        
         public float GetDashProgress()
         {
             return _dashTimer / dashCooldown;
@@ -85,6 +78,24 @@ namespace PlayerPack.PlayerMovementPack
             if (PlayerHealth.Dead) rb2d.velocity = Vector2.zero;
             else ManageMovement();
         }
+        
+        public void OnMove(InputAction.CallbackContext context)
+        {
+            _movementInput = context.ReadValue<Vector2>();
+        }
+
+        private Vector2 GetVelocity()
+        {
+            if (_movementInput == Vector2.zero) return Vector2.zero;
+        
+            var movement = _movementInput.normalized;
+            if (Mathf.Approximately(Mathf.Abs(movement.x) + Mathf.Abs(movement.y), 2))
+            {
+                movement /= Mathf.Sqrt(2);
+            }
+        
+            return movement * (MovementSpeed + _additionalMovementSpeed);
+        }
 
         private void ManageMovement()
         {
@@ -103,7 +114,7 @@ namespace PlayerPack.PlayerMovementPack
 
         private void ManageDash()
         {
-            if (PlayerManager.Instance.CurrentState == PlayerManager.State.IN_TAVERN) return;
+            if (PlayerManager.CurrentState == PlayerManager.State.IN_TAVERN) return;
             
             if (DuringDash)
             {
@@ -115,7 +126,6 @@ namespace PlayerPack.PlayerMovementPack
                 PlayerHealth.Invincible = false;
                 rb2d.velocity /= dashForceMultiplier;
                 _dashingTimer = 0;
-                ResetKeys();
                 OnPlayerDashEnd?.Invoke();
             }
 
@@ -136,6 +146,7 @@ namespace PlayerPack.PlayerMovementPack
             CurrentDashStacks--;
             rb2d.velocity = rb2d.velocity.normalized * dashForceMultiplier;
             PlayerHealth.Invincible = true;
+            OnPlayerDash?.Invoke(CurrentDashStacks);
         }
     }
 }

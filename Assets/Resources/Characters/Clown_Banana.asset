@@ -20,7 +20,7 @@ MonoBehaviour:
   characterColor: {r: 0.54509807, g: 0, b: 0.1254902, a: 1}
   stats:
   - statType: 0
-    statValue: 10
+    statValue: 5
   - statType: 1
     statValue: 10
   - statType: 2

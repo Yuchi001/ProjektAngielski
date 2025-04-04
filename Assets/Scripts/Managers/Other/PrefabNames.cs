@@ -19,6 +19,7 @@
         public const string WorldItem = "WorldItem";
         public const string EnchantmentDisplayUI = "EnchantmentDisplayUI";
         public const string DashAnimSprite = "DashAnimSprite";
+        public const string DashUI = "DashUI";
         public const string Zone = "Zone";
         public const string GamePlayer = "GamePlayer";
         public const string TransitionUI = "TransitionUI";

@@ -30,7 +30,6 @@ namespace FoodPack
         private readonly List<(float weight, SoFood food)> _foodWeightList = new();
 
         protected override float MaxTimer => trySpawnRate;
-        private static PlayerManager PlayerManager => PlayerManager.Instance;
 
         private void Awake()
         {
@@ -73,7 +72,7 @@ namespace FoodPack
 
         protected override void SpawnLogic()
         {
-            if (PlayerManager == null) return;
+            if (!PlayerManager.HasInstance()) return;
 
             var randomPercentage = Random.Range(0, 101);
             if (randomPercentage > foodSpawnChance) return;

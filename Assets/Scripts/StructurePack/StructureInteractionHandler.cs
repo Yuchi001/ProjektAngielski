@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PlayerPack;
 using UnityEngine;
 
 namespace StructurePack
@@ -10,14 +11,14 @@ namespace StructurePack
         private readonly Dictionary<int, StructureBase> _validStructures = new();
         private readonly LinkedList<int> _queue = new();
 
-        public int FocusedStructure => _queue.First?.Value ?? -1; 
+        public int FocusedStructure => PlayerManager.CanInteract() ? _queue.First?.Value ?? -1 : -1; 
 
         public void AddToQueue(StructureBase structure)
         {
             var instanceId = structure.GetInstanceID();
             if (!_validStructures.TryAdd(instanceId, structure)) return;
 
-            _queue.AddFirst(instanceId);
+            _queue.AddLast(instanceId);
         }
 
         public void RemoveFromQueue(int instanceId)
@@ -28,7 +29,8 @@ namespace StructurePack
 
         public void HandleQueue()
         {
-            // TODO: jesli gracz nie moze sie ruszac to nie powinien moc klikac
+            if (!PlayerManager.CanInteract()) return;
+            
             HandleInteraction();
             HandleSwitch();
         }

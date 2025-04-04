@@ -26,7 +26,7 @@ namespace EnchantmentPack.Enchantments
 
         private void TriggerFireHeal(int value, int current)
         {
-            var position = PlayerManager.Instance.transform.position;
+            var position = PlayerManager.PlayerPos;
             var range = parameters[EValueKey.Range];
             var results = new Collider2D[50];
             

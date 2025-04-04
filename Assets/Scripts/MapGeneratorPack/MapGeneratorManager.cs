@@ -38,7 +38,7 @@ namespace MapGeneratorPack
         {
             _zonePrefab = GameManager.GetPrefab<Zone>(PrefabNames.Zone);
             _zoneDict = new Dictionary<string, Zone>();
-            GenerateZone(PlayerManager.Instance.PlayerPos, "MAIN", baseZoneScale);
+            GenerateZone(PlayerManager.PlayerPos, "MAIN", baseZoneScale);
         }
 
         public static bool ContainsEntity(Vector2 pos)
@@ -54,7 +54,7 @@ namespace MapGeneratorPack
 
         public static Vector2? GetRandomPos()
         {
-            var playerPos = PlayerManager.Instance.PlayerPos;
+            var playerPos = PlayerManager.PlayerPos;
             var availableZones = new List<Zone>();
 
             foreach (var zone in Instance._zoneDict.Values)

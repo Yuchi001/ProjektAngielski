@@ -2,71 +2,76 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MainCameraPack;
 using MapGeneratorPack;
-using NUnit.Framework;
 using PlayerPack;
 using PlayerPack.SO;
 using SavePack;
 using StructurePack.SO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 namespace Managers
 {
-    public class MissionManager : MonoBehaviour, IPersistentData
+    public class TavernManager : MonoBehaviour, IPersistentData
     {
         [SerializeField] private List<Transform> characterStructuresSpawnPositions;
-        [SerializeField] private Transform missionBoardSpawnPos;
-        private static MissionManager Instance { get; set; }
+        private static TavernManager Instance { get; set; }
 
+        private List<SOCharacterStructure> _unlockedCharactersStructures = new();
         
         private void Awake()
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
 
-            if (!GameManager.HasInstance()) GameManager.LoadGameScene();
+            if (!GameManager.HasInstance()) GameManager.LoadMenu();
         }
 
         private IEnumerator Start()
         {
             yield return new WaitUntil(StructureManager.HasInstance);
             
+            // TODO: render only unlocked characters
             var allCharacters = Resources.LoadAll<SOCharacterStructure>("Structures/Characters").ToList();
-            var missionBoard = Resources.Load<SoMissionBoardStructure>("Structures/MissionBoard");
 
-            StructureManager.SpawnStructure(missionBoard, missionBoardSpawnPos.position, transform);
             var positions = characterStructuresSpawnPositions.Select(e => e.position).ToList();
             foreach (var character in allCharacters)
             {
-                if (character.Is(PlayerManager.Instance.PickedCharacter)) continue;
                 var randomIndex = Random.Range(0, positions.Count);
                 var randomPos = positions[randomIndex];
-                StructureManager.SpawnStructure(character, randomPos, transform);
+                if (character.Is(PlayerManager.PickedCharacter)) PlayerManager.SetPosition(randomPos + new Vector3(0, 0.25f));
+                else StructureManager.SpawnStructure(character, randomPos, transform);
                 positions.Remove(randomPos);
             }
         }
 
-        public static void PickCharacter(SoCharacter character)
+        public static void LoadTavern()
         {
-            PlayerManager.Instance.ChangeCharacter(character);
+            MainCamera.SetFollow(PlayerManager.GetTransform());
         }
 
-        public static void StartMission()
+        public static void PickCharacter(SoCharacter character)
         {
-            // TODO: start mission logic
-            GameManager.StartRun();
+            PlayerManager.ChangeCharacter(character);
         }
 
         public void OnLoadData(SaveManager.PlayerSaveData playerSaveData)
         {
-            
+            var allCharacters = Resources.LoadAll<SOCharacterStructure>("Structures/Characters").ToList();
+            _unlockedCharactersStructures.Clear();
+            foreach (var id in playerSaveData.currentCharactersIDs)
+            {
+                var found = allCharacters.FirstOrDefault(c => c.Is(id));
+                if (found == default) continue;
+                
+                _unlockedCharactersStructures.Add(found);
+            }
         }
 
         public void OnSaveData(ref SaveManager.PlayerSaveData playerSaveData)
         {
-            playerSaveData.pickedCharacterID = PlayerManager.Instance.PickedCharacter.ID;
+            playerSaveData.pickedCharacterID = PlayerManager.PickedCharacter.ID;
         }
     }
 }

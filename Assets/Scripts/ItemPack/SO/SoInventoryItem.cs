@@ -52,9 +52,9 @@ namespace ItemPack.SO
 
         public override bool OnPickUp(params int[] paramArray)
         {
-            if (PlayerManager.Instance.PlayerItemManager.IsFull()) return false;
+            if (PlayerManager.PlayerItemManager.IsFull()) return false;
             
-            var index = PlayerManager.Instance.PlayerItemManager.AddItem(Instantiate(this), paramArray[0]);
+            var index = PlayerManager.PlayerItemManager.AddItem(Instantiate(this), paramArray[0]);
             return index != -1;
         }
     }

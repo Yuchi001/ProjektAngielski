@@ -15,7 +15,7 @@ namespace PlayerPack
         public void SetCharacter(SoCharacter soCharacter)
         {
             _stats = ((EPlayerStatType[])(System.Enum.GetValues(typeof(EPlayerStatType)))).ToDictionary(v => v, v => new Stat());
-            foreach (var stat in PlayerManager.Instance.PickedCharacter.StatDict)
+            foreach (var stat in PlayerManager.PickedCharacter.StatDict)
             {
                 _stats[stat.Key].ModifyValue(stat.Value);
             }
@@ -42,7 +42,6 @@ namespace PlayerPack
             public float Value { get; private set; }
             
             private float? limit = null;
-            private bool _isInt;
             
             private readonly List<(EPlayerStatType stat, float factor)> _dependencies = new();
 
@@ -58,7 +57,6 @@ namespace PlayerPack
 
             public Stat AsInt()
             {
-                _isInt = true;
                 return this;
             }
 

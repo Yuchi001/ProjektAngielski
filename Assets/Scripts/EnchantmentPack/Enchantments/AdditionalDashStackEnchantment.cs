@@ -9,9 +9,8 @@ namespace EnchantmentPack.Enchantments
     {
         private IEnumerator Start()
         {
-            var playerInstance = PlayerManager.Instance;
-            yield return new WaitUntil(() => playerInstance != null);
-            playerInstance.PlayerMovement.AddDashStack();
+            yield return new WaitUntil(PlayerManager.HasInstance);
+            PlayerManager.PlayerMovement.AddDashStack();
         }
     }
 }

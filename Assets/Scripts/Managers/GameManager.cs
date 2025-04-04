@@ -15,6 +15,7 @@ using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utils;
 
 namespace Managers
 {
@@ -63,8 +64,12 @@ namespace Managers
             var soCharacter = allCharacters.FirstOrDefault(e => e.ID == playerSaveData.pickedCharacterID) ?? allCharacters[0];
             
             SceneManager.LoadScene((int)EScene.TAVERN, LoadSceneMode.Additive);
+            var isMenu = SceneExtensions.IsSceneLoaded((int)EScene.MENU);
             var playerPrefab = GetPrefab<PlayerManager>(PrefabNames.GamePlayer);
-            Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).Setup(soCharacter, PlayerManager.State.IN_TAVERN).LockKeys();
+            Instantiate(playerPrefab, Vector3.zero, Quaternion.identity)
+                .Setup(soCharacter, isMenu ? PlayerManager.State.IN_MENU : PlayerManager.State.IN_TAVERN);
+            
+            SaveManager.LoadData();
         }
 
         private void Start()
@@ -74,33 +79,31 @@ namespace Managers
 
         public static void StartRun()
         {
-            var asyncOperation = SceneManager.UnloadSceneAsync((int)EScene.TAVERN);
-            var transitionUIPrefab = GetPrefab<TransitionUI>(PrefabNames.TransitionUI);
-            var openStrat = new DefaultOpenStrategy(transitionUIPrefab);
-            var closeStrat = new DestroyCloseStrategy(TRANSITION_UI_KEY);
-            var openedUI = UIManager.OpenUI<TransitionUI>(TRANSITION_UI_KEY, openStrat, closeStrat);
-            Instance.StartCoroutine(StartRunAsync(asyncOperation, openedUI));
-        }
-
-        private static IEnumerator StartRunAsync(AsyncOperation asyncOperation, TransitionUI transitionUI)
-        {
-            while (!asyncOperation.isDone)
+            MainCamera.InOutAnim(0.3f, () =>
             {
-                transitionUI.SetLoadingProgress(asyncOperation.progress);
-                yield return new WaitForEndOfFrame();
-            }
-            transitionUI.SetLoadingProgress(1);
-
-            OnStartRun?.Invoke();
-            UIManager.CloseUI(TRANSITION_UI_KEY);
-            yield return new WaitForSeconds(0.3f);
-            PlayerManager.Instance.UnlockKeys();
-            PlayerManager.Instance.SetPlayerState(PlayerManager.State.ON_MISSION);
+                SceneManager.UnloadSceneAsync((int)EScene.TAVERN);
+            }, () =>
+            {
+                OnStartRun?.Invoke();
+                PlayerManager.SetPlayerState(PlayerManager.State.ON_MISSION);
+            });
+        }
+        
+        public static void LoadGameScene(LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+        {
+            SceneManager.LoadScene((int)EScene.MAIN_GAME, loadSceneMode);
         }
 
-        public static void LoadGameScene()
+        public static void LoadMenu()
         {
-            SceneManager.LoadScene((int)EScene.MAIN_GAME);
+            SceneManager.LoadScene((int)EScene.MENU);
+        }
+        
+        public static void GoToTavern()
+        {
+            SceneManager.UnloadSceneAsync((int)EScene.MENU);
+            TavernManager.LoadTavern();
+            PlayerManager.SetPlayerState(PlayerManager.State.IN_TAVERN);
         }
 
         public static T GetPrefab<T>(string prefName) where T : class

@@ -20,11 +20,11 @@ MonoBehaviour:
   characterColor: {r: 0.078431375, g: 0.24313727, b: 0.20000002, a: 1}
   stats:
   - statType: 0
-    statValue: 0
+    statValue: 2
   - statType: 1
-    statValue: 0
+    statValue: 75
   - statType: 2
-    statValue: 0
+    statValue: 3
   - statType: 3
     statValue: 3
   - statType: 4

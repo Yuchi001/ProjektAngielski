@@ -15,14 +15,9 @@ namespace EnchantmentPack.Enchantments
 
         public bool IsActive { get; protected set; }
 
-        private PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
+        private static PlayerHealth PlayerHealth => PlayerManager.PlayerHealth;
 
         private float _timer = 0;
-
-        private IEnumerator Start()
-        {
-            yield return new WaitUntil(() => PlayerManager.Instance != null);
-        }
 
         private void Update()
         {

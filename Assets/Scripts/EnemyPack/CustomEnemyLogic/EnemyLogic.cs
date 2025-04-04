@@ -28,15 +28,15 @@ namespace EnemyPack.CustomEnemyLogic
         [SerializeField] private Animator animator;
 
         public Animator Animator => animator;
-        public static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
-        public static Vector2 PlayerPos => PlayerManager.Instance.PlayerPos;
+        public static PlayerHealth PlayerHealth => PlayerManager.PlayerHealth;
+        public static Vector2 PlayerPos => PlayerManager.PlayerPos;
         private EnemyHealthBar _enemyHealthBar;
         public Collider2D Collider2D { get; private set; }
         public override int MaxHealth => Mathf.CeilToInt(EnemyData.MaxHealth * _enemySpawner.EnemiesHpScale);
-        private static float PlayerSpeed => PlayerManager.Instance.PlayerStatsManager.GetStat(EPlayerStatType.MovementSpeed);
+        private static float PlayerSpeed => PlayerManager.PlayerStatsManager.GetStat(EPlayerStatType.MovementSpeed);
         private float Mass => Mathf.Pow(EnemyData.BodyScale, 2);
         private float MovementSpeed => Slowed ? EnemyData.MovementSpeed / 2f : EnemyData.MovementSpeed;
-        private static PlayerEnchantments PlayerEnchantments => PlayerManager.Instance.PlayerEnchantments;
+        private static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
 
         public bool Invincible { get; private set; }
 
@@ -70,8 +70,7 @@ namespace EnemyPack.CustomEnemyLogic
 
             SpriteRenderer.enabled = false;
             
-            var player = PlayerManager.Instance;
-            if (player == null) _enemySpawner.ReleasePoolObject(this);
+            if (!PlayerManager.HasInstance()) _enemySpawner.ReleasePoolObject(this);
             
             _isBeingPushed = false;
 
@@ -197,7 +196,7 @@ namespace EnemyPack.CustomEnemyLogic
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Player") 
-                && PlayerManager.Instance.PlayerMovement.DuringDash
+                && PlayerManager.PlayerMovement.DuringDash
                 && PlayerEnchantments.Has(EEnchantmentName.DashKill))
             {
                 var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.DashKill, EValueKey.Percentage);

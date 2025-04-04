@@ -117,7 +117,7 @@ namespace InventoryPack.WorldItemPack
             
             if (!_canPickUp) return;
 
-            var playerPos = PlayerManager.Instance.PlayerPos;
+            var playerPos = PlayerManager.PlayerPos;
             if (_cleanUp)
             {
                 transform.position = playerPos;

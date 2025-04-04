@@ -16,8 +16,8 @@ namespace StructurePack.SO
         [SerializeField] private int stageBaseMultiplier;
         [SerializeField] private int transactionMultiplier;
 
-        private static PlayerSoulManager PlayerSoulManager => PlayerManager.Instance.PlayerSoulManager;
-        private static PlayerEnchantments PlayerEnchantments => PlayerManager.Instance.PlayerEnchantments;
+        private static PlayerSoulManager PlayerSoulManager => PlayerManager.PlayerSoulManager;
+        private static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
         
         public override bool OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
         {

@@ -8,8 +8,8 @@ namespace PlayerPack
 
         public void Setup(float lifeTime)
         {
-            var lookingRight = PlayerManager.Instance.PlayerMovement.LookingRight;
-            spriteRenderer.sprite = PlayerManager.Instance.PickedCharacter.CharacterSprite;
+            var lookingRight = PlayerManager.PlayerMovement.LookingRight;
+            spriteRenderer.sprite = PlayerManager.PickedCharacter.CharacterSprite;
             var rot = transform.rotation;
             rot.y = lookingRight ? 180 : 0;
             transform.rotation = rot;

@@ -24,7 +24,7 @@ namespace EnemyPack.States
         private const string CHASE_ATTACK_TIMER_ID = "CHASE_ATTACK_TIMER";
         private const string CHASE_MOVE_TIMER_ID = "CHASE_MOVE_TIMER";
 
-        private new static Vector2 PlayerPos => PlayerManager.Instance.PlayerPos;
+        private new static Vector2 PlayerPos => PlayerManager.PlayerPos;
 
         public Chase(StateBase nextState, bool runAwa)
         {
@@ -78,7 +78,7 @@ namespace EnemyPack.States
             state.SetTimer(CHASE_ATTACK_TIMER_ID);
 
             if (_onPlayerInRange != null) _onPlayerInRange.Invoke(state);
-            else PlayerManager.Instance.PlayerHealth.GetDamaged(_data.Damage);
+            else PlayerManager.PlayerHealth.GetDamaged(_data.Damage);
         }
 
         public override void Reset(EnemyLogic state)

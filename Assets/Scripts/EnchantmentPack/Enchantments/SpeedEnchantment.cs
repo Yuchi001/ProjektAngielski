@@ -9,13 +9,11 @@ namespace EnchantmentPack.Enchantments
     {
         private IEnumerator Start()
         {
-            var playerManager = PlayerManager.Instance;
-            yield return new WaitUntil(() => playerManager != null);
-
-            var enchantmentManager = playerManager.PlayerEnchantments;
+            yield return new WaitUntil(PlayerManager.HasInstance);
+            
             var percentage =
-                enchantmentManager.GetParamValue(Enchantment.EnchantmentName, EValueKey.Percentage);
-            playerManager.PlayerMovement.ModifySpeedByPercentage(percentage);
+                PlayerManager.PlayerEnchantments.GetParamValue(Enchantment.EnchantmentName, EValueKey.Percentage);
+            PlayerManager.PlayerMovement.ModifySpeedByPercentage(percentage);
         }
     }
 }

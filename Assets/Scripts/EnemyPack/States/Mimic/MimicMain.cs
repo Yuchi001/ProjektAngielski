@@ -14,7 +14,7 @@ namespace EnemyPack.States.Mimic
 
         private Transform _transform;
 
-        private new static Vector2 PlayerPos => PlayerManager.Instance.PlayerPos;
+        private new static Vector2 PlayerPos => PlayerManager.PlayerPos;
         
         public override void Enter(EnemyLogic state)
         {

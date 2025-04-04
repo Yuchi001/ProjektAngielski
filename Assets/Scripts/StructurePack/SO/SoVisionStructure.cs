@@ -4,7 +4,6 @@ using PlayerPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace StructurePack.SO
 {
@@ -17,7 +16,7 @@ namespace StructurePack.SO
         [SerializeField] private float scaleMultiplier = 0.2f;
         [SerializeField] private float baseZoneScale = 2;
         
-        private static PlayerSoulManager PlayerSoulManager => PlayerManager.Instance.PlayerSoulManager;
+        private static PlayerSoulManager PlayerSoulManager => PlayerManager.PlayerSoulManager;
         
         public override bool OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
         {

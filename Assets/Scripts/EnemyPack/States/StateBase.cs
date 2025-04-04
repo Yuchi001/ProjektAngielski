@@ -10,7 +10,7 @@ namespace EnemyPack.States
         public abstract bool CanBeStunned { get; }
         public abstract bool CanBePushed { get; }
 
-        protected static Vector2 PlayerPos => PlayerManager.Instance.PlayerPos;
+        protected static Vector2 PlayerPos => PlayerManager.PlayerPos;
         
         public abstract void Enter(EnemyLogic state);
         public abstract void Execute(EnemyLogic state);

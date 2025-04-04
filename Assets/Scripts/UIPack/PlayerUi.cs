@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using PlayerPack;
-using PlayerPack.PlayerMovementPack;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,10 +22,10 @@ namespace UIPack
 
         [SerializeField] private GameObject dashStack;
         
-        private static PlayerHealth PlayerHealth => PlayerManager.Instance.PlayerHealth;
-        private static int PlayerMaxDashStacks => PlayerManager.Instance.PlayerMovement.MaxDashStacks;
-        private static int CurrentPlayerDashStacks => PlayerManager.Instance.PlayerMovement.CurrentDashStacks;
-        private static float DashProgress => PlayerManager.Instance.PlayerMovement.GetDashProgress();
+        private static PlayerHealth PlayerHealth => PlayerManager.PlayerHealth;
+        private static int PlayerMaxDashStacks => PlayerManager.PlayerMovement.MaxDashStacks;
+        private static int CurrentPlayerDashStacks => PlayerManager.PlayerMovement.CurrentDashStacks;
+        private static float DashProgress => PlayerManager.PlayerMovement.GetDashProgress();
         
         private float _uiUpdateTimer = 0;
         private List<Image> _spawnedDashStacks = new();
@@ -49,8 +48,8 @@ namespace UIPack
             expMeter.fillAmount = 1;
             levelText.text = "1 Lvl";
             healthText.text = $"{PlayerHealth.CurrentHealth}/{PlayerHealth.MaxHealth}";
-            characterImage.sprite = PlayerManager.Instance.PickedCharacter.CharacterSprite;
-            characterFrameImage.color = PlayerManager.Instance.PickedCharacter.CharacterColor;
+            characterImage.sprite = PlayerManager.PickedCharacter.CharacterSprite;
+            characterFrameImage.color = PlayerManager.PickedCharacter.CharacterColor;
 
             for (var i = 0; i < PlayerMaxDashStacks; i++)
             {
@@ -72,7 +71,7 @@ namespace UIPack
 
         private void Update()
         {
-            if (PlayerManager.Instance == null) return;
+            if (!PlayerManager.HasInstance()) return;
 
             for (var i = 0; i < PlayerMaxDashStacks; i++) {
                 if (i < CurrentPlayerDashStacks) _spawnedDashStacks[i].fillAmount = 1;

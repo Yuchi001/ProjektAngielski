@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Managers;
 using Managers.Other;
-using SavePack;
 using StructurePack;
 using StructurePack.SO;
 using UnityEngine;
@@ -12,6 +11,8 @@ namespace MapGeneratorPack
 {
     public class StructureManager : MonoBehaviour
     {
+        [SerializeField] private GameObject deadZone;
+        
         private List<SoStructure> _structures = new();
 
         private StructureBase _structurePrefab;
@@ -66,6 +67,7 @@ namespace MapGeneratorPack
 
         public void Generate()
         {
+            deadZone.SetActive(true);
             GenerateStructures();
         }
 

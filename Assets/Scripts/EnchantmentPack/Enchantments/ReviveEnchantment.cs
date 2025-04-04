@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using EnchantmentPack.Enums;
 using EnchantmentPack.Interfaces;
@@ -19,7 +18,7 @@ namespace EnchantmentPack.Enchantments
         
         private IEnumerator Start()
         {
-            yield return new WaitUntil(() => PlayerManager.Instance != null);
+            yield return new WaitUntil(PlayerManager.HasInstance);
             
             _timer = MaxCooldown;
             PlayerHealth.OnPlayerRevive += OnRevive;
