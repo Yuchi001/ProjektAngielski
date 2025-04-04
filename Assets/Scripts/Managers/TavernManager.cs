@@ -53,7 +53,7 @@ namespace Managers
 
         public static void PickCharacter(SoCharacter character)
         {
-            PlayerManager.ChangeCharacter(character);
+            PlayerManager.ChangeCharacter(character, false);
         }
 
         public void OnLoadData(SaveManager.PlayerSaveData playerSaveData)

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Managers;
 using Managers.Other;
+using PlayerPack.Enums;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,7 +19,6 @@ namespace PlayerPack
         [SerializeField] private RectTransform dashRect;
 
         private static int MaxHealth => PlayerManager.PlayerHealth.MaxHealth;
-        private static int CoinCount => PlayerManager.PlayerCoinManager.GetCurrentCount();
 
         private readonly List<PlayerManager.State> _activeStates = new()
         {
@@ -29,26 +29,30 @@ namespace PlayerPack
 
         private Image _dashStackPrefab;
         
-        private IEnumerator Start()
+        private void Awake()
         {
-            yield return new WaitUntil(() => PlayerManager.PlayerStatsManager != null);
+            PlayerManager.OnPlayerReady += RefreshUI;
             
-            gameObject.SetActive(false);
+            _dashStackPrefab = GameManager.GetPrefab<Image>(PrefabNames.DashUI);
+            
+            foreach (Transform child in transform)
+            {
+                child.gameObject.SetActive(false);
+            }
             PlayerHealth.OnPlayerDamaged += UpdateHp;
             PlayerHealth.OnPlayerHeal += UpdateHp;
             PlayerSoulManager.OnSoulCountChange += UpdateSoulCount;
             PlayerCoinManager.OnCoinCountChange += UpdateCoinCount;
             PlayerManager.OnChangeState += OnChangeState;
             PlayerMovement.OnPlayerDash += UpdateDashStacks;
-            
-            UpdateHp(0, MaxHealth);
-            UpdateSoulCount(0, 0);
-            UpdateCoinCount(0, CoinCount);
+        }
 
-            _dashStackPrefab = GameManager.GetPrefab<Image>(PrefabNames.DashUI);
-            var startingDashStacks = PlayerManager.PlayerMovement.MaxDashStacks;
-            for (var i = 0; i < startingDashStacks; i++) Instantiate(_dashStackPrefab, dashRect);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(dashRect);
+        public void RefreshUI()
+        {
+            UpdateHp(PlayerManager.PlayerHealth.CurrentHealth, MaxHealth);
+            UpdateSoulCount(0, PlayerManager.PlayerSoulManager.GetCurrentSoulCount());
+            UpdateCoinCount(0, PlayerManager.PlayerCoinManager.GetCurrentCount());
+            UpdateDashStacks(PlayerManager.PlayerMovement.MaxDashStacks);
         }
 
         private void OnDisable()
@@ -58,6 +62,7 @@ namespace PlayerPack
             PlayerSoulManager.OnSoulCountChange -= UpdateSoulCount;
             PlayerCoinManager.OnCoinCountChange -= UpdateCoinCount;
             PlayerManager.OnChangeState -= OnChangeState;
+            PlayerManager.OnPlayerReady -= RefreshUI;
             PlayerMovement.OnPlayerDash -= UpdateDashStacks;
         }
         
@@ -88,6 +93,15 @@ namespace PlayerPack
 
         private void UpdateDashStacks(int current)
         {
+            var childCount = dashRect.childCount;
+            if (childCount != PlayerManager.PlayerMovement.MaxDashStacks)
+            {
+                foreach (Transform child in dashRect) Destroy(child.gameObject);
+                var startingDashStacks = PlayerManager.PlayerMovement.MaxDashStacks;
+                for (var i = 0; i < startingDashStacks; i++) Instantiate(_dashStackPrefab, dashRect);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(dashRect);
+            }
+            
             for (var i = 0; i < dashRect.childCount; i++)
             {
                 var child = dashRect.GetChild(i).GetComponent<Image>();

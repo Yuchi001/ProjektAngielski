@@ -38,7 +38,6 @@ namespace PlayerPack
             _normalizedWeightItemList = weightItemList.Select(pair => (weight: pair.weight / weightSum, item: pair.item)).ToList();
 
             _canInteract = true;
-            ITEMS_GRID.SetActive(true);
         }
 
         private void Update()

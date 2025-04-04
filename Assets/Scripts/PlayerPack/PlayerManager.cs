@@ -69,6 +69,9 @@ namespace PlayerPack
 
         private PlayerItemManager _playerItemManager;
         public static PlayerItemManager PlayerItemManager => Instance._playerItemManager;
+        
+        private PlayerUIManager _playerUIManager;
+        public static PlayerUIManager PlayerUIManager => Instance._playerUIManager;
 
         private PlayerMovement _playerMovement;
         public static PlayerMovement PlayerMovement {
@@ -128,8 +131,12 @@ namespace PlayerPack
             var openStrategy = new SingletonOpenStrategy<PlayerItemManager>(playerItemManagerPrefab);
             var closeStrategy = new DefaultCloseStrategy();
             _playerItemManager = UIManager.OpenUI<PlayerItemManager>("PlayerItemManager", openStrategy, closeStrategy);
-            ChangeCharacter(pickedCharacter);
-            PlayerItemManager.AddItem(pickedCharacter.StartingItem, 1);
+            _playerUIManager = _playerItemManager.GetComponent<PlayerUIManager>();
+            
+            ChangeCharacter(pickedCharacter, true);
+            foreach (var mono in Instance.GetComponentsInChildren<MonoBehaviour>())
+                mono.enabled = true;
+            
             SetPlayerState(defaultState);
             
             OnPlayerReady?.Invoke();
@@ -141,18 +148,18 @@ namespace PlayerPack
             Instance.transform.AdjustForPivot(Instance.playerSpriteRenderer);
         }
 
-        public static void ChangeCharacter(SoCharacter newCharacter)
+        public static void ChangeCharacter(SoCharacter newCharacter, bool init)
         {
             Instance._pickedCharacter = newCharacter;
             Instance.playerSpriteRenderer.sprite = PickedCharacter.CharacterSprite;
             PlayerStatsManager.SetCharacter(newCharacter);
 
-            foreach (var mono in Instance.GetComponentsInChildren<MonoBehaviour>())
-                mono.enabled = true;
-            
             Instance.animator.SetCharacterAnimations(newCharacter);
             PlayerItemManager.CleanInventory();
             PlayerItemManager.AddItem(PickedCharacter.StartingItem, 1);
+
+            if (init) return;
+            PlayerUIManager.RefreshUI();
         }
         
         public static void SetPlayerState(State state)

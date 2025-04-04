@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using Managers;
 using PlayerPack.Enums;
 using UnityEngine;
@@ -43,7 +45,17 @@ namespace PlayerPack
         public delegate void PlayerDashDelegate(int currentDashStacks);
         public static event PlayerDashDelegate OnPlayerDash;
 
-        private void Start()
+        private void Awake()
+        {
+            PlayerManager.OnPlayerReady += Init;
+        }
+
+        private void OnDisable()
+        {
+            PlayerManager.OnPlayerReady -= Init;
+        }
+
+        private void Init()
         {
             animator.speed = animationSpeed;
             _dashTimer = dashCooldown;

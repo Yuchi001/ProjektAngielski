@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 881049059393680549}
   - component: {fileID: 2868755731190364515}
+  - component: {fileID: -7132315555942854000}
   - component: {fileID: 7905087189668896140}
   - component: {fileID: 7787685337975628636}
   - component: {fileID: -711591100249454349}
-  - component: {fileID: -7132315555942854000}
   - component: {fileID: 2290978962810894598}
   - component: {fileID: 4856683541418540983}
   - component: {fileID: -6161043678733040772}
@@ -59,6 +59,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpriteRenderer: {fileID: 6528374986980264091}
   animator: {fileID: 7771533845673863798}
+--- !u!114 &-7132315555942854000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330592185322976742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6746e5ca20bf4a67b1567716ed559a54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7905087189668896140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,7 +104,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 6528374986980264091}
   zoneCheckPerSec: 4
-  healParticles: {fileID: 688343070385823546, guid: 877920fa71092614cb362fb6205349c2, type: 3}
 --- !u!114 &-711591100249454349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,18 +114,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e1705b1defe84a9293fd13b12cf52100, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-7132315555942854000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330592185322976742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6746e5ca20bf4a67b1567716ed559a54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2290978962810894598
