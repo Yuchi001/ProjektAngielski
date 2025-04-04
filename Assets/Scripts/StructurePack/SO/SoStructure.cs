@@ -1,4 +1,5 @@
 ﻿using Managers;
+using StructurePack.Enum;
 using UIPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
@@ -9,6 +10,7 @@ namespace StructurePack.SO
     public abstract class SoStructure : ScriptableObject
     {
         [SerializeField] protected string structureName;
+        [SerializeField] protected EStructureType structureType;
         [SerializeField, TextArea(3, 10)] protected string structureDescription;
         [SerializeField] protected Sprite structureSprite;
         [SerializeField] protected Sprite activeSprite;
@@ -22,6 +24,7 @@ namespace StructurePack.SO
         [SerializeField] protected string uIPrefabName = "";
 
         public float StructureScale => structureScale;
+        public EStructureType StructureType => structureType;
         public string StructureName => structureName;
         public string StructureDescription => structureDescription;
         public bool Reusable => interactionLimit > 1;

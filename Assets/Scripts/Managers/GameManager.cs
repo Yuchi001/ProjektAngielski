@@ -88,6 +88,20 @@ namespace Managers
                 PlayerManager.SetPlayerState(PlayerManager.State.ON_MISSION);
             });
         }
+
+        public static void OpenMap()
+        {
+            PlayerManager.LockKeys();
+            MainCamera.InOutAnim(0.3f, () =>
+            {
+                SceneManager.UnloadSceneAsync((int)EScene.TAVERN);
+                SceneManager.LoadSceneAsync((int)EScene.MAP, LoadSceneMode.Additive);
+            }, () =>
+            {
+                PlayerManager.SetPlayerState(PlayerManager.State.IN_MAP);
+                PlayerManager.UnlockKeys();
+            });
+        }
         
         public static void LoadGameScene(LoadSceneMode loadSceneMode = LoadSceneMode.Single)
         {
@@ -122,6 +136,7 @@ namespace Managers
             MENU = 0,
             TAVERN = 1,
             MAIN_GAME = 2,
+            MAP = 3,
         }
     }
 }
