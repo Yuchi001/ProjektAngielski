@@ -1,6 +1,6 @@
 ﻿namespace MapGeneratorPack.Enums
 {
-    public enum EStageType
+    public enum ERegionType
     {
         Mineshaft,
         Volcano,

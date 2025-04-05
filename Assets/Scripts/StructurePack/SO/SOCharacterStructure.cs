@@ -35,7 +35,7 @@ namespace StructurePack.SO
             return id == character.ID;
         }
         
-        public override bool OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
+        public override bool OnInteract(StructureBase structureBase)
         {
             MainCamera.InOutAnim(0.6f, () =>
             {

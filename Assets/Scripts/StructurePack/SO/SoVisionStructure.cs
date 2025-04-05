@@ -18,7 +18,7 @@ namespace StructurePack.SO
         
         private static PlayerSoulManager PlayerSoulManager => PlayerManager.PlayerSoulManager;
         
-        public override bool OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
+        public override bool OnInteract(StructureBase structureBase)
         {
             var data = structureBase.GetData<VisionStructureData>();
             var price = data.GetCurrentPrice();

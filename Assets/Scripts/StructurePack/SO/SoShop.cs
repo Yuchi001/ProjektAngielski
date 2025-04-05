@@ -7,7 +7,7 @@ namespace StructurePack.SO
     //TODO: implement shop 
     public class SoShop : SoStructure
     {
-        public override bool OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
+        public override bool OnInteract(StructureBase structureBase)
         {
             return false;
         }

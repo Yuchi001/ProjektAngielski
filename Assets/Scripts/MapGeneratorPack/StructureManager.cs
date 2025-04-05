@@ -76,9 +76,9 @@ namespace MapGeneratorPack
             // TODO: Structure generation 
         }
 
-        public static void SpawnStructure(SoStructure structure, Vector2 position, Transform parent = null)
+        public static StructureBase SpawnStructure(SoStructure structure, Vector2 position, Transform parent = null)
         {
-            Instantiate(Instance._structurePrefab, position, Quaternion.identity, parent).Setup(structure);
+            return Instantiate(Instance._structurePrefab, position, Quaternion.identity, parent).Setup(structure);
         }
 
         public static SoStructure GetStructure(Func<SoStructure, bool> condition)

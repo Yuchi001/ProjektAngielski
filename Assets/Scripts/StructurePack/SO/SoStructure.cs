@@ -36,6 +36,11 @@ namespace StructurePack.SO
             
         }
 
+        public virtual void OnDataChange<T>(T data) where T: class, new()
+        {
+            
+        }
+
         public virtual IOpenStrategy GetOpenStrategy(StructureBase structureBase)
         {
             if (!usesUI) return null;
@@ -50,9 +55,9 @@ namespace StructurePack.SO
             return !usesUI ? null : new DefaultCloseStrategy();
         }
 
-        public abstract bool OnInteract(StructureBase structureBase, 
-            IOpenStrategy openStrategy,
-            ICloseStrategy closeStrategy);
+        public abstract bool OnInteract(StructureBase structureBase);
+        
+        public virtual void OnFocusChanged(StructureBase structureBase, bool newValue) {}
 
         public virtual string GetInteractionMessage(StructureBase structureBase)
         {

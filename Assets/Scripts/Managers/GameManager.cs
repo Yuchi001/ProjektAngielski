@@ -7,6 +7,7 @@ using EnchantmentPack;
 using ItemPack.WeaponPack.Other;
 using MainCameraPack;
 using Managers.Other;
+using MapPack;
 using PlayerPack;
 using PlayerPack.SO;
 using SavePack;
@@ -43,10 +44,11 @@ namespace Managers
 
         private SaveManager.PlayerSaveData playerSaveData;
 
-        private static GameManager Instance { get; set; }
+        private List<MapManager.MissionData> _currentMissions = new();
+        public static List<MapManager.MissionData> GetMissions() => Instance._currentMissions;
+        public static void SetMissions(List<MapManager.MissionData> missions) => Instance._currentMissions = missions;
 
-        private static readonly string TRANSITION_UI_KEY;
-        
+        private static GameManager Instance { get; set; }
 
         private void Awake()
         {

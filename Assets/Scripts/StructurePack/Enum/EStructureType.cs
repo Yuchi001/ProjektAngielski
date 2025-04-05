@@ -5,6 +5,7 @@
         VISION,
         LOOT,
         EXIT,
-        TOTEM
+        TOTEM,
+        OTHER
     }
 }

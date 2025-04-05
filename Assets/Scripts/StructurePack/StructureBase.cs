@@ -31,6 +31,8 @@ namespace StructurePack
 
         private Light2D _spriteLight;
 
+        private bool _isFocused = false;
+
         private IOpenStrategy _openStrategy;
         private ICloseStrategy _closeStrategy;
 
@@ -45,7 +47,7 @@ namespace StructurePack
             Collider.isTrigger = true;
         }
 
-        public void Setup(SoStructure structureData)
+        public StructureBase Setup(SoStructure structureData)
         {
             var spriteTransform = structureSpriteRenderer.transform;
             _spriteLight = structureSpriteRenderer.GetComponent<Light2D>();
@@ -73,11 +75,16 @@ namespace StructurePack
 
             _openStrategy = _structureData.GetOpenStrategy(this);
             _closeStrategy = _structureData.GetCloseStrategy();
+
+            return this;
         }
+
+        public IOpenStrategy CurrentOpenStrategy() => _openStrategy;
+        public ICloseStrategy CurrentCloseStrategy() => _closeStrategy;
 
         public void HandleInteraction()
         {
-            var success = _structureData.OnInteract(this, _openStrategy, _closeStrategy);
+            var success = _structureData.OnInteract(this);
             if (!success)
             {
                 IndicatorManager.SpawnIndicator(transform.position, _structureData.InteractionDeclineMessage, Color.red);
@@ -110,15 +117,28 @@ namespace StructurePack
             return _data as T;
         }
 
+        public void SetData<T>(T data, bool notify = true) where T: class, new()
+        {
+            _data = data;
+            if (notify) _structureData.OnDataChange(data);
+        }
+
         private void Update()
         {
             var isFocused = StructureManager.IsFocused(this);
+            if (_isFocused != isFocused) OnFocusChanged(isFocused);
+        }
+
+        private void OnFocusChanged(bool newValue)
+        {
+            _isFocused = newValue;
             if (!bottomInteractionMessageField.gameObject.activeSelf)
             {
                 var message = _structureData.GetInteractionMessage(this);
                 bottomInteractionMessageField.text = message == "" ? "Press E" : message;
             }
-            bottomInteractionMessageField.gameObject.SetActive(isFocused);
+            bottomInteractionMessageField.gameObject.SetActive(newValue);
+            _structureData.OnFocusChanged(this, newValue);
         }
 
         private void OnTriggerEnter2D(Collider2D other)

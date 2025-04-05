@@ -25,7 +25,7 @@ namespace StructurePack.SO
             }
         }
 
-        public override bool OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
+        public override bool OnInteract(StructureBase structureBase)
         {
             var resultItems = new List<SoInventoryItem>();
             var calculatedCash = Random.Range(0, maxCashReward);

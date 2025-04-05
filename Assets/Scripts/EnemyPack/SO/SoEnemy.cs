@@ -18,7 +18,7 @@ namespace EnemyPack.SO
         [SerializeField, Min(0.1f)] private float attackSpeed;
         [SerializeField] private int damage;
         [SerializeField, Range(1, 10)] private int difficulty = 1;
-        [SerializeField] private List<EStageType> occurenceList;
+        [SerializeField] private List<ERegionType> occurenceList;
         [SerializeField] private ESpriteRotation spriteRotation = ESpriteRotation.RotateLeft;
         
         [Header("Behaviour")]
@@ -26,7 +26,7 @@ namespace EnemyPack.SO
 
         public Sprite EnemySprite => sprite;
         public EEnemyBehaviour EnemyBehaviour => enemyBehaviour;
-        public List<EStageType> OccurenceList => occurenceList;
+        public List<ERegionType> OccurenceList => occurenceList;
         public float BodyScale => bodyScale;
         public ESpriteRotation SpriteRotation => spriteRotation;
         public int Damage => damage;

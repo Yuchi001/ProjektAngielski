@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Utils;
 using Random = UnityEngine.Random;
 
 namespace MapGeneratorPack
@@ -21,10 +22,7 @@ namespace MapGeneratorPack
 
         public Vector2 GetRandomPos()
         {
-            var bounds = spriteRenderer.bounds;
-            var x = Random.Range(bounds.min.x, bounds.max.x);
-            var y = Random.Range(bounds.min.y, bounds.max.y);
-            return new Vector2(x, y);
+            return spriteRenderer.GetRandomPoint();
         }
 
         public bool InRange(Vector2 pos, float range)

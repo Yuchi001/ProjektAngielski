@@ -10,7 +10,7 @@ namespace StructurePack.SO
     [CreateAssetMenu(fileName = "new Door", menuName = "Custom/Structure/Door")]
     public class SoDoorStructure : SoStructure
     {
-        public override bool OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
+        public override bool OnInteract(StructureBase structureBase)
         {
             GameManager.OpenMap();
             Destroy(structureBase.gameObject);

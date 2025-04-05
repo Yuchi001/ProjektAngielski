@@ -19,7 +19,7 @@ namespace StructurePack.SO
         private static PlayerSoulManager PlayerSoulManager => PlayerManager.PlayerSoulManager;
         private static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
         
-        public override bool OnInteract(StructureBase structureBase, IOpenStrategy openStrategy, ICloseStrategy closeStrategy)
+        public override bool OnInteract(StructureBase structureBase)
         {
             var data = structureBase.GetData<TotemData>();
             var price = data.GetCurrentPrice();
