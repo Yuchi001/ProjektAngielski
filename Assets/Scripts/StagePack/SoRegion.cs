@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using EnemyPack.SO;
-using MapGeneratorPack.Enums;
 using MapPack;
 using StructurePack.SO;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Utils;
+using WorldGenerationPack.Enums;
 
 namespace StagePack
 {
-    [CreateAssetMenu(fileName = "new Stage Data", menuName = "Custom/Stage")]
+    [CreateAssetMenu(fileName = "new Region Data", menuName = "Custom/Region")]
     public class SoRegion : ScriptableObject
     {
-        [FormerlySerializedAs("stageType")] [SerializeField] private ERegionType regionType;
+        [SerializeField] private ERegionType regionType;
         [SerializeField] private List<SoStructure> uniqueStructures;
         [SerializeField] private List<SoStageEffect> uniqueEffects;
         [SerializeField] private MinMax soulToCoinRatioPerDiff;

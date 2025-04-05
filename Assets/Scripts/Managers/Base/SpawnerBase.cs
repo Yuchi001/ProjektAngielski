@@ -1,5 +1,6 @@
 ﻿using System;
 using Managers.Enums;
+using MapPack;
 using PoolPack;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace Managers.Base
         private float _timer = 0;
 
         private float _waitTimer = 0;
+        
+        public abstract void Init(MapManager.MissionData currentMission);
         
         protected virtual void Update()
         {

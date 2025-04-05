@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using EnemyPack.Enums;
-using MapGeneratorPack.Enums;
 using Other;
 using UnityEngine;
+using WorldGenerationPack.Enums;
 
 namespace EnemyPack.SO
 {

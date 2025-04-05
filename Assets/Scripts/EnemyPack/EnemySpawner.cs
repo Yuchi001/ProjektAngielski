@@ -6,6 +6,7 @@ using Managers;
 using Managers.Base;
 using Managers.Enums;
 using Managers.Other;
+using MapPack;
 using MarkerPackage;
 using Other;
 using Other.Enums;
@@ -31,6 +32,7 @@ namespace EnemyPack
         
 
         private List<SoEnemy> _allEnemies = new();
+        private List<SoEnemy> _enemiesOfCurrentStage = new();
         
         private float _difficultyTimer = 0;
 
@@ -66,6 +68,12 @@ namespace EnemyPack
             var enemyPrefab = GameManager.GetPrefab<EnemyLogic>(PrefabNames.Enemy);
             _enemyPool = PoolHelper.CreatePool(this, enemyPrefab, true);
             PrepareQueue();
+        }
+
+        public override void Init(MapManager.MissionData currentMission)
+        {
+            _enemiesOfCurrentStage = _allEnemies.Where(e => e.OccurenceList.Contains(currentMission.GetRegionType()))
+                .ToList();
         }
 
         protected override void Update()

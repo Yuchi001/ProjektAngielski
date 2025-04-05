@@ -17,7 +17,6 @@ namespace StructurePack.SO
         [SerializeField] protected Sprite usedStructureSprite;
         [SerializeField] protected float structureScale = 1;
         [SerializeField] protected int interactionLimit;
-        [SerializeField] protected bool maintainData = true;
         [SerializeField] protected string bottomHoverMessage = "Press E";
         [SerializeField] protected string interactionDeclineMessage = "";
         [SerializeField] protected bool usesUI = false;

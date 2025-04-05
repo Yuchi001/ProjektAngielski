@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MainCameraPack
@@ -34,6 +35,11 @@ namespace MainCameraPack
         List<CameraShakeInstance> cameraShakeInstances = new List<CameraShakeInstance>();
 
         void Awake()
+        {
+            
+        }
+
+        private void Start()
         {
             Instance = this;
             instanceList.Add(gameObject.name, this);

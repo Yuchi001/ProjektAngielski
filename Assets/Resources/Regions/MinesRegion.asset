@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 303ad9df09f541778a51541999e44895, type: 3}
+  m_Name: MinesRegion
+  m_EditorClassIdentifier: 
+  regionType: 0
+  uniqueStructures: []
+  uniqueEffects: []
+  soulToCoinRatioPerDiff:
+    min: 0
+    max: 0
+  soulToCoinRatioBase:
+    min: 0
+    max: 0
+  soulCountPerDiff:
+    min: 0
+    max: 0
+  soulCountBase:
+    min: 0
+    max: 0
+  coinRewardPerDiff:
+    min: 0
+    max: 0
+  coinRewardBase:
+    min: 0
+    max: 0
+  difficultyScalingCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  waveGapChanceCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  gapTime:
+    min: 0
+    max: 0

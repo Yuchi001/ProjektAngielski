@@ -5,6 +5,7 @@ using System.Linq;
 using Managers;
 using Managers.Base;
 using Managers.Other;
+using MapPack;
 using MarkerPackage;
 using Other;
 using Other.Enums;
@@ -63,6 +64,11 @@ namespace FoodPack
             var foodObj = _foodPool.Get();
             foodObj.OnGet(food);
             foodObj.transform.position = position;
+        }
+
+        public override void Init(MapManager.MissionData currentMission)
+        {
+            // skip
         }
 
         public override void SpawnRandomEntity(Vector2 position)

@@ -1,10 +1,8 @@
-﻿namespace MapGeneratorPack.Enums
+﻿namespace WorldGenerationPack.Enums
 {
     public enum ERegionType
     {
         Mineshaft,
-        Volcano,
-        IceCave,
-        Cemetery,
+        Plains
     }
 }

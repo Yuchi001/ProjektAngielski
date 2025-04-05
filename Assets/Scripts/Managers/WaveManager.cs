@@ -29,9 +29,13 @@ namespace Managers
             GameManager.OnStartRun -= BeginSpawn;
         }
 
-        public void BeginSpawn(MapManager.MissionData missionData)
+        private void BeginSpawn(MapManager.MissionData missionData)
         {
-            spawners.ForEach(s => s.SetState(ESpawnerState.Spawn));
+            foreach (var spawner in spawners)
+            {
+                spawner.Init(missionData);
+                spawner.SetState(ESpawnerState.Spawn);
+            }
         }
     }
 }

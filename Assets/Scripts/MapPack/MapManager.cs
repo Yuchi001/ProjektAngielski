@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Managers;
-using MapGeneratorPack.Enums;
 using StructurePack.SO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
 using WorldGenerationPack;
+using WorldGenerationPack.Enums;
 
 namespace MapPack
 {
     public class MapManager : MonoBehaviour
     {
         [SerializeField] private MinMax missionCount;
+        [SerializeField] private Transform shopPosition;
 
         private List<Region> _regions;
         private List<MissionData> _missions;
@@ -34,7 +35,10 @@ namespace MapPack
                 _missions.Add(GenerateMission());
             }
 
-            var missionStructure = Resources.Load<SoMissionStructure>("Structures");
+            var shopStructure = Resources.Load<SoShop>("Structures/Shop");
+            StructureManager.SpawnStructure(shopStructure, shopPosition.position, transform);
+
+            var missionStructure = Resources.Load<SoMissionStructure>("Structures/MissionStructure");
             foreach (var mission in _missions)
             {
                 var missionBase = StructureManager.SpawnStructure(missionStructure, mission.GetPos(), transform);
@@ -74,6 +78,7 @@ namespace MapPack
                 _soulToCoinRatio = region.RegionData.RandomSoulPerCoinRatio(difficulty);
                 _positionOnMap = region.GetRandomRegionPoint();
                 _regionType = region.RegionData.RegionType;
+                _coinReward = region.RegionData.RandomReward(difficulty);
             }
             
             public MissionData(){}
