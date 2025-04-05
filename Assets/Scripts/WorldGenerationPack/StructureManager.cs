@@ -7,12 +7,10 @@ using StructurePack;
 using StructurePack.SO;
 using UnityEngine;
 
-namespace MapGeneratorPack
+namespace WorldGenerationPack
 {
     public class StructureManager : MonoBehaviour
     {
-        [SerializeField] private GameObject deadZone;
-        
         private List<SoStructure> _structures = new();
 
         private StructureBase _structurePrefab;
@@ -29,13 +27,11 @@ namespace MapGeneratorPack
             else Instance = this;
 
             GameManager.OnGMStart += Init;
-            GameManager.OnStartRun += Generate;
         }
 
         private void OnDisable()
         {
             GameManager.OnGMStart -= Init;
-            GameManager.OnStartRun -= Generate;
         }
 
         private void Init()
@@ -63,17 +59,6 @@ namespace MapGeneratorPack
         public static bool IsFocused(StructureBase structureBase)
         {
             return Instance._interactionHandler.FocusedStructure == structureBase.GetInstanceID();
-        }
-
-        public void Generate()
-        {
-            deadZone.SetActive(true);
-            GenerateStructures();
-        }
-
-        private void GenerateStructures()
-        {
-            // TODO: Structure generation 
         }
 
         public static StructureBase SpawnStructure(SoStructure structure, Vector2 position, Transform parent = null)

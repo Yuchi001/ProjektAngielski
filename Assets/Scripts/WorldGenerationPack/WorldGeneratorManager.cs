@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Managers;
 using Managers.Other;
+using MapGeneratorPack;
+using MapPack;
 using PlayerPack;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace MapGeneratorPack
+namespace WorldGenerationPack
 {
-    public class MapGeneratorManager : MonoBehaviour
+    public class WorldGeneratorManager : MonoBehaviour
     {
         #region Singleton
 
-        private static MapGeneratorManager Instance { get; set; }
+        private static WorldGeneratorManager Instance { get; set; }
 
         private void Awake()
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
-            GameManager.OnStartRun += GenerateBaseZone;
+            GameManager.OnStartRun += GenerateWorld;
         }
         #endregion
 
@@ -31,10 +32,10 @@ namespace MapGeneratorPack
 
         private void OnDisable()
         {
-            GameManager.OnStartRun -= GenerateBaseZone;
+            GameManager.OnStartRun -= GenerateWorld;
         }
 
-        private void GenerateBaseZone()
+        private void GenerateWorld(MapManager.MissionData missionData)
         {
             _zonePrefab = GameManager.GetPrefab<Zone>(PrefabNames.Zone);
             _zoneDict = new Dictionary<string, Zone>();

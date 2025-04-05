@@ -9,6 +9,8 @@ using PlayerPack.SO;
 using SavePack;
 using StructurePack.SO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using WorldGenerationPack;
 using Random = UnityEngine.Random;
 
 namespace Managers
@@ -16,6 +18,7 @@ namespace Managers
     public class TavernManager : MonoBehaviour, IPersistentData
     {
         [SerializeField] private List<Transform> characterStructuresSpawnPositions;
+        [SerializeField] private Transform doorSpawnPos;
         private static TavernManager Instance { get; set; }
 
         private List<SOCharacterStructure> _unlockedCharactersStructures = new();
@@ -25,15 +28,21 @@ namespace Managers
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
 
-            if (!GameManager.HasInstance()) GameManager.LoadMenu();
+            if (GameManager.HasInstance()) return;
+            
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+            GameManager.LoadMenu();
+            Destroy(gameObject);
         }
 
         private IEnumerator Start()
         {
             yield return new WaitUntil(StructureManager.HasInstance);
             
-            // TODO: render only unlocked characters
             var allCharacters = Resources.LoadAll<SOCharacterStructure>("Structures/Characters").ToList();
+            var doorStructure = Resources.Load<SoDoorStructure>("Structures/DoorStructure");
+
+            StructureManager.SpawnStructure(doorStructure, doorSpawnPos.position, transform);
 
             var positions = characterStructuresSpawnPositions.Select(e => e.position).ToList();
             foreach (var character in allCharacters)

@@ -4,6 +4,7 @@ using System.Linq;
 using EnemyPack;
 using Managers.Base;
 using Managers.Enums;
+using MapPack;
 using UnityEngine;
 
 namespace Managers
@@ -28,7 +29,7 @@ namespace Managers
             GameManager.OnStartRun -= BeginSpawn;
         }
 
-        public void BeginSpawn()
+        public void BeginSpawn(MapManager.MissionData missionData)
         {
             spawners.ForEach(s => s.SetState(ESpawnerState.Spawn));
         }

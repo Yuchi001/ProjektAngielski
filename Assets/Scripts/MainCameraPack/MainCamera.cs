@@ -7,26 +7,31 @@ using UnityEngine.UI;
 
 namespace MainCameraPack
 {
-    [RequireComponent(typeof(Camera))]
     public class MainCamera : MonoBehaviour
     {
         [SerializeField] private CameraShaker _cameraShaker;
         [SerializeField] private Image _inOutImg;
-        [SerializeField] private Transform cameraFollow; 
+        [SerializeField] private Transform cameraFollow;
+        [SerializeField] private Camera cameraComponent;
 
         private Transform _follow;
-        private Camera _camera;
         
         private static MainCamera Instance { get; set; }
         public static bool HasInstance() => Instance != null;
 
         private void Awake()
         {
+            if (gameObject.scene.buildIndex != (int)GameManager.EScene.MAIN_GAME)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
             
+            
             _inOutImg.color = Color.black;
-            _camera = GetComponent<Camera>();
             PlayerHealth.OnPlayerDamaged += ShakeCamera;
         }
 
@@ -101,7 +106,7 @@ namespace MainCameraPack
 
         public static void SetSize(float size)
         {
-            Instance._camera.orthographicSize = size;
+            Instance.cameraComponent.orthographicSize = size;
         }
 
         private void Update()

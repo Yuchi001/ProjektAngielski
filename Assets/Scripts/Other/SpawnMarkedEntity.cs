@@ -6,6 +6,7 @@ using MarkerPackage;
 using Other.Enums;
 using PoolPack;
 using UnityEngine;
+using WorldGenerationPack;
 
 namespace Other
 {
@@ -37,7 +38,7 @@ namespace Other
 
             _spriteRenderer.color = pair.color;
             SetTimer(SPAWN_TIMER_ID);
-            var randomPosition = MapGeneratorManager.GetRandomPos();
+            var randomPosition = WorldGeneratorManager.GetRandomPos();
             if (!randomPosition.HasValue)
             {
                 markerManager.ReleasePoolObject(this);

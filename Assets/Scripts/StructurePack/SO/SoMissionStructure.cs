@@ -1,4 +1,5 @@
-﻿using MapPack;
+﻿using Managers;
+using MapPack;
 using UnityEngine;
 
 namespace StructurePack.SO
@@ -8,6 +9,7 @@ namespace StructurePack.SO
     {
         public override bool OnInteract(StructureBase structureBase)
         {
+            GameManager.StartRun(structureBase.GetData<MapManager.MissionData>());
             return true;
         }
 

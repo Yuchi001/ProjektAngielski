@@ -10,6 +10,7 @@ using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using WorldGenerationPack;
 
 namespace StructurePack
 {

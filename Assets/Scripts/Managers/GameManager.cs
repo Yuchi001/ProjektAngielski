@@ -36,7 +36,7 @@ namespace Managers
         private int stageCount = 0;
         public static int StageCount => Instance.stageCount;
 
-        public delegate void StartRunDelegate();
+        public delegate void StartRunDelegate(MapManager.MissionData missionData);
         public static event StartRunDelegate OnStartRun;
 
         public delegate void InitDelegate();
@@ -79,14 +79,15 @@ namespace Managers
             OnGMStart?.Invoke();
         }
 
-        public static void StartRun()
+        public static void StartRun(MapManager.MissionData missionData)
         {
             MainCamera.InOutAnim(0.3f, () =>
             {
                 SceneManager.UnloadSceneAsync((int)EScene.TAVERN);
+                MainCamera.SetSize(4);
             }, () =>
             {
-                OnStartRun?.Invoke();
+                OnStartRun?.Invoke(missionData);
                 PlayerManager.SetPlayerState(PlayerManager.State.ON_MISSION);
             });
         }
@@ -133,7 +134,7 @@ namespace Managers
             SaveManager.SaveData();
         }
 
-        private enum EScene
+        public enum EScene
         {
             MENU = 0,
             TAVERN = 1,

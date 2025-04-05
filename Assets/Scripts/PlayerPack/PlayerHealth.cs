@@ -14,6 +14,7 @@ using PlayerPack.Enums;
 using PlayerPack.SO;
 using PoolPack;
 using UnityEngine;
+using WorldGenerationPack;
 
 namespace PlayerPack
 {
@@ -76,7 +77,7 @@ namespace PlayerPack
             if (_zoneTimer < 1f / zoneCheckPerSec) return;
 
             _zoneTimer = 0;
-            var inBounds = MapGeneratorManager.ContainsEntity(transform.position);
+            var inBounds = WorldGeneratorManager.ContainsEntity(transform.position);
             if (!inBounds) GetDamaged(MaxHealth / 10);
         }
 

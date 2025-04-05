@@ -4,6 +4,7 @@ using PlayerPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
 using UnityEngine;
+using WorldGenerationPack;
 
 namespace StructurePack.SO
 {
@@ -27,8 +28,8 @@ namespace StructurePack.SO
             PlayerSoulManager.AddSouls(-price);
             data.MultiplyCurrentPrice(transactionMultiplier);
             
-            if (structureBase.WasUsed) MapGeneratorManager.ExpandZone(data.GetKey(), scaleMultiplier);
-            else MapGeneratorManager.GenerateZone(structureBase.transform.position, data.GetKey(), baseZoneScale);
+            if (structureBase.WasUsed) WorldGeneratorManager.ExpandZone(data.GetKey(), scaleMultiplier);
+            else WorldGeneratorManager.GenerateZone(structureBase.transform.position, data.GetKey(), baseZoneScale);
 
             return true;
         }

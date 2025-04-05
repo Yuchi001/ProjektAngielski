@@ -11,6 +11,7 @@ using UIPack.OpenStrategies;
 using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
+using WorldGenerationPack;
 
 #if UNITY_EDITOR
 using System.IO;

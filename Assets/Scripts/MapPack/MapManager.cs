@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Managers;
-using MapGeneratorPack;
 using MapGeneratorPack.Enums;
 using StructurePack.SO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utils;
+using WorldGenerationPack;
 
 namespace MapPack
 {
@@ -19,6 +19,14 @@ namespace MapPack
 
         private void Awake()
         {
+            if (!GameManager.HasInstance())
+            {
+                SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+                GameManager.LoadMenu();
+                Destroy(gameObject);
+                return;
+            }
+            
             _regions = FindObjectsOfType<Region>().ToList();
             _missions = GameManager.GetMissions();
             while (_missions.Count < missionCount.RandomInt())
@@ -47,6 +55,7 @@ namespace MapPack
         {
             private readonly int _soulCount;
             private readonly int _soulToCoinRatio;
+            private readonly int _coinReward;
             private readonly Vector2 _positionOnMap;
             private readonly ERegionType _regionType;
             private readonly EDifficulty _difficulty;
@@ -54,6 +63,7 @@ namespace MapPack
             public Vector2 GetPos() => _positionOnMap;
             public int GetSoulCount() => _soulCount;
             public int GetSoulToCoinRatio() => _soulToCoinRatio;
+            public int GetCoinReward() => _coinReward;
             public ERegionType GetRegionType() => _regionType;
             public EDifficulty GetDifficulty() => _difficulty;
 

@@ -5,6 +5,7 @@ using System.Linq;
 using Managers;
 using Managers.Enums;
 using Managers.Other;
+using MapPack;
 using PoolPack;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -51,7 +52,7 @@ namespace AudioPack
             GameManager.OnGMStart -= GmStart;
         }
 
-        private void SetThemeForStage()
+        private void SetThemeForStage(MapManager.MissionData missionData)
         {
             // TODO: ustaw odpowiedni theme
             SetTheme(EThemeType.Mines);
