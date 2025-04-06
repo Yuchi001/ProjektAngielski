@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-using EnemyPack.SO;
+﻿using System;
+using System.Collections.Generic;
+using Managers.Enums;
 using MapPack;
 using StructurePack.SO;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Tilemaps;
 using Utils;
 using WorldGenerationPack.Enums;
+using Random = UnityEngine.Random;
 
 namespace StagePack
 {
@@ -13,6 +15,7 @@ namespace StagePack
     public class SoRegion : ScriptableObject
     {
         [SerializeField] private ERegionType regionType;
+        [SerializeField] private EThemeType regionTheme;
         [SerializeField] private List<SoStructure> uniqueStructures;
         [SerializeField] private List<SoStageEffect> uniqueEffects;
         [SerializeField] private MinMax soulToCoinRatioPerDiff;
@@ -24,10 +27,72 @@ namespace StagePack
         [SerializeField] private AnimationCurve difficultyScalingCurve;
         [SerializeField] private AnimationCurve waveGapChanceCurve;
         [SerializeField] private MinMax gapTime;
-        
-        //TODO: TileSheet
+        [SerializeField] private List<TileBase> tileVariants;
+        [SerializeField] private TileBase bottomTile;
+        [SerializeField] private TileBase topTile;
+        [SerializeField] private TileBase leftTile;
+        [SerializeField] private TileBase rightTile;
+        [SerializeField] private TileBase topRightCornerTile;
+        [SerializeField] private TileBase topLeftCornerTile;
+        [SerializeField] private TileBase bottomRightCornerTile;
+        [SerializeField] private TileBase bottomLeftCornerTile;
+        [SerializeField] private MinMax averageWorldSizeX;
+        [SerializeField] private MinMax averageWorldSizeY;
+        [SerializeField] private Sprite backgroundSprite;
 
         public ERegionType RegionType => regionType;
+        public EThemeType RegionTheme => regionTheme;
+
+        public TileBase GetTile(int x, int y, Vector2 worldSize) => GetOrientation(x, y, worldSize) switch
+        {
+            EOrientation.TOP => topTile,
+            EOrientation.BOTTOM => bottomTile,
+            EOrientation.RIGHT => rightTile,
+            EOrientation.LEFT => leftTile,
+            EOrientation.TOP_RIGHT => topRightCornerTile,
+            EOrientation.TOP_LEFT => topLeftCornerTile,
+            EOrientation.BOTTOM_RIGHT => bottomRightCornerTile,
+            EOrientation.BOTTOM_LEFT => bottomLeftCornerTile,
+            null => tileVariants.RandomElement(),
+            _ => null
+        };
+
+        private static EOrientation? GetOrientation(int x, int y, Vector2 worldSize)
+        {
+            var maxX = (int)worldSize.x - 1;
+            var maxY = (int)worldSize.y - 1;
+
+            var isLeft = x == 0;
+            var isRight = x == maxX;
+            var isTop = y == maxY;
+            var isBottom = y == 0;
+
+            switch (isTop)
+            {
+                case true when isLeft:
+                    return EOrientation.TOP_LEFT;
+                case true when isRight:
+                    return EOrientation.TOP_RIGHT;
+            }
+
+            switch (isBottom)
+            {
+                case true when isLeft:
+                    return EOrientation.BOTTOM_LEFT;
+                case true when isRight:
+                    return EOrientation.BOTTOM_RIGHT;
+            }
+
+            if (isTop) return EOrientation.TOP;
+            if (isBottom) return EOrientation.BOTTOM;
+            if (isLeft) return EOrientation.LEFT;
+            if (isRight) return EOrientation.RIGHT;
+
+            return null;
+        }
+
+        public Sprite BackgroundSprite => backgroundSprite;
+        
         public IEnumerable<SoStructure> UniqueStructures => uniqueStructures;
         public IEnumerable<SoStageEffect> UniqueEffects => uniqueEffects;
         public int RandomSoulCount(MapManager.MissionData.EDifficulty difficulty)
@@ -67,10 +132,24 @@ namespace StagePack
             return result;
         }
 
-        public bool ShouldCreateGap(float scale) => Random.Range(0f, 1f) < waveGapChanceCurve.Evaluate(scale);
+        public bool ShouldCreateGap(float time) => Random.Range(0f, 1f) < waveGapChanceCurve.Evaluate(time);
 
-        public float SpawnRate(float scale) => difficultyScalingCurve.Evaluate(scale);
+        public float GetSpawnRate(float time) => difficultyScalingCurve.Evaluate(time);
 
-        public float GapTime() => gapTime.RandomFloat();
+        public float GapGapTime() => gapTime.RandomFloat();
+
+        public Vector2Int GetWorldSize() => new(averageWorldSizeX.RandomInt(), averageWorldSizeY.RandomInt());
+
+        public enum EOrientation
+        {
+            TOP,
+            BOTTOM,
+            RIGHT,
+            LEFT,
+            TOP_RIGHT,
+            TOP_LEFT,
+            BOTTOM_RIGHT,
+            BOTTOM_LEFT,
+        }
     }
 }

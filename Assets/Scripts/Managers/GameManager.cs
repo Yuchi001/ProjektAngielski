@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using EffectPack.SO;
-using EnchantmentPack;
-using ItemPack.WeaponPack.Other;
+using AudioPack;
+using GameLoaderPack;
 using MainCameraPack;
 using Managers.Other;
 using MapPack;
 using PlayerPack;
 using PlayerPack.SO;
 using SavePack;
-using UIPack;
-using UIPack.CloseStrategies;
-using UIPack.OpenStrategies;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
@@ -35,9 +30,6 @@ namespace Managers
 
         private int stageCount = 0;
         public static int StageCount => Instance.stageCount;
-
-        public delegate void StartRunDelegate(MapManager.MissionData missionData);
-        public static event StartRunDelegate OnStartRun;
 
         public delegate void InitDelegate();
         public static event InitDelegate OnGMStart;
@@ -83,13 +75,19 @@ namespace Managers
         {
             MainCamera.InOutAnim(0.3f, () =>
             {
-                SceneManager.UnloadSceneAsync((int)EScene.TAVERN);
+                SceneManager.UnloadSceneAsync((int)EScene.MAP);
                 MainCamera.SetSize(4);
             }, () =>
             {
-                OnStartRun?.Invoke(missionData);
+                AudioManager.SetTheme(missionData.ThemeType);
                 PlayerManager.SetPlayerState(PlayerManager.State.ON_MISSION);
-            });
+            }, DelayedLoadCondition(missionData));
+        }
+
+        private static IEnumerator DelayedLoadCondition(MapManager.MissionData missionData)
+        {
+            var asyncOperation = SceneManager.LoadSceneAsync((int)EScene.GAME, LoadSceneMode.Additive);
+            return new WaitUntil(() => asyncOperation.isDone && GameLoader.HasInstance() && GameLoader.LoadScene(missionData));
         }
 
         public static void OpenMap()
@@ -108,7 +106,7 @@ namespace Managers
         
         public static void LoadGameScene(LoadSceneMode loadSceneMode = LoadSceneMode.Single)
         {
-            SceneManager.LoadScene((int)EScene.MAIN_GAME, loadSceneMode);
+            SceneManager.LoadScene((int)EScene.MAIN, loadSceneMode);
         }
 
         public static void LoadMenu()
@@ -138,8 +136,9 @@ namespace Managers
         {
             MENU = 0,
             TAVERN = 1,
-            MAIN_GAME = 2,
+            MAIN = 2,
             MAP = 3,
+            GAME = 4
         }
     }
 }

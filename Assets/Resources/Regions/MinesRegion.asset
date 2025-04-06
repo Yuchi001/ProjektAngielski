@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: MinesRegion
   m_EditorClassIdentifier: 
   regionType: 0
+  regionTheme: 0
   uniqueStructures: []
   uniqueEffects: []
   soulToCoinRatioPerDiff:
@@ -48,3 +49,24 @@ MonoBehaviour:
   gapTime:
     min: 0
     max: 0
+  tileVariants:
+  - {fileID: 11400000, guid: 63292cae2e73a1945acfe038dde4c296, type: 2}
+  - {fileID: 11400000, guid: f3986160632d479438f5af84e734b7a1, type: 2}
+  - {fileID: 11400000, guid: 930814d1dab67fb4abc113ee2658fb4f, type: 2}
+  - {fileID: 11400000, guid: 5356a099aaba27744b6049ba377bc973, type: 2}
+  - {fileID: 11400000, guid: de7557298eed75241a843897ade43e36, type: 2}
+  bottomTile: {fileID: 11400000, guid: 15439a07199d40f458f965756811adca, type: 2}
+  topTile: {fileID: 11400000, guid: b4db94906333a144985e4a7fe10a5068, type: 2}
+  leftTile: {fileID: 11400000, guid: 51acc08d1c8b3424ea8c1496417efe81, type: 2}
+  rightTile: {fileID: 11400000, guid: 23b01cdcebbf47746948020a61960bc8, type: 2}
+  topRightCornerTile: {fileID: 11400000, guid: c699eeabf99708046845bff3ad8a1a33, type: 2}
+  topLeftCornerTile: {fileID: 11400000, guid: c826c77d833230d42b2ac1a4aa19ca70, type: 2}
+  bottomRightCornerTile: {fileID: 11400000, guid: a2b69306b9c24de4daecbdb520fff797, type: 2}
+  bottomLeftCornerTile: {fileID: 11400000, guid: adb348b368df3f24e9da375b383f87dd, type: 2}
+  averageWorldSizeX:
+    min: 5
+    max: 10
+  averageWorldSizeY:
+    min: 5
+    max: 10
+  backgroundSprite: {fileID: -954555875, guid: 2f82523736271b046ae94cc682d4d558, type: 3}

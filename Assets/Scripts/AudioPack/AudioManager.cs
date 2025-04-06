@@ -31,8 +31,7 @@ namespace AudioPack
         {
             if (Instance != this && Instance != null) Destroy(gameObject);
             else Instance = this;
-
-            GameManager.OnStartRun += SetThemeForStage;
+            
             GameManager.OnGMStart += GmStart;
         }
 
@@ -48,7 +47,6 @@ namespace AudioPack
 
         private void OnDisable()
         {
-            GameManager.OnStartRun -= SetThemeForStage;
             GameManager.OnGMStart -= GmStart;
         }
 

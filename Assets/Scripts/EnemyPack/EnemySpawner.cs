@@ -32,7 +32,6 @@ namespace EnemyPack
         
 
         private List<SoEnemy> _allEnemies = new();
-        private List<SoEnemy> _enemiesOfCurrentStage = new();
         
         private float _difficultyTimer = 0;
 
@@ -49,16 +48,6 @@ namespace EnemyPack
 
         private void Awake()
         {
-            GameManager.OnGMStart += GmStart;
-        }
-
-        private void OnDisable()
-        {
-            GameManager.OnGMStart -= GmStart;
-        }
-
-        private void GmStart()
-        {
             GetComponent<EnemyManager>().Setup(ActiveObjects);
             
             DeadEnemies = 0;
@@ -72,8 +61,7 @@ namespace EnemyPack
 
         public override void Init(MapManager.MissionData currentMission)
         {
-            _enemiesOfCurrentStage = _allEnemies.Where(e => e.OccurenceList.Contains(currentMission.GetRegionType()))
-                .ToList();
+            _allEnemies = _allEnemies.Where(e => e.OccurenceList.Contains(currentMission.RegionType)).ToList();
         }
 
         protected override void Update()
@@ -153,7 +141,7 @@ namespace EnemyPack
                 var current = new List<SoEnemy>();
                 foreach (var enemy in _allEnemies)
                     if (enemy.Difficulty <= pickedDifficulty) current.Add(enemy);
-                return current;
+                return current.Count > 0 ? current : new List<SoEnemy> {_allEnemies[0]};
             }
         }
     }

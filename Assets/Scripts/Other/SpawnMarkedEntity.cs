@@ -38,7 +38,7 @@ namespace Other
 
             _spriteRenderer.color = pair.color;
             SetTimer(SPAWN_TIMER_ID);
-            var randomPosition = WorldGeneratorManager.GetRandomPos();
+            var randomPosition = ZoneGeneratorManager.GetRandomPos();
             if (!randomPosition.HasValue)
             {
                 markerManager.ReleasePoolObject(this);

@@ -21,7 +21,7 @@ namespace MainCameraPack
 
         private void Awake()
         {
-            if (gameObject.scene.buildIndex != (int)GameManager.EScene.MAIN_GAME)
+            if (gameObject.scene.buildIndex != (int)GameManager.EScene.MAIN)
             {
                 Destroy(gameObject);
                 return;
@@ -50,6 +50,11 @@ namespace MainCameraPack
             Instance.StartCoroutine(Instance.CoroutineInOutAnim(animTime, halfAction, endAction));
         }
         
+        public static void InOutAnim(float animTime, Action halfAction, Action endAction, IEnumerator condition)
+        {
+            Instance.StartCoroutine(Instance.CoroutineInOutAnim(animTime, halfAction, endAction, condition));
+        }
+        
         public static void OutAnim(float animTime, Action endAction)
         {
             Instance.StartCoroutine(Instance.HalfAnim(animTime, false, endAction));
@@ -60,7 +65,7 @@ namespace MainCameraPack
             Instance.StartCoroutine(Instance.HalfAnim(animTime, true, endAction));
         }
 
-        private IEnumerator CoroutineInOutAnim(float animTime, Action halfAction, Action endAction)
+        private IEnumerator CoroutineInOutAnim(float animTime, Action halfAction, Action endAction, IEnumerator condition = null)
         {
             var i = 0f;
             var halfTime = animTime / 2;
@@ -72,7 +77,8 @@ namespace MainCameraPack
             }
             halfAction.Invoke();
 
-            yield return new WaitForSeconds(0.1f);
+            if (condition != null) yield return condition;
+            else yield return new WaitForSeconds(0.1f);
 
             i = 0f;
             while (i < halfTime)
@@ -107,6 +113,11 @@ namespace MainCameraPack
         public static void SetSize(float size)
         {
             Instance.cameraComponent.orthographicSize = size;
+        }
+
+        public static void SetColor(Color color)
+        {
+            Instance.cameraComponent.backgroundColor = color;
         }
 
         private void Update()

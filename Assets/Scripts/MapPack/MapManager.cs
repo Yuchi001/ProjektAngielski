@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Managers;
+using Managers.Enums;
+using StagePack;
 using StructurePack.SO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 using Utils;
 using WorldGenerationPack;
 using WorldGenerationPack.Enums;
@@ -41,7 +44,7 @@ namespace MapPack
             var missionStructure = Resources.Load<SoMissionStructure>("Structures/MissionStructure");
             foreach (var mission in _missions)
             {
-                var missionBase = StructureManager.SpawnStructure(missionStructure, mission.GetPos(), transform);
+                var missionBase = StructureManager.SpawnStructure(missionStructure, mission.MapPosition, transform);
                 missionBase.SetData(mission);
             }
         }
@@ -57,28 +60,36 @@ namespace MapPack
 
         public class MissionData
         {
-            private readonly int _soulCount;
-            private readonly int _soulToCoinRatio;
-            private readonly int _coinReward;
-            private readonly Vector2 _positionOnMap;
-            private readonly ERegionType _regionType;
-            private readonly EDifficulty _difficulty;
+            private readonly Region _region;
 
-            public Vector2 GetPos() => _positionOnMap;
-            public int GetSoulCount() => _soulCount;
-            public int GetSoulToCoinRatio() => _soulToCoinRatio;
-            public int GetCoinReward() => _coinReward;
-            public ERegionType GetRegionType() => _regionType;
-            public EDifficulty GetDifficulty() => _difficulty;
+            public Vector2 MapPosition { get; }
+            public int SoulCount { get; }
+            public int SoulToCoinRatio { get; }
+            public int CoinReward { get; }
+            public Vector2Int WorldSize { get; }
+            public ERegionType RegionType { get; }
+            public EDifficulty Difficulty { get; }
+            public EThemeType ThemeType { get; }
+            public Sprite BackgroundSprite { get; }
+
+            public float GetGapTime() => _region.RegionData.GapGapTime();
+            public float GetSpawnRate(float time) => _region.RegionData.GetSpawnRate(time);
+            public bool ShouldCreateGap(float time) => _region.RegionData.ShouldCreateGap(time);
+            public TileBase GetTile(int x, int y) => _region.RegionData.GetTile(x, y, WorldSize);
+            
 
             public MissionData(EDifficulty difficulty, Region region)
             {
-                _difficulty = difficulty;
-                _soulCount = region.RegionData.RandomSoulCount(difficulty);
-                _soulToCoinRatio = region.RegionData.RandomSoulPerCoinRatio(difficulty);
-                _positionOnMap = region.GetRandomRegionPoint();
-                _regionType = region.RegionData.RegionType;
-                _coinReward = region.RegionData.RandomReward(difficulty);
+                Difficulty = difficulty;
+                SoulCount = region.RegionData.RandomSoulCount(difficulty);
+                SoulToCoinRatio = region.RegionData.RandomSoulPerCoinRatio(difficulty);
+                MapPosition = region.GetRandomRegionPoint();
+                RegionType = region.RegionData.RegionType;
+                CoinReward = region.RegionData.RandomReward(difficulty);
+                WorldSize = region.RegionData.GetWorldSize();
+                ThemeType = region.RegionData.RegionTheme;
+                BackgroundSprite = region.RegionData.BackgroundSprite;
+                _region = region;
             }
             
             public MissionData(){}
@@ -94,7 +105,7 @@ namespace MapPack
             public string GetDifficultyStr()
             {
                 //TODO: translate enum to string
-                return _difficulty.ToString();
+                return Difficulty.ToString();
             }
         }
     }

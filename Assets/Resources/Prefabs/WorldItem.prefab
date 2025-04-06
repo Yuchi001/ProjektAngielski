@@ -50,10 +50,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef49dcd792a46a1a1c3ef614d625b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMagnitude: 4
   pickUpDistance: 0.75
   getDistance: 0.19
   movementSpeed: 10
+  throwSpeed: 3
+  throwSlowAcceleration: 6
   movementAcceleration: 5
   pickUpCooldown: 0.75
 --- !u!212 &4535698492429040940

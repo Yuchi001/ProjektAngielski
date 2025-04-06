@@ -1,88 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using GameLoaderPack;
+using MainCameraPack;
 using Managers;
-using Managers.Other;
-using MapGeneratorPack;
 using MapPack;
-using PlayerPack;
+using StagePack;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using UnityEngine.Tilemaps;
+using Utils;
 
 namespace WorldGenerationPack
 {
-    public class WorldGeneratorManager : MonoBehaviour
+    public class WorldGeneratorManager : MonoBehaviour, IMissionDependentInstance
     {
-        #region Singleton
+        [SerializeField] private Tilemap tilemap;
+        [SerializeField] private SpriteRenderer background;
 
         private static WorldGeneratorManager Instance { get; set; }
-
+        
         private void Awake()
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
-            GameManager.OnStartRun += GenerateWorld;
-        }
-        #endregion
-
-        [SerializeField] private float baseZoneScale;
-        [SerializeField] private float zoneEntityRange;
-        
-        private Zone _zonePrefab;
-
-        private Dictionary<string, Zone> _zoneDict;
-
-        private void OnDisable()
-        {
-            GameManager.OnStartRun -= GenerateWorld;
         }
 
-        private void GenerateWorld(MapManager.MissionData missionData)
+        public void Init(MapManager.MissionData missionData)
         {
-            _zonePrefab = GameManager.GetPrefab<Zone>(PrefabNames.Zone);
-            _zoneDict = new Dictionary<string, Zone>();
-            GenerateZone(PlayerManager.PlayerPos, "MAIN", baseZoneScale);
-        }
-
-        public static bool ContainsEntity(Vector2 pos)
-        {
-            foreach (var zone in Instance._zoneDict.Values)
+            background.sprite = missionData.BackgroundSprite;   
+            var worldSize = missionData.WorldSize;
+            for (var y = 0; y < worldSize.y; y++)
             {
-                if (zone.ContainsEntity(pos)) continue;
-                return true;
+                for (var x = 0; x < worldSize.x; x++)
+                {
+                    var tile = missionData.GetTile(x, y);
+                    Instance.tilemap.SetTile(new Vector3Int(x, y, 0), tile);
+                }
             }
-
-            return false;
-        }
-
-        public static Vector2? GetRandomPos()
-        {
-            var playerPos = PlayerManager.PlayerPos;
-            var availableZones = new List<Zone>();
-
-            foreach (var zone in Instance._zoneDict.Values)
-            {
-                if (!zone.InRange(playerPos, Instance.zoneEntityRange)) continue;
-                availableZones.Add(zone);
-            }
-
-            if (availableZones.Count == 0) return null;
-
-            var randomIndex = Random.Range(0, availableZones.Count);
-            return availableZones[randomIndex].GetRandomPos();
-        }
-
-        public static void ExpandZone(string key, float percentage)
-        {
-            var dict = Instance._zoneDict;
-            if (!dict.ContainsKey(key)) return;
-            
-            dict[key].Resize(percentage);
-        }
-
-        public static void GenerateZone(Vector2 position, string key, float scale, bool withAnim = true)
-        {
-            var zone = Instantiate(Instance._zonePrefab, position, Quaternion.identity);
-            zone.SetSize(scale, withAnim);
-            Instance._zoneDict.Add(key, zone);
+            ZoneGeneratorManager.GenerateBaseZone();
         }
     }
 }

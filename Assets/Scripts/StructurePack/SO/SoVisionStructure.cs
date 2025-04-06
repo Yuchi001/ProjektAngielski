@@ -28,8 +28,8 @@ namespace StructurePack.SO
             PlayerSoulManager.AddSouls(-price);
             data.MultiplyCurrentPrice(transactionMultiplier);
             
-            if (structureBase.WasUsed) WorldGeneratorManager.ExpandZone(data.GetKey(), scaleMultiplier);
-            else WorldGeneratorManager.GenerateZone(structureBase.transform.position, data.GetKey(), baseZoneScale);
+            if (structureBase.WasUsed) ZoneGeneratorManager.ExpandZone(data.GetKey(), scaleMultiplier);
+            else ZoneGeneratorManager.GenerateZone(structureBase.transform.position, data.GetKey(), baseZoneScale);
 
             return true;
         }

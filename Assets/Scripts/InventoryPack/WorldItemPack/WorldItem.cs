@@ -19,6 +19,8 @@ namespace InventoryPack.WorldItemPack
         [SerializeField] private float pickUpDistance = 0.5f;
         [SerializeField] private float getDistance = 0.1f;
         [SerializeField] private float movementSpeed = 3f;
+        [SerializeField] private float throwSpeed = 3f;
+        [SerializeField] private float throwSlowAcceleration = 3f;
         [SerializeField] private float movementAcceleration = 1f;
         [SerializeField] private float pickUpCooldown = 0.75f;
         
@@ -37,7 +39,7 @@ namespace InventoryPack.WorldItemPack
         private bool _pickedUp = false;
         private bool _cleanUp = false;
 
-        private float _currentSpeed;
+        private float _currentThrowSpeed;
         private bool _ready = false;
 
         private Vector2 _randomDir;
@@ -66,7 +68,7 @@ namespace InventoryPack.WorldItemPack
             base.OnGet(so);
 
             _ready = false;
-            _currentSpeed = movementSpeed;
+            _currentThrowSpeed = throwSpeed;
             _spriteRenderer.enabled = true;
             _chasePlayer = false;
             _pickedUp = false;
@@ -108,10 +110,10 @@ namespace InventoryPack.WorldItemPack
         {
             if (!_ready) return;
 
-            if (_currentSpeed > 0 && !_canPickUp)
+            if (_currentThrowSpeed > 0 && !_canPickUp)
             {
-                transform.Translate(_randomDir * _currentSpeed);
-                _currentSpeed -= movementSpeed * Time.deltaTime;
+                transform.Translate(_randomDir * (_currentThrowSpeed * Time.deltaTime));
+                _currentThrowSpeed -= throwSlowAcceleration * Time.deltaTime;
                 return;
             }
             
