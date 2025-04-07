@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Managers.Enums;
 using MapPack;
 using StructurePack.SO;
@@ -16,7 +17,7 @@ namespace StagePack
     {
         [SerializeField] private ERegionType regionType;
         [SerializeField] private EThemeType regionTheme;
-        [SerializeField] private List<SoStructure> uniqueStructures;
+        [SerializeField] private List<StructurePair> structures;
         [SerializeField] private List<SoStageEffect> uniqueEffects;
         [SerializeField] private MinMax soulToCoinRatioPerDiff;
         [SerializeField] private MinMax soulToCoinRatioBase;
@@ -92,8 +93,37 @@ namespace StagePack
         }
 
         public Sprite BackgroundSprite => backgroundSprite;
+
+        public List<(Vector2Int position, SoStructure structure)> GetStructures(Vector2Int worldSize)
+        {
+            var list = new List<(Vector2Int position, SoStructure structure)>();
+            var positions = new List<Vector2Int>();
+            foreach (var pair in structures)
+            {
+                foreach (var structure in pair.GetStructures())
+                {
+                    var tries = 0;
+                    Vector2Int position;
+                    do
+                    {
+                        var x = Random.Range(1, worldSize.x - 1);
+                        var y = Random.Range(1, worldSize.y - 1);
+                        position = new Vector2Int(x, y);
+                        tries++;
+                    } while (!isValid(position) || tries > 10);
+                    positions.Add(position);
+                    list.Add((position, structure));
+                }
+            }
+
+            return list;
+
+            bool isValid(Vector2Int position)
+            {
+                return positions.All(pos => pos != position && !(Vector2.Distance(pos, position) <= 2));
+            }
+        }
         
-        public IEnumerable<SoStructure> UniqueStructures => uniqueStructures;
         public IEnumerable<SoStageEffect> UniqueEffects => uniqueEffects;
         public int RandomSoulCount(MapManager.MissionData.EDifficulty difficulty)
         {
@@ -140,7 +170,7 @@ namespace StagePack
 
         public Vector2Int GetWorldSize() => new(averageWorldSizeX.RandomInt(), averageWorldSizeY.RandomInt());
 
-        public enum EOrientation
+        private enum EOrientation
         {
             TOP,
             BOTTOM,
@@ -150,6 +180,24 @@ namespace StagePack
             TOP_LEFT,
             BOTTOM_RIGHT,
             BOTTOM_LEFT,
+        }
+
+        [System.Serializable]
+        public struct StructurePair
+        {
+            [SerializeField] private SoStructure structure;
+            [SerializeField] private MinMax count;
+
+            public List<SoStructure> GetStructures()
+            {
+                var list = new List<SoStructure>();
+                for (var i = 0; i < count.RandomInt(); i++)
+                {
+                    list.Add(structure);
+                }
+
+                return list;
+            }
         }
     }
 }

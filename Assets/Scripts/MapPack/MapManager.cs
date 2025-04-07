@@ -76,6 +76,7 @@ namespace MapPack
             public float GetSpawnRate(float time) => _region.RegionData.GetSpawnRate(time);
             public bool ShouldCreateGap(float time) => _region.RegionData.ShouldCreateGap(time);
             public TileBase GetTile(int x, int y) => _region.RegionData.GetTile(x, y, WorldSize);
+            public List<(Vector2Int position, SoStructure structure)> Structures { get; }
             
 
             public MissionData(EDifficulty difficulty, Region region)
@@ -89,6 +90,7 @@ namespace MapPack
                 WorldSize = region.RegionData.GetWorldSize();
                 ThemeType = region.RegionData.RegionTheme;
                 BackgroundSprite = region.RegionData.BackgroundSprite;
+                Structures = region.RegionData.GetStructures(WorldSize);
                 _region = region;
             }
             

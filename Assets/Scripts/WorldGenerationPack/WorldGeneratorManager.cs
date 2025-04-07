@@ -1,4 +1,5 @@
-﻿using GameLoaderPack;
+﻿using System.Linq;
+using GameLoaderPack;
 using MainCameraPack;
 using Managers;
 using MapPack;
@@ -31,7 +32,10 @@ namespace WorldGenerationPack
                 for (var x = 0; x < worldSize.x; x++)
                 {
                     var tile = missionData.GetTile(x, y);
-                    Instance.tilemap.SetTile(new Vector3Int(x, y, 0), tile);
+                    var current = new Vector3Int(x, y, 0);
+                    var structurePair = missionData.Structures.FirstOrDefault(p => p.position == (Vector2Int)current);
+                    if (structurePair != default) StructureManager.SpawnStructure(structurePair.structure, (Vector3)current, transform);
+                    Instance.tilemap.SetTile(current, tile);
                 }
             }
             ZoneGeneratorManager.GenerateBaseZone();

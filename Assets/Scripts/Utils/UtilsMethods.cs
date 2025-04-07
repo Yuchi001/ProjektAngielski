@@ -85,6 +85,7 @@ namespace Utils
             var (pickedEnemy, smallestDistance) = (enemies[0], Vector2.Distance(position, enemies[0].transform.position));
             foreach (var enemy in enemies)
             {
+                if (enemy == null) continue;
                 var distance = Vector2.Distance(position, enemy.transform.position);
                 if (distance > smallestDistance) continue;
 

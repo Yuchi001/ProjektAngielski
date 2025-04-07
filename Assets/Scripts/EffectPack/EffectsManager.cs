@@ -26,6 +26,7 @@ namespace EffectPack
         private void Awake()
         {
             _effects = Resources.LoadAll<SoEffectBase>("EffectStatus");
+            _canBeDamaged = GetComponentInParent<CanBeDamaged>();
 
             var effectStatusPrefab = GameManager.GetPrefab<EffectStatusObject>(PrefabNames.EffectStatus);
             foreach (var effectType in (EEffectType[])System.Enum.GetValues(typeof(EEffectType)))
