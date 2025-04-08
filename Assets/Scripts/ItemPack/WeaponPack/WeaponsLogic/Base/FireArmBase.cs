@@ -26,7 +26,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
 
         public override IEnumerable<EItemSelfStatType> GetUsedStats()
         {
-            return base.GetUsedStats().Concat(_otherDefaultStatsNoPush);
+            return base.GetUsedStats().Concat(_otherDefaultStats);
         }
 
         

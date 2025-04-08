@@ -5,8 +5,9 @@ using EnemyPack.CustomEnemyLogic;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Other.Enums;
+using TargetSearchPack;
 using UnityEngine;
-using Utils;
+using TransformExtensions = Utils.TransformExtensions;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
@@ -28,13 +29,22 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             return base.GetUsedStats().Concat(_otherDefaultStatsNoPush);
         }
 
+        private NearPlayerStrategy _findStrategy;
+        private NearPlayerStrategy FindStrategy
+        {
+            get
+            {
+                return _findStrategy ??= new NearPlayerStrategy();
+            }
+        }
+
         protected override bool Use()
         {
             var targetedEnemies = new List<int>();
             var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = UtilsMethods.FindNearestTarget(transform.position, targetedEnemies);
+                var target = TargetManager.FindTarget(FindStrategy, targetedEnemies);
                 if (target == null) continue;
 
                 spawnedProjectiles++;
@@ -102,7 +112,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var playerPos = PlayerTransform.position;
 
             var sr = projectile.GetSpriteRenderer().transform;
-            UtilsMethods.LookAtObj(sr, PlayerPos);
+            TransformExtensions.LookAt(sr, PlayerPos);
             sr.Rotate(0, 0, 225);
 
             if (Vector2.Distance(projectilePos, playerPos) > 0.5f) return;
@@ -113,7 +123,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         private void ProjectileUpdate(Projectile projectile)
         {
             var sr = projectile.GetSpriteRenderer().transform;
-            UtilsMethods.LookAtObj(sr, PlayerPos);
+            TransformExtensions.LookAt(sr, PlayerPos);
             sr.Rotate(0, 0, 45);
         }
     }

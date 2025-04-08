@@ -2,6 +2,7 @@
 using Managers;
 using Other.Enums;
 using PlayerPack;
+using TargetSearchPack;
 using UnityEngine;
 using Utils;
 
@@ -21,7 +22,16 @@ namespace ItemPack.WeaponPack.Other
         private float _pushForce = 3;
         
         private int _damage;
-        
+
+        private BiggestGroupNearPlayerStrategy _findStrategy;
+        private BiggestGroupNearPlayerStrategy FindStrategy
+        {
+            get
+            {
+                return _findStrategy ??= new BiggestGroupNearPlayerStrategy(new NearPlayerStrategy());
+            }
+        }
+
         #region Setup methods
 
         public Slash Setup(int damage, float scale)
@@ -57,7 +67,7 @@ namespace ItemPack.WeaponPack.Other
             var bounds = spriteRender.bounds;
             
             var newPos = transform.position;
-            var target = UtilsMethods.FindTargetInBiggestGroup(PlayerPos, baseScale.x, baseScale.y);
+            var target = TargetManager.FindTarget(FindStrategy, range: baseScale.x);
             var lookingRight = target == null || target.transform.position.x > PlayerPos.x;
             var mod = lookingRight ? 1 : -1;
             var offset = mod * bounds.size.x / 2;

@@ -17,7 +17,7 @@ namespace Other
         private Material _spriteMaterial;
         
         private Coroutine _currentCoroutine = null;
-        protected EffectsManager _effectsManager => GetComponentInChildren<EffectsManager>();
+        protected EffectsManager _effectsManager;
 
         public bool Dead { get; private set; }
         
@@ -29,8 +29,9 @@ namespace Other
 
         public SpriteRenderer SpriteRenderer => spriteRenderer;
 
-        protected void CanBeDamagedSetup()
+        public override void OnGet(SoPoolObject so)
         {
+            base.OnGet(so);
             Dead = false;
             _currentCoroutine = null;
             _spriteMaterial = spriteRenderer.material;
@@ -38,6 +39,14 @@ namespace Other
             _spriteMaterial.SetFloat("_FlashAmmount", 0);
             if (_effectsManager) _effectsManager.Setup(this);
         }
+
+        public override void OnCreate(PoolManager poolManager)
+        {
+            base.OnCreate(poolManager);
+            _effectsManager = GetComponentInChildren<EffectsManager>();
+            _effectsManager.OnCreate();
+        }
+
 
         public virtual void AddEffect(EEffectType effectType, float duration)
         {

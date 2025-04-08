@@ -23,19 +23,15 @@ namespace EnemyPack.CustomEnemyLogic
     public partial class EnemyLogic : CanBeDamaged
     {
         [Header("General")] 
-        [SerializeField] private Transform bodyTransform;
         [SerializeField] private Rigidbody2D rb2d;
         [SerializeField] private Animator animator;
 
         public Animator Animator => animator;
-        public static PlayerHealth PlayerHealth => PlayerManager.PlayerHealth;
         public static Vector2 PlayerPos => PlayerManager.PlayerPos;
         private EnemyHealthBar _enemyHealthBar;
         public Collider2D Collider2D { get; private set; }
         public override int MaxHealth => Mathf.CeilToInt(EnemyData.MaxHealth * _enemySpawner.EnemiesHpScale);
-        private static float PlayerSpeed => PlayerManager.PlayerStatsManager.GetStat(EPlayerStatType.MovementSpeed);
         private float Mass => Mathf.Pow(EnemyData.BodyScale, 2);
-        private float MovementSpeed => Slowed ? EnemyData.MovementSpeed / 2f : EnemyData.MovementSpeed;
         private static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
 
         public bool Invincible { get; private set; }
@@ -67,7 +63,7 @@ namespace EnemyPack.CustomEnemyLogic
         public override void OnGet(SoPoolObject enemy)
         {
             base.OnGet(enemy);
-
+            
             SpriteRenderer.enabled = false;
             
             if (!PlayerManager.HasInstance()) _enemySpawner.ReleasePoolObject(this);
@@ -90,8 +86,6 @@ namespace EnemyPack.CustomEnemyLogic
             var anims = aoc.animationClips.Select(a => new KeyValuePair<AnimationClip, AnimationClip>(a, EnemyData.WalkingAnimationClip)).ToList();
             aoc.ApplyOverrides(anims);
             animator.runtimeAnimatorController = aoc;
-            
-            CanBeDamagedSetup();
             
             _enemyHealthBar.Setup(SpriteRenderer);
 

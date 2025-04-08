@@ -47,7 +47,7 @@ namespace PlayerPack
         private void Awake()
         {
             StartCoroutine(StartingInvincible());
-            CanBeDamagedSetup();
+            OnGet(null);
         }
 
         private IEnumerator StartingInvincible()
@@ -73,6 +73,8 @@ namespace PlayerPack
 
         private void ManageZone()
         {
+            if (PlayerManager.CurrentState != PlayerManager.State.ON_MISSION) return;
+            
             _zoneTimer += Time.deltaTime;
             if (_zoneTimer < 1f / zoneCheckPerSec) return;
 

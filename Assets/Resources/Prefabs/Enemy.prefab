@@ -250,6 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusesHolder: {fileID: 4240336757755427801}
+  _canBeDamaged: {fileID: 4163185852223779518}
 --- !u!1 &2320810237440355403
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,7 +320,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 4733844501563839803}
-  bodyTransform: {fileID: 3704094091508760099}
   rb2d: {fileID: 2884553101495344094}
   animator: {fileID: 9143095408977510911}
 --- !u!50 &2884553101495344094

@@ -5,7 +5,6 @@ using EnchantmentPack.Enums;
 using EnemyPack.CustomEnemyLogic;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.SideClasses;
-using Managers;
 using Managers.Enums;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;

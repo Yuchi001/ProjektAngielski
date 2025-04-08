@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using AudioPack;
 using ItemPack.Enums;
-using Managers;
 using Managers.Enums;
+using TargetSearchPack;
 using UnityEngine;
-using Utils;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
@@ -22,10 +21,19 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             EItemSelfStatType.ProjectileScale,
             EItemSelfStatType.Spread
         };
+
+        private NearPlayerStrategy _findStrategy;
+        private NearPlayerStrategy FindStrategy
+        {
+            get
+            {
+                return _findStrategy ??= new NearPlayerStrategy();
+            }
+        }
         
         protected override bool Use()
         {
-            var target = UtilsMethods.FindNearestTarget(transform.position);
+            var target = TargetManager.FindTarget(FindStrategy);
 
             if (target == null) return false;
             var position = target.transform.position;

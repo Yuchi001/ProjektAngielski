@@ -9,6 +9,7 @@ using Managers.Enums;
 using Other.Enums;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
+using TargetSearchPack;
 using UnityEngine;
 using Utils;
 
@@ -33,13 +34,22 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             return base.GetUsedStats().Concat(_otherDefaultStatsNoPush);
         }
 
+        private NearPlayerStrategy _findStrategy;
+        private NearPlayerStrategy FindStrategy
+        {
+            get
+            {
+                return _findStrategy ??= new NearPlayerStrategy();
+            }
+        }
+
         protected override bool Use()
         {
             var targetedEnemies = new List<int>();
             var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = UtilsMethods.FindNearestTarget(transform.position, targetedEnemies);
+                var target = TargetManager.FindTarget(FindStrategy, targetedEnemies);
                 if (target == null) continue;
 
                 spawnedProjectiles++;

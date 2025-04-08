@@ -28,6 +28,7 @@ namespace PlayerPack
         };
 
         private Image _dashStackPrefab;
+        private readonly List<Image> _spawnedDashImages = new();
         
         private void Awake()
         {
@@ -96,15 +97,16 @@ namespace PlayerPack
             var childCount = dashRect.childCount;
             if (childCount != PlayerManager.PlayerMovement.MaxDashStacks)
             {
+                _spawnedDashImages.Clear();
                 foreach (Transform child in dashRect) Destroy(child.gameObject);
                 var startingDashStacks = PlayerManager.PlayerMovement.MaxDashStacks;
-                for (var i = 0; i < startingDashStacks; i++) Instantiate(_dashStackPrefab, dashRect);
+                for (var i = 0; i < startingDashStacks; i++) _spawnedDashImages.Add(Instantiate(_dashStackPrefab, dashRect));
                 LayoutRebuilder.ForceRebuildLayoutImmediate(dashRect);
             }
             
             for (var i = 0; i < dashRect.childCount; i++)
             {
-                var child = dashRect.GetChild(i).GetComponent<Image>();
+                var child = _spawnedDashImages[i];
                 
                 if (i + 1 > current)
                 {
@@ -120,7 +122,6 @@ namespace PlayerPack
 
                 child.fillAmount = 1;
             }
-            LayoutRebuilder.ForceRebuildLayoutImmediate(dashRect);
         }
     }
 }

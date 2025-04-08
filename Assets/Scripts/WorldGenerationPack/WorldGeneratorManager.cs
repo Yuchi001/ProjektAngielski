@@ -1,12 +1,8 @@
 ﻿using System.Linq;
 using GameLoaderPack;
-using MainCameraPack;
-using Managers;
 using MapPack;
-using StagePack;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Utils;
 
 namespace WorldGenerationPack
 {
@@ -27,6 +23,7 @@ namespace WorldGenerationPack
         {
             background.sprite = missionData.BackgroundSprite;   
             var worldSize = missionData.WorldSize;
+            var offset = new Vector3Int(worldSize.x / 2, worldSize.y / 2, 0);
             for (var y = 0; y < worldSize.y; y++)
             {
                 for (var x = 0; x < worldSize.x; x++)
@@ -35,7 +32,7 @@ namespace WorldGenerationPack
                     var current = new Vector3Int(x, y, 0);
                     var structurePair = missionData.Structures.FirstOrDefault(p => p.position == (Vector2Int)current);
                     if (structurePair != default) StructureManager.SpawnStructure(structurePair.structure, (Vector3)current, transform);
-                    Instance.tilemap.SetTile(current, tile);
+                    Instance.tilemap.SetTile(current - offset, tile);
                 }
             }
             ZoneGeneratorManager.GenerateBaseZone();

@@ -4,6 +4,7 @@ using System.Linq;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Other.Enums;
+using TargetSearchPack;
 using UnityEngine;
 using Utils;
 
@@ -24,17 +25,26 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             return base.GetUsedStats().Concat(_otherDefaultStatsNoPush);
         }
 
+        private NearPlayerStrategy _findStrategy;
+        private NearPlayerStrategy FindStrategy
+        {
+            get
+            {
+                return _findStrategy ??= new NearPlayerStrategy();
+            }
+        }
+
         protected override bool Use()
         {
             StartCoroutine(ThrowShurikens());
-            return UtilsMethods.FindNearestTarget(transform.position);
+            return TargetManager.TryFindViableEnemies(FindStrategy, out var enemies);
         }
 
         private IEnumerator ThrowShurikens()
         {
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = UtilsMethods.FindNearestTarget(transform.position);
+                var target = TargetManager.FindTarget(FindStrategy);
                 if (target == null) continue;
 
                 var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);

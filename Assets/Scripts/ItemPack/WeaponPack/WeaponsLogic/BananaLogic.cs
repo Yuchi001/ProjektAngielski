@@ -2,8 +2,8 @@
 using System.Linq;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
+using TargetSearchPack;
 using UnityEngine;
-using Utils;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
@@ -24,13 +24,22 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             return base.GetUsedStats().Concat(_otherDefaultStats);
         }
 
+        private NearPlayerStrategy _nearPlayerStrategy;
+        private NearPlayerStrategy NearPlayerStrategy
+        {
+            get
+            {
+                return _nearPlayerStrategy ??= new NearPlayerStrategy();
+            }
+        }
+
         protected override bool Use()
         {
             var targetedEnemies = new List<int>();
             var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = UtilsMethods.FindNearestTarget(transform.position, targetedEnemies);
+                var target = TargetManager.FindTarget(NearPlayerStrategy, targetedEnemies); 
                 if (target == null) continue;
 
                 spawnedProjectiles++;

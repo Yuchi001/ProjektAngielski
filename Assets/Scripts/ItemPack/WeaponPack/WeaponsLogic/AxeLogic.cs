@@ -3,9 +3,9 @@ using System.Linq;
 using EnchantmentPack.Enums;
 using ItemPack.Enums;
 using Other.Enums;
+using TargetSearchPack;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Utils;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
@@ -26,14 +26,25 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             return base.GetUsedStats().Concat(_otherDefaultStats);
         }
 
+        private BiggestGroupNearPlayerStrategy _findStrategy;
+        private BiggestGroupNearPlayerStrategy FindStrategy
+        {
+            get
+            {
+                return _findStrategy ??= new BiggestGroupNearPlayerStrategy(new NearPlayerStrategy());
+            }
+        }
+
         protected override bool Use()
         {
             var spawnedProjectiles = 0;
+            var targetedEnemies = new List<int>();
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = UtilsMethods.FindTargetInBiggestGroup(transform.position);
+                var target = TargetManager.FindTarget(FindStrategy, targetedEnemies);
                 if (target == null) continue;
 
+                targetedEnemies.Add(target.GetInstanceID());
                 spawnedProjectiles++;
                 
                 var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);

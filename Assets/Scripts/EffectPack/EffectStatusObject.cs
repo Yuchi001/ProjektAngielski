@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using EffectPack.SO;
+﻿using EffectPack.SO;
 using Other;
-using Other.Enums;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,15 +11,15 @@ namespace EffectPack
         private Image _effectImage;
         private TextMeshProUGUI _effectDamageStackText;
 
-        private int _damageStacks = 0;
+        private int _damageStacks;
 
         private SoEffectBase _pickedEffectBase;
         public SoEffectBase EffectBase => _pickedEffectBase;
         
         private ParticleSystem _spawnedParticles;
 
-        private float _resolveTimer = 0;
-        private float _effectTimer = 0;
+        private float _resolveTimer;
+        private float _effectTimer;
 
         private EffectsManager _effectsManager;
         private CanBeDamaged _canBeDamaged;

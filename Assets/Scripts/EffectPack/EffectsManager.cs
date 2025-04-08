@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using EffectPack.SO;
+using GameLoaderPack;
 using Managers;
 using Managers.Other;
+using MapPack;
 using Other;
 using Other.Enums;
 using UnityEngine;
@@ -14,19 +14,18 @@ namespace EffectPack
     public class EffectsManager : MonoBehaviour
     {
         [SerializeField] private Transform statusesHolder;
+        [SerializeField] private CanBeDamaged _canBeDamaged;
         
         private readonly Dictionary<EEffectType, EffectStatusObject> _statuses = new();
 
         public bool Stunned => HasEffect(EEffectType.Stun);
         public bool Slowed => HasEffect(EEffectType.Slow);
 
-        private CanBeDamaged _canBeDamaged;
         private IEnumerable<SoEffectBase> _effects;
 
-        private void Awake()
+        public void OnCreate()
         {
             _effects = Resources.LoadAll<SoEffectBase>("EffectStatus");
-            _canBeDamaged = GetComponentInParent<CanBeDamaged>();
 
             var effectStatusPrefab = GameManager.GetPrefab<EffectStatusObject>(PrefabNames.EffectStatus);
             foreach (var effectType in (EEffectType[])System.Enum.GetValues(typeof(EEffectType)))
@@ -39,10 +38,7 @@ namespace EffectPack
         
         private SoEffectBase GetEffect(EEffectType effectType)
         {
-            foreach (var effectBase in _effects)
-            {
-                if (effectBase.EffectType == effectType) return effectBase;
-            }
+            foreach (var effectBase in _effects) if (effectBase.EffectType == effectType) return effectBase;
 
             return null;
         }

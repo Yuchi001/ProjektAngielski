@@ -7,6 +7,7 @@ using Other.Enums;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Utils;
+using TransformExtensions = Utils.TransformExtensions;
 
 namespace ItemPack.WeaponPack.Other
 {
@@ -175,7 +176,7 @@ namespace ItemPack.WeaponPack.Other
         public Projectile SetTarget(Transform target)
         {
             _target = target;
-            UtilsMethods.LookAtObj(transform, _target.transform.position);
+            TransformExtensions.LookAt(transform, _target.transform.position);
             return this;
         }
 
@@ -202,7 +203,7 @@ namespace ItemPack.WeaponPack.Other
 
         public Projectile SetDirection(Vector3 direction, float rotateBy = 0, bool checkX = false)
         {
-            UtilsMethods.LookAtObj(transform, direction);
+            TransformExtensions.LookAt(transform, direction);
             transform.Rotate(0, 0, rotateBy);
             if(checkX && direction.x < transform.position.x) 
                 projectileSprite.transform.Rotate(0, 0, 180);

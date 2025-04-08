@@ -9,6 +9,11 @@ namespace PoolPack
     {
         protected bool Active { get; private set; }
         private readonly Dictionary<string, DateTime> _lastMeasure = new();
+
+        public T As<T>() where T: PoolObject
+        {
+            return (T)this;
+        }
         
         public virtual void OnCreate(PoolManager poolManager)
         {
