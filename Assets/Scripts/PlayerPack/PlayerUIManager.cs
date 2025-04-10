@@ -32,7 +32,7 @@ namespace PlayerPack
         
         private void Awake()
         {
-            PlayerManager.OnPlayerReady += RefreshUI;
+            PlayerManager.OnPlayerReady += PrepareUI;
             
             _dashStackPrefab = GameManager.GetPrefab<Image>(PrefabNames.DashUI);
             
@@ -45,15 +45,15 @@ namespace PlayerPack
             PlayerSoulManager.OnSoulCountChange += UpdateSoulCount;
             PlayerCoinManager.OnCoinCountChange += UpdateCoinCount;
             PlayerManager.OnChangeState += OnChangeState;
-            PlayerMovement.OnPlayerDash += UpdateDashStacks;
         }
+        
 
-        public void RefreshUI()
+        public void PrepareUI()
         {
             UpdateHp(PlayerManager.PlayerHealth.CurrentHealth, MaxHealth);
             UpdateSoulCount(0, PlayerManager.PlayerSoulManager.GetCurrentSoulCount());
             UpdateCoinCount(0, PlayerManager.PlayerCoinManager.GetCurrentCount());
-            UpdateDashStacks(PlayerManager.PlayerMovement.MaxDashStacks);
+            SpawnDashStacks();
         }
 
         private void OnDisable()
@@ -63,8 +63,7 @@ namespace PlayerPack
             PlayerSoulManager.OnSoulCountChange -= UpdateSoulCount;
             PlayerCoinManager.OnCoinCountChange -= UpdateCoinCount;
             PlayerManager.OnChangeState -= OnChangeState;
-            PlayerManager.OnPlayerReady -= RefreshUI;
-            PlayerMovement.OnPlayerDash -= UpdateDashStacks;
+            PlayerManager.OnPlayerReady -= PrepareUI;
         }
         
         private void OnChangeState(PlayerManager.State state)
@@ -92,29 +91,39 @@ namespace PlayerPack
             soulField.text = $"x{current}";
         }
 
-        private void UpdateDashStacks(int current)
+        private void Update()
         {
+            if (PlayerManager.PlayerMovement.CurrentDashStacks == PlayerManager.PlayerMovement.MaxDashStacks || !PlayerMovement.CanDash()) return;
+            UpdateDashStacks();
+        }
+
+        private void SpawnDashStacks()
+        {
+            _spawnedDashImages.Clear();
+            foreach (Transform child in dashRect) Destroy(child.gameObject);
+            var startingDashStacks = PlayerManager.PlayerMovement.MaxDashStacks;
+            for (var i = 0; i < startingDashStacks; i++) _spawnedDashImages.Add(Instantiate(_dashStackPrefab, dashRect));
+            LayoutRebuilder.ForceRebuildLayoutImmediate(dashRect);
+        }
+
+        private void UpdateDashStacks()
+        {
+            var current = PlayerManager.PlayerMovement.CurrentDashStacks;
             var childCount = dashRect.childCount;
-            if (childCount != PlayerManager.PlayerMovement.MaxDashStacks)
-            {
-                _spawnedDashImages.Clear();
-                foreach (Transform child in dashRect) Destroy(child.gameObject);
-                var startingDashStacks = PlayerManager.PlayerMovement.MaxDashStacks;
-                for (var i = 0; i < startingDashStacks; i++) _spawnedDashImages.Add(Instantiate(_dashStackPrefab, dashRect));
-                LayoutRebuilder.ForceRebuildLayoutImmediate(dashRect);
-            }
+            var maxDashStacks = PlayerManager.PlayerMovement.MaxDashStacks;
+            if (childCount != maxDashStacks) SpawnDashStacks();
             
-            for (var i = 0; i < dashRect.childCount; i++)
+            for (var i = 0; i < maxDashStacks; i++)
             {
                 var child = _spawnedDashImages[i];
                 
-                if (i + 1 > current)
+                if (i > current)
                 {
                     child.fillAmount = 0;
                     continue;
                 }
 
-                if (i + 1 == current)
+                if (i == current)
                 {
                     child.fillAmount = PlayerManager.PlayerMovement.GetDashProgress();
                     continue;

@@ -17,7 +17,7 @@ namespace StagePack
     {
         [SerializeField] private ERegionType regionType;
         [SerializeField] private EThemeType regionTheme;
-        [SerializeField] private List<StructurePair> structures;
+        [SerializeField] private List<StructureGenerationData> structures;
         [SerializeField] private List<SoStageEffect> uniqueEffects;
         [SerializeField] private MinMax soulToCoinRatioPerDiff;
         [SerializeField] private MinMax soulToCoinRatioBase;
@@ -100,9 +100,10 @@ namespace StagePack
             var positions = new List<Vector2Int>();
             foreach (var pair in structures)
             {
-                foreach (var structure in pair.GetStructures())
+                foreach (var structure in pair.GetStructures(worldSize))
                 {
                     var tries = 0;
+                    const int maxTries = 10;
                     Vector2Int position;
                     do
                     {
@@ -110,7 +111,8 @@ namespace StagePack
                         var y = Random.Range(1, worldSize.y - 1);
                         position = new Vector2Int(x, y);
                         tries++;
-                    } while (!isValid(position) || tries > 10);
+                    } while (!isValid(position, pair) || tries > maxTries);
+                    if (tries + 1 == maxTries) continue;
                     positions.Add(position);
                     list.Add((position, structure));
                 }
@@ -118,9 +120,9 @@ namespace StagePack
 
             return list;
 
-            bool isValid(Vector2Int position)
+            bool isValid(Vector2Int position, StructureGenerationData data)
             {
-                return positions.All(pos => pos != position && !(Vector2.Distance(pos, position) <= 2));
+                return !positions.Contains(position);
             }
         }
         
@@ -129,10 +131,7 @@ namespace StagePack
         {
             var result = soulCountBase.RandomInt();
             var diff = (int)difficulty;
-            for (var i = 0; i < diff; i++)
-            {
-                result += soulCountPerDiff.RandomInt();
-            }
+            for (var i = 0; i < diff; i++) result += soulCountPerDiff.RandomInt();
 
             return result;
         }
@@ -183,18 +182,16 @@ namespace StagePack
         }
 
         [System.Serializable]
-        public struct StructurePair
+        public struct StructureGenerationData
         {
             [SerializeField] private SoStructure structure;
-            [SerializeField] private MinMax count;
-
-            public List<SoStructure> GetStructures()
+            [SerializeField] private MinMax countPerSquare;
+            
+            public List<SoStructure> GetStructures(Vector2Int worldSize)
             {
                 var list = new List<SoStructure>();
-                for (var i = 0; i < count.RandomInt(); i++)
-                {
-                    list.Add(structure);
-                }
+                var count = worldSize.x * worldSize.y * countPerSquare.RandomFloat();
+                for (var i = 0; i < count; i++) list.Add(structure);
 
                 return list;
             }

@@ -24,7 +24,7 @@ MonoBehaviour:
   - statType: 1
     statValue: 75
   - statType: 2
-    statValue: 3
+    statValue: 2
   - statType: 3
     statValue: 3
   - statType: 4

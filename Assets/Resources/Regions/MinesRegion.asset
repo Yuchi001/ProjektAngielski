@@ -16,13 +16,13 @@ MonoBehaviour:
   regionTheme: 0
   structures:
   - structure: {fileID: 11400000, guid: d44a612a9d19e544fa2259f2bd617209, type: 2}
-    count:
-      min: 1
-      max: 2
+    countPerSquare:
+      min: 0.01
+      max: 0.005
   - structure: {fileID: 11400000, guid: f30d9f681a327fc4d82283fe672a159e, type: 2}
-    count:
-      min: 1
-      max: 2
+    countPerSquare:
+      min: 0.001
+      max: 0.0005
   uniqueEffects: []
   soulToCoinRatioPerDiff:
     min: 0
@@ -72,9 +72,9 @@ MonoBehaviour:
   bottomRightCornerTile: {fileID: 11400000, guid: a2b69306b9c24de4daecbdb520fff797, type: 2}
   bottomLeftCornerTile: {fileID: 11400000, guid: adb348b368df3f24e9da375b383f87dd, type: 2}
   averageWorldSizeX:
-    min: 10
-    max: 20
+    min: 50
+    max: 100
   averageWorldSizeY:
-    min: 10
-    max: 20
+    min: 50
+    max: 100
   backgroundSprite: {fileID: -954555875, guid: 2f82523736271b046ae94cc682d4d558, type: 3}

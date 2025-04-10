@@ -6,8 +6,8 @@ namespace UIPack
 {
     public abstract class UIBase : MonoBehaviour
     {
-        [SerializeField] private float animTime = 0.3f;
-        [SerializeField] private bool useAnim = false;
+        [SerializeField] protected float animTime = 0.3f;
+        [SerializeField] protected bool useAnim = false;
         public bool Open => gameObject != null && gameObject.activeSelf;
         protected string Key { get; private set; }
         

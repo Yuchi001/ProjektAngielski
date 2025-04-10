@@ -159,7 +159,7 @@ namespace PlayerPack
             PlayerItemManager.AddItem(PickedCharacter.StartingItem, 1);
 
             if (init) return;
-            PlayerUIManager.RefreshUI();
+            PlayerUIManager.PrepareUI();
         }
         
         public static void SetPlayerState(State state)

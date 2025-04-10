@@ -19,6 +19,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         protected override List<EItemSelfStatType> UsedStats { get; } = new()
         {
             EItemSelfStatType.ProjectileScale,
+            EItemSelfStatType.ProjectilesCount,
             EItemSelfStatType.Spread
         };
 

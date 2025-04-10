@@ -71,17 +71,6 @@ namespace PlayerPack
                 this.limit = limit;
                 return this;
             }
-
-            public Stat AddDependency(EPlayerStatType stat, float factor)
-            {
-                _dependencies.Add((stat, factor));
-                return this;
-            }
-
-            public List<EPlayerStatType> GetDependencies()
-            {
-                return new List<EPlayerStatType>(_dependencies.Select(d => d.stat));
-            }
         }
     }
 }

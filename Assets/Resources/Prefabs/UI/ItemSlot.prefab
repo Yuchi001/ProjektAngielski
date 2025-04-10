@@ -149,7 +149,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 2
 --- !u!1 &2591128498095557772
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,6 +299,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a06da1d0db244186a5ddcfafd44e4dcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dragColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.3}
+  _tonedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  _disabledColor: {r: 0.35, g: 0.35, b: 0.35, a: 1}
+  frameImage: {fileID: 1060851049269832407}
 --- !u!114 &5389370421060885446
 MonoBehaviour:
   m_ObjectHideFlags: 0

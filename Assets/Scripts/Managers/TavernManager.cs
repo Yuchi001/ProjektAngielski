@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MainCameraPack;
-using MapGeneratorPack;
 using PlayerPack;
 using PlayerPack.SO;
 using SavePack;
@@ -42,7 +41,7 @@ namespace Managers
             var allCharacters = Resources.LoadAll<SOCharacterStructure>("Structures/Characters").ToList();
             var doorStructure = Resources.Load<SoDoorStructure>("Structures/DoorStructure");
 
-            StructureManager.SpawnStructure(doorStructure, doorSpawnPos.position, transform);
+            StructureManager.SpawnStructure(doorStructure, doorSpawnPos.position, GameManager.EScene.TAVERN);
 
             var positions = characterStructuresSpawnPositions.Select(e => e.position).ToList();
             foreach (var character in allCharacters)
@@ -50,7 +49,7 @@ namespace Managers
                 var randomIndex = Random.Range(0, positions.Count);
                 var randomPos = positions[randomIndex];
                 if (character.Is(PlayerManager.PickedCharacter)) PlayerManager.SetPosition(randomPos + new Vector3(0, 0.25f));
-                else StructureManager.SpawnStructure(character, randomPos, transform);
+                else StructureManager.SpawnStructure(character, randomPos, GameManager.EScene.TAVERN);
                 positions.Remove(randomPos);
             }
         }

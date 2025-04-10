@@ -53,3 +53,11 @@ MonoBehaviour:
     maximum: 0
     minimum: 0.1
     mod: -0.09
+  - selfStatType: 4
+    statValue: 4
+    canUpgrade: 1
+    useMax: 1
+    useMin: 0
+    maximum: 12
+    minimum: 0
+    mod: 1

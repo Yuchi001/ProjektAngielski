@@ -39,12 +39,12 @@ namespace MapPack
             }
 
             var shopStructure = Resources.Load<SoShop>("Structures/Shop");
-            StructureManager.SpawnStructure(shopStructure, shopPosition.position, transform);
+            StructureManager.SpawnStructure(shopStructure, shopPosition.position, GameManager.EScene.MAP);
 
             var missionStructure = Resources.Load<SoMissionStructure>("Structures/MissionStructure");
             foreach (var mission in _missions)
             {
-                var missionBase = StructureManager.SpawnStructure(missionStructure, mission.MapPosition, transform);
+                var missionBase = StructureManager.SpawnStructure(missionStructure, mission.MapPosition, GameManager.EScene.MAP);
                 missionBase.SetData(mission);
             }
         }

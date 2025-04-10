@@ -1,5 +1,4 @@
 ﻿using Managers;
-using MapGeneratorPack;
 using PlayerPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
@@ -28,10 +27,17 @@ namespace StructurePack.SO
             PlayerSoulManager.AddSouls(-price);
             data.MultiplyCurrentPrice(transactionMultiplier);
             
-            if (structureBase.WasUsed) ZoneGeneratorManager.ExpandZone(data.GetKey(), scaleMultiplier);
-            else ZoneGeneratorManager.GenerateZone(structureBase.transform.position, data.GetKey(), baseZoneScale);
+            if (structureBase.WasUsed) ZoneGeneratorManager.ExpandZone(data.Key, scaleMultiplier);
+            else ZoneGeneratorManager.GenerateZone(structureBase.transform.position, data.Key, baseZoneScale);
 
             return true;
+        }
+
+        public void SetZone(StructureBase structureBase)
+        {
+            var data = structureBase.GetData<VisionStructureData>();
+            data.InitPrice(baseCost + GameManager.StageCount * stageBaseMultiplier, structureBase.GetInstanceID());
+            structureBase.HandleInteraction();
         }
 
         public override string GetInteractionMessage(StructureBase structureBase)
@@ -40,19 +46,20 @@ namespace StructurePack.SO
             if (!data.IsInitialized()) data.Init().InitPrice(baseCost + GameManager.StageCount * stageBaseMultiplier, structureBase.GetInstanceID());
             return base.GetInteractionMessage(structureBase).Replace("$x$", data.GetCurrentPrice().ToString());
         }
-
+        
         private class VisionStructureData : BaseStructureData<VisionStructureData>
         {
             private int _currentPrice;
-            private int _instanceID;
+            private string _key;
 
-            public string GetKey() => $"VISION_{_instanceID}";
+            public string Key => _key;
+            
             public int GetCurrentPrice() => _currentPrice;
 
             public void InitPrice(int price, int instanceID)
             {
                 _currentPrice = price;
-                _instanceID = instanceID;
+                _key = $"VISION_{instanceID}";
             }
 
             public void MultiplyCurrentPrice(int multiplier)

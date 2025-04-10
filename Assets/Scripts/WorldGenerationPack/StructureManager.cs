@@ -6,6 +6,7 @@ using Managers.Other;
 using StructurePack;
 using StructurePack.SO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace WorldGenerationPack
 {
@@ -61,9 +62,24 @@ namespace WorldGenerationPack
             return Instance._interactionHandler.FocusedStructure == structureBase.GetInstanceID();
         }
 
-        public static StructureBase SpawnStructure(SoStructure structure, Vector2 position, Transform parent = null)
+        public static StructureBase SpawnStructure(SoStructure structure, Vector2 position)
         {
-            return Instantiate(Instance._structurePrefab, position, Quaternion.identity, parent).Setup(structure);
+            return Instantiate(Instance._structurePrefab, position, Quaternion.identity).Setup(structure);
+        }
+        
+        public static StructureBase SpawnStructure(SoStructure structure, Vector2 position, Scene scene)
+        {
+            var spawnedStructure = Instantiate(Instance._structurePrefab, position, Quaternion.identity).Setup(structure);
+            SceneManager.MoveGameObjectToScene(spawnedStructure.gameObject, scene);
+            return spawnedStructure;
+        }
+        
+        public static StructureBase SpawnStructure(SoStructure structure, Vector2 position, GameManager.EScene sceneType)
+        {
+            var scene = SceneManager.GetSceneByBuildIndex((int)sceneType);
+            var spawnedStructure = Instantiate(Instance._structurePrefab, position, Quaternion.identity).Setup(structure);
+            SceneManager.MoveGameObjectToScene(spawnedStructure.gameObject, scene);
+            return spawnedStructure;
         }
 
         public static SoStructure GetStructure(Func<SoStructure, bool> condition)

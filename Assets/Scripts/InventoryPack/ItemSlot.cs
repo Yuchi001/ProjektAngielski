@@ -18,9 +18,9 @@ namespace InventoryPack
         private Image _itemImage;
         private Image _backgroundImage;
         private int _level;
-        [SerializeField] private Color _dragColor = new(0.5f, 0.5f, 0.5f, 0.3f);
-        [SerializeField] private Color _tonedColor = new(0.5f, 0.5f, 0.5f, 1);
-        [SerializeField] private Color _disabledColor = new(0.35f, 0.35f, 0.35f, 1);
+        [SerializeField] protected Color dragItemColor;
+        [SerializeField] protected Color defaultItemColor;
+        [SerializeField] protected Color disabledItemColor;
         private bool _enabled = true;
         private Box _box;
         private ItemInformationHover _informationPrefab;
@@ -43,7 +43,7 @@ namespace InventoryPack
             _backgroundImage = transform.GetChild(1).GetComponent<Image>();
             Index = index;
             _itemImage.color = Color.clear;
-            _backgroundImage.color = enabled ? _tonedColor : _disabledColor;
+            _backgroundImage.color = enabled ? defaultItemColor : disabledItemColor;
             var informationPrefab = GameManager.GetPrefab<ItemInformationHover>(PrefabNames.ItemInformationUI);
             _informationOpenStrategy = new CloseAllOfTypeOpenStrategy<ItemInformationHover>(informationPrefab, true);
             _informationCloseStrategy = new DestroyCloseStrategy(INFORMATION_UI_KEY);
@@ -61,7 +61,7 @@ namespace InventoryPack
         public void SetEnabled(bool enabled)
         {
             _enabled = enabled;
-            _backgroundImage.color = enabled ? _tonedColor : _disabledColor;
+            _backgroundImage.color = enabled ? defaultItemColor : disabledItemColor;
             if (!enabled) SetItem(null, -1);
         }
 
@@ -70,7 +70,7 @@ namespace InventoryPack
             _level = level;
             _current = inventoryItem ? Instantiate(inventoryItem) : null;
             _itemImage.sprite = _current ? _current.ItemSprite : null;
-            _itemImage.color = _current ? _tonedColor : Color.clear;
+            _itemImage.color = _current ? defaultItemColor : Color.clear;
         }
 
         public (SoInventoryItem item, int level) ViewItem()
@@ -93,7 +93,7 @@ namespace InventoryPack
             if (_current == null || !enabled || !_box.CanInteract()) return;
             
             _dragItemSlot.BeginDrag();
-            _itemImage.color = _dragColor;
+            _itemImage.color = dragItemColor;
             _drag = true;
             OnPointerExit(eventData);
         }
@@ -107,7 +107,7 @@ namespace InventoryPack
                 _dragItemSlot.EndDrag(itemSlot.Index, itemSlot.GetComponentInParent<Box>());
             else _dragItemSlot.EndDrag();
             
-            _itemImage.color = _current ? _tonedColor : Color.clear;
+            _itemImage.color = _current ? defaultItemColor : Color.clear;
             _drag = false;
 
             if (rayCastHitGO == null) PlayerManager.PlayerItemManager.RemoveItemIntoWorldAtSlot(Index);

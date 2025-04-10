@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Managers;
 using Managers.Other;
-using MapGeneratorPack;
 using PlayerPack;
+using StructurePack.SO;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -30,11 +30,6 @@ namespace WorldGenerationPack
         private Zone _zonePrefab;
 
         private Dictionary<string, Zone> _zoneDict;
-
-        public static void GenerateBaseZone()
-        {
-            GenerateZone(PlayerManager.PlayerPos, "MAIN", Instance.baseZoneScale);
-        }
 
         public static bool ContainsEntity(Vector2 pos)
         {

@@ -42,17 +42,16 @@ namespace PlayerPack
         public delegate void PlayerDashIncrement(int value);
         public static event PlayerDashIncrement OnPlayerDashIncrement;
 
-        public delegate void PlayerDashDelegate(int currentDashStacks);
-        public static event PlayerDashDelegate OnPlayerDash;
-
         private void Awake()
         {
             PlayerManager.OnPlayerReady += Init;
+            PlayerManager.OnChangeState += OnChangeState;
         }
 
         private void OnDisable()
         {
             PlayerManager.OnPlayerReady -= Init;
+            PlayerManager.OnChangeState -= OnChangeState;
         }
 
         private void Init()
@@ -61,6 +60,14 @@ namespace PlayerPack
             _dashTimer = dashCooldown;
             CurrentDashStacks = MaxDashStacks;
             _playerDashAnim = GetComponent<PlayerDashAnim>();
+        }
+
+        public static bool CanDash() => PlayerManager.CurrentState == PlayerManager.State.ON_MISSION;
+
+        private void OnChangeState(PlayerManager.State state)
+        {
+            CurrentDashStacks = MaxDashStacks;
+            _dashTimer = dashCooldown;
         }
         
         public float GetDashProgress()
@@ -126,7 +133,7 @@ namespace PlayerPack
 
         private void ManageDash()
         {
-            if (PlayerManager.CurrentState == PlayerManager.State.IN_TAVERN) return;
+            if (!CanDash()) return;
             
             if (DuringDash)
             {
@@ -158,7 +165,6 @@ namespace PlayerPack
             CurrentDashStacks--;
             rb2d.velocity = rb2d.velocity.normalized * dashForceMultiplier;
             PlayerHealth.Invincible = true;
-            OnPlayerDash?.Invoke(CurrentDashStacks);
         }
     }
 }

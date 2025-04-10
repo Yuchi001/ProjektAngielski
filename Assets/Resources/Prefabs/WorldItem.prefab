@@ -53,7 +53,9 @@ MonoBehaviour:
   pickUpDistance: 0.75
   getDistance: 0.19
   movementSpeed: 10
-  throwSpeed: 3
+  throwSpeed:
+    min: 2
+    max: 4
   throwSlowAcceleration: 6
   movementAcceleration: 5
   pickUpCooldown: 0.75

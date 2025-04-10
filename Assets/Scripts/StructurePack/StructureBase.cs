@@ -1,7 +1,6 @@
 ﻿using System;
 using DamageIndicatorPack;
 using Managers;
-using MapGeneratorPack;
 using PlayerPack;
 using StructurePack.SO;
 using TMPro;
@@ -145,7 +144,6 @@ namespace StructurePack
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.CompareTag("Player") || (WasUsed && !_structureData.Reusable)) return;
-            
             
             StructureManager.AddToQueue(this);
         }

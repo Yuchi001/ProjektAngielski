@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using MainCameraPack;
 using Managers;
-using MapGeneratorPack;
 using PlayerPack;
 using PlayerPack.Enums;
 using PlayerPack.SO;
@@ -24,7 +23,6 @@ namespace StructurePack.SO
     public class SOCharacterStructure : SoStructure
     {
         [SerializeField] private SoCharacter character;
-        [SerializeField] private RuntimeAnimatorController playerAnimController;
 
         public bool Is(SoCharacter c)
         {
@@ -92,7 +90,7 @@ namespace StructurePack.SO
                 if (a is SOCharacterStructure so) return so.character.ID == asCharacter.ID;
                 return false;
             });
-            StructureManager.SpawnStructure(newStructure, structureBase.transform.position);
+            StructureManager.SpawnStructure(newStructure, structureBase.transform.position, structureBase.gameObject.scene);
             Destroy(structureBase.gameObject);
         }
         
@@ -114,7 +112,6 @@ namespace StructurePack.SO
             newCharacterStructureAsset.structureName = structureName;
             newCharacterStructureAsset.structureScale = 1f;
             newCharacterStructureAsset.structureSprite = character.CharacterSprite;
-            newCharacterStructureAsset.playerAnimController = animController;
             
             const string folderPath = "Assets/Resources/Structures/Characters";
             var assetPath = Path.Combine(folderPath, $"{structureName}.asset");

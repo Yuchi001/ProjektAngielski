@@ -1,9 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Utils;
 using Random = UnityEngine.Random;
 
-namespace MapGeneratorPack
+namespace WorldGenerationPack
 {
     [RequireComponent(typeof(SpriteRenderer))]
     public class Zone : MonoBehaviour
@@ -35,9 +34,11 @@ namespace MapGeneratorPack
             percentage *= 2;
             var randomDivision = Random.Range(0.01f, 0.99f);
             var scale = transform.localScale;
-            scale.x *= 1 + percentage * randomDivision;
-            scale.y *= 1 + percentage * (1 - randomDivision);
-            transform.LeanScale(scale, 0.3f).setEaseInBack().setEaseOutBack();
+            var newScale = scale;
+            newScale.x *= 1 + percentage * randomDivision;
+            newScale.y *= 1 + percentage * (1 - randomDivision);
+
+            transform.LeanScale(newScale, 0.3f).setEaseInBack().setEaseOutBack();
         }
 
         public void SetSize(float scale, bool anim)

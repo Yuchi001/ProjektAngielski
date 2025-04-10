@@ -13,7 +13,8 @@ namespace PlayerPack
 {
     public class PlayerItemManager : Box
     {
-        [SerializeField] private int functionalSlotIndexEnd;
+        [SerializeField] private Color activeItemFrameColor;
+        [SerializeField] private Color passiveItemFrameColor;
         
         private readonly List<ItemLogicBase> _currentItems = new();
         private List<SoInventoryItem> _allItems = new();
@@ -25,7 +26,6 @@ namespace PlayerPack
 
         private static int CAPACITY => PlayerManager.PlayerStatsManager.GetStatAsInt(EPlayerStatType.Capacity);
         private GameObject ITEMS_GRID => gridDataList[0].Grid.gameObject;
-        private GameObject BACKPACK_GRID => gridDataList[1].Grid.gameObject;
 
         private bool _canInteract;
 
@@ -74,7 +74,7 @@ namespace PlayerPack
             var index = base.AddItem(inventoryItem, level);
             if (index == -1) return -1;
             
-            if (index < functionalSlotIndexEnd) AddItemLogic(inventoryItem, level);
+            if (index < CAPACITY) AddItemLogic(inventoryItem, level);
             return index;
         }
 
@@ -84,6 +84,7 @@ namespace PlayerPack
             foreach (var slot in _itemSlots)
             {
                 slot.SetItem(null, -1);
+                //TODO: Set color feature
             }
         }
 
@@ -92,7 +93,7 @@ namespace PlayerPack
             DestroyAllItems();
             foreach (var slot in _itemSlots)
             {
-                if (slot.Index >= functionalSlotIndexEnd) return; 
+                if (slot.Index >= CAPACITY) return; 
                 var itemPair = slot.ViewItem();
                 if (itemPair.item == null) continue;
                 AddItemLogic(itemPair.item, itemPair.level);

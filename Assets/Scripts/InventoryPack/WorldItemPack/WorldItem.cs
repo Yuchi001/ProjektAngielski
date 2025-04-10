@@ -19,7 +19,7 @@ namespace InventoryPack.WorldItemPack
         [SerializeField] private float pickUpDistance = 0.5f;
         [SerializeField] private float getDistance = 0.1f;
         [SerializeField] private float movementSpeed = 3f;
-        [SerializeField] private float throwSpeed = 3f;
+        [SerializeField] private MinMax throwSpeed;
         [SerializeField] private float throwSlowAcceleration = 3f;
         [SerializeField] private float movementAcceleration = 1f;
         [SerializeField] private float pickUpCooldown = 0.75f;
@@ -68,7 +68,7 @@ namespace InventoryPack.WorldItemPack
             base.OnGet(so);
 
             _ready = false;
-            _currentThrowSpeed = throwSpeed;
+            _currentThrowSpeed = throwSpeed.RandomFloat();
             _spriteRenderer.enabled = true;
             _chasePlayer = false;
             _pickedUp = false;

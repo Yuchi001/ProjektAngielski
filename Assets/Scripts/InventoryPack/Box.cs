@@ -11,6 +11,7 @@ namespace InventoryPack
     public abstract class Box : UIBase
     {
         [SerializeField] protected List<BoxGridData> gridDataList;
+        [SerializeField] 
 
         protected readonly List<ItemSlot> _itemSlots = new();
         public Canvas CurrentCanvas { get; private set; }
