@@ -51,8 +51,12 @@ namespace WorldGenerationPack
                     var current = new Vector3Int(x, y, 0);
                     var spawnPos = (Vector3)current - offset;
                     var structurePair = missionData.Structures.FirstOrDefault(p => p.position == (Vector2Int)current);
-                    
-                    if (exitPosition == (Vector2Int)current) StructureManager.SpawnStructure(exitStructure, exitPosition, GameManager.EScene.GAME);
+
+                    if (exitPosition == (Vector2Int)current)
+                    {
+                        var structureBase = StructureManager.SpawnStructure(exitStructure, exitPosition, GameManager.EScene.GAME);
+                        exitStructure.SetMission(structureBase, missionData);
+                    }
                     else if (visionPlacements.Contains((Vector2Int)current)) placedVisions.Add(StructureManager.SpawnStructure(visionStructure, spawnPos, GameManager.EScene.GAME));
                     else if (structurePair != default) StructureManager.SpawnStructure(structurePair.structure, spawnPos, GameManager.EScene.GAME);
                     

@@ -15,7 +15,7 @@ MonoBehaviour:
   structureName: Mission Exit
   structureType: 4
   structureDescription: 
-  structureSprite: {fileID: 0}
+  structureSprite: {fileID: 21300000, guid: c336f14bf07e28f44bf11ef9bd82c39d, type: 3}
   activeSprite: {fileID: 0}
   usedStructureSprite: {fileID: 0}
   structureScale: 1

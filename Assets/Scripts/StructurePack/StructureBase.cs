@@ -37,8 +37,8 @@ namespace StructurePack
         private ICloseStrategy _closeStrategy;
 
         private int _interactionCount;
-        
-        public bool CanInteract { get; private set; }
+
+        public bool CanInteract { get; private set; } = true;
         
         private object _data;
         

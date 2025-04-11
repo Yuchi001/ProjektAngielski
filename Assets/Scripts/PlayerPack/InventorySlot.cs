@@ -5,6 +5,7 @@ using InventoryPack;
 using ItemPack.SO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace PlayerPack
@@ -44,6 +45,12 @@ namespace PlayerPack
         {
             base.SetItem(inventoryItem, level);
             levelText.text = inventoryItem == null ? "" : level.ToString();
+        }
+
+        protected override void OnDragStart(PointerEventData eventData)
+        {
+            base.OnDragStart(eventData);
+            levelText.text = "";
         }
 
         public void SetSlotState(EState state)

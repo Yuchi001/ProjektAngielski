@@ -92,6 +92,11 @@ namespace InventoryPack
         {
             if (_current == null || !enabled || !_box.CanInteract()) return;
             
+            OnDragStart(eventData);
+        }
+
+        protected virtual void OnDragStart(PointerEventData eventData)
+        {
             _dragItemSlot.BeginDrag();
             _itemImage.color = dragItemColor;
             _drag = true;
@@ -102,6 +107,11 @@ namespace InventoryPack
         {
             if (IsEmpty() || !_enabled || !_box.CanInteract()) return;
             
+            OnDragEnd(eventData);
+        }
+
+        protected virtual void OnDragEnd(PointerEventData eventData)
+        {
             var rayCastHitGO = eventData.pointerCurrentRaycast.gameObject;
             if (rayCastHitGO && rayCastHitGO.TryGetComponent(out ItemSlot itemSlot) && itemSlot.IsEnabled())
                 _dragItemSlot.EndDrag(itemSlot.Index, itemSlot.GetComponentInParent<Box>());
