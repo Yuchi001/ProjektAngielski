@@ -123,8 +123,6 @@ namespace ItemPack.WeaponPack.Editor
             
             serializedObject.ApplyModifiedProperties();
             
-            serializedObject.ApplyModifiedProperties();
-            
             EditorUtility.SetDirty(_soInventoryItem);
         }
     }

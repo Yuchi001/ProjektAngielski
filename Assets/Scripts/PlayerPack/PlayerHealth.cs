@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using AudioPack;
 using DamageIndicatorPack;
@@ -45,10 +46,21 @@ namespace PlayerPack
 
         private void Awake()
         {
-            StartCoroutine(StartingInvincible());
             OnGet(null);
+
+            PlayerManager.OnChangeState += OnChangeState;
+        }
+        
+        private void OnDisable()
+        {
+            PlayerManager.OnChangeState -= OnChangeState;
         }
 
+        private void OnChangeState(PlayerManager.State state)
+        {
+            StartCoroutine(StartingInvincible());
+        }
+        
         private IEnumerator StartingInvincible()
         {
             Invincible = true;

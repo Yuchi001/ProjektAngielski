@@ -4806,8 +4806,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1987322603
-  m_SortingLayer: 0
+  m_SortingLayerID: -1541775121
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -4862,6 +4862,6 @@ SortingGroup:
   m_GameObject: {fileID: 4362009056319410882}
   m_Enabled: 1
   m_SortingLayerID: -1930559287
-  m_SortingLayer: -2
+  m_SortingLayer: -3
   m_SortingOrder: -999
   m_SortAtRoot: 0

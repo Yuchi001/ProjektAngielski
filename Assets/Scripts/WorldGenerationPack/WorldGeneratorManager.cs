@@ -33,18 +33,29 @@ namespace WorldGenerationPack
             background.sprite = missionData.BackgroundSprite;   
             var worldSize = missionData.WorldSize;
             var offset = new Vector3Int(worldSize.x / 2, worldSize.y / 2, 0);
+            
             var visionStructure = Resources.Load<SoVisionStructure>("Structures/Vision");
             var visionPlacements = PlaceVision(worldSize, missionData.Structures.Select(s => s.position));
             var placedVisions = new List<StructureBase>();
+
+            var exitStructure = Resources.Load<SoMissionExitStructure>("Structures/MissionExitStructure");
+            var exitPosition = new Vector2Int(
+                Random.Range(3, worldSize.x - 3),
+                Random.Range(3, worldSize.y - 3)
+            );
             for (var y = 0; y < worldSize.y; y++)
             {
                 for (var x = 0; x < worldSize.x; x++)
                 {
                     var tile = missionData.GetTile(x, y);
                     var current = new Vector3Int(x, y, 0);
+                    var spawnPos = (Vector3)current - offset;
                     var structurePair = missionData.Structures.FirstOrDefault(p => p.position == (Vector2Int)current);
-                    if (visionPlacements.Contains((Vector2Int)current)) placedVisions.Add(StructureManager.SpawnStructure(visionStructure, (Vector3)current - offset, GameManager.EScene.GAME));
-                    else if (structurePair != default) StructureManager.SpawnStructure(structurePair.structure, (Vector3)current - offset, GameManager.EScene.GAME);
+                    
+                    if (exitPosition == (Vector2Int)current) StructureManager.SpawnStructure(exitStructure, exitPosition, GameManager.EScene.GAME);
+                    else if (visionPlacements.Contains((Vector2Int)current)) placedVisions.Add(StructureManager.SpawnStructure(visionStructure, spawnPos, GameManager.EScene.GAME));
+                    else if (structurePair != default) StructureManager.SpawnStructure(structurePair.structure, spawnPos, GameManager.EScene.GAME);
+                    
                     Instance.tilemap.SetTile(current - offset, tile);
                 }
             }

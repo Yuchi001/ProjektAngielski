@@ -42,6 +42,9 @@ TagManager:
   - name: Floor
     uniqueID: 2364408009
     locked: 0
+  - name: Particles
+    uniqueID: 2753192175
+    locked: 0
   - name: Projectiles
     uniqueID: 1892697213
     locked: 0

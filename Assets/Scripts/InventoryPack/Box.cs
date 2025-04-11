@@ -11,19 +11,19 @@ namespace InventoryPack
     public abstract class Box : UIBase
     {
         [SerializeField] protected List<BoxGridData> gridDataList;
-        [SerializeField] 
 
         protected readonly List<ItemSlot> _itemSlots = new();
         public Canvas CurrentCanvas { get; private set; }
-        
-        private void Awake()
+
+        protected abstract void Awake();
+
+        protected void InitBox(ItemSlot slotPrefab = null)
         {
             DestroySlots();
             CurrentCanvas = GetComponentInParent<Canvas>();
             
-            var prefab = GameManager.GetPrefab<ItemSlot>(PrefabNames.ItemSlot);
+            var prefab = slotPrefab ? slotPrefab : GameManager.GetPrefab<ItemSlot>(PrefabNames.ItemSlot);
             SpawnSlots(prefab);
-            Init();
         }
 
         private void SpawnSlots(ItemSlot prefab)
@@ -73,8 +73,6 @@ namespace InventoryPack
                 }
             }
         }
-
-        protected abstract void Init();
 
         public void SwitchItems(int current, int target)
         {

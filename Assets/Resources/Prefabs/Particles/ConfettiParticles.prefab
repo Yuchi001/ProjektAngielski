@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3324939141604835074}
   - component: {fileID: 1897219968927282808}
   - component: {fileID: -6591812738546476801}
-  - component: {fileID: -8050914534410650249}
   m_Layer: 0
   m_Name: ConfettiParticles
   m_TagString: Untagged
@@ -4864,8 +4863,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1987322603
-  m_SortingLayer: 0
+  m_SortingLayerID: -1541775121
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -4911,15 +4910,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed3144fe40ae4620a4c205a730af6be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!210 &-8050914534410650249
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 112026594148288758}
-  m_Enabled: 1
-  m_SortingLayerID: -1930559287
-  m_SortingLayer: -2
-  m_SortingOrder: -999
-  m_SortAtRoot: 0

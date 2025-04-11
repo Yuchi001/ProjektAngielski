@@ -200,6 +200,11 @@ namespace PlayerPack
             PlayerInput.actions.Enable();
         }
 
+        public static void StartPlayerExitSequence(Action rewardPlayerAction)
+        {
+            
+        }
+
         public static void ManagePlayerDeath()
         {
             PlayerHealth.enabled = false;

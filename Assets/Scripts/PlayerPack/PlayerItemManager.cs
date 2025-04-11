@@ -5,6 +5,8 @@ using InventoryPack;
 using InventoryPack.WorldItemPack;
 using ItemPack;
 using ItemPack.SO;
+using Managers;
+using Managers.Other;
 using PlayerPack.Enums;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -29,8 +31,11 @@ namespace PlayerPack
 
         private bool _canInteract;
 
-        protected override void Init()
+        protected override void Awake()
         {
+            var slotPrefab = GameManager.GetPrefab<InventorySlot>(PrefabNames.InventorySlot);
+            InitBox(slotPrefab);
+            
             _allItems = Resources.LoadAll<SoInventoryItem>("InventoryItems").Select(Instantiate).ToList();
 
             var weightItemList = _allItems.Select(item => (weight: 1f / item.ItemPrice, item: item)).ToList();
@@ -39,7 +44,7 @@ namespace PlayerPack
 
             _canInteract = true;
         }
-
+        
         private void Update()
         {
             if (!Input.GetKeyDown(KeyCode.I)) return;
@@ -84,7 +89,8 @@ namespace PlayerPack
             foreach (var slot in _itemSlots)
             {
                 slot.SetItem(null, -1);
-                //TODO: Set color feature
+                var invSlot = (InventorySlot)slot;
+                invSlot.SetSlotState(slot.Index < CAPACITY ? InventorySlot.EState.ACTIVE : InventorySlot.EState.PASSIVE);
             }
         }
 

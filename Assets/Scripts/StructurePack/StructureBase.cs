@@ -84,6 +84,8 @@ namespace StructurePack
 
         public void HandleInteraction()
         {
+            if (!CanInteract) return;
+            
             var success = _structureData.OnInteract(this);
             if (!success)
             {
@@ -143,7 +145,7 @@ namespace StructurePack
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (!other.CompareTag("Player") || (WasUsed && !_structureData.Reusable)) return;
+            if (!other.CompareTag("Player") || (WasUsed && !_structureData.Reusable) || !CanInteract) return;
             
             StructureManager.AddToQueue(this);
         }

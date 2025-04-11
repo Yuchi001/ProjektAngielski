@@ -15,6 +15,7 @@
         public const string ExplosionBase = "ExplosionBase";
         public const string DamageIndicatorHolder = "DamageIndicatorHolder";
         public const string ItemSlot = "ItemSlot";
+        public const string InventorySlot = "InventorySlot";
         public const string ItemInformationUI = "ItemInformationUI";
         public const string WorldItem = "WorldItem";
         public const string EnchantmentDisplayUI = "EnchantmentDisplayUI";

@@ -18,11 +18,6 @@ namespace Managers
     public class GameManager : MonoBehaviour
     {
         // TODO: przenieś do PlayerMovement, zastąp nowym inputSystem
-        public static KeyCode UpBind => KeyCode.W;
-        public static KeyCode DownBind => KeyCode.S;
-        public static KeyCode LeftBind => KeyCode.A;
-        public static KeyCode RightBind => KeyCode.D;
-        public static KeyCode AcceptBind => KeyCode.O;
         public static KeyCode DeclineBind => KeyCode.K;
 
         private readonly Dictionary<string, GameObject> _prefabs = new();
@@ -97,6 +92,20 @@ namespace Managers
             {
                 SceneManager.UnloadSceneAsync((int)EScene.TAVERN);
                 SceneManager.LoadSceneAsync((int)EScene.MAP, LoadSceneMode.Additive);
+            }, () =>
+            {
+                PlayerManager.SetPlayerState(PlayerManager.State.IN_MAP);
+                PlayerManager.UnlockKeys();
+            });
+        }
+
+        public static void ReturnToMap()
+        {
+            PlayerManager.LockKeys();
+            MainCamera.InOutAnim(0.3f, () =>
+            {
+                SceneManager.UnloadSceneAsync((int)EScene.GAME);
+                SceneManager.LoadSceneAsync((int)EScene.MAP);
             }, () =>
             {
                 PlayerManager.SetPlayerState(PlayerManager.State.IN_MAP);

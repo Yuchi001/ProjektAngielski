@@ -39,7 +39,7 @@ namespace InventoryPack
             _enabled = enabled;
             _dragItemSlot = transform.GetComponentInChildren<DragItemSlot>();
             _dragItemSlot.Setup(this, box);
-            _itemImage = transform.GetChild(transform.childCount - 1).GetComponent<Image>();
+            _itemImage = transform.GetChild(2).GetComponent<Image>();
             _backgroundImage = transform.GetChild(1).GetComponent<Image>();
             Index = index;
             _itemImage.color = Color.clear;
@@ -65,7 +65,7 @@ namespace InventoryPack
             if (!enabled) SetItem(null, -1);
         }
 
-        public void SetItem(SoInventoryItem inventoryItem, int level)
+        public virtual void SetItem(SoInventoryItem inventoryItem, int level)
         {
             _level = level;
             _current = inventoryItem ? Instantiate(inventoryItem) : null;
