@@ -50,7 +50,7 @@ namespace Other
 
         #endregion
 
-        public override void InvokeUpdate(float realDeltaTime)
+        public override void InvokeUpdate()
         {
             if (CheckTimer(SPAWN_TIMER_ID) < spawnTime) return;
 

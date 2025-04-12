@@ -158,6 +158,8 @@ namespace PlayerPack
 
         public void OnDashButtonClicked(InputAction.CallbackContext context)
         {
+            if (context.phase != InputActionPhase.Started) return;
+
             if (CurrentDashStacks == 0 || rb2d.velocity == Vector2.zero) return;
 
             if (CurrentDashStacks == MaxDashStacks) _dashTimer = 0;

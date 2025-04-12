@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AudioPack;
 using InventoryPack.WorldItemPack;
 using ItemPack.SO;
+using Managers.Enums;
 using PlayerPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
@@ -27,6 +29,8 @@ namespace StructurePack.SO
 
         public override bool OnInteract(StructureBase structureBase)
         {
+            AudioManager.PlaySound(ESoundType.Chest);
+            
             var resultItems = new List<SoInventoryItem>();
             var calculatedCash = Random.Range(0, maxCashReward);
             var items = PlayerManager.PlayerItemManager.GetRandomItems(maxWeaponCount);

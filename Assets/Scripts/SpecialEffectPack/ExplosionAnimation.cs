@@ -51,7 +51,7 @@ namespace SpecialEffectPack
             return clip.length / stateInfo.speed - 0.1f;
         }
 
-        public override void InvokeUpdate(float realDelta)
+        public override void InvokeUpdate()
         {
             if (CheckTimer(EXPLOSION_ANIMATION_TIMER_ID) <= GetLifeTime()) return;
             

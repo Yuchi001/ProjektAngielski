@@ -26,7 +26,7 @@ namespace ParticlesPack
             SetTimer(PARTICLE_TIMER_ID);
         }
 
-        public override void InvokeUpdate(float realDeltaTime)
+        public override void InvokeUpdate()
         {
             if (CheckTimer(PARTICLE_TIMER_ID) < _time) return;
             

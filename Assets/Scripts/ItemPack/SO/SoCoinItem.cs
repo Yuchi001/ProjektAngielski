@@ -1,4 +1,6 @@
-﻿using PlayerPack;
+﻿using AudioPack;
+using Managers.Enums;
+using PlayerPack;
 using UnityEngine;
 
 namespace ItemPack.SO
@@ -8,6 +10,7 @@ namespace ItemPack.SO
     {
         public override bool OnPickUp(params int[] paramArray)
         {
+            AudioManager.PlaySound(ESoundType.PickUpGem);
             PlayerManager.PlayerCoinManager.AddCoins(paramArray[0]);
             return true;
         }

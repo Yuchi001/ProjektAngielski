@@ -19,9 +19,9 @@ namespace InventoryPack.WorldItemPack
         [SerializeField] private float pickUpDistance = 0.5f;
         [SerializeField] private float getDistance = 0.1f;
         [SerializeField] private float movementSpeed = 3f;
+        [SerializeField] private float movementAcceleration = 1f;
         [SerializeField] private MinMax throwSpeed;
         [SerializeField] private float throwSlowAcceleration = 3f;
-        [SerializeField] private float movementAcceleration = 1f;
         [SerializeField] private float pickUpCooldown = 0.75f;
         
         private SpriteRenderer _spriteRenderer;
@@ -106,14 +106,16 @@ namespace InventoryPack.WorldItemPack
             _canPickUp = true;
         }
 
-        public override void InvokeUpdate(float realDeltaTime)
+        public override void InvokeUpdate()
         {
+            base.InvokeUpdate();
+            
             if (!_ready) return;
 
             if (_currentThrowSpeed > 0 && !_canPickUp)
             {
-                transform.Translate(_randomDir * (_currentThrowSpeed * realDeltaTime));
-                _currentThrowSpeed -= throwSlowAcceleration * realDeltaTime;
+                _currentThrowSpeed -= throwSlowAcceleration * deltaTime;
+                transform.Translate(_randomDir * (_currentThrowSpeed * deltaTime));
                 return;
             }
             
@@ -132,7 +134,7 @@ namespace InventoryPack.WorldItemPack
             if (_pickedUp == false) StartCoroutine(PickUp());
             if (_chasePlayer == false) return;
 
-            _currentMovementSpeed += movementAcceleration * realDeltaTime;
+            _currentMovementSpeed += movementAcceleration * deltaTime;
             transform.MoveTowards(playerPos, _currentMovementSpeed);
             if (dist >= getDistance) return;
 

@@ -41,7 +41,7 @@ namespace DamageIndicatorPack
             SetTimer(DAMAGE_INDICATOR_TIMER_ID);
         }
 
-        public override void InvokeUpdate(float realDeltaTime)
+        public override void InvokeUpdate()
         {
             if (CheckTimer(DAMAGE_INDICATOR_TIMER_ID) < lifeTime) return;
             

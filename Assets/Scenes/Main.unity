@@ -276,6 +276,8 @@ MonoBehaviour:
     SoundType: 11
   - AudioClip: {fileID: 8300000, guid: c2332b54d5741aa44b29846bc89338dd, type: 3}
     SoundType: 13
+  - AudioClip: {fileID: 8300000, guid: 3eb74e4c38fce814b9f9ef23c23e1b77, type: 3}
+    SoundType: 14
   themes:
   - AudioClip: {fileID: 8300000, guid: 8707a8d816e439c4f96237cba2ff1e83, type: 3}
     ThemeType: 0

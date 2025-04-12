@@ -39,8 +39,15 @@ namespace PoolPack
             _currentQueueLength = Mathf.CeilToInt(updateStack.Count * (fps * maxUpdateStackDuration));
             for (var i = 0; i < _currentQueueLength && updateStack.Count > 0; i++)
             {
-                updateStack.Pop().InvokeUpdate((DateTime.Now - _last).Seconds);
+                InvokeUpdate();
             }
+        }
+
+        protected virtual PoolObject InvokeUpdate()
+        {
+            var toRet = updateStack.Pop();
+            toRet.InvokeUpdate();
+            return toRet;
         }
     }
 }

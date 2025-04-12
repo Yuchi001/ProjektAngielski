@@ -14,6 +14,7 @@ using PlayerPack;
 using PoolPack;
 using UnityEngine;
 using UnityEngine.Pool;
+using Utils;
 using Random = UnityEngine.Random;
 
 namespace EnemyPack
@@ -28,7 +29,8 @@ namespace EnemyPack
         [SerializeField] private float enemySpawnRate;
         [Space(10)]
         [SerializeField, Tooltip("In seconds")] private int maximumDifficultyTimeCap = 3600;
-        
+
+        private Queue<SoEnemy> _despawnQueue = new();
 
         private List<SoEnemy> _allEnemies = new();
         
@@ -70,7 +72,19 @@ namespace EnemyPack
             if (_state == ESpawnerState.Stop) return;
             _difficultyTimer += Time.deltaTime;
         }
-        
+
+        protected override PoolObject InvokeUpdate()
+        {
+            var current = base.InvokeUpdate();
+            if (!current.transform.InRange(PlayerManager.PlayerPos, 10))
+            {
+                _despawnQueue.Enqueue(current.As<EnemyLogic>().EnemyData);
+                ReleasePoolObject(current);
+            }
+
+            return current;
+        }
+
         public void IncrementDeadEnemies(EnemyLogic enemyLogic, SoEnemy enemy)
         {
             OnEnemyDie?.Invoke(enemyLogic);
@@ -113,6 +127,8 @@ namespace EnemyPack
 
         public override SoPoolObject GetRandomPoolData()
         {
+            if (_despawnQueue.Any()) return _despawnQueue.Dequeue();
+            
             var sum = 55; // 10 + 9 + 8 ...
             var randomInt = Random.Range(0, sum + 1) * (1 - Mathf.Clamp(_difficultyTimer / maximumDifficultyTimeCap, 0, 1));
             var difficultyList = new List<int> { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };

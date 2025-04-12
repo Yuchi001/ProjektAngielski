@@ -52,12 +52,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickUpDistance: 0.75
   getDistance: 0.19
-  movementSpeed: 10
+  movementSpeed: 8
+  movementAcceleration: 4
   throwSpeed:
     min: 2
     max: 4
-  throwSlowAcceleration: 6
-  movementAcceleration: 5
+  throwSlowAcceleration: 8
   pickUpCooldown: 0.75
 --- !u!212 &4535698492429040940
 SpriteRenderer:
