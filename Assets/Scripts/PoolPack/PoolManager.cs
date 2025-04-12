@@ -1,7 +1,5 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Managers;
 using Other;
 using UnityEngine;
 
@@ -16,6 +14,8 @@ namespace PoolPack
         protected abstract T GetPoolObject<T>() where T: PoolObject;
         public abstract void ReleasePoolObject(PoolObject poolObject);
 
+        private DateTime _last;
+
         public virtual SoPoolObject GetRandomPoolData()
         {
             return null;
@@ -26,6 +26,7 @@ namespace PoolPack
         
         protected void PrepareQueue()
         {
+            _last = DateTime.Now;
             updateStack = new Stack<PoolObject>(ActiveObjects);
         }
 
@@ -35,10 +36,10 @@ namespace PoolPack
 
             var fps = 1.0f / Time.unscaledDeltaTime;
             
-            _currentQueueLength = Mathf.CeilToInt(updateStack.Count / (fps * maxUpdateStackDuration));
+            _currentQueueLength = Mathf.CeilToInt(updateStack.Count * (fps * maxUpdateStackDuration));
             for (var i = 0; i < _currentQueueLength && updateStack.Count > 0; i++)
             {
-                updateStack.Pop().InvokeUpdate();
+                updateStack.Pop().InvokeUpdate((DateTime.Now - _last).Seconds);
             }
         }
     }

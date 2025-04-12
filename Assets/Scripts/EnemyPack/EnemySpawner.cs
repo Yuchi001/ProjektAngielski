@@ -18,7 +18,6 @@ using Random = UnityEngine.Random;
 
 namespace EnemyPack
 {
-    [RequireComponent(typeof(EnemyManager))]
     public class EnemySpawner : SpawnerBase
     {
         [SerializeField] private float enemiesHpScaleMultiplierPerKill = 0.001f;
@@ -48,8 +47,6 @@ namespace EnemyPack
 
         private void Awake()
         {
-            GetComponent<EnemyManager>().Setup(ActiveObjects);
-            
             DeadEnemies = 0;
 
             _allEnemies = Resources.LoadAll<SoEnemy>("Enemies").Select(Instantiate).ToList();

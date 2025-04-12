@@ -106,14 +106,14 @@ namespace InventoryPack.WorldItemPack
             _canPickUp = true;
         }
 
-        public override void InvokeUpdate()
+        public override void InvokeUpdate(float realDeltaTime)
         {
             if (!_ready) return;
 
             if (_currentThrowSpeed > 0 && !_canPickUp)
             {
-                transform.Translate(_randomDir * (_currentThrowSpeed * Time.deltaTime));
-                _currentThrowSpeed -= throwSlowAcceleration * Time.deltaTime;
+                transform.Translate(_randomDir * (_currentThrowSpeed * realDeltaTime));
+                _currentThrowSpeed -= throwSlowAcceleration * realDeltaTime;
                 return;
             }
             
@@ -132,7 +132,7 @@ namespace InventoryPack.WorldItemPack
             if (_pickedUp == false) StartCoroutine(PickUp());
             if (_chasePlayer == false) return;
 
-            _currentMovementSpeed += movementAcceleration * Time.deltaTime;
+            _currentMovementSpeed += movementAcceleration * realDeltaTime;
             transform.MoveTowards(playerPos, _currentMovementSpeed);
             if (dist >= getDistance) return;
 

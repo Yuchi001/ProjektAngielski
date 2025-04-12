@@ -149,14 +149,16 @@ namespace PlayerPack
             }
 
             if (CurrentDashStacks <= MaxDashStacks) _dashTimer += Time.deltaTime;
-            
-            if (_dashTimer >= dashCooldown)
-            {
-                CurrentDashStacks += CurrentDashStacks < MaxDashStacks ? 1 : 0;
-                _dashTimer = 0;
-            }
 
-            if (!Input.GetKeyDown(GameManager.DeclineBind) || CurrentDashStacks == 0 || rb2d.velocity == Vector2.zero) return;
+            if (_dashTimer < dashCooldown) return;
+            
+            CurrentDashStacks += CurrentDashStacks < MaxDashStacks ? 1 : 0;
+            _dashTimer = 0;
+        }
+
+        public void OnDashButtonClicked(InputAction.CallbackContext context)
+        {
+            if (CurrentDashStacks == 0 || rb2d.velocity == Vector2.zero) return;
 
             if (CurrentDashStacks == MaxDashStacks) _dashTimer = 0;
             

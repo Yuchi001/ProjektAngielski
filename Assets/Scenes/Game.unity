@@ -382,7 +382,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1930559287
-  m_SortingLayer: -2
+  m_SortingLayer: -3
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -486,7 +486,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1424998232}
   - component: {fileID: 1424998230}
-  - component: {fileID: 1424998231}
   m_Layer: 0
   m_Name: EnemySpawner
   m_TagString: Untagged
@@ -556,19 +555,6 @@ MonoBehaviour:
   enemySpawnRateMultiplierPerKill: 0
   enemySpawnRate: 8
   maximumDifficultyTimeCap: 1000
---- !u!114 &1424998231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1424998229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b144299414b84dafbddd7c52d66b0bdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.1
 --- !u!4 &1424998232
 Transform:
   m_ObjectHideFlags: 0
@@ -866,7 +852,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1930559287
-  m_SortingLayer: -2
+  m_SortingLayer: -3
   m_SortingOrder: -1
   m_Sprite: {fileID: -954555875, guid: 2f82523736271b046ae94cc682d4d558, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

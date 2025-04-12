@@ -48,7 +48,7 @@ namespace PoolPack
         /// <summary>
         /// Do not call base method
         /// </summary>
-        public virtual void InvokeUpdate()
+        public virtual void InvokeUpdate(float realDeltaTime)
         {
             
         }

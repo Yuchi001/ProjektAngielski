@@ -25,38 +25,74 @@ MonoBehaviour:
       max: 0.0005
   uniqueEffects: []
   soulToCoinRatioPerDiff:
-    min: 0
-    max: 0
+    min: -1
+    max: -5
   soulToCoinRatioBase:
-    min: 0
-    max: 0
+    min: 25
+    max: 50
   soulCountPerDiff:
-    min: 0
-    max: 0
+    min: 50
+    max: 100
   soulCountBase:
-    min: 0
-    max: 0
+    min: 100
+    max: 200
   coinRewardPerDiff:
-    min: 0
-    max: 0
+    min: 10
+    max: 20
   coinRewardBase:
-    min: 0
-    max: 0
+    min: 30
+    max: 60
   difficultyScalingCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   waveGapChanceCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   gapTime:
-    min: 0
-    max: 0
+    min: 5
+    max: 15
   tileVariants:
   - {fileID: 11400000, guid: 63292cae2e73a1945acfe038dde4c296, type: 2}
   - {fileID: 11400000, guid: f3986160632d479438f5af84e734b7a1, type: 2}

@@ -104,7 +104,7 @@ namespace EnemyPack.CustomEnemyLogic
             _enemySpawner.IncrementDeadEnemies(this, EnemyData);
         }
 
-        public override void InvokeUpdate()
+        public override void InvokeUpdate(float realDeltaTime)
         {
             if (Dead || (Stuned && _currentState.CanBeStunned) || !Active) return;
 
