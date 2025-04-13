@@ -16,16 +16,15 @@ namespace StructurePack.SO
         [SerializeField] private int stageBaseMultiplier;
         [SerializeField] private int transactionMultiplier;
 
-        private static PlayerSoulManager PlayerSoulManager => PlayerManager.PlayerSoulManager;
         private static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
         
         public override bool OnInteract(StructureBase structureBase)
         {
             var data = structureBase.GetData<TotemData>();
             var price = data.GetCurrentPrice();
-            if (PlayerSoulManager.GetCurrentSoulCount() < price) return false;
+            if (!PlayerCollectibleManager.HasCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SOUL, price)) return false;
 
-            PlayerSoulManager.AddSouls(-price);
+            PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SOUL, price);
             data.MultiplyCurrentPrice(transactionMultiplier);
             
             var addedEnchantment = PlayerEnchantments.AddRandomEnchantment();

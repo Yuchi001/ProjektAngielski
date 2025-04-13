@@ -34,7 +34,7 @@ MonoBehaviour:
     min: 50
     max: 100
   soulCountBase:
-    min: 100
+    min: 150
     max: 200
   coinRewardPerDiff:
     min: 10
@@ -111,6 +111,6 @@ MonoBehaviour:
     min: 50
     max: 100
   averageWorldSizeY:
-    min: 50
-    max: 100
+    min: 10
+    max: 20
   backgroundSprite: {fileID: -954555875, guid: 2f82523736271b046ae94cc682d4d558, type: 3}

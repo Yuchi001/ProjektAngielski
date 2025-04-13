@@ -3,6 +3,7 @@ using PlayerPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
 using UnityEngine;
+using Utils;
 using WorldGenerationPack;
 
 namespace StructurePack.SO
@@ -13,22 +14,26 @@ namespace StructurePack.SO
         [SerializeField] private int baseCost;
         [SerializeField] private int stageBaseMultiplier;
         [SerializeField] private int transactionMultiplier;
-        [SerializeField] private float scaleMultiplier = 0.2f;
-        [SerializeField] private float baseZoneScale = 2;
+        [SerializeField] private MinMax scaleMultiplier;
+        [SerializeField] private MinMax baseZoneScale;
+        [SerializeField] private MinMax mainZoneScale;
         
-        private static PlayerSoulManager PlayerSoulManager => PlayerManager.PlayerSoulManager;
-        
+
         public override bool OnInteract(StructureBase structureBase)
         {
             var data = structureBase.GetData<VisionStructureData>();
             var price = data.GetCurrentPrice();
-            if (PlayerSoulManager.GetCurrentSoulCount() < price) return false;
+            var hasMainZone = ZoneGeneratorManager.HasMainZone();
+            if (!PlayerCollectibleManager.HasCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SOUL, price) && hasMainZone) return false;
 
-            PlayerSoulManager.AddSouls(-price);
-            data.MultiplyCurrentPrice(transactionMultiplier);
+            if (hasMainZone)
+            {
+                PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SOUL, -price);
+                data.MultiplyCurrentPrice(transactionMultiplier);
+            }
             
-            if (structureBase.WasUsed) ZoneGeneratorManager.ExpandZone(data.Key, scaleMultiplier);
-            else ZoneGeneratorManager.GenerateZone(structureBase.transform.position, data.Key, baseZoneScale);
+            if (structureBase.WasUsed) ZoneGeneratorManager.ExpandZone(data.Key, scaleMultiplier.RandomFloat());
+            else ZoneGeneratorManager.GenerateZone(structureBase.transform.position, data.Key, hasMainZone ? baseZoneScale.RandomFloat() : mainZoneScale.RandomFloat());
 
             return true;
         }

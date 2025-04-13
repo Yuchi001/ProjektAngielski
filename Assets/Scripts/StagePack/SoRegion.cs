@@ -163,7 +163,7 @@ namespace StagePack
 
         public bool ShouldCreateGap(float time) => Random.Range(0f, 1f) < waveGapChanceCurve.Evaluate(time);
 
-        public float GetSpawnRate(float time) => difficultyScalingCurve.Evaluate(time);
+        public float GetScaledDifficulty(float time) => difficultyScalingCurve.Evaluate(time);
 
         public float GapGapTime() => gapTime.RandomFloat();
 

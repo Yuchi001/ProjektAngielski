@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4daf64abd2955d54a815ae008111ce6f
+guid: aa901d4544103aa4484a01be68273c94
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,15 +93,41 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: characterUIIcons_0
+      name: uiIcons_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -111,18 +137,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 723be8629efe6734ca8b0e2b8772eb6a
-      internalID: 538621558
+      spriteID: 6b6e80eb4eff2964c90afa4f994e3ab5
+      internalID: -502361681
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: characterUIIcons_1
+      name: uiIcons_1
       rect:
         serializedVersion: 2
         x: 16
-        y: 0
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -132,18 +158,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 90b2479d3837689428ae20ca23324eac
-      internalID: -1846782850
+      spriteID: e2d15d72ae241334c82984526e9906a2
+      internalID: 1634925286
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: characterUIIcons_2
+      name: uiIcons_2
       rect:
         serializedVersion: 2
         x: 32
-        y: 0
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -153,29 +179,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0c9fe2dd4de4ddb4d8258ea74f9f39e7
-      internalID: 557302913
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: characterUIIcons_3
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 19c0d1a16c27c8840bd6e91381f568a1
-      internalID: -1465521861
+      spriteID: d9b70c2cab28ebe4eab1a0e568b705aa
+      internalID: -798424269
       vertices: []
       indices: 
       edges: []
@@ -191,10 +196,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      characterUIIcons_0: 538621558
-      characterUIIcons_1: -1846782850
-      characterUIIcons_2: 557302913
-      characterUIIcons_3: -1465521861
+      uiIcons_0: -502361681
+      uiIcons_1: 1634925286
+      uiIcons_2: -798424269
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

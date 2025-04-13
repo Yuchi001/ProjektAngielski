@@ -19,7 +19,7 @@ MonoBehaviour:
   movementSpeed: 0
   attackSpeed: 2
   damage: 1
-  difficulty: 2
-  occurenceList: 
+  difficulty: 6
+  occurenceList: 00000000
   spriteRotation: 2
   enemyBehaviour: 0

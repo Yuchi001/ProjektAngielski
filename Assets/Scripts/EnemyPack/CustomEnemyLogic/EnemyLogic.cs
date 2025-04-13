@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AudioPack;
 using DamageIndicatorPack;
+using DifficultyPack;
 using EnchantmentPack.Enums;
 using EnemyPack.Enums;
 using EnemyPack.SO;
@@ -30,7 +31,7 @@ namespace EnemyPack.CustomEnemyLogic
         public static Vector2 PlayerPos => PlayerManager.PlayerPos;
         private EnemyHealthBar _enemyHealthBar;
         public Collider2D Collider2D { get; private set; }
-        public override int MaxHealth => Mathf.CeilToInt(EnemyData.MaxHealth * _enemySpawner.EnemiesHpScale);
+        public override int MaxHealth => Mathf.CeilToInt(EnemyData.MaxHealth * DifficultyManager.EnemyHpScale);
         private float Mass => Mathf.Pow(EnemyData.BodyScale, 2);
         private static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
 

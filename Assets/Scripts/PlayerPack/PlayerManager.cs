@@ -56,17 +56,17 @@ namespace PlayerPack
                 return Instance._playerHealth;
             }
         }
-
-        private PlayerSoulManager _playerSoulManager;
-        public static PlayerSoulManager PlayerSoulManager
+        
+        private PlayerCollectibleManager _playerCollectible;
+        public static PlayerCollectibleManager PlayerCollectibleManager
         {
             get
             {
-                if (Instance._playerSoulManager == null) Instance._playerSoulManager = Instance.GetComponent<PlayerSoulManager>();
-                return Instance._playerSoulManager;
+                if (Instance._playerCollectible == null) Instance._playerCollectible = Instance.GetComponent<PlayerCollectibleManager>();
+                return Instance._playerCollectible;
             }
         }
-
+        
         private PlayerItemManager _playerItemManager;
         public static PlayerItemManager PlayerItemManager => Instance._playerItemManager;
         
@@ -100,17 +100,6 @@ namespace PlayerPack
                 return Instance._playerStatsManager;
             }
         }
-
-        private PlayerCoinManager _playerCoinManager;
-        public static PlayerCoinManager PlayerCoinManager
-        {
-            get
-            {
-                if (Instance._playerCoinManager == null) Instance._playerCoinManager = Instance.GetComponent<PlayerCoinManager>();
-                return Instance._playerCoinManager;
-            }
-        }
-
         public static Vector2 PlayerPos => Instance.transform.position;
         
         public delegate void PlayerDeathDelegate();

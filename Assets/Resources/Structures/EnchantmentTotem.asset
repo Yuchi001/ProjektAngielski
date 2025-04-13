@@ -24,6 +24,6 @@ MonoBehaviour:
   interactionDeclineMessage: Not Enough Souls!
   usesUI: 0
   uIPrefabName: 
-  baseCost: 15
-  stageBaseMultiplier: 15
+  baseCost: 30
+  stageBaseMultiplier: 2
   transactionMultiplier: 2

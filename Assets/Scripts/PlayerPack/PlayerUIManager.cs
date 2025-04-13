@@ -15,6 +15,7 @@ namespace PlayerPack
         [SerializeField] private TextMeshProUGUI hpField;
         [SerializeField] private TextMeshProUGUI coinField;
         [SerializeField] private TextMeshProUGUI soulField;
+        [SerializeField] private TextMeshProUGUI scrapField;
         [SerializeField] private Image hpBar;
         [SerializeField] private RectTransform dashRect;
 
@@ -42,17 +43,18 @@ namespace PlayerPack
             }
             PlayerHealth.OnPlayerDamaged += UpdateHp;
             PlayerHealth.OnPlayerHeal += UpdateHp;
-            PlayerSoulManager.OnSoulCountChange += UpdateSoulCount;
-            PlayerCoinManager.OnCoinCountChange += UpdateCoinCount;
             PlayerManager.OnChangeState += OnChangeState;
+            PlayerCollectibleManager.OnCollectibleModify += UpdateCollectibles;
         }
         
 
         public void PrepareUI()
         {
             UpdateHp(PlayerManager.PlayerHealth.CurrentHealth, MaxHealth);
-            UpdateSoulCount(0, PlayerManager.PlayerSoulManager.GetCurrentSoulCount());
-            UpdateCoinCount(0, PlayerManager.PlayerCoinManager.GetCurrentCount());
+            foreach (PlayerCollectibleManager.ECollectibleType type in System.Enum.GetValues(typeof(PlayerCollectibleManager.ECollectibleType)))
+            {
+                UpdateCollectibles(type, PlayerCollectibleManager.GetCollectibleCount(type));
+            }
             SpawnDashStacks();
         }
 
@@ -60,8 +62,7 @@ namespace PlayerPack
         {
             PlayerHealth.OnPlayerDamaged -= UpdateHp;
             PlayerHealth.OnPlayerHeal -= UpdateHp;
-            PlayerSoulManager.OnSoulCountChange -= UpdateSoulCount;
-            PlayerCoinManager.OnCoinCountChange -= UpdateCoinCount;
+            PlayerCollectibleManager.OnCollectibleModify -= UpdateCollectibles;
             PlayerManager.OnChangeState -= OnChangeState;
             PlayerManager.OnPlayerReady -= PrepareUI;
         }
@@ -73,6 +74,11 @@ namespace PlayerPack
             {
                 child.gameObject.SetActive(active);
             }
+
+            var isOnMission = state == PlayerManager.State.ON_MISSION;
+            scrapField.gameObject.SetActive(isOnMission);
+            soulField.gameObject.SetActive(isOnMission);
+            coinField.gameObject.SetActive(isOnMission);
         }
 
         private void UpdateHp(int value, int current)
@@ -81,14 +87,22 @@ namespace PlayerPack
             hpBar.fillAmount = (float)current / MaxHealth;
         }
 
-        private void UpdateSoulCount(int value, int current)
+        private void UpdateCollectibles(PlayerCollectibleManager.ECollectibleType type, int current)
         {
-            coinField.text = $"x{current}";
-        }
-
-        private void UpdateCoinCount(int value, int current)
-        {
-            soulField.text = $"x{current}";
+            switch (type)
+            {
+                case PlayerCollectibleManager.ECollectibleType.SOUL:
+                    soulField.text = $"<sprite name=\"souls\"> x{current}";
+                    break;
+                case PlayerCollectibleManager.ECollectibleType.COIN:
+                    coinField.text = $"<sprite name=\"coins\"> x{current}";
+                    break;
+                case PlayerCollectibleManager.ECollectibleType.SCRAP:
+                    scrapField.text = $"<sprite name=\"scraps\"> x{current}";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, $"Collectible of type {type} not handled in PlayerUIManager!");
+            }
         }
 
         private void Update()

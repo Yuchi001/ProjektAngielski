@@ -62,7 +62,10 @@ namespace PlayerPack
             _playerDashAnim = GetComponent<PlayerDashAnim>();
         }
 
-        public static bool CanDash() => PlayerManager.CurrentState == PlayerManager.State.ON_MISSION;
+        private static PlayerMovement PlayerMovementComp => PlayerManager.PlayerMovement;
+        public static bool CanDash() => PlayerManager.CurrentState == PlayerManager.State.ON_MISSION && 
+                                        PlayerMovementComp.CurrentDashStacks > 0 && 
+                                        PlayerMovementComp.rb2d.velocity != Vector2.zero;
 
         private void OnChangeState(PlayerManager.State state)
         {
@@ -158,9 +161,7 @@ namespace PlayerPack
 
         public void OnDashButtonClicked(InputAction.CallbackContext context)
         {
-            if (context.phase != InputActionPhase.Started) return;
-
-            if (CurrentDashStacks == 0 || rb2d.velocity == Vector2.zero) return;
+            if (context.phase != InputActionPhase.Started || !CanDash()) return;
 
             if (CurrentDashStacks == MaxDashStacks) _dashTimer = 0;
             

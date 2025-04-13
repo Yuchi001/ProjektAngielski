@@ -508,53 +508,7 @@ MonoBehaviour:
   maxUpdateStackDuration: 0.005
   <PoolSize>k__BackingField: 100
   _waitBeforeSpawn: 1.5
-  enemiesHpScaleMultiplierPerKill: 0.001
-  enemiesHpScale: 1
-  enemySpawnRateCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.1
-      value: 0.1
-      inSlope: -0.01076742
-      outSlope: -0.01076742
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.13149239
-    - serializedVersion: 3
-      time: 0.4
-      value: 0.7
-      inSlope: 1.1164625
-      outSlope: 1.1164625
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0.0028656663
-      outSlope: 0.0028656663
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 1
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  enemySpawnRateMultiplierPerKill: 0
-  enemySpawnRate: 8
-  maximumDifficultyTimeCap: 1000
+  standardDifficultyDeviation: 0.2
 --- !u!4 &1424998232
 Transform:
   m_ObjectHideFlags: 0

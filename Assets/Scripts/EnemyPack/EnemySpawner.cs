@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using DifficultyPack;
 using EnemyPack.CustomEnemyLogic;
 using EnemyPack.SO;
+using GameLoaderPack;
 using Managers;
 using Managers.Base;
-using Managers.Enums;
 using Managers.Other;
 using MapPack;
 using MarkerPackage;
@@ -19,33 +21,28 @@ using Random = UnityEngine.Random;
 
 namespace EnemyPack
 {
-    public class EnemySpawner : SpawnerBase
+    public class EnemySpawner : SpawnerBase, IMissionDependentInstance
     {
-        [SerializeField] private float enemiesHpScaleMultiplierPerKill = 0.001f;
-        [SerializeField] private float enemiesHpScale = 1;
-        [Space(10)]
-        [SerializeField] private AnimationCurve enemySpawnRateCurve;
-        [SerializeField] private float enemySpawnRateMultiplierPerKill = 0.001f;
-        [SerializeField] private float enemySpawnRate;
-        [Space(10)]
-        [SerializeField, Tooltip("In seconds")] private int maximumDifficultyTimeCap = 3600;
-
-        private Queue<SoEnemy> _despawnQueue = new();
+        [SerializeField] private float standardDifficultyDeviation = 0.2f;
+        
+        private readonly Queue<SoEnemy> _despawnQueue = new();
 
         private List<SoEnemy> _allEnemies = new();
-        
-        private float _difficultyTimer = 0;
 
         public delegate void EnemyDieDelegate(EnemyLogic enemyLogic);
         public static event EnemyDieDelegate OnEnemyDie;
 
         private ObjectPool<EnemyLogic> _enemyPool;
- 
+        
         public int DeadEnemies { get; private set; }
+        
+        private MapManager.MissionData _currentMission;
+        private float _startDifficulty = 0;
 
-        private float EnemySpawnRate => enemySpawnRate + 1f * enemySpawnRateMultiplierPerKill * DeadEnemies;
-        protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * EnemySpawnRate);
-        public float EnemiesHpScale => enemiesHpScale + Mathf.Pow(1f + DeadEnemies * enemiesHpScaleMultiplierPerKill, 2) - 1;
+        private static int CurrentSoulCount => PlayerCollectibleManager.GetCollectibleCount(PlayerCollectibleManager.ECollectibleType.SOUL);
+        private float RawDifficulty => (float)CurrentSoulCount / _currentMission.SoulCount + _startDifficulty;
+        private float ScaledDifficulty => Mathf.Clamp01(_currentMission.GetScaledDifficulty(RawDifficulty));
+        protected override float MaxTimer => 1f / DifficultyManager.GetEnemySpawnRate(ScaledDifficulty);
 
         private void Awake()
         {
@@ -61,6 +58,8 @@ namespace EnemyPack
         public override void Init(MapManager.MissionData currentMission)
         {
             _allEnemies = _allEnemies.Where(e => e.OccurenceList.Contains(currentMission.RegionType)).ToList();
+            _currentMission = currentMission;
+            _startDifficulty = (float)_currentMission.Difficulty / System.Enum.GetValues(typeof(MapManager.MissionData.EDifficulty)).Length;
         }
 
         protected override void Update()
@@ -68,14 +67,11 @@ namespace EnemyPack
             RunUpdatePoolStack();
             
             base.Update();
-
-            if (_state == ESpawnerState.Stop) return;
-            _difficultyTimer += Time.deltaTime;
         }
 
-        protected override PoolObject InvokeUpdate()
+        protected override PoolObject InvokeQueueUpdate()
         {
-            var current = base.InvokeUpdate();
+            var current = base.InvokeQueueUpdate();
             if (!current.transform.InRange(PlayerManager.PlayerPos, 10))
             {
                 _despawnQueue.Enqueue(current.As<EnemyLogic>().EnemyData);
@@ -128,22 +124,6 @@ namespace EnemyPack
         public override SoPoolObject GetRandomPoolData()
         {
             if (_despawnQueue.Any()) return _despawnQueue.Dequeue();
-            
-            var sum = 55; // 10 + 9 + 8 ...
-            var randomInt = Random.Range(0, sum + 1) * (1 - Mathf.Clamp(_difficultyTimer / maximumDifficultyTimeCap, 0, 1));
-            var difficultyList = new List<int> { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-            difficultyList.Sort();
-            var pickedDifficulty = 0;
-            foreach (var diff in difficultyList)
-            {
-                if (randomInt <= diff)
-                {
-                    pickedDifficulty = diff;
-                    break;
-                }
-
-                randomInt -= diff;
-            }
 
             var enemies = GetValidEnemies();
             var soEnemies = enemies as SoEnemy[] ?? enemies.ToArray();
@@ -152,10 +132,37 @@ namespace EnemyPack
             IEnumerable<SoEnemy> GetValidEnemies()
             {
                 var current = new List<SoEnemy>();
-                foreach (var enemy in _allEnemies)
-                    if (enemy.Difficulty <= pickedDifficulty) current.Add(enemy);
+                var pickedDifficulty = GetRandomDifficulty();
+                foreach (var enemy in _allEnemies) if (enemy.Difficulty <= pickedDifficulty) current.Add(enemy);
                 return current.Count > 0 ? current : new List<SoEnemy> {_allEnemies[0]};
             }
+        }
+        
+        private int GetRandomDifficulty()
+        {
+            var maxDifficulty = Mathf.CeilToInt(Mathf.Lerp(1, 10, ScaledDifficulty));
+            
+            var mean = Mathf.Lerp(1f, maxDifficulty, ScaledDifficulty);
+            var stdDev = maxDifficulty * standardDifficultyDeviation;
+
+            var weights = new List<float>();
+            for (var i = 1; i <= maxDifficulty; i++)
+            {
+                var weight = Mathf.Exp(-Mathf.Pow(i - mean, 2) / (2 * stdDev * stdDev));
+                weights.Add(weight);
+            }
+
+            var totalWeight = weights.Sum();
+            var rand = Random.value * totalWeight;
+            var cumulative = 0f;
+
+            for (var i = 0; i < weights.Count; i++)
+            {
+                cumulative += weights[i];
+                if (rand <= cumulative) return i + 1;
+            }
+
+            throw new Exception("There should always be a difficulty to find");
         }
     }
 }

@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 4daf64abd2955d54a815ae008111ce6f, type: 3}
+        m_Texture: {fileID: 2800000, guid: aa901d4544103aa4484a01be68273c94, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -79,96 +79,74 @@ MonoBehaviour:
     m_StrikethroughOffset: 0
     m_StrikethroughThickness: 0
     m_TabWidth: 0
-  spriteSheet: {fileID: 2800000, guid: 4daf64abd2955d54a815ae008111ce6f, type: 3}
+  spriteSheet: {fileID: 2800000, guid: aa901d4544103aa4484a01be68273c94, type: 3}
   m_SpriteCharacterTable:
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 0
     m_Scale: 1
-    m_Name: ms1
-    m_HashCode: 122383
+    m_Name: souls
+    m_HashCode: 135565270
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 1
     m_Scale: 1
-    m_Name: hp
-    m_HashCode: 3352
+    m_Name: coins
+    m_HashCode: 116603800
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 2
     m_Scale: 1
-    m_Name: wc
-    m_HashCode: 3892
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 3
-    m_Scale: 1
-    m_Name: ms2
-    m_HashCode: 122380
+    m_Name: scraps
+    m_HashCode: 164847712
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
       m_Width: 16
       m_Height: 16
-      m_HorizontalBearingX: 0
-      m_HorizontalBearingY: 12.41
-      m_HorizontalAdvance: 17.67
+      m_HorizontalBearingX: -8
+      m_HorizontalBearingY: 8
+      m_HorizontalAdvance: 16
     m_GlyphRect:
       m_X: 0
-      m_Y: 0
+      m_Y: 48
       m_Width: 16
       m_Height: 16
-    m_Scale: 1.5
+    m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
-    sprite: {fileID: 538621558, guid: 4daf64abd2955d54a815ae008111ce6f, type: 3}
+    sprite: {fileID: -502361681, guid: aa901d4544103aa4484a01be68273c94, type: 3}
   - m_Index: 1
     m_Metrics:
       m_Width: 16
       m_Height: 16
-      m_HorizontalBearingX: 0
-      m_HorizontalBearingY: 12.41
-      m_HorizontalAdvance: 17.67
+      m_HorizontalBearingX: -8
+      m_HorizontalBearingY: 8
+      m_HorizontalAdvance: 16
     m_GlyphRect:
       m_X: 16
-      m_Y: 0
+      m_Y: 48
       m_Width: 16
       m_Height: 16
-    m_Scale: 1.5
+    m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
-    sprite: {fileID: -1846782850, guid: 4daf64abd2955d54a815ae008111ce6f, type: 3}
+    sprite: {fileID: 1634925286, guid: aa901d4544103aa4484a01be68273c94, type: 3}
   - m_Index: 2
     m_Metrics:
       m_Width: 16
       m_Height: 16
-      m_HorizontalBearingX: 0
-      m_HorizontalBearingY: 12.41
-      m_HorizontalAdvance: 17.67
+      m_HorizontalBearingX: -8
+      m_HorizontalBearingY: 8
+      m_HorizontalAdvance: 16
     m_GlyphRect:
       m_X: 32
-      m_Y: 0
+      m_Y: 48
       m_Width: 16
       m_Height: 16
-    m_Scale: 1.5
+    m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
-    sprite: {fileID: 557302913, guid: 4daf64abd2955d54a815ae008111ce6f, type: 3}
-  - m_Index: 3
-    m_Metrics:
-      m_Width: 16
-      m_Height: 16
-      m_HorizontalBearingX: 0
-      m_HorizontalBearingY: 12.41
-      m_HorizontalAdvance: 17.67
-    m_GlyphRect:
-      m_X: 48
-      m_Y: 0
-      m_Width: 16
-      m_Height: 16
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: -1465521861, guid: 4daf64abd2955d54a815ae008111ce6f, type: 3}
+    sprite: {fileID: -798424269, guid: aa901d4544103aa4484a01be68273c94, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []

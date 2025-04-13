@@ -55,12 +55,12 @@ namespace MainCameraPack
             Instance.StartCoroutine(Instance.CoroutineInOutAnim(animTime, halfAction, endAction, condition));
         }
         
-        public static void OutAnim(float animTime, Action endAction)
+        public static void OutAnim(float animTime, Action endAction = null)
         {
             Instance.StartCoroutine(Instance.HalfAnim(animTime, false, endAction));
         }
         
-        public static void InAnim(float animTime, Action endAction)
+        public static void InAnim(float animTime, Action endAction = null)
         {
             Instance.StartCoroutine(Instance.HalfAnim(animTime, true, endAction));
         }

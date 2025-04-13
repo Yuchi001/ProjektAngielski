@@ -48,7 +48,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 .SetNewCustomValue(DamageRateName)
                 .SetSortingLayer("Floor", 1)
                 .SetUpdate(ParticleUpdate)
-                .SetDisableDestroyOnContactWithWall()
                 .SetOnCollisionStay(CollisionStay)
                 .SetEffect(EEffectType.Poison, EffectDuration)
                 .SetFlightParticles(fieldParticles, Scale * 2, true)

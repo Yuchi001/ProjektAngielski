@@ -30,7 +30,7 @@ namespace StructurePack.SO
                 return true;
             }
             
-            if (PlayerManager.PlayerSoulManager.GetCurrentSoulCount() < data.SoulCount) return false;
+            if (!PlayerCollectibleManager.HasCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SOUL, data.SoulCount)) return false;
 
             PlayerManager.StartPlayerExitSequence(() => RewardPlayer(structureBase));
             structureBase.SetCanInteract(false);
@@ -54,7 +54,7 @@ namespace StructurePack.SO
             if (!data.IsInitialized()) throw new NullReferenceException("MISSION NOT SET FOR MISSION EXIT!");
 
             var rewardSum = data.BaseReward;
-            rewardSum += PlayerManager.PlayerSoulManager.GetCurrentSoulCount() * data.SoulToCoinRatio;
+            rewardSum += PlayerCollectibleManager.GetCollectibleCount(PlayerCollectibleManager.ECollectibleType.SOUL) * data.SoulToCoinRatio;
 
             var rewardItems = new List<SoInventoryItem>();
             var weaponCount = (int)(weaponPerCoin.RandomFloat() * rewardSum);

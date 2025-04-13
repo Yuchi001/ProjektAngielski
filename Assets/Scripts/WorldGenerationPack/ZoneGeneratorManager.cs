@@ -24,12 +24,13 @@ namespace WorldGenerationPack
         }
         #endregion
 
-        [SerializeField] private float baseZoneScale;
         [SerializeField] private float zoneEntityRange;
         
         private Zone _zonePrefab;
 
         private Dictionary<string, Zone> _zoneDict;
+
+        public static bool HasMainZone() => Instance._zoneDict.Keys.Count > 0;
 
         public static bool ContainsEntity(Vector2 pos)
         {

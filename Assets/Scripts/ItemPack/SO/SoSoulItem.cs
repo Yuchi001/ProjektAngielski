@@ -11,7 +11,7 @@ namespace ItemPack.SO
         public override bool OnPickUp(params int[] paramArray)
         {
             AudioManager.PlaySound(ESoundType.PickUpGem);
-            PlayerManager.PlayerSoulManager.AddSouls(1);
+            PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SOUL, 1);
             return true;
         }
     }

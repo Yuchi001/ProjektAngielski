@@ -54,7 +54,7 @@ namespace WorldGenerationPack
 
                     if (exitPosition == (Vector2Int)current)
                     {
-                        var structureBase = StructureManager.SpawnStructure(exitStructure, exitPosition, GameManager.EScene.GAME);
+                        var structureBase = StructureManager.SpawnStructure(exitStructure, spawnPos, GameManager.EScene.GAME);
                         exitStructure.SetMission(structureBase, missionData);
                     }
                     else if (visionPlacements.Contains((Vector2Int)current)) placedVisions.Add(StructureManager.SpawnStructure(visionStructure, spawnPos, GameManager.EScene.GAME));

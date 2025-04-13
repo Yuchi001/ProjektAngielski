@@ -39,6 +39,12 @@ namespace Managers
 
         private void Awake()
         {
+            if (!SceneExtensions.IsSceneLoaded((int)EScene.MENU))
+            {
+                SceneManager.LoadScene((int)EScene.MENU);
+                return;
+            }
+            
             if (Instance != this && Instance != null) Destroy(gameObject);
             else Instance = this;
 
@@ -53,10 +59,9 @@ namespace Managers
             var soCharacter = allCharacters.FirstOrDefault(e => e.ID == playerSaveData.pickedCharacterID) ?? allCharacters[0];
             
             SceneManager.LoadScene((int)EScene.TAVERN, LoadSceneMode.Additive);
-            var isMenu = SceneExtensions.IsSceneLoaded((int)EScene.MENU);
             var playerPrefab = GetPrefab<PlayerManager>(PrefabNames.GamePlayer);
             Instantiate(playerPrefab, Vector3.zero, Quaternion.identity)
-                .Setup(soCharacter, isMenu ? PlayerManager.State.IN_MENU : PlayerManager.State.IN_TAVERN);
+                .Setup(soCharacter, PlayerManager.State.IN_MENU);
             
             SaveManager.LoadData();
         }

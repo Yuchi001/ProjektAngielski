@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using EnemyPack.CustomEnemyLogic;
-using Managers;
 using Other;
 using Other.Enums;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using Utils;
 using TransformExtensions = Utils.TransformExtensions;
 
 namespace ItemPack.WeaponPack.Other
@@ -23,44 +20,49 @@ namespace ItemPack.WeaponPack.Other
         private Transform _target;
         private GameObject _flightParticles;
         private GameObject _onHitParticles;
-
-        private bool _destroyOnContactWithWall = true;
-        public bool DestroyOnContactWithWall => _destroyOnContactWithWall;
-
+        
         private float _onHitParticlesScale = 1;
         private int _damage;
-        private int _currentIndex = 0;
+        private int _currentIndex;
         
         private float _speed;
         private float _animSpeed = 1f;
-        private float _timer = 0;
+        private float _timer;
 
-        private float? _rotationSpeed = null;
-        private float? _range = null;
+        private float? _rotationSpeed;
+        private float? _range;
 
-        private float? _lifeTime = null;
-        private float? _pushForce = null;
+        private float? _lifeTime;
+        private float? _pushForce;
+
+        private Vector2? _startLerpPosition;
+        private Vector2? _lerpDestination;
+        private float? _lerpTime;
+
+        private float _currentLerpTime;
         
-        private float _currentLifeTime = 0;
+        private float _currentLifeTime;
 
         private string _targetTag = "Enemy";
         
-        private bool _ready = false;
+        private bool _ready;
 
         private Vector2 _startDistance;
 
         private EEffectType _effectType = EEffectType.None;
-        private float _effectDuration = 0;
+        private float _effectDuration;
 
-        private Action<GameObject, Projectile> _onCollisionStay = null;
-        private Action<GameObject, Projectile> _onHit = null;
+        private Action<GameObject, Projectile> _onCollisionStay;
+        private Action<GameObject, Projectile> _onHit;
         private Action<Projectile> _deathBehaviour = projectile => Destroy(projectile.gameObject);
         private Action<Projectile> _outOfRangeBehaviour = projectile => Destroy(projectile.gameObject);
-        private Action<Projectile> _update = null;
+        private Action<Projectile> _update;
 
         private bool _damageOnHit = true;
 
         private readonly Dictionary<string, float> _customValues = new();
+
+        public float Speed => _speed;
 
         #region Setup methods
 
@@ -95,12 +97,6 @@ namespace ItemPack.WeaponPack.Other
             return this;
         }
 
-        public Projectile SetDisableDestroyOnContactWithWall()
-        {
-            _destroyOnContactWithWall = false;
-            return this;
-        }
-
         public Projectile SetNewCustomValue(string id, float value = 0)
         {
             _customValues.Add(id, value);
@@ -110,6 +106,12 @@ namespace ItemPack.WeaponPack.Other
         public Projectile SetDontDestroyOnHit()
         {
             _deathBehaviour = null;
+            return this;
+        }
+
+        public Projectile SetSpeed(float speed)
+        {
+            _speed = speed;
             return this;
         }
 
@@ -188,7 +190,8 @@ namespace ItemPack.WeaponPack.Other
 
         public Projectile SetFlightParticles(GameObject flightParticles, float scale = 1, bool setOnTop = false)
         {
-            _flightParticles = Instantiate(flightParticles, transform.position, Quaternion.identity, transform);
+            var cachedTransform = transform;
+            _flightParticles = Instantiate(flightParticles, cachedTransform.position, Quaternion.identity, cachedTransform);
             _flightParticles.transform.localScale = new Vector3(scale, scale, 0);
             _flightParticles.GetComponent<ParticleSystemRenderer>().sortingOrder = setOnTop ? 1 : 0;
             return this;
@@ -218,9 +221,10 @@ namespace ItemPack.WeaponPack.Other
         
         public Projectile SetStaticSpriteRotation(float angle)
         {
-            var newRot = projectileSprite.transform.rotation;
+            var projectileSpriteTransform = projectileSprite.transform;
+            var newRot = projectileSpriteTransform.rotation;
             newRot.z = angle;
-            projectileSprite.transform.rotation = newRot;
+            projectileSpriteTransform.rotation = newRot;
             return this;
         }
         
@@ -236,6 +240,24 @@ namespace ItemPack.WeaponPack.Other
             return this;
         }
 
+        public Projectile SetLerp(Vector2 position, float time)
+        {
+            _startLerpPosition = transform.position;
+            _lerpDestination = position;
+            _lerpTime = time;
+            _currentLerpTime = 0;
+            return this;
+        }
+        
+        public Projectile SetLerp(Transform lerpTo, float time)
+        {
+            _startLerpPosition = transform.position;
+            _target = lerpTo;
+            _lerpTime = time;
+            _currentLerpTime = 0;
+            return this;
+        }
+
         public Projectile SetScale(float scale)
         {
             transform.localScale = new Vector3(scale, scale, 0);
@@ -245,6 +267,7 @@ namespace ItemPack.WeaponPack.Other
         public void SetReady()
         {
             _ready = true;
+            projectileSprite.gameObject.SetActive(true);
         }
 
         #endregion
@@ -252,7 +275,7 @@ namespace ItemPack.WeaponPack.Other
         private void Update()
         {
             if (!_ready) return;
-
+ 
             if (_rotationSpeed != null)
             {
                 projectileSprite.transform.Rotate(0, 0, _rotationSpeed.Value);
@@ -314,9 +337,16 @@ namespace ItemPack.WeaponPack.Other
         private void MoveProjectile()
         {
             var projectileTransform = transform;
-            var newPos = _target == null ? 
-                (Vector2)(projectileTransform.position + projectileTransform.up * (_speed * Time.deltaTime)) :
-                Vector2.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
+            Vector2 newPos;
+            if ((_startLerpPosition.HasValue || _target != null) && _lerpTime.HasValue)
+            {
+                _currentLerpTime += Time.deltaTime;
+                var time = Mathf.Clamp01(_currentLerpTime / _lerpTime.Value);
+                var dest = _lerpDestination ?? _target.position;
+                newPos = Vector2.Lerp(_startLerpPosition.Value, dest, time);
+            }
+            else if (_target != null) newPos = Vector2.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
+            else newPos = projectileTransform.position + projectileTransform.up * (_speed * Time.deltaTime);
 
             transform.position = newPos;
         }
@@ -344,7 +374,7 @@ namespace ItemPack.WeaponPack.Other
             
             if (!_ready) return;
 
-            var isEnemyHit = hitObj.TryGetComponent<CanBeDamaged>(out var enemyLogic);
+            var isEnemyHit = hitObj.TryGetComponent<CanBeDamaged>(out _);
             if (!isEnemyHit) return;
             
             _onCollisionStay?.Invoke(hitObj, this);

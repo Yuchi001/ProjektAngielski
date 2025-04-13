@@ -31,13 +31,11 @@ namespace WorldGenerationPack
 
         public void Resize(float percentage)
         {
-            percentage *= 2;
-            var randomDivision = Random.Range(0.01f, 0.99f);
-            var scale = transform.localScale;
-            var newScale = scale;
-            newScale.x *= 1 + percentage * randomDivision;
-            newScale.y *= 1 + percentage * (1 - randomDivision);
-
+            percentage++;
+            var newScale = transform.localScale;
+            newScale.x *= percentage;
+            newScale.y *= percentage;
+            
             transform.LeanScale(newScale, 0.3f).setEaseInBack().setEaseOutBack();
         }
 

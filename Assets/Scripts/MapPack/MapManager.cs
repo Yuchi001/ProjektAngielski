@@ -73,7 +73,7 @@ namespace MapPack
             public Sprite BackgroundSprite { get; }
 
             public float GetGapTime() => _region.RegionData.GapGapTime();
-            public float GetSpawnRate(float time) => _region.RegionData.GetSpawnRate(time);
+            public float GetScaledDifficulty(float time) => _region.RegionData.GetScaledDifficulty(time);
             public bool ShouldCreateGap(float time) => _region.RegionData.ShouldCreateGap(time);
             public TileBase GetTile(int x, int y) => _region.RegionData.GetTile(x, y, WorldSize);
             public List<(Vector2Int position, SoStructure structure)> Structures { get; }
