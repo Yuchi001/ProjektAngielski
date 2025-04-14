@@ -28,8 +28,8 @@ MonoBehaviour:
   stageBaseMultiplier: 2
   transactionMultiplier: 2
   scaleMultiplier:
-    min: 0.25
-    max: 0.5
+    min: 1.5
+    max: 3
   baseZoneScale:
     min: 3
     max: 5

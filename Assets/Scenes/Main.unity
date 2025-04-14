@@ -1200,7 +1200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd182f2fc5d74f35b106d381102e100c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.01
+  maxUpdateStackDuration: 0.001
   <PoolSize>k__BackingField: 100
 --- !u!4 &1954272737
 Transform:

@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using AccessorPack;
+using EnemyPack;
 using EnemyPack.CustomEnemyLogic;
+using Managers;
 using Other;
 using Other.Enums;
+using PlayerPack;
+using PoolPack;
 using UnityEngine;
+using Utils;
 using TransformExtensions = Utils.TransformExtensions;
 
 namespace ItemPack.WeaponPack.Other
@@ -52,8 +58,8 @@ namespace ItemPack.WeaponPack.Other
         private EEffectType _effectType = EEffectType.None;
         private float _effectDuration;
 
-        private Action<GameObject, Projectile> _onCollisionStay;
-        private Action<GameObject, Projectile> _onHit;
+        private Action<CanBeDamaged, Projectile> _onCollisionStay;
+        private Action<CanBeDamaged, Projectile> _onHit;
         private Action<Projectile> _deathBehaviour = projectile => Destroy(projectile.gameObject);
         private Action<Projectile> _outOfRangeBehaviour = projectile => Destroy(projectile.gameObject);
         private Action<Projectile> _update;
@@ -61,8 +67,9 @@ namespace ItemPack.WeaponPack.Other
         private bool _damageOnHit = true;
 
         private readonly Dictionary<string, float> _customValues = new();
-
-        public float Speed => _speed;
+        
+        private readonly HashSet<PoolObject> _currentEnemies = new();
+        private readonly HashSet<PoolObject> _enemiesThisFrame = new();
 
         #region Setup methods
 
@@ -182,7 +189,7 @@ namespace ItemPack.WeaponPack.Other
             return this;
         }
 
-        public Projectile SetOnCollisionStay(Action<GameObject, Projectile> onCollisionStay)
+        public Projectile SetOnCollisionStay(Action<CanBeDamaged, Projectile> onCollisionStay)
         {
             _onCollisionStay = onCollisionStay;
             return this;
@@ -234,7 +241,7 @@ namespace ItemPack.WeaponPack.Other
             return this;
         }
 
-        public Projectile SetOnHitAction(Action<GameObject, Projectile> onHit)
+        public Projectile SetOnHitAction(Action<CanBeDamaged, Projectile> onHit)
         {
             _onHit = onHit;
             return this;
@@ -320,9 +327,7 @@ namespace ItemPack.WeaponPack.Other
 
         private void CheckDistance()
         {
-            var distance = Vector2.Distance(transform.position, _startDistance);
-
-            if (distance < _range) return;
+            if (transform.InRange(_startDistance, _range ?? 0)) return;
 
             if (_onHitParticles != null)
             {
@@ -368,51 +373,42 @@ namespace ItemPack.WeaponPack.Other
             return projectileSprite;
         }
 
-        public void ManageCollisionStay(GameObject hitObj)
+        public void ManageCollisionStay(CanBeDamaged hitObj)
         {
             if (!hitObj.CompareTag(_targetTag)) return;
             
             if (!_ready) return;
-
-            var isEnemyHit = hitObj.TryGetComponent<CanBeDamaged>(out _);
-            if (!isEnemyHit) return;
             
             _onCollisionStay?.Invoke(hitObj, this);
         }
 
-        public void ManageHit(GameObject hitObj)
+        public void ManageHit(CanBeDamaged enemy)
         {
-            if (!hitObj.CompareTag(_targetTag)) return;
+            if (!enemy.CompareTag(_targetTag)) return;
             
             if (!_ready) return;
-
-            var isHit = hitObj.TryGetComponent<CanBeDamaged>(out var hitEntity);
-            if (!isHit) return;
             
-            _onHit?.Invoke(hitObj, this);
+            _onHit?.Invoke(enemy, this);
             
-            if (_effectType != EEffectType.None) hitEntity.AddEffect(_effectType, _effectDuration);
+            if (_effectType != EEffectType.None) enemy.AddEffect(_effectType, _effectDuration);
             
-            TryPush(hitEntity, hitObj);
+            TryPush(enemy);
 
             ManageParticlesOnHit();
             
-            if (_damageOnHit) hitEntity.GetDamaged(_damage);
+            if (_damageOnHit) enemy.GetDamaged(_damage);
             
             _deathBehaviour?.Invoke(this);
         }
 
-        private void TryPush(CanBeDamaged hitEntity, GameObject hitObj)
+        private void TryPush(CanBeDamaged hitEntity)
         {
             if (_pushForce == null) return;
             
             var enemy = hitEntity as EnemyLogic;
-            
             if (enemy == null) return;
             
-            var diff = hitObj.transform.position - transform.position;
-            diff = diff.normalized;
-            enemy.PushEnemy(diff * _pushForce.Value, 0.3f);
+            enemy.PushEnemy(transform.position, _pushForce.Value);
         }
 
         private void ManageParticlesOnHit()

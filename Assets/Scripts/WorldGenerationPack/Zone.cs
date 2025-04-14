@@ -31,10 +31,9 @@ namespace WorldGenerationPack
 
         public void Resize(float percentage)
         {
-            percentage++;
             var newScale = transform.localScale;
-            newScale.x *= percentage;
-            newScale.y *= percentage;
+            newScale.x += percentage;
+            newScale.y += percentage;
             
             transform.LeanScale(newScale, 0.3f).setEaseInBack().setEaseOutBack();
         }

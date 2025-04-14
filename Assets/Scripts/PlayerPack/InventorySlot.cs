@@ -49,6 +49,14 @@ namespace PlayerPack
 
         protected override void OnDragStart(PointerEventData eventData)
         {
+            if (eventData.button == PointerEventData.InputButton.Right)
+            {
+                SetItem(null, -1);
+                PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SCRAP, 1);
+                //TODO: Scrap sound
+                return;
+            }
+            
             base.OnDragStart(eventData);
             levelText.text = "";
         }

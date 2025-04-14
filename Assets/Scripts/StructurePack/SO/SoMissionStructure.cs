@@ -12,10 +12,5 @@ namespace StructurePack.SO
             GameManager.StartRun(structureBase.GetData<MapManager.MissionData>());
             return true;
         }
-
-        public override void OnDataChange<T>(T data) where T: class
-        {
-            var validData = data as MapManager.MissionData;
-        }
     }
 }

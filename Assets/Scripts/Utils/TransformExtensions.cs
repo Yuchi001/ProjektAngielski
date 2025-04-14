@@ -36,12 +36,12 @@ namespace Utils
 
         public static bool InRange(this Transform current, Vector2 searched, float dist)
         {
-            return Vector2.Distance(current.position, searched) < dist;
+            return current.Distance(searched) < dist;
         }
         
         public static float Distance(this Transform current, Vector2 searched)
         {
-            return Vector2.Distance(current.position, searched);
+            return (searched - (Vector2)current.transform.position).sqrMagnitude;
         }
 
         public static void MoveTowards(this Transform current, Vector2 target, float speed)

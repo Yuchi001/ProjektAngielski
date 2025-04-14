@@ -87,7 +87,7 @@ namespace ItemPack.WeaponPack.Other
             {
                 if(t == null || !t.TryGetComponent<EnemyLogic>(out var enemy)) continue;
                 
-                enemy.PushEnemy(Vector2.right * (mod * _pushForce), 0.3f);
+                enemy.PushEnemy(PlayerPos, _pushForce);
                 enemy.GetDamaged(_damage);
                 if (!_effectType.HasValue) continue; 
                 

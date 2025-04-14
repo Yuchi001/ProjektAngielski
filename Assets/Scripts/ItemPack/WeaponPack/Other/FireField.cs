@@ -1,9 +1,12 @@
-﻿using EnemyPack.CustomEnemyLogic;
+﻿using System;
+using EnemyPack.CustomEnemyLogic;
 using ItemPack.WeaponPack.WeaponsLogic;
 using Managers;
+using Other;
 using Other.Enums;
 using Other.Interfaces;
 using PlayerPack;
+using ProjectilePack;
 using UnityEngine;
 
 namespace ItemPack.WeaponPack.Other
@@ -11,15 +14,21 @@ namespace ItemPack.WeaponPack.Other
     public class FireField : MonoBehaviour, IDamageEnemy
     {
         [SerializeField] private float rangeScaler;
+        [SerializeField] private SpriteRenderer spriteRenderer;
             
         private BookOfFireLogic _bookOfFireLogic;
-        private Transform particles => transform.GetChild(0);
+        private TriggerDetector _triggerDetector;
         
         private float _timer = 0;
+        
+        private Transform particles => transform.GetChild(0);
 
         public void Setup(BookOfFireLogic bookOfFireLogic)
         {
             _bookOfFireLogic = bookOfFireLogic;
+            _triggerDetector = new TriggerDetector(spriteRenderer);
+            _triggerDetector.SetOnTriggerEnter(BurnEnemy);
+            _triggerDetector.SetOnTriggerStay(TriggerBurn);
         }
 
         private void Update()
@@ -32,28 +41,22 @@ namespace ItemPack.WeaponPack.Other
             particles.transform.localScale = vectorScale;
             transform.position = PlayerManager.PlayerPos;
             _timer += Time.deltaTime;
+        }
 
+        private void TriggerBurn(CanBeDamaged canBeDamaged)
+        {
             if (_timer < 1f / _bookOfFireLogic.DamageRate) return;
 
             _timer = 0;
-            TriggerBurn();
+            BurnEnemy(canBeDamaged);
         }
 
-        private void TriggerBurn()
+        private void BurnEnemy(CanBeDamaged canBeDamaged)
         {
-            var results = new Collider2D[50];
-            var playerPos = PlayerManager.PlayerPos;
-            var range = _bookOfFireLogic.Range;
-            Physics2D.OverlapCircleNonAlloc(playerPos, range, results);
-            
-            foreach (var hit in results)
-            {
-                if (hit == null) continue;
-                if(!hit.TryGetComponent<EnemyLogic>(out var enemy)) continue;
+            if (canBeDamaged is not EnemyLogic enemy) return;
                 
-                enemy.GetDamaged(_bookOfFireLogic.Damage);
-                enemy.AddEffect(EEffectType.Burn, _bookOfFireLogic.EffectDuration);
-            }
+            enemy.GetDamaged(_bookOfFireLogic.Damage);
+            enemy.AddEffect(EEffectType.Burn, _bookOfFireLogic.EffectDuration);
         }
 
         private void OnDrawGizmos()

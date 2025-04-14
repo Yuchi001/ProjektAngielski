@@ -34,9 +34,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             {
                 if(hit == null || !hit.TryGetComponent(out EnemyLogic enemyLogic)) continue;
 
-                var diff = enemyLogic.transform.position - (Vector3)PlayerPos;
-                diff = diff.normalized;
-                enemyLogic.PushEnemy(diff * PushForce, 0.3f);
+
+                enemyLogic.PushEnemy(PlayerPos, PushForce);
             }
             
             PlayerManager.PlayerHealth.Heal((int)HealValue);

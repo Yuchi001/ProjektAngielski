@@ -59,6 +59,7 @@ MonoBehaviour:
     max: 4
   throwSlowAcceleration: 8
   pickUpCooldown: 0.75
+  lifeTime: 5
 --- !u!212 &4535698492429040940
 SpriteRenderer:
   m_ObjectHideFlags: 0

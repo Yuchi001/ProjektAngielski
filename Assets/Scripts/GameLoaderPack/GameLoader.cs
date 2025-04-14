@@ -23,8 +23,6 @@ namespace GameLoaderPack
             var loadObjects = FindObjectsOfType<MonoBehaviour>().OfType<IMissionDependentInstance>();
             foreach (var obj in loadObjects)
             {
-                var go = ((MonoBehaviour)obj).gameObject;
-                if (go.scene.buildIndex != Instance.gameObject.scene.buildIndex) continue;
                 obj.Init(missionData);
             }
             return true;

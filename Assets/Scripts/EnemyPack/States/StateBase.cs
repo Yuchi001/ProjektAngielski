@@ -15,12 +15,6 @@ namespace EnemyPack.States
         public abstract void Enter(EnemyLogic state);
         public abstract void Execute(EnemyLogic state);
 
-        /// <summary>
-        /// DONT CALL BASE METHOD
-        /// </summary>
-        /// <param name="state">current enemy logic reference</param>
-        public virtual void FixedExecute(EnemyLogic state) { }
-
         public abstract void Reset(EnemyLogic state);
 
         public virtual ESpriteRotation GetRotation(EnemyLogic state)

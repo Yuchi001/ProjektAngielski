@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6ad64d905246959d1209eebe50a24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.005
+  maxUpdateStackDuration: 0.001
   <PoolSize>k__BackingField: 100
   _waitBeforeSpawn: 1.5
   standardDifficultyDeviation: 0.2
@@ -603,7 +603,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0ae66d388b44ccb15998fc40577bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseZoneScale: 10
   zoneEntityRange: 5
 --- !u!4 &1704848718
 Transform:

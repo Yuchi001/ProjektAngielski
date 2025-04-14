@@ -24,7 +24,7 @@ namespace StructurePack.SO
             var price = data.GetCurrentPrice();
             if (!PlayerCollectibleManager.HasCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SOUL, price)) return false;
 
-            PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SOUL, price);
+            PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SOUL, -price);
             data.MultiplyCurrentPrice(transactionMultiplier);
             
             var addedEnchantment = PlayerEnchantments.AddRandomEnchantment();

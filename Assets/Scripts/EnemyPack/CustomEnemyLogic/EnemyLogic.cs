@@ -24,7 +24,7 @@ namespace EnemyPack.CustomEnemyLogic
     public partial class EnemyLogic : CanBeDamaged
     {
         [Header("General")] 
-        [SerializeField] private Rigidbody2D rb2d;
+        [SerializeField] private float knockbackDecay;
         [SerializeField] private Animator animator;
 
         public Animator Animator => animator;
@@ -34,6 +34,7 @@ namespace EnemyPack.CustomEnemyLogic
         public override int MaxHealth => Mathf.CeilToInt(EnemyData.MaxHealth * DifficultyManager.EnemyHpScale);
         private float Mass => Mathf.Pow(EnemyData.BodyScale, 2);
         private static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
+        private Vector2 knockbackVelocity;
 
         public bool Invincible { get; private set; }
 
@@ -74,7 +75,7 @@ namespace EnemyPack.CustomEnemyLogic
             Animator.enabled = true;
             
             EnemyData = enemy.As<SoEnemy>();
-            rb2d.mass = Mass;
+            //rb2d.mass = Mass;
             
             _currentHealth = MaxHealth;
             
@@ -107,7 +108,16 @@ namespace EnemyPack.CustomEnemyLogic
 
         public override void InvokeUpdate()
         {
+            animator.speed = Stuned ? 0 : Slowed ? 0.5f : 1;
             if (Dead || (Stuned && _currentState.CanBeStunned) || !Active) return;
+
+            if (_isBeingPushed)
+            {
+                _isBeingPushed = knockbackVelocity.magnitude > 0.01f;
+                transform.position += (Vector3)(knockbackVelocity * deltaTime);
+                knockbackVelocity = Vector2.Lerp(knockbackVelocity, Vector2.zero, knockbackDecay * deltaTime);
+                return;
+            }
 
             var rotation = _currentState.GetRotation(this);
             if (rotation != ESpriteRotation.None)
@@ -122,36 +132,18 @@ namespace EnemyPack.CustomEnemyLogic
             _currentState.Execute(this);
         }
 
-        private void FixedUpdate()
-        {
-            if (!Active) return;
-            
-            animator.speed = Stuned ? 0 : Slowed ? 0.5f : 1;
-            rb2d.mass = Stuned ? 999 : Slowed ? Mass * 2 : Mass;
-
-            if (Stuned) _currentState.FixedExecute(this);
-            else rb2d.velocity = Vector2.zero;
-        }
-
         public void SwitchState(StateBase state)
         {
             state.Enter(this);
             _currentState = state;
         }
         
-        public void PushEnemy(Vector2 force, float time)
+        public void PushEnemy(Vector2 rootPos, float force)
         {
             if (_isBeingPushed || !_currentState.CanBePushed) return;
-            
-            rb2d.AddForce(force, ForceMode2D.Impulse);
-            _isBeingPushed = true;
-            StartCoroutine(PushCoroutine(time));
-        }
 
-        private IEnumerator PushCoroutine(float time)
-        {
-            yield return new WaitForSeconds(time);
-            _isBeingPushed = false;
+            knockbackVelocity = ((Vector2)transform.position - rootPos).normalized * force;
+            _isBeingPushed = true;
         }
 
         public override void GetDamaged(int value, Color? color = null)
@@ -174,7 +166,7 @@ namespace EnemyPack.CustomEnemyLogic
         public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)
         {
             WorldItemManager.SpawnSouls(transform.position, EnemyData.Difficulty);
-            rb2d.velocity = Vector2.zero;
+            //rb2d.velocity = Vector2.zero;
             Collider2D.enabled = false;
             
             base.OnDie(destroyObj, _enemySpawner);
@@ -182,7 +174,7 @@ namespace EnemyPack.CustomEnemyLogic
 
         public void DieWithoutGem()
         {
-            rb2d.velocity = Vector2.zero;
+            //rb2d.velocity = Vector2.zero;
             Collider2D.enabled = false;
             
             base.OnDie();
@@ -199,18 +191,6 @@ namespace EnemyPack.CustomEnemyLogic
                 GetDamaged(9999);
                 return;
             }
-            
-            if (other.TryGetComponent(out Projectile projectile))
-                projectile.ManageHit(gameObject);
-            
-            else if (other.TryGetComponent(out IDamageEnemy damageEnemy)) 
-                damageEnemy.TriggerDamage(this);
-        }
-
-        private void OnTriggerStay2D(Collider2D other)
-        {
-            if (other.TryGetComponent(out Projectile projectile)) 
-                projectile.ManageCollisionStay(gameObject);
         }
     }
 }

@@ -70,7 +70,24 @@ namespace EnemyPack.States
 
         public override void Execute(EnemyLogic state)
         {
-            _transform.position = Vector2.MoveTowards(_transform.position, PlayerPos, (float)state.CheckTimer(CHASE_MOVE_TIMER_ID) * state.EnemyData.MovementSpeed);
+            var transform = state.transform;
+            var position = transform.position;
+            var direction = (PlayerPos - (Vector2)position).normalized;
+
+            var separation = Vector2.zero;
+            var nearby = Physics2D.OverlapCircleAll(position, 1);
+            foreach (var col in nearby)
+            {
+                if (col.gameObject == transform.gameObject || !col.CompareTag("Enemy")) continue;
+                var pushAway = (Vector2)(transform.position - col.transform.position);
+                var dist = pushAway.magnitude;
+                if (dist > 0) separation += pushAway.normalized / dist;
+            }
+
+            var finalDir = (direction + separation * 0.1f).normalized;
+
+            transform.position += (Vector3)(finalDir * ((float)state.CheckTimer(CHASE_MOVE_TIMER_ID) * state.EnemyData.MovementSpeed));
+            
             state.SetTimer(CHASE_MOVE_TIMER_ID);
             if (Vector2.Distance(_transform.position, PlayerPos) > _range) return;
 

@@ -23,11 +23,14 @@ namespace InventoryPack.WorldItemPack
         [SerializeField] private MinMax throwSpeed;
         [SerializeField] private float throwSlowAcceleration = 3f;
         [SerializeField] private float pickUpCooldown = 0.75f;
+        [SerializeField] private float lifeTime;
         
         private SpriteRenderer _spriteRenderer;
         private Animator _anim;
         private SoItem _item;
         private bool _canPickUp = false;
+
+        private float _lifeTimeTimer = 0;
 
         private PoolManager _poolManager;
 
@@ -75,6 +78,7 @@ namespace InventoryPack.WorldItemPack
             _cleanUp = false;
             _currentMovementSpeed = movementSpeed;
             _paramArray = Array.Empty<int>();
+            _lifeTimeTimer = 0;
         }
 
         public void Setup(SoItem item, Vector2 position, params int[] paramArray)
@@ -129,7 +133,16 @@ namespace InventoryPack.WorldItemPack
             }
 
             var dist = transform.Distance(playerPos);
-            if (dist > pickUpDistance && !_pickedUp || !_item.CanPickUp()) return;
+            if (dist > pickUpDistance && !_pickedUp || !_item.CanPickUp())
+            {
+                _lifeTimeTimer += deltaTime;
+                if (_lifeTimeTimer >= lifeTime)
+                {
+                    //TODO: jakis indikator ze item zniknie
+                    Destroy(gameObject);
+                }
+                return;
+            }
 
             if (_pickedUp == false) StartCoroutine(PickUp());
             if (_chasePlayer == false) return;

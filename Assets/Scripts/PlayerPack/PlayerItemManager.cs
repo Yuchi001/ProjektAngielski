@@ -120,6 +120,7 @@ namespace PlayerPack
         
         public void RemoveItemIntoWorldAtSlot(int index)
         {
+            //TODO: add sound
             var current = _itemSlots[index].ViewItem();
             WorldItemManager.SpawnInventoryItem(Instantiate(current.item), PlayerManager.PlayerPos, current.level);
             RemoveItemAtSlot(index);
