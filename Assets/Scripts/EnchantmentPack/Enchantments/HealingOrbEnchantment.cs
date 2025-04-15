@@ -1,6 +1,5 @@
 ﻿using EnchantmentPack.Enums;
 using EnemyPack;
-using EnemyPack.CustomEnemyLogic;
 using InventoryPack.WorldItemPack;
 using UnityEngine;
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AccessorPack;
-using EnemyPack.CustomEnemyLogic;
+using EnemyPack;
 using PoolPack;
 using Utils;
 

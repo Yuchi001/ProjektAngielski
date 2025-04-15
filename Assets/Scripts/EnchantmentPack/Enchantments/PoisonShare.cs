@@ -1,7 +1,6 @@
 ﻿using AudioPack;
 using EnchantmentPack.Enums;
 using EnemyPack;
-using EnemyPack.CustomEnemyLogic;
 using Managers;
 using Managers.Enums;
 using Other.Enums;

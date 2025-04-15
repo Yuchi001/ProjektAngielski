@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using DifficultyPack;
-using EnemyPack.CustomEnemyLogic;
 using EnemyPack.SO;
 using GameLoaderPack;
 using Managers;
@@ -23,6 +22,7 @@ namespace EnemyPack
 {
     public class EnemySpawner : SpawnerBase, IMissionDependentInstance
     {
+        [SerializeField] private float maxDistanceFromPlayer = 20;
         [SerializeField] private float standardDifficultyDeviation = 0.2f;
         
         private readonly Queue<SoEnemy> _despawnQueue = new();
@@ -72,7 +72,7 @@ namespace EnemyPack
         protected override PoolObject InvokeQueueUpdate()
         {
             var current = base.InvokeQueueUpdate();
-            if (!current.transform.InRange(PlayerManager.PlayerPos, 10))
+            if (!current.transform.InRange(PlayerManager.PlayerPos, maxDistanceFromPlayer))
             {
                 _despawnQueue.Enqueue(current.As<EnemyLogic>().EnemyData);
                 ReleasePoolObject(current);

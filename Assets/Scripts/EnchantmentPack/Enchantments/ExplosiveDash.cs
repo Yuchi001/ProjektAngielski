@@ -2,7 +2,7 @@
 using AudioPack;
 using DifficultyPack;
 using EnchantmentPack.Enums;
-using EnemyPack.CustomEnemyLogic;
+using EnemyPack;
 using Managers;
 using Managers.Enums;
 using PlayerPack;

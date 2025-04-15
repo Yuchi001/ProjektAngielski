@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EnchantmentPack.Enums;
-using EnemyPack.CustomEnemyLogic;
+using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
+using Other;
 using Other.Enums;
 using UnityEngine;
 
@@ -66,11 +67,12 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             projectile.SetCustomValue(DamageRateName, currentRate + Time.deltaTime);
         }
 
-        private void CollisionStay(GameObject enemy, Projectile projectile)
+        private void CollisionStay(CanBeDamaged enemy, Projectile projectile)
         {
             if (projectile.GetCustomValue(DamageRateName) < 1f / DamageRate) return;
+
+            if (enemy is not EnemyLogic enemyScript) return;
             
-            var enemyScript = enemy.GetComponent<EnemyLogic>();
             enemyScript.GetDamaged(Damage);
             projectile.SetCustomValue(DamageRateName, 0);
         }

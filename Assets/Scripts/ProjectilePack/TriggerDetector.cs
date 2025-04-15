@@ -19,9 +19,9 @@ namespace ProjectilePack
         private readonly Transform _monoTransform;
         private readonly SpriteRenderer _monoSpriteRenderer;
 
-        public TriggerDetector(SpriteRenderer spriteRenderer)
+        public TriggerDetector(SpriteRenderer spriteRenderer, Transform monoTransform = null)
         {
-            _monoTransform = spriteRenderer.transform;
+            _monoTransform = monoTransform ? monoTransform : spriteRenderer.transform;
             _monoSpriteRenderer = spriteRenderer;
         }
 
@@ -63,8 +63,8 @@ namespace ProjectilePack
 
             _currentEnemies?.RemoveWhere(enemy => !_enemiesThisFrame.Contains(enemy));
         }
-        
-        bool IsInHitRange(CanBeDamaged canBeDamaged)
+
+        private bool IsInHitRange(CanBeDamaged canBeDamaged)
         {
             var bulletRadius = _monoSpriteRenderer.bounds.extents.magnitude;
             var enemyRadius = canBeDamaged.SpriteRenderer.bounds.extents.magnitude;

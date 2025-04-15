@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 6528374986980264091}
-  zoneCheckPerSec: 4
+  zoneCheckPerSec: 2
 --- !u!114 &-711591100249454349
 MonoBehaviour:
   m_ObjectHideFlags: 0

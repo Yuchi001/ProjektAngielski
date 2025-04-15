@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using AudioPack;
 using DamageIndicatorPack;
 using EnchantmentPack.Enums;
-using ItemPack.WeaponPack.Other;
-using Managers;
 using Managers.Enums;
 using Other;
 using ParticlesPack;
@@ -146,20 +143,6 @@ namespace PlayerPack
             PlayerManager.ManagePlayerDeath();
             
             base.OnDie(destroyObj);
-        }
-        
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (!other.TryGetComponent(out Projectile projectile)) return;
-            
-            projectile.ManageHit(gameObject);
-        }
-
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            if (!other.gameObject.TryGetComponent(out Projectile projectile)) return;
-            
-            projectile.ManageHit(gameObject);
         }
     }
 }

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using AudioPack;
-using EnemyPack.CustomEnemyLogic;
+using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Managers.Enums;
+using Other;
 using Other.Enums;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
@@ -70,7 +71,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             return spawnedProjectiles > 0;
         }
 
-        private void OnHitAction(GameObject enemy, Projectile projectile)
+        private void OnHitAction(CanBeDamaged enemy, Projectile projectile)
         {
             var range = GetStatValue(EItemSelfStatType.BlastRange);
             var damage = GetStatValueAsInt(EItemSelfStatType.BlastDamage);
@@ -78,7 +79,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             if (this != null) StartCoroutine(BoomCoroutine(enemy, range, damage));
         }
 
-        private IEnumerator BoomCoroutine(GameObject impactEnemy, float range, int damage)
+        private IEnumerator BoomCoroutine(CanBeDamaged impactEnemy, float range, int damage)
         {
             var enemyInstanceId = impactEnemy.GetInstanceID();
             var results = new Collider2D[50];

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AudioPack;
 using DamageIndicatorPack;
@@ -9,19 +8,16 @@ using EnemyPack.Enums;
 using EnemyPack.SO;
 using EnemyPack.States;
 using InventoryPack.WorldItemPack;
-using ItemPack.WeaponPack.Other;
 using Managers.Enums;
 using Other;
-using Other.Interfaces;
 using PlayerPack;
-using PlayerPack.Enums;
 using PoolPack;
 using UnityEngine;
 
-namespace EnemyPack.CustomEnemyLogic
+namespace EnemyPack
 {
     [RequireComponent(typeof(EnemyHealthBar))]
-    public partial class EnemyLogic : CanBeDamaged
+    public class EnemyLogic : CanBeDamaged
     {
         [Header("General")] 
         [SerializeField] private float knockbackDecay;
@@ -30,9 +26,7 @@ namespace EnemyPack.CustomEnemyLogic
         public Animator Animator => animator;
         public static Vector2 PlayerPos => PlayerManager.PlayerPos;
         private EnemyHealthBar _enemyHealthBar;
-        public Collider2D Collider2D { get; private set; }
         public override int MaxHealth => Mathf.CeilToInt(EnemyData.MaxHealth * DifficultyManager.EnemyHpScale);
-        private float Mass => Mathf.Pow(EnemyData.BodyScale, 2);
         private static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
         private Vector2 knockbackVelocity;
 
@@ -57,7 +51,6 @@ namespace EnemyPack.CustomEnemyLogic
         public override void OnCreate(PoolManager poolManager)
         {
             base.OnCreate(poolManager);
-            Collider2D = GetComponent<Collider2D>();
             _enemyHealthBar = GetComponent<EnemyHealthBar>();
             _enemySpawner = poolManager as EnemySpawner;
         }
@@ -79,7 +72,6 @@ namespace EnemyPack.CustomEnemyLogic
             
             _currentHealth = MaxHealth;
             
-            Collider2D.enabled = true;
 
             var scale = EnemyData.BodyScale;
             transform.localScale = new Vector3(scale,scale,scale);
@@ -166,31 +158,15 @@ namespace EnemyPack.CustomEnemyLogic
         public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)
         {
             WorldItemManager.SpawnSouls(transform.position, EnemyData.Difficulty);
-            //rb2d.velocity = Vector2.zero;
-            Collider2D.enabled = false;
-            
+
             base.OnDie(destroyObj, _enemySpawner);
         }
 
         public void DieWithoutGem()
         {
-            //rb2d.velocity = Vector2.zero;
-            Collider2D.enabled = false;
-            
             base.OnDie();
         }
         
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.CompareTag("Player") 
-                && PlayerManager.PlayerMovement.DuringDash
-                && PlayerEnchantments.Has(EEnchantmentName.DashKill))
-            {
-                var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.DashKill, EValueKey.Percentage);
-                if ((float)CurrentHealth / MaxHealth > percentage) return;
-                GetDamaged(9999);
-                return;
-            }
-        }
+        //TODO: Dash kill mechanic on player
     }
 }

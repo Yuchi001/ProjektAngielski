@@ -1,5 +1,4 @@
-﻿using EnemyPack.CustomEnemyLogic;
-using EnemyPack.Enums;
+﻿using EnemyPack.Enums;
 using PlayerPack;
 using UnityEngine;
 
@@ -21,7 +20,6 @@ namespace EnemyPack.States.Mimic
             state.SetInvincible(true);
             _transform = state.transform;
             state.Animator.enabled = false;
-            state.Collider2D.isTrigger = true;
             state.SpriteRenderer.flipX = false;
 
             var sprite = state.EnemyData.EnemySprite;
@@ -33,7 +31,6 @@ namespace EnemyPack.States.Mimic
             if (Vector2.Distance(_transform.position, PlayerPos) > DETECTION_RANGE) return;
 
             state.Animator.enabled = true;
-            state.Collider2D.isTrigger = false;
             state.Animator.Play("Idle");
             
             state.SwitchState(new Chase());

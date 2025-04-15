@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using EnemyPack.CustomEnemyLogic;
+using EnemyPack;
 using PlayerPack;
 using PoolPack;
 using Utils;

@@ -2,10 +2,11 @@
 using System.Linq;
 using AudioPack;
 using EnchantmentPack.Enums;
-using EnemyPack.CustomEnemyLogic;
+using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Managers.Enums;
+using Other;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
 using UnityEngine;
@@ -56,7 +57,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
             return projectile;
         }
 
-        private void OnHitAction(GameObject hitObj, Projectile projectile)
+        private void OnHitAction(CanBeDamaged hitObj, Projectile projectile)
         {
             var position = hitObj.transform.position;
             var results = new Collider2D[50];

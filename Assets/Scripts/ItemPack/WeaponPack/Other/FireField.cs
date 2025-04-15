@@ -1,17 +1,14 @@
-﻿using System;
-using EnemyPack.CustomEnemyLogic;
+﻿using EnemyPack;
 using ItemPack.WeaponPack.WeaponsLogic;
-using Managers;
 using Other;
 using Other.Enums;
-using Other.Interfaces;
 using PlayerPack;
 using ProjectilePack;
 using UnityEngine;
 
 namespace ItemPack.WeaponPack.Other
 {
-    public class FireField : MonoBehaviour, IDamageEnemy
+    public class FireField : MonoBehaviour
     {
         [SerializeField] private float rangeScaler;
         [SerializeField] private SpriteRenderer spriteRenderer;
@@ -41,6 +38,8 @@ namespace ItemPack.WeaponPack.Other
             particles.transform.localScale = vectorScale;
             transform.position = PlayerManager.PlayerPos;
             _timer += Time.deltaTime;
+            
+            _triggerDetector.CheckForTriggers();
         }
 
         private void TriggerBurn(CanBeDamaged canBeDamaged)

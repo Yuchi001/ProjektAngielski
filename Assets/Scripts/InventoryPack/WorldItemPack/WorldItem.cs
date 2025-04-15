@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 
 namespace InventoryPack.WorldItemPack
 {
-    [RequireComponent(typeof(CircleCollider2D)), RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
+    [RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
     public class WorldItem : PoolObject
     {
         [SerializeField] private float pickUpDistance = 0.5f;
@@ -139,7 +139,7 @@ namespace InventoryPack.WorldItemPack
                 if (_lifeTimeTimer >= lifeTime)
                 {
                     //TODO: jakis indikator ze item zniknie
-                    Destroy(gameObject);
+                    _poolManager.ReleasePoolObject(this);
                 }
                 return;
             }

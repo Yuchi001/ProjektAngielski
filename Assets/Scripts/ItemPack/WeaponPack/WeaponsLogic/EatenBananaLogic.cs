@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using AudioPack;
-using EnemyPack.CustomEnemyLogic;
+using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Managers;
 using Managers.Enums;
+using Other;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
 using UnityEngine;
@@ -37,7 +38,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             return true;
         }
 
-        private void OnHit(GameObject hitObj, Projectile projectile)
+        private void OnHit(CanBeDamaged hitObj, Projectile projectile)
         {
             AudioManager.PlaySound(ESoundType.BananaBoom);
 

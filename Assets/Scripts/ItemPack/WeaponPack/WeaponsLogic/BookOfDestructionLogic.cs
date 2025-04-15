@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using AudioPack;
 using EnchantmentPack.Enums;
-using EnemyPack.CustomEnemyLogic;
+using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.SideClasses;
 using Managers.Enums;

@@ -1,4 +1,4 @@
-﻿using EnemyPack.CustomEnemyLogic;
+﻿using EnemyPack;
 using Managers;
 using Other.Enums;
 using PlayerPack;

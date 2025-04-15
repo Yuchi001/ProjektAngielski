@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using AccessorPack;
 using EnemyPack;
-using EnemyPack.CustomEnemyLogic;
 using Managers;
 using Other;
 using Other.Enums;
 using PlayerPack;
 using PoolPack;
+using ProjectilePack;
 using UnityEngine;
 using Utils;
 using TransformExtensions = Utils.TransformExtensions;
@@ -67,9 +67,8 @@ namespace ItemPack.WeaponPack.Other
         private bool _damageOnHit = true;
 
         private readonly Dictionary<string, float> _customValues = new();
-        
-        private readonly HashSet<PoolObject> _currentEnemies = new();
-        private readonly HashSet<PoolObject> _enemiesThisFrame = new();
+
+        private TriggerDetector _triggerDetector;
 
         #region Setup methods
 
@@ -81,6 +80,9 @@ namespace ItemPack.WeaponPack.Other
             _startDistance = t.position;
             _damage = damage;
             _speed = speed;
+            _triggerDetector = new TriggerDetector(projectileSprite, transform)
+                .SetOnTriggerEnter(OnTargetHit)
+                .SetOnTriggerStay(OnTargetStay);
             return this;
         }
 
@@ -294,6 +296,7 @@ namespace ItemPack.WeaponPack.Other
             MoveProjectile();
             CheckDistance();
             CheckLifeTime();
+            _triggerDetector.CheckForTriggers();
         }
         
         public float GetCustomValue(string id)
@@ -373,7 +376,7 @@ namespace ItemPack.WeaponPack.Other
             return projectileSprite;
         }
 
-        public void ManageCollisionStay(CanBeDamaged hitObj)
+        public void OnTargetStay(CanBeDamaged hitObj)
         {
             if (!hitObj.CompareTag(_targetTag)) return;
             
@@ -382,7 +385,7 @@ namespace ItemPack.WeaponPack.Other
             _onCollisionStay?.Invoke(hitObj, this);
         }
 
-        public void ManageHit(CanBeDamaged enemy)
+        public void OnTargetHit(CanBeDamaged enemy)
         {
             if (!enemy.CompareTag(_targetTag)) return;
             

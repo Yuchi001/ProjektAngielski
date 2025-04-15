@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EnchantmentPack.Enums;
-using EnemyPack.CustomEnemyLogic;
+using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
+using Other;
 using Other.Enums;
 using TargetSearchPack;
 using UnityEngine;
@@ -76,11 +77,13 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             return true;
         }
 
-        private void OnHit(GameObject onHit, Projectile projectile)
+        private void OnHit(CanBeDamaged onHit, Projectile projectile)
         {
+            if (onHit is not EnemyLogic enemyLogic) return;
+            
             var count = projectile.GetCustomValue(HitEnemyCountName);
             count++;
-            onHit.GetComponent<EnemyLogic>().GetDamaged(Damage * (int)count);
+            enemyLogic.GetDamaged(Damage * (int)count);
             projectile.SetCustomValue(HitEnemyCountName, count);
         }
 

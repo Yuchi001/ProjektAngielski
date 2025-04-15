@@ -1,5 +1,5 @@
 ﻿using System;
-using EnemyPack.CustomEnemyLogic;
+using AccessorPack;
 using EnemyPack.SO;
 using PlayerPack;
 using UnityEngine;
@@ -75,11 +75,10 @@ namespace EnemyPack.States
             var direction = (PlayerPos - (Vector2)position).normalized;
 
             var separation = Vector2.zero;
-            var nearby = Physics2D.OverlapCircleAll(position, 1);
-            foreach (var col in nearby)
+            foreach (var poolObj in MainSceneAccessor.EnemySpawner.GetActiveEnemies())
             {
-                if (col.gameObject == transform.gameObject || !col.CompareTag("Enemy")) continue;
-                var pushAway = (Vector2)(transform.position - col.transform.position);
+                if (poolObj.gameObject == transform.gameObject) continue;
+                var pushAway = (Vector2)(transform.position - poolObj.transform.position);
                 var dist = pushAway.magnitude;
                 if (dist > 0) separation += pushAway.normalized / dist;
             }

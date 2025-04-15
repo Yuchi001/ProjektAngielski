@@ -1,5 +1,4 @@
-﻿using EnemyPack.CustomEnemyLogic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace EnemyPack.States.BatSmall
 {
