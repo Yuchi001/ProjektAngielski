@@ -318,6 +318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 4733844501563839803}
+  bodyRadius: 0.22
   knockbackDecay: 0.3
   animator: {fileID: 9143095408977510911}
 --- !u!210 &3064657196240184749

@@ -22,7 +22,6 @@ namespace DifficultyPack
         
         public void Init(MapManager.MissionData missionData)
         {
-            Debug.Log("Set!");
             _currentMission = missionData;
         }
 

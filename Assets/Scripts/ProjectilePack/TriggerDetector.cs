@@ -17,12 +17,12 @@ namespace ProjectilePack
         private Action<CanBeDamaged> _onTriggerStay;
 
         private readonly Transform _monoTransform;
-        private readonly SpriteRenderer _monoSpriteRenderer;
+        private readonly float _range;
 
-        public TriggerDetector(SpriteRenderer spriteRenderer, Transform monoTransform = null)
+        public TriggerDetector(Transform monoTransform, float range)
         {
-            _monoTransform = monoTransform ? monoTransform : spriteRenderer.transform;
-            _monoSpriteRenderer = spriteRenderer;
+            _range = range;
+            _monoTransform = monoTransform;
         }
 
         public TriggerDetector SetOnTriggerEnter(Action<CanBeDamaged> onTriggerEnter)
@@ -66,12 +66,13 @@ namespace ProjectilePack
 
         private bool IsInHitRange(CanBeDamaged canBeDamaged)
         {
-            var bulletRadius = _monoSpriteRenderer.bounds.extents.magnitude;
-            var enemyRadius = canBeDamaged.SpriteRenderer.bounds.extents.magnitude;
+            var bulletRadius = _monoTransform.localScale.x * _range;
+            var enemyRadius = canBeDamaged.BodyRadius * canBeDamaged.transform.localScale.x;
             var totalRange = 0.1f + bulletRadius + enemyRadius;
             var totalRangeSqr = totalRange * totalRange;
 
             return _monoTransform.InRange(canBeDamaged.transform.position, totalRangeSqr);
         }
+        
     }
 }

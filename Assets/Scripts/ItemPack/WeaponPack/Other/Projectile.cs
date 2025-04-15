@@ -20,6 +20,7 @@ namespace ItemPack.WeaponPack.Other
         [SerializeField] private TrailRenderer trailRenderer;
         [SerializeField] private SpriteRenderer projectileSprite;
         [SerializeField] private float maxDistance = 20f;
+        [SerializeField] private float bulletRange;
         
         private readonly List<Sprite> _sprites = new();
 
@@ -80,7 +81,7 @@ namespace ItemPack.WeaponPack.Other
             _startDistance = t.position;
             _damage = damage;
             _speed = speed;
-            _triggerDetector = new TriggerDetector(projectileSprite, transform)
+            _triggerDetector = new TriggerDetector(transform, bulletRange)
                 .SetOnTriggerEnter(OnTargetHit)
                 .SetOnTriggerStay(OnTargetStay);
             return this;
@@ -430,6 +431,11 @@ namespace ItemPack.WeaponPack.Other
             _flightParticles.transform.localScale = Vector2.one;
             _flightParticles.GetComponent<ParticleSystem>().Stop(true);
             Destroy(_flightParticles, 10f);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(transform.position, bulletRange);
         }
     }
 }

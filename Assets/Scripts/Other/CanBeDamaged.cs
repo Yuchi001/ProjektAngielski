@@ -11,6 +11,7 @@ namespace Other
     public abstract class CanBeDamaged : PoolObject
     {
         [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private float bodyRadius;
         private const float _flashTime = 0.1f;
         private Material _spriteMaterial;
         
@@ -24,6 +25,7 @@ namespace Other
 
         protected bool Stuned => _effectsManager.Stunned;
         protected bool Slowed => _effectsManager.Slowed;
+        public float BodyRadius => bodyRadius;
 
         public SpriteRenderer SpriteRenderer => spriteRenderer;
 
@@ -99,6 +101,11 @@ namespace Other
             _spriteMaterial.SetFloat("_FlashAmmount", 0);
 
             _currentCoroutine = null;
+        }
+        
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(transform.position, bodyRadius);
         }
     }
 }

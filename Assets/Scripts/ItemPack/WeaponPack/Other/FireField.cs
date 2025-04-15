@@ -11,7 +11,7 @@ namespace ItemPack.WeaponPack.Other
     public class FireField : MonoBehaviour
     {
         [SerializeField] private float rangeScaler;
-        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private float bodyScale;
             
         private BookOfFireLogic _bookOfFireLogic;
         private TriggerDetector _triggerDetector;
@@ -23,7 +23,7 @@ namespace ItemPack.WeaponPack.Other
         public void Setup(BookOfFireLogic bookOfFireLogic)
         {
             _bookOfFireLogic = bookOfFireLogic;
-            _triggerDetector = new TriggerDetector(spriteRenderer);
+            _triggerDetector = new TriggerDetector(transform, bodyScale);
             _triggerDetector.SetOnTriggerEnter(BurnEnemy);
             _triggerDetector.SetOnTriggerStay(TriggerBurn);
         }
