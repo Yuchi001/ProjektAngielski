@@ -107,7 +107,7 @@ namespace PlayerPack
 
         private void Update()
         {
-            if (PlayerManager.PlayerMovement.CurrentDashStacks == PlayerManager.PlayerMovement.MaxDashStacks || !PlayerMovement.CanDash()) return;
+            if (PlayerManager.PlayerMovement.CurrentDashStacks == PlayerManager.PlayerMovement.MaxDashStacks) return;
             UpdateDashStacks();
         }
 

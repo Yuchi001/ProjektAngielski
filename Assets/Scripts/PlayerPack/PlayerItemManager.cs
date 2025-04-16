@@ -15,9 +15,6 @@ namespace PlayerPack
 {
     public class PlayerItemManager : Box
     {
-        [SerializeField] private Color activeItemFrameColor;
-        [SerializeField] private Color passiveItemFrameColor;
-        
         private readonly List<ItemLogicBase> _currentItems = new();
         private List<SoInventoryItem> _allItems = new();
         private List<(float weight, SoInventoryItem item)> _normalizedWeightItemList = new();
@@ -27,7 +24,6 @@ namespace PlayerPack
         public static event ItemAddDelegate OnItemAdd;
 
         private static int CAPACITY => PlayerManager.PlayerStatsManager.GetStatAsInt(EPlayerStatType.Capacity);
-        private GameObject ITEMS_GRID => gridDataList[0].Grid.gameObject;
 
         private bool _canInteract;
 
@@ -44,7 +40,18 @@ namespace PlayerPack
 
             _canInteract = true;
         }
-        
+
+        protected override Vector2 GetItemDropPosition()
+        {
+            return PlayerManager.PlayerPos;
+        }
+
+        public override void DropItem(int index)
+        {
+            base.DropItem(index);
+            RefreshInventory();
+        }
+
         private void Update()
         {
             if (!Input.GetKeyDown(KeyCode.I)) return;
@@ -155,10 +162,7 @@ namespace PlayerPack
 
         public void DestroyAllItems()
         {
-            foreach (var item in _currentItems.Where(i => i != null))
-            {
-                Destroy(item.gameObject);
-            }
+            foreach (var item in _currentItems.Where(i => i != null)) item.Remove();
             _currentItems.Clear();
         }
     }

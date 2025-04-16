@@ -26,5 +26,10 @@ namespace ItemPack.SO
         {
             return true;
         }
+
+        public bool Is(SoItem item)
+        {
+            return itemName == item.itemName;
+        }
     }
 }

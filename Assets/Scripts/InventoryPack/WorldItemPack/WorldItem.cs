@@ -17,9 +17,7 @@ namespace InventoryPack.WorldItemPack
     public class WorldItem : PoolObject
     {
         [SerializeField] private float pickUpDistance = 0.5f;
-        [SerializeField] private float getDistance = 0.1f;
-        [SerializeField] private float movementSpeed = 3f;
-        [SerializeField] private float movementAcceleration = 1f;
+        [SerializeField] private float pickUpTime = 0.2f;
         [SerializeField] private MinMax throwSpeed;
         [SerializeField] private float throwSlowAcceleration = 3f;
         [SerializeField] private float pickUpCooldown = 0.75f;
@@ -35,17 +33,19 @@ namespace InventoryPack.WorldItemPack
         private PoolManager _poolManager;
 
         private int[] _paramArray = Array.Empty<int>();
-
-        private float _currentMovementSpeed;
-
+        
         private bool _chasePlayer = false;
         private bool _pickedUp = false;
         private bool _cleanUp = false;
+
+        private float _pickUpTimer = 0;
 
         private float _currentThrowSpeed;
         private bool _ready = false;
 
         private Vector2 _randomDir;
+
+        private Vector2 _pickUpStartPos;
         
         public override void OnCreate(PoolManager poolManager)
         {
@@ -76,7 +76,7 @@ namespace InventoryPack.WorldItemPack
             _chasePlayer = false;
             _pickedUp = false;
             _cleanUp = false;
-            _currentMovementSpeed = movementSpeed;
+            _pickUpTimer = 0;
             _paramArray = Array.Empty<int>();
             _lifeTimeTimer = 0;
         }
@@ -147,9 +147,10 @@ namespace InventoryPack.WorldItemPack
             if (_pickedUp == false) StartCoroutine(PickUp());
             if (_chasePlayer == false) return;
 
-            _currentMovementSpeed += movementAcceleration * deltaTime;
-            transform.MoveTowards(playerPos, _currentMovementSpeed);
-            if (dist >= getDistance) return;
+            _pickUpTimer += deltaTime;
+            var currentTime = Mathf.Clamp01(_pickUpTimer / pickUpTime);
+            transform.position = Vector2.Lerp(_pickUpStartPos, PlayerManager.PlayerPos, currentTime);
+            if (currentTime < 1f) return;
 
             var pickedUp = _item.OnPickUp(_paramArray);
             if (!pickedUp)
@@ -166,6 +167,7 @@ namespace InventoryPack.WorldItemPack
         {
             _anim.SetTrigger("PickUp");
             _pickedUp = true;
+            _pickUpStartPos = transform.position;
             yield return new WaitForSeconds(0.2f);
             _chasePlayer = true;
         }
@@ -181,7 +183,6 @@ namespace InventoryPack.WorldItemPack
         private void OnDrawGizmos()
         {
             Gizmos.DrawWireSphere(transform.position, pickUpDistance);
-            Gizmos.DrawWireSphere(transform.position, getDistance);
         }
     }
 }

@@ -50,8 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickUpDistance: 0.75
   getDistance: 0.19
-  movementSpeed: 8
-  movementAcceleration: 4
+  pickUpTime: 0.3
   throwSpeed:
     min: 2
     max: 4

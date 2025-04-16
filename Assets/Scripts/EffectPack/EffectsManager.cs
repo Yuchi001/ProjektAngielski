@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EffectPack.SO;
 using GameLoaderPack;
 using Managers;
@@ -30,7 +31,11 @@ namespace EffectPack
             var effectStatusPrefab = GameManager.GetPrefab<EffectStatusObject>(PrefabNames.EffectStatus);
             foreach (var effectType in (EEffectType[])System.Enum.GetValues(typeof(EEffectType)))
             {
+                if (effectType == EEffectType.None) continue;
+                
                 var prefab = Instantiate(effectStatusPrefab, statusesHolder);
+                var effect = GetEffect(effectType);
+                if (effect == null) throw new Exception($"Effect of type {effectType} not found in effects dict");
                 prefab.SpawnSetup(GetEffect(effectType), this, _canBeDamaged);
                 _statuses.Add(effectType, prefab);
             }

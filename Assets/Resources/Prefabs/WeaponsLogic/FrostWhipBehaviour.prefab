@@ -45,5 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useEffect: 1
-  effectType: 3
-  slashPrefab: {fileID: 6450682123258718705, guid: cb9cfbb6810e606428a270c78b736b9c, type: 3}
+  effectType: 4

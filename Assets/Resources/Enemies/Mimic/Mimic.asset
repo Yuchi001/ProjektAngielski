@@ -20,6 +20,9 @@ MonoBehaviour:
   attackSpeed: 0.1
   damage: 5
   difficulty: 1
-  occurenceList: 00000000
+  occurenceList: 
   spriteRotation: 2
+  soulDropCount:
+    min: 0
+    max: 0
   enemyBehaviour: 1

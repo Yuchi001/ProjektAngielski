@@ -23,5 +23,7 @@
         public const string DashUI = "DashUI";
         public const string Zone = "Zone";
         public const string GamePlayer = "GamePlayer";
+        public const string FireField = "FireField";
+        public const string PlayerEqUI = "PlayerEqUI";
     }
 }

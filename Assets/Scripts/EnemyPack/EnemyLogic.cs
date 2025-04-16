@@ -101,6 +101,8 @@ namespace EnemyPack
 
         public override void InvokeUpdate()
         {
+            base.InvokeUpdate();
+            
             animator.speed = Stuned ? 0 : Slowed ? 0.5f : 1;
             if (Dead || (Stuned && _currentState.CanBeStunned) || !Active) return;
 
@@ -122,7 +124,7 @@ namespace EnemyPack
             
             _enemyHealthBar.ManageHealthBar();
             
-            _currentState.Execute(this);
+            _currentState.Execute(this, deltaTime);
         }
 
         public void SwitchState(StateBase state)
@@ -158,7 +160,7 @@ namespace EnemyPack
 
         public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)
         {
-            WorldItemManager.SpawnSouls(transform.position, EnemyData.Difficulty);
+            WorldItemManager.SpawnSouls(transform.position, EnemyData.GetSoulDropCount());
 
             base.OnDie(destroyObj, _enemySpawner);
         }

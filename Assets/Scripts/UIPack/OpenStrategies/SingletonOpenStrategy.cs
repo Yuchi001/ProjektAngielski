@@ -15,7 +15,7 @@ namespace UIPack.OpenStrategies
 
         public bool Open(out UIBase uiBase, string key)
         {
-            var record = UIManager.GetCurrentUIBaseList().FirstOrDefault(ui => ui.GetType() == _instanceType);
+            var record = UIManager.GetCurrentUIBaseList().FirstOrDefault(ui => _instanceType.IsInstanceOfType(ui.Script));
             uiBase = record == default ? UIManager.SpawnUI(_basePrefab) : record.Script;
             uiBase.OnOpen(key);
 

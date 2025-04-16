@@ -154,7 +154,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemiesHpScaleBase: 1
   enemiesHpScalePerSecond: 0.001
-  spawnRateBase: 0.5
+  spawnRate:
+    min: 1
+    max: 4
   spawnRatePerSeconds: 0.01
 --- !u!4 &21715228
 Transform:
@@ -293,8 +295,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11702656b926492f96e3b92562620bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.5
-  <PoolSize>k__BackingField: 50
+  maxUpdateStackDuration: 0.02
+  <PoolSize>k__BackingField: 150
   sounds:
   - AudioClip: {fileID: 8300000, guid: 7c8538fa233774d47a8e57f8d093c412, type: 3}
     SoundType: 0
@@ -326,6 +328,8 @@ MonoBehaviour:
     SoundType: 13
   - AudioClip: {fileID: 8300000, guid: 3eb74e4c38fce814b9f9ef23c23e1b77, type: 3}
     SoundType: 14
+  - AudioClip: {fileID: 8300000, guid: e2e9c2a8752f9c04c82bd27dfa83657a, type: 3}
+    SoundType: 15
   themes:
   - AudioClip: {fileID: 8300000, guid: 8707a8d816e439c4f96237cba2ff1e83, type: 3}
     ThemeType: 0
@@ -1200,7 +1204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd182f2fc5d74f35b106d381102e100c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.001
+  maxUpdateStackDuration: 0.002
   <PoolSize>k__BackingField: 100
 --- !u!4 &1954272737
 Transform:

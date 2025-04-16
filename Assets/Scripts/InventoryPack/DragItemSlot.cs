@@ -40,6 +40,8 @@ namespace InventoryPack
         public void EndDrag(int targetIndex, Box targetBox)
         {
             EndDrag();
+            
+            if (!targetBox.CanAdd(_box, _itemSlot, targetIndex)) return;
 
             if (targetBox == _box)
             {
@@ -56,8 +58,6 @@ namespace InventoryPack
 
             if (targetBox.GetSlotAtIndex(targetIndex).IsEmpty())
             {
-                if (!targetBox.CanAdd(InventoryItem)) return;
-                
                 targetBox.AddItemAtSlot(targetIndex, InventoryItem, Level);
                 _box.RemoveItemAtSlot(Index);
                 return;

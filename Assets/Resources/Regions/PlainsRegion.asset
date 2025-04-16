@@ -15,10 +15,14 @@ MonoBehaviour:
   regionType: 1
   regionTheme: 1
   structures:
-  - structure: {fileID: 11400000, guid: 078465f8320d725449a0f8f2c3f7bdfe, type: 2}
+  - structure: {fileID: 11400000, guid: f30d9f681a327fc4d82283fe672a159e, type: 2}
     countPerSquare:
-      min: 0
-      max: 0
+      min: 0.01
+      max: 0.005
+  - structure: {fileID: 11400000, guid: d44a612a9d19e544fa2259f2bd617209, type: 2}
+    countPerSquare:
+      min: 0.01
+      max: 0.005
   uniqueEffects: []
   soulToCoinRatioPerDiff:
     min: 0

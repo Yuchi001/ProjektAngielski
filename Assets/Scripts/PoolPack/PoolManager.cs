@@ -13,9 +13,7 @@ namespace PoolPack
 
         protected abstract T GetPoolObject<T>() where T: PoolObject;
         public abstract void ReleasePoolObject(PoolObject poolObject);
-
-        private DateTime _last;
-
+        
         public virtual SoPoolObject GetRandomPoolData()
         {
             return null;
@@ -26,7 +24,6 @@ namespace PoolPack
         
         protected void PrepareQueue()
         {
-            _last = DateTime.Now;
             updateStack = new Stack<PoolObject>(ActiveObjects);
         }
 
@@ -34,9 +31,10 @@ namespace PoolPack
         {
             if (updateStack.Count == 0) PrepareQueue();
 
-            var fps = 1.0f / Time.unscaledDeltaTime;
             
-            _currentQueueLength = Mathf.CeilToInt(updateStack.Count * (fps * maxUpdateStackDuration));
+            var fps = 1.0f / Time.unscaledDeltaTime;
+            var requiredRate = updateStack.Count / maxUpdateStackDuration;
+            _currentQueueLength = Mathf.Min(updateStack.Count, Mathf.CeilToInt(requiredRate / fps));
             for (var i = 0; i < _currentQueueLength && updateStack.Count > 0; i++)
             {
                 InvokeQueueUpdate();

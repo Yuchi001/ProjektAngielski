@@ -2,6 +2,7 @@
 using EnemyPack.Enums;
 using Other;
 using UnityEngine;
+using Utils;
 using WorldGenerationPack.Enums;
 
 namespace EnemyPack.SO
@@ -20,6 +21,8 @@ namespace EnemyPack.SO
         [SerializeField, Range(1, 10)] private int difficulty = 1;
         [SerializeField] private List<ERegionType> occurenceList;
         [SerializeField] private ESpriteRotation spriteRotation = ESpriteRotation.RotateLeft;
+        [SerializeField] private bool useCustomDropCount;
+        [SerializeField] private MinMax soulDropCount;
         
         [Header("Behaviour")]
         [SerializeField] private EEnemyBehaviour enemyBehaviour;
@@ -35,5 +38,12 @@ namespace EnemyPack.SO
         public float MovementSpeed => movementSpeed;
         public float AttackSpeed => attackSpeed;
         public int Difficulty => difficulty;
+
+        public int GetSoulDropCount()
+        {
+            if (useCustomDropCount) return soulDropCount.RandomInt();
+            var halfDiff = difficulty / 2;
+            return new MinMax(Mathf.Max(1, halfDiff), halfDiff + 2).RandomInt();
+        }
     }
 }

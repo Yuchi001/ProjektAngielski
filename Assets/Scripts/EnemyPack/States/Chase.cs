@@ -22,7 +22,6 @@ namespace EnemyPack.States
         private Transform _transform;
 
         private const string CHASE_ATTACK_TIMER_ID = "CHASE_ATTACK_TIMER";
-        private const string CHASE_MOVE_TIMER_ID = "CHASE_MOVE_TIMER";
 
         private new static Vector2 PlayerPos => PlayerManager.PlayerPos;
 
@@ -65,10 +64,9 @@ namespace EnemyPack.States
             _data = state.EnemyData;
             _transform = state.transform;
             state.SetTimer(CHASE_ATTACK_TIMER_ID);
-            state.SetTimer(CHASE_MOVE_TIMER_ID);
         }
 
-        public override void Execute(EnemyLogic state)
+        public override void Execute(EnemyLogic state, float deltaTime)
         {
             var transform = state.transform;
             var position = transform.position;
@@ -85,9 +83,8 @@ namespace EnemyPack.States
 
             var finalDir = (direction + separation * 0.1f).normalized;
 
-            transform.position += (Vector3)(finalDir * ((float)state.CheckTimer(CHASE_MOVE_TIMER_ID) * state.EnemyData.MovementSpeed));
+            transform.position += (Vector3)(finalDir * (deltaTime * state.EnemyData.MovementSpeed));
             
-            state.SetTimer(CHASE_MOVE_TIMER_ID);
             if (Vector2.Distance(_transform.position, PlayerPos) > _range) return;
 
             if (state.CheckTimer(CHASE_ATTACK_TIMER_ID) < 1f / _data.AttackSpeed) return;

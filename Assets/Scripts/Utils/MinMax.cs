@@ -9,6 +9,12 @@ namespace Utils
         [SerializeField] private float min;
         [SerializeField] private float max;
 
+        public MinMax(float min, float max)
+        {
+            this.min = min;
+            this.max = max;
+        }
+
         public int RandomInt()
         {
             return Random.Range((int)min, (int)max + 1);

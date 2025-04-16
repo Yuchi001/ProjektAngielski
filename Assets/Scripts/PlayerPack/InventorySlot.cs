@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AudioPack;
 using InventoryPack;
 using ItemPack.SO;
+using Managers.Enums;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,7 +15,6 @@ namespace PlayerPack
     public class InventorySlot : ItemSlot
     {
         [SerializeField] private Image frameImage;
-        [SerializeField] private TextMeshProUGUI levelText;
         [SerializeField] private List<StateData> states;
 
         public IEnumerable<StateData> States
@@ -41,24 +42,17 @@ namespace PlayerPack
             _stateDict = States.ToDictionary(s => s.state, s => s);
         }
 
-        public override void SetItem(SoInventoryItem inventoryItem, int level)
-        {
-            base.SetItem(inventoryItem, level);
-            levelText.text = inventoryItem == null ? "" : level.ToString();
-        }
-
         protected override void OnDragStart(PointerEventData eventData)
         {
             if (eventData.button == PointerEventData.InputButton.Right)
             {
+                PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SCRAP, _level);
                 SetItem(null, -1);
-                PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SCRAP, 1);
-                //TODO: Scrap sound
+                AudioManager.PlaySound(ESoundType.ScrapWeapon);
                 return;
             }
             
             base.OnDragStart(eventData);
-            levelText.text = "";
         }
 
         public void SetSlotState(EState state)

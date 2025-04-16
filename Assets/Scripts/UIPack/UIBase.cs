@@ -14,20 +14,37 @@ namespace UIPack
         public virtual void OnOpen(string key)
         {
             gameObject.SetActive(true);
-            if (useAnim) transform.LeanScale(Vector3.one, animTime).setEaseInBack().setEaseOutBack();
+            if (useAnim) StartCoroutine(TriggerAnim());
             Key = key;
+        }
+
+        protected virtual void OnOpenAfterAnim()
+        {
+            
+        }
+
+        private IEnumerator TriggerAnim()
+        {
+            transform.LeanScale(Vector3.one, animTime).setEaseInBack().setEaseOutBack();
+            yield return new WaitForSeconds(animTime);
+            OnOpenAfterAnim();
         }
 
         public virtual void OnClose()
         {
-            if (useAnim) transform.LeanScale(Vector3.zero, animTime).setEaseInBack().setEaseOutBack();
+            if (useAnim) transform.LeanScale(Vector3.zero, animTime).setEaseInBack();
             StartCoroutine(Deactivate());
+        }
+
+        protected virtual void OnDeactivate()
+        {
+            gameObject.SetActive(false);
         }
 
         private IEnumerator Deactivate()
         {
             yield return new WaitForSeconds(useAnim ? animTime : 0);
-            gameObject.SetActive(false);
+            OnDeactivate();
         }
     }
 }

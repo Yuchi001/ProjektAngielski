@@ -18,11 +18,15 @@ MonoBehaviour:
   - structure: {fileID: 11400000, guid: d44a612a9d19e544fa2259f2bd617209, type: 2}
     countPerSquare:
       min: 0.01
-      max: 0.005
+      max: 0.05
   - structure: {fileID: 11400000, guid: f30d9f681a327fc4d82283fe672a159e, type: 2}
     countPerSquare:
       min: 0.001
-      max: 0.0005
+      max: 0.005
+  - structure: {fileID: 11400000, guid: dc321d57c272f35479e6f20e428679c0, type: 2}
+    countPerSquare:
+      min: 0.001
+      max: 0.005
   uniqueEffects: []
   soulToCoinRatioPerDiff:
     min: -1

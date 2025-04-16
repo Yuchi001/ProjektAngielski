@@ -508,6 +508,7 @@ MonoBehaviour:
   maxUpdateStackDuration: 0.001
   <PoolSize>k__BackingField: 100
   _waitBeforeSpawn: 1.5
+  maxDistanceFromPlayer: 20
   standardDifficultyDeviation: 0.2
 --- !u!4 &1424998232
 Transform:
@@ -535,7 +536,7 @@ GameObject:
   - component: {fileID: 1664853735}
   - component: {fileID: 1664853734}
   m_Layer: 0
-  m_Name: WorldGeneratormanager
+  m_Name: WorldGeneratorManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -558,7 +559,7 @@ MonoBehaviour:
   visionDistance:
     min: 6
     max: 10
-  visionPerSquare: 0.05
+  visionPerSquare: 0.075
 --- !u!4 &1664853735
 Transform:
   m_ObjectHideFlags: 0

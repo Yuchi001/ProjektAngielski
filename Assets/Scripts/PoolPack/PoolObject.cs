@@ -8,8 +8,8 @@ namespace PoolPack
     public abstract class PoolObject : MonoBehaviour
     {
         protected bool Active { get; private set; }
-        private readonly Dictionary<string, DateTime> _lastMeasure = new();
-        private DateTime _lastUpdated;
+        private readonly Dictionary<string, float> _lastMeasure = new();
+        private float _lastUpdatedTime;
         
         protected float deltaTime { get; private set; }
 
@@ -26,7 +26,7 @@ namespace PoolPack
         public virtual void OnGet(SoPoolObject so)
         {
             Active = true;
-            _lastUpdated = DateTime.Now;
+            _lastUpdatedTime = Time.time;
         }
         
         public virtual void OnRelease()
@@ -38,15 +38,15 @@ namespace PoolPack
 
         public void SetTimer(string ID)
         {
-            if (_lastMeasure.TryAdd(ID, DateTime.Now)) return;
-            
-            _lastMeasure[ID] = DateTime.Now;
+            if (_lastMeasure.TryAdd(ID, Time.time)) return;
+
+            _lastMeasure[ID] = Time.time;
         }
 
-        public double CheckTimer(string ID)
+        public float CheckTimer(string ID)
         {
             var hasValue = _lastMeasure.TryGetValue(ID, out var lastMeasure);
-            return hasValue ? (DateTime.Now - lastMeasure).TotalSeconds : 0;
+            return hasValue ? Time.time - lastMeasure : 0f;
         }
 
         /// <summary>
@@ -54,9 +54,9 @@ namespace PoolPack
         /// </summary>
         public virtual void InvokeUpdate()
         {
-            var now = DateTime.Now;
-            deltaTime = (float)(now - _lastUpdated).TotalSeconds;
-            _lastUpdated = now;
+            var now = Time.time;
+            deltaTime = now - _lastUpdatedTime;
+            _lastUpdatedTime = now;
         }
     }
 }

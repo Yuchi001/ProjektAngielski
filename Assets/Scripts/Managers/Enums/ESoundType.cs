@@ -16,6 +16,7 @@
         BulletExplode,
         PowerUp,
         HealOrb,
-        Coin
+        Coin,
+        ScrapWeapon
     }
 }

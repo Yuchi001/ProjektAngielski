@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using InventoryPack.WorldItemPack;
 using ItemPack.SO;
 using Managers;
 using Managers.Other;
@@ -40,6 +41,17 @@ namespace InventoryPack
                 }
             }
         }
+
+        public virtual void DropItem(int index)
+        {
+            var slot = _itemSlots[index];
+            var item = slot.ViewItem();
+            if (item.item == null) return;
+            WorldItemManager.SpawnInventoryItem(item.item, GetItemDropPosition(), item.level);
+            slot.SetItem(null, -1);
+        }
+
+        protected abstract Vector2 GetItemDropPosition();
         
         /// <summary>
         /// Editor only function
@@ -108,12 +120,7 @@ namespace InventoryPack
             return true;
         }
         
-        /// <summary>
-        /// Checks if item can be added to box.
-        /// </summary>
-        /// <param name="inventoryItem">New item to be added.</param>
-        /// <returns>true if it is possible to add and item</returns>
-        public virtual bool CanAdd(SoInventoryItem inventoryItem)
+        public virtual bool CanAdd(Box fromBox, ItemSlot slot, int targetIndex)
         {
             return true;
         }
@@ -132,6 +139,11 @@ namespace InventoryPack
         public virtual void RemoveItemAtSlot(int index)
         {
             _itemSlots[index].SetItem(null, -1);
+        }
+
+        public virtual void OnSlotChanged(ItemSlot itemSlot)
+        {
+            
         }
 
         public ItemSlot GetSlotAtIndex(int index)

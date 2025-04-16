@@ -26,7 +26,7 @@ namespace EnemyPack.States.Mimic
             state.SpriteRenderer.sprite = sprite;
         }
 
-        public override void Execute(EnemyLogic state)
+        public override void Execute(EnemyLogic state, float deltaTime)
         {
             if (Vector2.Distance(_transform.position, PlayerPos) > DETECTION_RANGE) return;
 

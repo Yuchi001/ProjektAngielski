@@ -9,19 +9,19 @@ namespace PlayerPack.Editor
     {
         private InventorySlot _slot;
         private SerializedProperty _frameImage;
-        private SerializedProperty _levelText;
+        private SerializedProperty _dragItemColor;
 
         private void OnEnable()
         {
             _slot = target as InventorySlot;
             _frameImage = serializedObject.FindProperty("frameImage");
-            _levelText = serializedObject.FindProperty("levelText");
+            _dragItemColor = serializedObject.FindProperty("dragItemColor");
         }
 
         public override void OnInspectorGUI()
         {
             EditorGUILayout.PropertyField(_frameImage);
-            EditorGUILayout.PropertyField(_levelText);
+            EditorGUILayout.PropertyField(_dragItemColor);
             
             var stateData = new List<InventorySlot.StateData>();
             foreach (var state in _slot.States)

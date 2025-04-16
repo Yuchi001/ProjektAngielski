@@ -93,6 +93,14 @@ namespace ItemPack
  
         protected abstract bool Use();
 
+        /// <summary>
+        /// Destroys item logic spawned in the world.
+        /// </summary>
+        public virtual void Remove()
+        {
+            Destroy(gameObject);
+        }
+
         protected float GetStatValue(EItemSelfStatType statTypeType)
         {
             return InventoryItem.GetStatValue(statTypeType, Level);

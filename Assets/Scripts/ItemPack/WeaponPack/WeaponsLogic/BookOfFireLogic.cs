@@ -2,15 +2,15 @@
 using EnchantmentPack.Enums;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
+using Managers;
+using Managers.Other;
 using UnityEngine;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class BookOfFireLogic : ItemLogicBase
     {
-        [SerializeField] private GameObject fireFieldPrefab;
-        
-        private bool _spawned = false;
+        private FireField _spawnedFireField = null;
 
         public float Range => GetStatValue(EItemSelfStatType.ProjectileRange);
         public float DamageRate => GetStatValue(EItemSelfStatType.DamageRate) * CustomRateModifier();
@@ -26,16 +26,21 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         protected override bool Use()
         {
-            if (_spawned) return false;
+            if (_spawnedFireField != null) return false;
 
-            var fieldObj = Instantiate(fireFieldPrefab);
-            fieldObj.GetComponent<FireField>().Setup(this);
-
-            _spawned = true;
+            var prefab = GameManager.GetPrefab<FireField>(PrefabNames.FireField);
+            _spawnedFireField = Instantiate(prefab);
+            _spawnedFireField.Setup(this);
 
             return false;
         }
-        
+
+        public override void Remove()
+        {
+            Destroy(_spawnedFireField.gameObject);
+            base.Remove();
+        }
+
         private float CustomRateModifier()
         {
             var stacks = PlayerEnchantments.GetStacks(EEnchantmentName.BetterBooks);

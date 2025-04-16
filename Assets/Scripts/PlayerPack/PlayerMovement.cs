@@ -136,8 +136,6 @@ namespace PlayerPack
 
         private void ManageDash()
         {
-            if (!CanDash()) return;
-            
             if (DuringDash)
             {
                 _dashingTimer += Time.deltaTime;

@@ -14,7 +14,7 @@ namespace EnemyPack.States.BatSmall
             
         }
 
-        public override void Execute(EnemyLogic state)
+        public override void Execute(EnemyLogic state, float deltaTime)
         {
             if (Vector2.Distance(state.transform.position, PlayerPos) > IDLE_RANGE) return;
             

@@ -22,4 +22,8 @@ MonoBehaviour:
   difficulty: 4
   occurenceList: 00000000
   spriteRotation: 2
+  useCustomDropCount: 0
+  soulDropCount:
+    min: 2
+    max: 3
   enemyBehaviour: 0

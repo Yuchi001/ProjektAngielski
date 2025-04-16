@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7787685337975628636}
   - component: {fileID: -711591100249454349}
   - component: {fileID: -6161043678733040772}
+  - component: {fileID: 7373578628973006570}
   - component: {fileID: 4539823628734349663}
   - component: {fileID: 2203980574517720108}
   - component: {fileID: 7998076830844320173}
@@ -143,6 +144,18 @@ MonoBehaviour:
   spriteLifeTime: 0.1
   spriteSpawnRate: 200
   spriteTransform: {fileID: 8191276423356007028}
+--- !u!114 &7373578628973006570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330592185322976742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8f07621adce452397694d9ae759147a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4539823628734349663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,6 +253,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 1303c8e0-d502-49d6-9914-89baf4457a04
     m_ActionName: Player/Dash[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7373578628973006570}
+        m_TargetAssemblyTypeName: PlayerPack.PlayerEqManager, Assembly-CSharp
+        m_MethodName: OnEqToggle
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 57a59b92-26e6-4a62-9ebe-ecd4bac7acd9
+    m_ActionName: Player/OpenEq[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
