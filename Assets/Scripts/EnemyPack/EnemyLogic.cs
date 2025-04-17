@@ -4,7 +4,6 @@ using System.Linq;
 using AudioPack;
 using DamageIndicatorPack;
 using DifficultyPack;
-using EnchantmentPack.Enums;
 using EnemyPack.Enums;
 using EnemyPack.SO;
 using EnemyPack.States;
@@ -12,6 +11,7 @@ using InventoryPack.WorldItemPack;
 using Managers.Enums;
 using Other;
 using PlayerPack;
+using PlayerPack.PlayerEnchantmentPack;
 using PoolPack;
 using UnityEngine;
 
@@ -144,13 +144,10 @@ namespace EnemyPack
         public override void GetDamaged(int value, Color? color = null)
         {
             base.GetDamaged(value, color);
-
-            var isCrit = Stuned && PlayerEnchantments.Has(EEnchantmentName.StunDoubleDamage); 
-            if (isCrit) value *= 2;
             
             AudioManager.PlaySound(ESoundType.EnemyHurt);
             
-            IndicatorManager.SpawnIndicator(transform.position, value, isCrit);
+            IndicatorManager.SpawnIndicator(transform.position, value, false); //TODO: maybe add crit chance
             _currentHealth = Mathf.Clamp(_currentHealth - value, 0, MaxHealth);
             
             _enemyHealthBar.UpdateHealthBar(_currentHealth, MaxHealth);

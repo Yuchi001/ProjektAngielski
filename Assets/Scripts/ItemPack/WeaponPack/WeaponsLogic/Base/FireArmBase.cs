@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AudioPack;
-using EnchantmentPack.Enums;
 using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
@@ -50,33 +49,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
                 .SetScale(bulletScale)
                 .SetTrail(trailTime)
                 .SetPushForce(PushForce);
-            
-            if (PlayerEnchantments.Has(EEnchantmentName.ExplosiveBullets))
-                projectile.SetOnHitAction(OnHitAction);
 
             return projectile;
-        }
-
-        private void OnHitAction(CanBeDamaged hitObj, Projectile projectile)
-        {
-            var position = hitObj.transform.position;
-            var results = new Collider2D[50];
-            var range = PlayerEnchantments.GetParamValue(EEnchantmentName.ExplosiveBullets, EValueKey.Range);
-            Physics2D.OverlapCircleNonAlloc(position, range, results);
-
-            AudioManager.PlaySound(ESoundType.BulletExplode);
-            SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionMedium, position, range);
-
-            var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.ExplosiveBullets, EValueKey.Percentage);
-            var damage = Mathf.CeilToInt(Damage * percentage);
-            
-            foreach (var hit in results)
-            {
-                if (hit == null) continue;
-                if(!hit.TryGetComponent<EnemyLogic>(out var enemy)) continue;
-                
-                enemy.GetDamaged(damage);
-            }
         }
         
         private Vector2 GetDirection(Vector2 pickedTargetPos)

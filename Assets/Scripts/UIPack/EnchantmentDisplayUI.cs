@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using EnchantmentPack;
+using EnchantmentPack.SO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +21,7 @@ namespace UIPack
 
         public void SetData(SoEnchantment enchantment)
         {
-            image.sprite = enchantment.EnchantmentSprite;
+            image.sprite = enchantment.Sprite;
             textField.text = enchantment.GetDescription();
         }
 

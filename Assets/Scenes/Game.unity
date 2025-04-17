@@ -508,7 +508,7 @@ MonoBehaviour:
   maxUpdateStackDuration: 0.001
   <PoolSize>k__BackingField: 100
   _waitBeforeSpawn: 1.5
-  maxDistanceFromPlayer: 20
+  maxDistanceFromPlayer: 40
   standardDifficultyDeviation: 0.2
 --- !u!4 &1424998232
 Transform:

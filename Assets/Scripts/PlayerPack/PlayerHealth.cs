@@ -1,14 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using AudioPack;
 using DamageIndicatorPack;
-using EnchantmentPack.Enums;
 using Managers.Enums;
 using Other;
 using ParticlesPack;
 using ParticlesPack.Enums;
 using PlayerPack.Enums;
-using PlayerPack.SO;
 using PoolPack;
 using UnityEngine;
 using WorldGenerationPack;
@@ -29,17 +26,11 @@ namespace PlayerPack
 
         public bool Invincible { get; set; } = false;
 
-        public delegate void PlayerDamagedDelegate(int damage, int current);
+        public delegate void PlayerDamagedDelegate(int current, int damage);
         public static event PlayerDamagedDelegate OnPlayerDamaged;
 
-        private static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
-        private static SoCharacter PickedCharacter => PlayerManager.PickedCharacter;
-
-        public delegate void PlayerHealDelegate(int healed, int current);
+        public delegate void PlayerHealDelegate(int current, int healValue);
         public static event PlayerHealDelegate OnPlayerHeal;
-
-        public delegate void PlayerReviveDelegate();
-        public static event PlayerReviveDelegate OnPlayerRevive;
 
         private void Awake()
         {
@@ -95,50 +86,28 @@ namespace PlayerPack
         {
             if (Dead || Invincible) return;
             
+            _currentHealth = Mathf.Clamp(_currentHealth - value, 0, MaxHealth);
+            OnPlayerDamaged?.Invoke(_currentHealth, value);
             base.GetDamaged(value, color);
-            _currentHealth = Mathf.Clamp(_currentHealth - value, 
-                0, MaxHealth);
             
             AudioManager.PlaySound(ESoundType.PlayerHurt);
             
-            OnPlayerDamaged?.Invoke(value, _currentHealth);
             if(_currentHealth <= 0) OnDie(false);
         }
 
         public void Heal(int value, ESoundType soundType = ESoundType.Heal)
         {
-            // dont change sequence of this array it needs to be sorted like this
-            var betterHealLevelArr = new List<EEnchantmentName>
-            {
-                EEnchantmentName.BetterHeal2,
-                EEnchantmentName.BetterHeal1,
-                EEnchantmentName.BetterHeal,
-            };
-            foreach (var enchantment in betterHealLevelArr)
-            {
-                if (!PlayerEnchantments.Has(enchantment)) continue;
-                value = Mathf.CeilToInt(value * (1 + PlayerEnchantments.GetParamValue(enchantment, EValueKey.Percentage)));
-            }
-            
             AudioManager.PlaySound(soundType);
             
             IndicatorManager.SpawnIndicator(PlayerManager.PlayerPos, value, false, false);
             ParticleManager.SpawnParticles(EParticlesType.Heal, PlayerManager.PlayerPos);
-            
+
             _currentHealth = Mathf.Clamp(_currentHealth + value, 0, MaxHealth);
-            
-            OnPlayerHeal?.Invoke(value, _currentHealth);
+            OnPlayerHeal?.Invoke(_currentHealth, value);
         }
 
         public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)
         {
-            if (PlayerEnchantments.Ready(EEnchantmentName.Revive))
-            {
-                OnPlayerRevive?.Invoke();
-                Heal(MaxHealth / 2);
-                return;
-            }
-            
             AudioManager.PlaySound(ESoundType.PlayerDeath);
             PlayerManager.ManagePlayerDeath();
             

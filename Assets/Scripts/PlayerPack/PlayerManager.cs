@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Managers;
 using Managers.Other;
+using PlayerPack.PlayerEnchantmentPack;
+using PlayerPack.PlayerItemPack;
 using PlayerPack.SO;
 using UIPack;
 using UIPack.CloseStrategies;

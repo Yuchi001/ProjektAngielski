@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EnchantmentPack.Enums;
 using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Other;
-using Other.Enums;
 using TargetSearchPack;
 using UnityEngine;
 using TransformExtensions = Utils.TransformExtensions;
@@ -65,12 +63,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 .SetScale(0.4f)
                 .SetRange(MaxRange)
                 .SetOutOfRangeBehaviour(OnOutOfRange);
-
-            if (PlayerEnchantments.Has(EEnchantmentName.Sharpness))
-            {
-                var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.Sharpness, EValueKey.Percentage);
-                if (Random.Range(0f, 1f) <= percentage) spawnedSword.SetEffect(EEffectType.Bleed, 9999);
-            }
 
             spawnedSword.SetReady();
 

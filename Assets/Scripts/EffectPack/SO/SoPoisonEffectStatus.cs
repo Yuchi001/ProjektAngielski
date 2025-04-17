@@ -1,6 +1,4 @@
-﻿using EnchantmentPack.Enums;
-using Other;
-using PlayerPack;
+﻿using Other;
 using UnityEngine;
 
 namespace EffectPack.SO
@@ -12,9 +10,7 @@ namespace EffectPack.SO
         
         public override void OnResolve(EffectsManager effectsManager, int stacks, CanBeDamaged canBeDamaged)
         {
-            var canStack = PlayerManager.PlayerEnchantments.Has(EEnchantmentName.PoisonCanStack);
-            stacks = canStack ? stacks : 1;
-            canBeDamaged.GetDamaged(poisonDamage * stacks);
+            canBeDamaged.GetDamaged(poisonDamage * 1);
         }
     }
 }

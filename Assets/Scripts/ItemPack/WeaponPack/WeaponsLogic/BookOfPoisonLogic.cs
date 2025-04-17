@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EnchantmentPack.Enums;
 using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
@@ -75,14 +74,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             
             enemyScript.GetDamaged(Damage);
             projectile.SetCustomValue(DamageRateName, 0);
-        }
-        
-        protected override float CustomCooldownModifier()
-        {
-            var stacks = PlayerEnchantments.GetStacks(EEnchantmentName.BetterBooks);
-            if (stacks <= 0) return base.CustomCooldownModifier();
-            var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.BetterBooks, EValueKey.Percentage);
-            return 1 + percentage * stacks;
         }
     }
 }

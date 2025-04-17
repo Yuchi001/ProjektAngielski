@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AudioPack;
-using EnchantmentPack.Enums;
 using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.SideClasses;
@@ -30,6 +30,11 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             EItemSelfStatType.BlastRange,
             EItemSelfStatType.DropExpChance
         };
+        
+        public override IEnumerable<EItemSelfStatType> GetUsedStats()
+        {
+            return base.GetUsedStats().Concat(_otherDefaultStatsNoPush);
+        }
 
         protected override bool Use()
         {
@@ -66,14 +71,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         public float GetRange()
         {
             return Range;
-        }
-        
-        protected override float CustomCooldownModifier()
-        {
-            var stacks = PlayerEnchantments.GetStacks(EEnchantmentName.BetterBooks);
-            if (stacks <= 0) return base.CustomCooldownModifier();
-            var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.BetterBooks, EValueKey.Percentage);
-            return 1 + percentage * stacks;
         }
     }
 }

@@ -6,6 +6,7 @@ using ItemPack.WeaponPack.Other;
 using Managers;
 using Managers.Other;
 using PlayerPack;
+using PlayerPack.PlayerEnchantmentPack;
 using UnityEngine;
 
 namespace ItemPack

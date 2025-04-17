@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using EnchantmentPack.Enums;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Managers;
 using Managers.Other;
-using UnityEngine;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
@@ -13,7 +11,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         private FireField _spawnedFireField = null;
 
         public float Range => GetStatValue(EItemSelfStatType.ProjectileRange);
-        public float DamageRate => GetStatValue(EItemSelfStatType.DamageRate) * CustomRateModifier();
+        public float DamageRate => GetStatValue(EItemSelfStatType.DamageRate);
         public float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration);
         
         protected override List<EItemSelfStatType> UsedStats { get; } = new()
@@ -39,14 +37,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         {
             Destroy(_spawnedFireField.gameObject);
             base.Remove();
-        }
-
-        private float CustomRateModifier()
-        {
-            var stacks = PlayerEnchantments.GetStacks(EEnchantmentName.BetterBooks);
-            if (stacks <= 0) return base.CustomCooldownModifier();
-            var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.BetterBooks, EValueKey.Percentage);
-            return 1 + percentage * stacks;
         }
     }
 }

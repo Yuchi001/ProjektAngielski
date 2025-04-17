@@ -46,9 +46,7 @@ namespace PlayerPack
         {
             if (eventData.button == PointerEventData.InputButton.Right)
             {
-                PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SCRAP, _level);
-                SetItem(null, -1);
-                AudioManager.PlaySound(ESoundType.ScrapWeapon);
+                PlayerManager.PlayerItemManager.ScrapItem(Index);
                 return;
             }
             

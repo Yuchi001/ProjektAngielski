@@ -100,6 +100,8 @@ namespace InventoryPack
         public void OnPointerDown(PointerEventData eventData)
         {
             if (_current == null || !enabled || !_box.CanInteract()) return;
+
+            if (_box.TryFastInputAction(this)) return;
             
             OnDragStart(eventData);
         }

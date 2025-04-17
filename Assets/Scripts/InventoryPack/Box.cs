@@ -6,11 +6,13 @@ using Managers;
 using Managers.Other;
 using UIPack;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace InventoryPack
 {
     public abstract class Box : UIBase
     {
+        [SerializeField] private InputActionReference fastActionReference;
         [SerializeField] protected List<BoxGridData> gridDataList;
 
         protected readonly List<ItemSlot> _itemSlots = new();
@@ -40,6 +42,32 @@ namespace InventoryPack
                     index++;
                 }
             }
+        }
+
+        public virtual bool TryFastInputAction(ItemSlot slot)
+        {
+            if (fastActionReference.action == null || !fastActionReference.action.IsPressed()) return false;
+
+            var boxes = new List<Box>();
+            foreach (var ui in UIManager.GetCurrentUIBaseList())
+            {
+                var uiScript = ui.Script;
+                if (uiScript is not Box box || uiScript == this || !uiScript.isActiveAndEnabled) continue;
+                boxes.Add(box);
+            }
+            if (!boxes.Any()) return false;
+
+            var (item, level) = slot.ViewItem();
+            foreach (var box in boxes)
+            {
+                var result = box.AddItem(item, level);
+                if (result == -1) continue;
+                
+                slot.SetItem(null, -1);
+                return true;
+            }
+
+            return false;
         }
 
         public virtual void DropItem(int index)

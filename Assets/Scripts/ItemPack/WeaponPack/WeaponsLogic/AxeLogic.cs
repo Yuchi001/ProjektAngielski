@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EnchantmentPack.Enums;
 using ItemPack.Enums;
 using Other.Enums;
 using TargetSearchPack;
@@ -56,12 +55,6 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                     .SetPushForce(PushForce)
                     .SetScale(ProjectileScale)
                     .SetRotationSpeed(-rotationSpeedModifier * Speed);
-                
-                if (PlayerEnchantments.Has(EEnchantmentName.Sharpness))
-                {
-                    var percentage = PlayerEnchantments.GetParamValue(EEnchantmentName.Sharpness, EValueKey.Percentage);
-                    if (Random.Range(0f, 1f) <= percentage) projectile.SetEffect(EEffectType.Bleed, 9999);
-                }
                 
                 projectile.SetReady();
             }

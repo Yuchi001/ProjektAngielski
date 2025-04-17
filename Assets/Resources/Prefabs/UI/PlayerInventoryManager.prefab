@@ -704,11 +704,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animTime: 0.3
   useAnim: 0
+  fastActionReference: {fileID: -669222900276615325, guid: 6575484494de8e3489c7ec393b4165dc, type: 3}
   gridDataList:
   - capacity: 9
     grid: {fileID: 7843983949910616514}
-  activeItemFrameColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
-  passiveItemFrameColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
 --- !u!114 &2997282507493500676
 MonoBehaviour:
   m_ObjectHideFlags: 0

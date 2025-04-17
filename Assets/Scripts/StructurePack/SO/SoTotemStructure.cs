@@ -1,7 +1,10 @@
-﻿using EnchantmentPack;
+﻿using System;
+using EnchantmentPack;
+using EnchantmentPack.SO;
 using Managers;
 using Managers.Other;
 using PlayerPack;
+using PlayerPack.PlayerEnchantmentPack;
 using UIPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
@@ -27,8 +30,10 @@ namespace StructurePack.SO
             PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SOUL, -price);
             data.MultiplyCurrentPrice(transactionMultiplier);
             
-            var addedEnchantment = PlayerEnchantments.AddRandomEnchantment();
-            data.DisplayEnchantment(addedEnchantment);
+            var enchantmentToAdd = PlayerEnchantments.GetRandomEnchantment();
+            var success = PlayerEnchantments.TryAddEnchantment(enchantmentToAdd.Name);
+            if (!success) throw new ArgumentOutOfRangeException($"Enchantment: {enchantmentToAdd.Name} couldn't be added to player inv!");
+            data.DisplayEnchantment(enchantmentToAdd);
             
             return true;
         }
