@@ -33,8 +33,10 @@ namespace DifficultyPack
         
         public static float GetEnemySpawnRate(float time)
         {
-            var min = Instance.spawnRate.Min + Instance.spawnRatePerSeconds * Instance._progression;
-            return Mathf.Lerp(min, Instance.spawnRate.Max, Mathf.Clamp01(time));
+            var spawnRateBounds = Instance.spawnRate;
+            var maxSpawnRate = Instance.spawnRate.Min + Instance.spawnRatePerSeconds * Instance._progression;
+            var clampedMaxSpawnRate = Mathf.Clamp(maxSpawnRate, spawnRateBounds.Min, spawnRateBounds.Max);
+            return Mathf.Lerp(Instance.spawnRate.Min, clampedMaxSpawnRate, time);
         }
 
         private void Update()

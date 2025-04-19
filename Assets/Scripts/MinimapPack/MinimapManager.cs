@@ -52,9 +52,9 @@ namespace MinimapPack
         public MinimapElement SpawnMinimapElement(Vector2 worldPos)
         {
             var prefab = GameManager.GetPrefab<MinimapElement>(PrefabNames.BaseMinimapElement);
-            var spawnedElement = Instantiate(prefab, Instance.backgroundImage.rectTransform);
+            var spawnedElement = Instantiate(prefab, Instance.worldImage.rectTransform);
             var minimapPosition = worldPos * Instance.scale;
-            spawnedElement.transform.SetParent(Instance.backgroundImage.rectTransform);
+            spawnedElement.transform.SetParent(Instance.worldImage.rectTransform);
             spawnedElement.transform.localPosition = minimapPosition;
             return spawnedElement;
         }

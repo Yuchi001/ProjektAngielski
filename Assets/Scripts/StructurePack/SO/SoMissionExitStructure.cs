@@ -56,7 +56,6 @@ namespace StructurePack.SO
             if (!data.IsInitialized()) throw new NullReferenceException("MISSION NOT SET FOR MISSION EXIT!");
 
             var rewardSum = data.BaseReward;
-            rewardSum += PlayerCollectibleManager.GetCollectibleCount(PlayerCollectibleManager.ECollectibleType.SOUL) * data.SoulToCoinRatio;
 
             var rewardItems = new List<SoInventoryItem>();
             var weaponCount = (int)(weaponPerCoin.RandomFloat() * rewardSum);
@@ -104,8 +103,6 @@ namespace StructurePack.SO
             public int SoulCount => _currenMission.SoulCount;
 
             public int BaseReward => _currenMission.CoinReward;
-
-            public int SoulToCoinRatio => _currenMission.SoulToCoinRatio;
         }
     }
 }

@@ -30,6 +30,7 @@ namespace MinimapPack.Strategies
         public void ReRender()
         {
             _minimapElement.MainImage.rectTransform.sizeDelta = _zone.transform.localScale * MinimapManager.MinimapScale;
+            _minimapElement.transform.SetAsLastSibling();
         }
 
         private class MinimapZoneScaleTracker : MonoBehaviour

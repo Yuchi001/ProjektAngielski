@@ -24,6 +24,8 @@ MonoBehaviour:
       min: 0.01
       max: 0.005
   uniqueEffects: []
+  maxMissionTimeEstimation: 120
+  maxMissionTimeEstimationPerDifficulty: 0
   soulToCoinRatioPerDiff:
     min: 0
     max: 0

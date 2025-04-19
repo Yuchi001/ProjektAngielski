@@ -133,7 +133,7 @@ namespace InventoryPack.WorldItemPack
             }
 
             var dist = transform.Distance(playerPos);
-            if (dist > pickUpDistance && !_pickedUp || !_item.CanPickUp())
+            if (dist > pickUpDistance && !_pickedUp || !_item.CanPickUp() || PlayerManager.PlayerItemManager.IsFull())
             {
                 _lifeTimeTimer += deltaTime;
                 if (_lifeTimeTimer >= lifeTime)
@@ -166,6 +166,7 @@ namespace InventoryPack.WorldItemPack
         private IEnumerator PickUp()
         {
             _anim.SetTrigger("PickUp");
+            _lifeTimeTimer = 0;
             _pickedUp = true;
             _pickUpStartPos = transform.position;
             yield return new WaitForSeconds(0.2f);

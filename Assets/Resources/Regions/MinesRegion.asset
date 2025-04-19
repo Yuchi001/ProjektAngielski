@@ -28,6 +28,8 @@ MonoBehaviour:
       min: 0.001
       max: 0.005
   uniqueEffects: []
+  maxMissionTimeEstimation: 120
+  maxMissionTimeEstimationPerDifficulty: 60
   soulToCoinRatioPerDiff:
     min: -1
     max: -5
@@ -35,11 +37,11 @@ MonoBehaviour:
     min: 25
     max: 50
   soulCountPerDiff:
-    min: 50
-    max: 100
+    min: 20
+    max: 40
   soulCountBase:
-    min: 150
-    max: 200
+    min: 10
+    max: 20
   coinRewardPerDiff:
     min: 10
     max: 20
@@ -52,8 +54,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -61,8 +63,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0

@@ -20,7 +20,8 @@ using Random = UnityEngine.Random;
 
 namespace EnemyPack
 {
-    public class EnemySpawner : SpawnerBase, IMissionDependentInstance
+    // TODO: create virtual methods
+    public abstract class EnemySpawner : SpawnerBase, IMissionDependentInstance
     {
         [SerializeField] private float maxDistanceFromPlayer = 20;
         [SerializeField] private float standardDifficultyDeviation = 0.2f;
@@ -37,11 +38,9 @@ namespace EnemyPack
         public int DeadEnemies { get; private set; }
         
         private MapManager.MissionData _currentMission;
-        private float _startDifficulty = 0;
+        private float _timer = 0;
 
-        private static int CurrentSoulCount => PlayerCollectibleManager.GetCollectibleCount(PlayerCollectibleManager.ECollectibleType.SOUL);
-        private float RawDifficulty => (float)CurrentSoulCount / _currentMission.SoulCount + _startDifficulty;
-        private float ScaledDifficulty => Mathf.Clamp01(_currentMission.GetScaledDifficulty(RawDifficulty));
+        private float ScaledDifficulty => _currentMission.GetScaledDifficulty(_timer);
         protected override float MaxTimer => 1f / DifficultyManager.GetEnemySpawnRate(ScaledDifficulty);
 
         private void Awake()
@@ -59,11 +58,11 @@ namespace EnemyPack
         {
             _allEnemies = _allEnemies.Where(e => e.OccurenceList.Contains(currentMission.RegionType)).ToList();
             _currentMission = currentMission;
-            _startDifficulty = (float)_currentMission.Difficulty / System.Enum.GetValues(typeof(MapManager.MissionData.EDifficulty)).Length;
         }
 
         protected override void Update()
         {
+            _timer += Time.deltaTime;
             RunUpdatePoolStack();
             
             base.Update();
@@ -140,7 +139,8 @@ namespace EnemyPack
         
         private int GetRandomDifficulty()
         {
-            var maxDifficulty = Mathf.CeilToInt(Mathf.Lerp(1, 10, ScaledDifficulty));
+            var bounds = _currentMission.Difficulty.EnemyDifficultyBounds();
+            var maxDifficulty = Mathf.CeilToInt(Mathf.Lerp(bounds.Min, bounds.Max, ScaledDifficulty));
             
             var mean = Mathf.Lerp(1f, maxDifficulty, ScaledDifficulty);
             var stdDev = maxDifficulty * standardDifficultyDeviation;

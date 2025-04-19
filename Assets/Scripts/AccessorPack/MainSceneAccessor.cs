@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace AccessorPack
 {
+    // TODO: REMOVE THIS
     public class MainSceneAccessor : MonoBehaviour
     {
         [SerializeField] private WaveManager waveManager;

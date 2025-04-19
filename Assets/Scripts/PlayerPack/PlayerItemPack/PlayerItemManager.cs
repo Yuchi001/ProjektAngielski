@@ -126,6 +126,7 @@ namespace PlayerPack.PlayerItemPack
                 else missingItemSlots.Add(slot);
             }
 
+            _currentItems.RemoveAll(i => i == null);
             foreach (var itemLogic in _currentItems)
             {
                 if (validSpawnedLogic.Contains(itemLogic.GetInstanceID())) continue;
@@ -138,16 +139,6 @@ namespace PlayerPack.PlayerItemPack
                 var itemPair = slot.ViewItem();
                 AddItemLogic(itemPair.item, itemPair.level);
             }
-
-            /*
-            foreach (var slot in _itemSlots)
-            {
-                if (slot.Index >= CAPACITY) return;
-                if (slot.IsEmpty()) continue;
-                var itemPair = slot.ViewItem();
-                AddItemLogic(itemPair.item, itemPair.level);
-            }
-             */
         }
 
         public override void SwitchItems(int current, int target)

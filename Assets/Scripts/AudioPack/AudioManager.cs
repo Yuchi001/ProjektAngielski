@@ -48,12 +48,6 @@ namespace AudioPack
             GameManager.OnGMStart -= GmStart;
         }
 
-        private void SetThemeForStage(MapManager.MissionData missionData)
-        {
-            // TODO: ustaw odpowiedni theme
-            SetTheme(EThemeType.Mines);
-        }
-
         public static void PlaySound(ESoundType soundType)
         {
             Instance.GetPoolObject<SFXPoolObject>().Play(soundType);

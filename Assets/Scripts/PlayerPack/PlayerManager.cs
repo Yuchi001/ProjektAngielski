@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AccessorPack;
 using ItemPack;
 using Managers;
+using Managers.Enums;
 using Managers.Other;
 using Other;
 using Other.Enums;
@@ -211,7 +213,9 @@ namespace PlayerPack
 
         public static void StartPlayerExitSequence(Action rewardPlayerAction)
         {
-            //TODO: Implement this shit
+            //TODO: portal open audio
+            MainSceneAccessor.EnemySpawner.SetState(ESpawnerState.Stop);
+            rewardPlayerAction.Invoke();
         }
 
         public static void ManagePlayerDeath()

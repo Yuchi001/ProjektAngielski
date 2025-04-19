@@ -49,13 +49,13 @@ namespace MapPack
             }
         }
 
-        private MissionData GenerateMission(MissionData.EDifficulty? currentDifficulty = null)
+        private MissionData GenerateMission(DifficultyExtensions.EDifficulty? currentDifficulty = null)
         {
-            MissionData.EDifficulty? harderDiff = currentDifficulty != null
-                ? (MissionData.EDifficulty)Mathf.Clamp((int)currentDifficulty + 1, 0, System.Enum.GetValues(typeof(MissionData.EDifficulty)).Length)
+            DifficultyExtensions.EDifficulty? harderDiff = currentDifficulty != null
+                ? (DifficultyExtensions.EDifficulty)Mathf.Clamp((int)currentDifficulty + 1, 0, System.Enum.GetValues(typeof(DifficultyExtensions.EDifficulty)).Length)
                 : null;
             var region = _regions.RandomElement();
-            return new MissionData(harderDiff ?? MissionData.EDifficulty.EASY, region);
+            return new MissionData(harderDiff ?? DifficultyExtensions.EDifficulty.EASY, region);
         }
 
         public class MissionData
@@ -64,26 +64,19 @@ namespace MapPack
 
             public Vector2 MapPosition { get; }
             public int SoulCount { get; }
-            public int SoulToCoinRatio { get; }
             public int CoinReward { get; }
             public Vector2Int WorldSize { get; }
             public ERegionType RegionType { get; }
-            public EDifficulty Difficulty { get; }
+            public DifficultyExtensions.EDifficulty Difficulty { get; }
             public EThemeType ThemeType { get; }
             public Sprite BackgroundSprite { get; }
-
-            public float GetGapTime() => _region.RegionData.GapGapTime();
-            public float GetScaledDifficulty(float time) => _region.RegionData.GetScaledDifficulty(time);
-            public bool ShouldCreateGap(float time) => _region.RegionData.ShouldCreateGap(time);
+            public float GetScaledDifficulty(float time) => _region.RegionData.GetScaledDifficulty(time, Difficulty);
             public TileBase GetTile(int x, int y) => _region.RegionData.GetTile(x, y, WorldSize);
             public List<(Vector2Int position, SoStructure structure)> Structures { get; }
-            
-
-            public MissionData(EDifficulty difficulty, Region region)
+            public MissionData(DifficultyExtensions.EDifficulty difficulty, Region region)
             {
                 Difficulty = difficulty;
                 SoulCount = region.RegionData.RandomSoulCount(difficulty);
-                SoulToCoinRatio = region.RegionData.RandomSoulPerCoinRatio(difficulty);
                 MapPosition = region.GetRandomRegionPoint();
                 RegionType = region.RegionData.RegionType;
                 CoinReward = region.RegionData.RandomReward(difficulty);
@@ -95,20 +88,6 @@ namespace MapPack
             }
             
             public MissionData(){}
-
-            public enum EDifficulty
-            {
-                EASY = 0,
-                MEDIUM = 1,
-                HARD = 2,
-                EXPERT = 3
-            }
-
-            public string GetDifficultyStr()
-            {
-                //TODO: translate enum to string
-                return Difficulty.ToString();
-            }
         }
     }
 }

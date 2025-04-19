@@ -10,6 +10,7 @@ using UnityEngine;
 
 namespace Managers
 {
+    // TODO: REMOVE THIS
     public class WaveManager : MonoBehaviour, IMissionDependentInstance
     {
         [SerializeField] private List<SpawnerBase> spawners = new();

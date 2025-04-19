@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnemyPack;
 using Managers.Enums;
 using MapPack;
 using StructurePack.SO;
@@ -19,15 +20,12 @@ namespace StagePack
         [SerializeField] private EThemeType regionTheme;
         [SerializeField] private List<StructureGenerationData> structures;
         [SerializeField] private List<SoStageEffect> uniqueEffects;
-        [SerializeField] private MinMax soulToCoinRatioPerDiff;
-        [SerializeField] private MinMax soulToCoinRatioBase;
+        [SerializeField] private EnemySpawner uniqueSpawner;
         [SerializeField] private MinMax soulCountPerDiff;
         [SerializeField] private MinMax soulCountBase;
         [SerializeField] private MinMax coinRewardPerDiff;
         [SerializeField] private MinMax coinRewardBase;
         [SerializeField] private AnimationCurve difficultyScalingCurve;
-        [SerializeField] private AnimationCurve waveGapChanceCurve;
-        [SerializeField] private MinMax gapTime;
         [SerializeField] private List<TileBase> tileVariants;
         [SerializeField] private TileBase bottomTile;
         [SerializeField] private TileBase topTile;
@@ -57,6 +55,13 @@ namespace StagePack
             null => tileVariants.RandomElement(),
             _ => null
         };
+
+        public EnemySpawner SpawnSpawner()
+        {
+            // TODO: set spawner scene!
+            var spawner = Instantiate(uniqueSpawner);
+            return spawner;
+        }
 
         private static EOrientation? GetOrientation(int x, int y, Vector2 worldSize)
         {
@@ -127,7 +132,7 @@ namespace StagePack
         }
         
         public IEnumerable<SoStageEffect> UniqueEffects => uniqueEffects;
-        public int RandomSoulCount(MapManager.MissionData.EDifficulty difficulty)
+        public int RandomSoulCount(DifficultyExtensions.EDifficulty difficulty)
         {
             var result = soulCountBase.RandomInt();
             var diff = (int)difficulty;
@@ -136,20 +141,7 @@ namespace StagePack
             return result;
         }
 
-        public int RandomSoulPerCoinRatio(MapManager.MissionData.EDifficulty difficulty)
-        {
-            var result = soulToCoinRatioBase.RandomInt();
-            var maxDiff = System.Enum.GetValues(typeof(MapManager.MissionData.EDifficulty)).Length;
-            var diff = maxDiff - (int)difficulty;
-            for (var i = 0; i < diff; i++)
-            {
-                result += soulToCoinRatioPerDiff.RandomInt();
-            }
-
-            return result;
-        }
-
-        public int RandomReward(MapManager.MissionData.EDifficulty difficulty)
+        public int RandomReward(DifficultyExtensions.EDifficulty difficulty)
         {
             var result = coinRewardBase.RandomInt();
             var diff = (int)difficulty;
@@ -160,12 +152,11 @@ namespace StagePack
 
             return result;
         }
-
-        public bool ShouldCreateGap(float time) => Random.Range(0f, 1f) < waveGapChanceCurve.Evaluate(time);
-
-        public float GetScaledDifficulty(float time) => difficultyScalingCurve.Evaluate(time);
-
-        public float GapGapTime() => gapTime.RandomFloat();
+        
+        public float GetScaledDifficulty(float time, DifficultyExtensions.EDifficulty difficulty)
+        {
+            return difficultyScalingCurve.Evaluate(time / difficulty.MissionLengthEstimation());
+        }
 
         public Vector2Int GetWorldSize() => new(averageWorldSizeX.RandomInt(), averageWorldSizeY.RandomInt());
 

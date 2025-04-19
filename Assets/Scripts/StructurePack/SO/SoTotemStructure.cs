@@ -30,6 +30,8 @@ namespace StructurePack.SO
             PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SOUL, -price);
             data.MultiplyCurrentPrice(transactionMultiplier);
             
+            // TODO: dźwięk dostawania enchantmentu
+            
             var enchantmentToAdd = PlayerEnchantments.GetRandomEnchantment();
             var success = PlayerEnchantments.TryAddEnchantment(enchantmentToAdd.Name);
             if (!success) throw new ArgumentOutOfRangeException($"Enchantment: {enchantmentToAdd.Name} couldn't be added to player inv!");

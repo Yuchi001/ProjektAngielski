@@ -35,6 +35,7 @@ namespace AudioPack
 
             _audioSource.Stop();
             _audioSource.clip = null;
+            _audioSource.pitch = 1;
         }
 
         public void Play(ESoundType soundType)

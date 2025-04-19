@@ -152,10 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 190eb81565ac4badb44b90964942d91f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemiesHpScaleBase: 1
-  enemiesHpScalePerSecond: 0.001
+  enemiesHpScaleBase: 0.5
+  enemiesHpScalePerSecond: 0.01
   spawnRate:
-    min: 1
+    min: 0.5
     max: 4
   spawnRatePerSeconds: 0.01
 --- !u!4 &21715228

@@ -9,6 +9,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     public class MultiWandLogic : ItemLogicBase
     {
         [SerializeField] private Sprite projectileSprite;
+
+        private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale);
         
         protected override List<EItemSelfStatType> UsedStats { get; } = new()
         {
@@ -56,6 +58,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                     
                     projectile.Setup(Damage, Speed)
                         .SetSprite(projectileSprite)
+                        .SetScale(Scale)
                         .SetDirection(rotations[j], currentAngle)
                         .SetReady();
                 }
