@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using MinimapPack;
+using MinimapPack.Strategies;
+using UnityEngine;
 using Utils;
 using Random = UnityEngine.Random;
 
@@ -40,6 +42,8 @@ namespace WorldGenerationPack
 
         public void SetSize(float scale, bool anim)
         {
+            WorldGeneratorManager.MinimapManager.RenderOnMinimap($"ZONE{GetInstanceID()}", new ZoneRenderStrategy(this));
+            
             scale *= 2;
             var randomDivision = Random.Range(0.4f, 0.6f);
             var vec = new Vector3

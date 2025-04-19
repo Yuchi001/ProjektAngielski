@@ -3,6 +3,7 @@ using EffectPack;
 using Other.Enums;
 using ParticlesPack;
 using ParticlesPack.Enums;
+using PlayerPack.Decorators;
 using PoolPack;
 using UnityEngine;
 
@@ -48,9 +49,9 @@ namespace Other
         }
 
 
-        public virtual void AddEffect(EEffectType effectType, float duration)
+        public virtual void AddEffect(EffectContext effectContext)
         {
-            _effectsManager.AddEffect(effectType, duration);
+            _effectsManager.AddEffect(effectContext);
         }
 
         public bool HasEffect(EEffectType effectType)

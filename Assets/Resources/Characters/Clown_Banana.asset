@@ -15,6 +15,7 @@ MonoBehaviour:
   id: clown
   characterName: Bozo the Clown
   characterSprite: {fileID: -1623650543, guid: 40d668d3e0c4ebd49863ccd39521dc46, type: 3}
+  characterIcon: {fileID: -1623650543, guid: 40d668d3e0c4ebd49863ccd39521dc46, type: 3}
   walkingAnim: {fileID: 7400000, guid: 5018528ef50aec748bad7d6ae584b800, type: 2}
   idleAnim: {fileID: 7400000, guid: 16f65a1b505de1044bbf4e351978c6a8, type: 2}
   characterColor: {r: 0.54509807, g: 0, b: 0.1254902, a: 1}

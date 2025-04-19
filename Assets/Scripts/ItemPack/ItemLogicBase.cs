@@ -15,13 +15,12 @@ namespace ItemPack
     {
         public int Level { get; private set; } = 0;
         public float TimerScaled => 1 - _timer / Cooldown;
-        public int Damage => GetStatValueAsInt(EItemSelfStatType.Damage);
+        public int Damage => PlayerManager.GetDamageContextManager().GetDamageContext(GetStatValueAsInt(EItemSelfStatType.Damage), this).Damage;
         protected float Speed => GetStatValue(EItemSelfStatType.ProjectileSpeed);
         protected int ProjectileCount => GetStatValueAsInt(EItemSelfStatType.ProjectilesCount);
         protected float PushForce => GetStatValue(EItemSelfStatType.PushForce);
-        protected float Cooldown => GetStatValue(EItemSelfStatType.Cooldown) * CustomCooldownModifier();
+        protected float Cooldown => GetStatValue(EItemSelfStatType.Cooldown);
         
-        protected static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
         protected static Vector2 PlayerPos => PlayerManager.PlayerPos;
         protected static Transform PlayerTransform => PlayerManager.GetTransform();
         private Projectile _projectile;
@@ -111,10 +110,10 @@ namespace ItemPack
         {
             return (int)InventoryItem.GetStatValue(statTypeType, Level);
         }
-        
-        protected virtual float CustomCooldownModifier()
+
+        public void SetLevel(int level)
         {
-            return 1; 
+            Level = level;
         }
     }
 }

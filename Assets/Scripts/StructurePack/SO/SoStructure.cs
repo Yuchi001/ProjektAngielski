@@ -1,29 +1,32 @@
 ﻿using Managers;
+using MinimapPack;
+using MinimapPack.Strategies;
 using StructurePack.Enum;
 using UIPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
 using UnityEngine;
+using WorldGenerationPack;
 
 namespace StructurePack.SO
 {
     public abstract class SoStructure : ScriptableObject
     {
         [SerializeField] protected string structureName;
-        [SerializeField] protected EStructureType structureType;
         [SerializeField, TextArea(3, 10)] protected string structureDescription;
         [SerializeField] protected Sprite structureSprite;
         [SerializeField] protected Sprite activeSprite;
         [SerializeField] protected Sprite usedStructureSprite;
+        [SerializeField] protected Sprite minimapIcon;
         [SerializeField] protected float structureScale = 1;
         [SerializeField] protected int interactionLimit;
         [SerializeField] protected string bottomHoverMessage = "Press E";
         [SerializeField] protected string interactionDeclineMessage = "";
         [SerializeField] protected bool usesUI = false;
+        [SerializeField] protected bool visibleOnMinimap = false;
         [SerializeField] protected string uIPrefabName = "";
 
         public float StructureScale => structureScale;
-        public EStructureType StructureType => structureType;
         public string StructureName => structureName;
         public string StructureDescription => structureDescription;
         public bool Reusable => interactionLimit > 1;
@@ -32,12 +35,22 @@ namespace StructurePack.SO
 
         public virtual void OnSetup(StructureBase structureBase)
         {
-            
+            if (!visibleOnMinimap) return;
+
+            var renderStrategy = new IconRenderStrategy(minimapIcon, structureBase.transform.position);
+            WorldGeneratorManager.MinimapManager.RenderOnMinimap($"VISION{structureBase.GetInstanceID()}", renderStrategy);
         }
 
         public virtual void OnDataChange<T>(T data) where T: class, new()
         {
             
+        }
+
+        public virtual IRenderStrategy GetMinimapRenderStrategy(StructureBase structureBase)
+        {
+            if (!visibleOnMinimap) return null;
+
+            return new IconRenderStrategy(structureSprite, structureBase.transform.position);
         }
 
         public virtual IOpenStrategy GetOpenStrategy(StructureBase structureBase)
@@ -75,7 +88,7 @@ namespace StructurePack.SO
         {
             NOT_USED,
             ACTIVE,
-            USED,
+            USED
         }
     }
 }

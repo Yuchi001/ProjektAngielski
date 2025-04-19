@@ -112,9 +112,9 @@ MonoBehaviour:
   bottomRightCornerTile: {fileID: 11400000, guid: a2b69306b9c24de4daecbdb520fff797, type: 2}
   bottomLeftCornerTile: {fileID: 11400000, guid: adb348b368df3f24e9da375b383f87dd, type: 2}
   averageWorldSizeX:
-    min: 50
-    max: 100
+    min: 20
+    max: 30
   averageWorldSizeY:
     min: 10
-    max: 20
+    max: 15
   backgroundSprite: {fileID: -954555875, guid: 2f82523736271b046ae94cc682d4d558, type: 3}

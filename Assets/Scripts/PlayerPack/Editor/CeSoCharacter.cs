@@ -16,6 +16,7 @@ namespace PlayerPack.Editor
         private SerializedProperty characterName;
         private SerializedProperty id;
         private SerializedProperty characterSprite;
+        private SerializedProperty characterIcon;
         private SerializedProperty walkingAnim;
         private SerializedProperty idleAnim;
         private SerializedProperty characterColor;
@@ -30,6 +31,7 @@ namespace PlayerPack.Editor
             characterName = serializedObject.FindProperty("characterName");
             id = serializedObject.FindProperty("id");
             characterSprite = serializedObject.FindProperty("characterSprite");
+            characterIcon = serializedObject.FindProperty("characterIcon");
             walkingAnim = serializedObject.FindProperty("walkingAnim");
             idleAnim = serializedObject.FindProperty("idleAnim");
             characterColor = serializedObject.FindProperty("characterColor");
@@ -43,6 +45,7 @@ namespace PlayerPack.Editor
             EditorGUILayout.PropertyField(id);
             EditorGUILayout.PropertyField(characterName);
             EditorGUILayout.PropertyField(characterSprite);
+            EditorGUILayout.PropertyField(characterIcon);
             EditorGUILayout.PropertyField(walkingAnim);
             EditorGUILayout.PropertyField(idleAnim);
             EditorGUILayout.PropertyField(characterColor);

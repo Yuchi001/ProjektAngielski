@@ -13,6 +13,7 @@ namespace PlayerPack.SO
         [SerializeField] private string id;
         [SerializeField] private string characterName;
         [SerializeField] private Sprite characterSprite;
+        [SerializeField] private Sprite characterIcon;
         [SerializeField] private AnimationClip walkingAnim;
         [SerializeField] private AnimationClip idleAnim;
         [SerializeField] private Color characterColor;
@@ -25,6 +26,7 @@ namespace PlayerPack.SO
         public string CharacterName => characterName;
         public string ID => id;
         public Sprite CharacterSprite => characterSprite;
+        public Sprite CharacterIcon => characterIcon;
         public AnimationClip WalkingAnimation => walkingAnim;
         public AnimationClip IdleAnimation => idleAnim;
         public SoInventoryItem StartingItem => startingItem;

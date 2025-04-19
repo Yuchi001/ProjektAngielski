@@ -3,12 +3,13 @@ using EnchantmentPack;
 using EnchantmentPack.EnchantmentLogic;
 using Managers;
 using Managers.Other;
+using UIPack;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace PlayerPack.PlayerEnchantmentPack
 {
-    public class PlayerEnchantmentUI : MonoBehaviour
+    public class PlayerEnchantmentUI : UIBase
     {
         [SerializeField] private RectTransform enchantmentContainer;
 
@@ -42,7 +43,8 @@ namespace PlayerPack.PlayerEnchantmentPack
 
         private void OnRemoveEnchantment(string enchantmentName)
         {
-            Destroy(_spawnedEnchantments[enchantmentName]);
+            Destroy(_spawnedEnchantments[enchantmentName].gameObject);
+            _spawnedEnchantments.Remove(enchantmentName);
             LayoutRebuilder.ForceRebuildLayoutImmediate(enchantmentContainer);
         }
     }

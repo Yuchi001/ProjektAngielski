@@ -1,14 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GameLoaderPack;
 using Managers;
+using Managers.Other;
 using MapPack;
+using MinimapPack;
+using MinimapPack.Strategies;
 using PlayerPack;
 using StructurePack;
 using StructurePack.SO;
+using UIPack;
+using UIPack.CloseStrategies;
+using UIPack.OpenStrategies;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Utils;
+using Random = UnityEngine.Random;
 
 namespace WorldGenerationPack
 {
@@ -20,6 +28,8 @@ namespace WorldGenerationPack
         [SerializeField] private float visionPerSquare;
         
         private static WorldGeneratorManager Instance { get; set; }
+        public static MinimapManager MinimapManager { get; private set; }
+        private const string MINIMAP_UI_KEY = "MINIMAP_UI_KEY";
         
         private void Awake()
         {
@@ -27,12 +37,22 @@ namespace WorldGenerationPack
             else Instance = this;
         }
 
+        private void OnDestroy()
+        {
+            if (MinimapManager != null) UIManager.CloseUI(MINIMAP_UI_KEY);
+        }
 
         public void Init(MapManager.MissionData missionData)
         {
             background.sprite = missionData.BackgroundSprite;   
             var worldSize = missionData.WorldSize;
             var offset = new Vector3Int(worldSize.x / 2, worldSize.y / 2, 0);
+
+            var minimapPrefab = GameManager.GetPrefab<MinimapManager>(PrefabNames.MinimapManager);
+            var openMinimapStrategy = new SingletonOpenStrategy<MinimapManager>(minimapPrefab);
+            var closeMinimapStrategy = new DestroyCloseStrategy(MINIMAP_UI_KEY);
+            MinimapManager = UIManager.OpenUI<MinimapManager>(MINIMAP_UI_KEY, openMinimapStrategy, closeMinimapStrategy);
+            MinimapManager.SetupMinimap(worldSize);
             
             var visionStructure = Resources.Load<SoVisionStructure>("Structures/Vision");
             var visionPlacements = PlaceVision(worldSize, missionData.Structures.Select(s => s.position));
@@ -67,6 +87,7 @@ namespace WorldGenerationPack
             var randomVision = placedVisions.RandomElement();
             visionStructure.SetZone(randomVision);
             PlayerManager.SetPosition(randomVision.transform.position);
+            MinimapManager.RenderOnMinimap("MAIN_PLAYER", new FollowRenderStrategy(PlayerManager.GetTransform(), PlayerManager.PickedCharacter.CharacterIcon));
         }
         
         private List<Vector2Int> PlaceVision(Vector2Int worldSize,  IEnumerable<Vector2Int> exceptList)

@@ -114,7 +114,7 @@ namespace InventoryPack
             }
         }
 
-        public void SwitchItems(int current, int target)
+        public virtual void SwitchItems(int current, int target)
         {
             var item1 = _itemSlots[current].ViewItem();
             var item2 = _itemSlots[target].ViewItem();

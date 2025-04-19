@@ -95,7 +95,7 @@ namespace PlayerPack.PlayerItemPack
             var index = base.AddItem(inventoryItem, level);
             if (index == -1) return -1;
             
-            if (index < CAPACITY) AddItemLogic(inventoryItem, level);
+            RefreshInventory();
             return index;
         }
 
@@ -112,14 +112,58 @@ namespace PlayerPack.PlayerItemPack
 
         public void RefreshInventory()
         {
-            DestroyAllItems();
+            var validSpawnedLogic = new List<int>();
+            var missingItemSlots = new List<ItemSlot>();
+            
             foreach (var slot in _itemSlots)
             {
-                if (slot.Index >= CAPACITY) return; 
+                if (slot.Index >= CAPACITY || slot.IsEmpty()) continue;
                 var itemPair = slot.ViewItem();
-                if (itemPair.item == null) continue;
+
+                var spawnedLogic = _currentItems.FirstOrDefault(i =>
+                    i.InventoryItem.ItemName == itemPair.item.ItemName && i.Level == itemPair.level);
+                if (spawnedLogic != null) validSpawnedLogic.Add(spawnedLogic.GetInstanceID());
+                else missingItemSlots.Add(slot);
+            }
+
+            foreach (var itemLogic in _currentItems)
+            {
+                if (validSpawnedLogic.Contains(itemLogic.GetInstanceID())) continue;
+                itemLogic.Remove();
+            }
+            _currentItems.RemoveAll(i => i == null);
+
+            foreach (var slot in missingItemSlots)
+            {
+                var itemPair = slot.ViewItem();
                 AddItemLogic(itemPair.item, itemPair.level);
             }
+
+            /*
+            foreach (var slot in _itemSlots)
+            {
+                if (slot.Index >= CAPACITY) return;
+                if (slot.IsEmpty()) continue;
+                var itemPair = slot.ViewItem();
+                AddItemLogic(itemPair.item, itemPair.level);
+            }
+             */
+        }
+
+        public override void SwitchItems(int current, int target)
+        {
+            var item1 = _itemSlots[current].ViewItem();
+            var item2 = _itemSlots[target].ViewItem();
+
+            if (current <= CAPACITY || target <= CAPACITY)
+            {
+                AddItemAtSlot(target, item1.item, item1.level);
+                AddItemAtSlot(current, item2.item, item2.level);
+                return;
+            }
+
+            base.AddItemAtSlot(target, item1.item, item1.level);
+            base.AddItemAtSlot(current, item2.item, item2.level);
         }
 
         public override void AddItemAtSlot(int index, SoInventoryItem inventoryItem, int level)

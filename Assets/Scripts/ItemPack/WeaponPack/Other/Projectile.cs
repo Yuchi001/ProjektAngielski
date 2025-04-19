@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using AccessorPack;
 using EnemyPack;
-using Managers;
 using Other;
 using Other.Enums;
 using PlayerPack;
-using PoolPack;
 using ProjectilePack;
 using UnityEngine;
 using Utils;
@@ -393,8 +390,12 @@ namespace ItemPack.WeaponPack.Other
             if (!_ready) return;
             
             _onHit?.Invoke(enemy, this);
-            
-            if (_effectType != EEffectType.None) enemy.AddEffect(_effectType, _effectDuration);
+
+            if (_effectType != EEffectType.None)
+            {
+                var effectContext = PlayerManager.GetEffectContextManager().GetEffectContext(_effectType, _effectDuration, enemy);
+                enemy.AddEffect(effectContext);
+            }
             
             TryPush(enemy);
 

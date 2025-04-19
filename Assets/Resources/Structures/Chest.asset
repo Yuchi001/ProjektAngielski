@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: Chest
   m_EditorClassIdentifier: 
   structureName: Chest
-  structureType: 1
   structureDescription: 
   structureSprite: {fileID: 21300000, guid: 996ad7580c9bcd443ac4760dd60a4fa0, type: 3}
   activeSprite: {fileID: 0}
   usedStructureSprite: {fileID: 21300000, guid: 513c48af65d823f4b8095c1c90182a76, type: 3}
+  minimapIcon: {fileID: 21300000, guid: 01b77f0275a363247829544676015282, type: 3}
   structureScale: 0.5
   interactionLimit: 1
-  maintainData: 0
   bottomHoverMessage: Open
   interactionDeclineMessage: 
   usesUI: 0
+  visibleOnMinimap: 0
   uIPrefabName: 
   maxCashReward: 10
   maxWeaponCount: 3

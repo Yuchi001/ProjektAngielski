@@ -26,5 +26,8 @@
         public const string FireField = "FireField";
         public const string PlayerEqUI = "PlayerEqUI";
         public const string EnchantmentItemAccessor = "EnchantmentItemAccessor";
+        public const string PlayerEnchantmentUI = "PlayerEnchantmentUI";
+        public const string BaseMinimapElement = "BaseMinimapElement";
+        public const string MinimapManager = "MinimapManager";
     }
 }

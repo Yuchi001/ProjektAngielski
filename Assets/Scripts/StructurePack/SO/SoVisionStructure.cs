@@ -1,4 +1,6 @@
 ﻿using Managers;
+using MinimapPack;
+using MinimapPack.Strategies;
 using PlayerPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
@@ -18,7 +20,6 @@ namespace StructurePack.SO
         [SerializeField] private MinMax baseZoneScale;
         [SerializeField] private MinMax mainZoneScale;
         
-
         public override bool OnInteract(StructureBase structureBase)
         {
             var data = structureBase.GetData<VisionStructureData>();

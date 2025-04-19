@@ -91,7 +91,8 @@ namespace ItemPack.WeaponPack.Other
                 enemy.GetDamaged(_damage);
                 if (!_effectType.HasValue) continue; 
                 
-                enemy.AddEffect(_effectType.Value, _effectTime);
+                var effectContext = PlayerManager.GetEffectContextManager().GetEffectContext(_effectType.Value, _effectTime, enemy);
+                enemy.AddEffect(effectContext);
             }
             Destroy(gameObject, animTime);
         }

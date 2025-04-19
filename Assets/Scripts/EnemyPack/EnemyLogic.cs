@@ -21,7 +21,7 @@ namespace EnemyPack
     public class EnemyLogic : CanBeDamaged
     {
         [Header("General")] 
-        [SerializeField] private float knockbackDecay;
+        [SerializeField] private float knockbackTime;
         [SerializeField] private Animator animator;
 
         public Animator Animator => animator;
@@ -37,8 +37,8 @@ namespace EnemyPack
         {
             Invincible = invincible;
         }
-
-        private bool _isBeingPushed = false;
+        
+        private float _pushTime = 0;
         
         public override int CurrentHealth => _currentHealth;
         private int _currentHealth;
@@ -63,8 +63,8 @@ namespace EnemyPack
             SpriteRenderer.enabled = false;
             
             if (!PlayerManager.HasInstance()) _enemySpawner.ReleasePoolObject(this);
-            
-            _isBeingPushed = false;
+
+            _pushTime = 0;
 
             Animator.enabled = true;
             
@@ -106,11 +106,10 @@ namespace EnemyPack
             animator.speed = Stuned ? 0 : Slowed ? 0.5f : 1;
             if (Dead || (Stuned && _currentState.CanBeStunned) || !Active) return;
 
-            if (_isBeingPushed)
+            if (_pushTime > 0)
             {
-                _isBeingPushed = knockbackVelocity.magnitude > 0.01f;
+                _pushTime -= deltaTime;
                 transform.position += (Vector3)(knockbackVelocity * deltaTime);
-                knockbackVelocity = Vector2.Lerp(knockbackVelocity, Vector2.zero, knockbackDecay * deltaTime);
                 return;
             }
 
@@ -135,10 +134,10 @@ namespace EnemyPack
         
         public void PushEnemy(Vector2 rootPos, float force)
         {
-            if (_isBeingPushed || !_currentState.CanBePushed) return;
+            if (_pushTime > 0 || !_currentState.CanBePushed) return;
 
             knockbackVelocity = ((Vector2)transform.position - rootPos).normalized * force;
-            _isBeingPushed = true;
+            _pushTime = knockbackTime;
         }
 
         public override void GetDamaged(int value, Color? color = null)

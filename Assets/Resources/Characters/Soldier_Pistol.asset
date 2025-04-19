@@ -15,6 +15,7 @@ MonoBehaviour:
   id: rick
   characterName: Rick the Soldier
   characterSprite: {fileID: 1494473444, guid: 4bd6c6e84fa1f7243958426dba45b8c3, type: 3}
+  characterIcon: {fileID: 21300000, guid: 1757443807c48a248992397ada43aef3, type: 3}
   walkingAnim: {fileID: 7400000, guid: 0d0b0e488b7407e42ad83378291f6997, type: 2}
   idleAnim: {fileID: 7400000, guid: 79c0093d5d14c64479d7c3b183f32e72, type: 2}
   characterColor: {r: 0.078431375, g: 0.24313727, b: 0.20000002, a: 1}

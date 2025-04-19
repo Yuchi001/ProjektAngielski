@@ -22,13 +22,13 @@ MonoBehaviour:
   itemPrefab: {fileID: 2880022480226449138, guid: d6c41f141806b284fa3d9a90abb65612, type: 3}
   startingStats:
   - selfStatType: 1
-    statValue: 0.7
+    statValue: 0.5
     canUpgrade: 1
     useMax: 0
     useMin: 1
     maximum: 0
-    minimum: 1
-    mod: -0.06
+    minimum: 0.1
+    mod: -0.04
   - selfStatType: 2
     statValue: 3
     canUpgrade: 1

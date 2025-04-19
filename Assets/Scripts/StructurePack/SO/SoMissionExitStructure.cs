@@ -6,6 +6,8 @@ using InventoryPack.WorldItemPack;
 using ItemPack.SO;
 using Managers;
 using MapPack;
+using MinimapPack;
+using MinimapPack.Strategies;
 using PlayerPack;
 using UnityEngine;
 using Utils;

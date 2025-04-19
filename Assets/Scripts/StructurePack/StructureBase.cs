@@ -22,6 +22,7 @@ namespace StructurePack
         [SerializeField] private string uiPrefabName;
         
         private SoStructure _structureData;
+        public SoStructure StructureData => _structureData;
         private CircleCollider2D Collider => GetComponent<CircleCollider2D>();
 
 

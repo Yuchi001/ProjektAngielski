@@ -1,7 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using ItemPack;
 using Managers;
 using Managers.Other;
+using Other;
+using Other.Enums;
+using PlayerPack.Decorators;
+using PlayerPack.Interface;
 using PlayerPack.PlayerEnchantmentPack;
 using PlayerPack.PlayerItemPack;
 using PlayerPack.SO;
@@ -14,11 +20,14 @@ using Utils;
 
 namespace PlayerPack
 {
-    public class PlayerManager : MonoBehaviour
+    public class PlayerManager : MonoBehaviour, IDamageContextManager, IEffectContextManager, IHealContextManager
     {
         #region Singleton
         
         private static PlayerManager Instance { get; set; }
+        public static IDamageContextManager GetDamageContextManager() => Instance;
+        public static IEffectContextManager GetEffectContextManager() => Instance;
+        public static IHealContextManager GetHealContextManager() => Instance;
 
         private void Awake()
         {
@@ -37,6 +46,10 @@ namespace PlayerPack
         public static bool HasInstance() => Instance != null;
         public static Transform GetTransform() => Instance.transform;
         public static bool CanInteract() => PlayerInput.actions.enabled;
+
+        private readonly List<KeyValuePair<string, IDamageModifier>> _damageModifiers = new();
+        private readonly List<KeyValuePair<string, IEffectModifier>> _effectModifiers = new();
+        private readonly List<KeyValuePair<string, IHealModifier>> _healModifiers = new();
 
 
         private PlayerInput _playerInput;
@@ -119,10 +132,15 @@ namespace PlayerPack
         public void Setup(SoCharacter pickedCharacter, State defaultState)
         {
             var playerItemManagerPrefab = GameManager.GetPrefab<PlayerItemManager>(PrefabNames.PlayerInventoryManager);
-            var openStrategy = new SingletonOpenStrategy<PlayerItemManager>(playerItemManagerPrefab);
-            var closeStrategy = new DefaultCloseStrategy();
-            _playerItemManager = UIManager.OpenUI<PlayerItemManager>("PlayerItemManager", openStrategy, closeStrategy);
+            var playerItemManagerOpenStrategy = new SingletonOpenStrategy<PlayerItemManager>(playerItemManagerPrefab);
+            var playerItemManagerCloseStrategy = new DefaultCloseStrategy();
+            _playerItemManager = UIManager.OpenUI<PlayerItemManager>("PlayerItemManager", playerItemManagerOpenStrategy, playerItemManagerCloseStrategy);
             _playerUIManager = _playerItemManager.GetComponent<PlayerUIManager>();
+            
+            var playerEnchantmentsPrefab = GameManager.GetPrefab<PlayerEnchantmentUI>(PrefabNames.PlayerEnchantmentUI);
+            var playerEnchantmentsOpenStrategy = new SingletonOpenStrategy<PlayerEnchantmentUI>(playerEnchantmentsPrefab);
+            var playerEnchantmentsCloseStrategy = new DefaultCloseStrategy();
+            UIManager.OpenUI<PlayerEnchantmentUI>("PlayerEnchantments", playerEnchantmentsOpenStrategy, playerEnchantmentsCloseStrategy);
             
             ChangeCharacter(pickedCharacter, true);
             foreach (var mono in Instance.GetComponentsInChildren<MonoBehaviour>())
@@ -193,7 +211,7 @@ namespace PlayerPack
 
         public static void StartPlayerExitSequence(Action rewardPlayerAction)
         {
-            
+            //TODO: Implement this shit
         }
 
         public static void ManagePlayerDeath()
@@ -204,6 +222,70 @@ namespace PlayerPack
             PlayerItemManager.enabled = false;
 
             OnPlayerDeath?.Invoke();
+        }
+
+        public void AddDamageModifier(string key, IDamageModifier modifier)
+        {
+            _damageModifiers.Add(new KeyValuePair<string, IDamageModifier>(key, modifier));
+            _damageModifiers.Sort((a, b) => a.Value.QueueAsLast.CompareTo(b.Value.QueueAsLast));
+        }
+
+        public void RemoveDamageModifier(string key)
+        {
+            _damageModifiers.RemoveAll(m => m.Key == key);
+        }
+        
+        public DamageContext GetDamageContext(int damage, ItemLogicBase source)
+        {
+            var context = new DamageContext(damage, source.InventoryItem.ItemTags, source);
+            foreach (var pair in _damageModifiers)
+            {
+                pair.Value.ModifyDamageContext(context);
+            }
+
+            return context;
+        }
+
+        public void AddEffectModifier(string key, IEffectModifier modifier)
+        {
+            _effectModifiers.Add(new KeyValuePair<string, IEffectModifier>(key, modifier));
+        }
+
+        public void RemoveEffectModifier(string key)
+        {
+            _effectModifiers.RemoveAll(m => m.Key == key);
+        }
+
+        public EffectContext GetEffectContext(EEffectType effectType, float duration, CanBeDamaged canBeDamaged)
+        {
+            var context = new EffectContext(effectType, duration, canBeDamaged);
+            foreach (var pair in _effectModifiers)
+            {
+                pair.Value.ModifyEffectContext(context);
+            }
+
+            return context;
+        }
+        
+        public void AddHealModifier(string key, IHealModifier modifier)
+        {
+            _healModifiers.Add(new KeyValuePair<string, IHealModifier>(key, modifier));
+        }
+
+        public void RemoveHealModifier(string key)
+        {
+            _healModifiers.RemoveAll(m => m.Key == key);
+        }
+
+        public HealContext GetHealContext(int value, CanBeDamaged canBeDamaged)
+        {
+            var context = new HealContext(value, canBeDamaged);
+            foreach (var pair in _healModifiers)
+            {
+                pair.Value.ModifyHealContext(context);
+            }
+
+            return context;
         }
 
         public enum State

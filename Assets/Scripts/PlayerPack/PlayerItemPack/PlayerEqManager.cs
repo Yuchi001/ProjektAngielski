@@ -33,7 +33,7 @@ namespace PlayerPack.PlayerItemPack
 
         public void OnEqToggle(InputAction.CallbackContext context)
         {
-            if (context.phase != InputActionPhase.Started || _validStates.Contains(PlayerManager.CurrentState)) return;
+            if (context.phase != InputActionPhase.Started || !_validStates.Contains(PlayerManager.CurrentState)) return;
 
             if (_current == null || !_current.Open)
             {

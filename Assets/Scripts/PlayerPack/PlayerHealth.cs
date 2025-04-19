@@ -26,10 +26,10 @@ namespace PlayerPack
 
         public bool Invincible { get; set; } = false;
 
-        public delegate void PlayerDamagedDelegate(int current, int damage);
+        public delegate void PlayerDamagedDelegate(int damage, int current);
         public static event PlayerDamagedDelegate OnPlayerDamaged;
 
-        public delegate void PlayerHealDelegate(int current, int healValue);
+        public delegate void PlayerHealDelegate(int healValue, int current);
         public static event PlayerHealDelegate OnPlayerHeal;
 
         private void Awake()
@@ -87,7 +87,7 @@ namespace PlayerPack
             if (Dead || Invincible) return;
             
             _currentHealth = Mathf.Clamp(_currentHealth - value, 0, MaxHealth);
-            OnPlayerDamaged?.Invoke(_currentHealth, value);
+            OnPlayerDamaged?.Invoke(value, _currentHealth);
             base.GetDamaged(value, color);
             
             AudioManager.PlaySound(ESoundType.PlayerHurt);
@@ -97,13 +97,16 @@ namespace PlayerPack
 
         public void Heal(int value, ESoundType soundType = ESoundType.Heal)
         {
+            value = PlayerManager.GetHealContextManager().GetHealContext(value, this).Value;
+            if (value <= 0) return;
+            
             AudioManager.PlaySound(soundType);
             
             IndicatorManager.SpawnIndicator(PlayerManager.PlayerPos, value, false, false);
             ParticleManager.SpawnParticles(EParticlesType.Heal, PlayerManager.PlayerPos);
 
             _currentHealth = Mathf.Clamp(_currentHealth + value, 0, MaxHealth);
-            OnPlayerHeal?.Invoke(_currentHealth, value);
+            OnPlayerHeal?.Invoke(value, _currentHealth);
         }
 
         public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)

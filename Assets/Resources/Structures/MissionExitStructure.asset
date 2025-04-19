@@ -13,16 +13,17 @@ MonoBehaviour:
   m_Name: MissionExitStructure
   m_EditorClassIdentifier: 
   structureName: Mission Exit
-  structureType: 4
   structureDescription: 
   structureSprite: {fileID: 21300000, guid: c336f14bf07e28f44bf11ef9bd82c39d, type: 3}
   activeSprite: {fileID: 0}
   usedStructureSprite: {fileID: 0}
+  minimapIcon: {fileID: 21300000, guid: 84bdcfa3bb07b274fa4de26ce8d44804, type: 3}
   structureScale: 1
   interactionLimit: 0
   bottomHoverMessage: Pay $x$ souls
   interactionDeclineMessage: Not enough souls!
   usesUI: 0
+  visibleOnMinimap: 1
   uIPrefabName: 
   weaponPerCoin:
     min: 0.1

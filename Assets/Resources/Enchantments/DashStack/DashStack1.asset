@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7665c8ab649466391b69468a036b5f1, type: 3}
+  m_Name: DashStack1
+  m_EditorClassIdentifier: 
+  enchantmentName: AdditionalDashStack
+  enchantmentDescription: Gain additional dash stack.
+  enchantmentSprite: {fileID: 21300000, guid: b6fa6115dadcd71479271c6439b688fe, type: 3}
+  enchantmentLevel: 1
+  logicPrefab: {fileID: 2197494518264478672, guid: fbcea1d3e98c96e4bb926285518aec1d, type: 3}

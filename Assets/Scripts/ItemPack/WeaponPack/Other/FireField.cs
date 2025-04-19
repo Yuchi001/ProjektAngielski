@@ -54,8 +54,7 @@ namespace ItemPack.WeaponPack.Other
         {
             if (canBeDamaged is not EnemyLogic enemy) return;
                 
-            enemy.GetDamaged(_bookOfFireLogic.Damage);
-            enemy.AddEffect(EEffectType.Burn, _bookOfFireLogic.EffectDuration);
+            TriggerDamage(enemy);
         }
 
         private void OnDrawGizmos()
@@ -66,7 +65,8 @@ namespace ItemPack.WeaponPack.Other
         public void TriggerDamage(EnemyLogic enemy)
         {
             enemy.GetDamaged(_bookOfFireLogic.Damage);
-            enemy.AddEffect(EEffectType.Burn, _bookOfFireLogic.EffectDuration);
+            var effectContext = PlayerManager.GetEffectContextManager().GetEffectContext(EEffectType.Burn, _bookOfFireLogic.EffectDuration, enemy);
+            enemy.AddEffect(effectContext);
         }
     }
 }

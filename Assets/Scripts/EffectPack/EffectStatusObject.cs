@@ -1,5 +1,6 @@
 ﻿using EffectPack.SO;
 using Other;
+using PlayerPack.Decorators;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -86,7 +87,7 @@ namespace EffectPack
             gameObject.SetActive(false);
         }
 
-        public void StackEffect(float effectLength)
+        public void StackEffect(EffectContext effectContext)
         {
             IsActive = true;
             
@@ -97,7 +98,7 @@ namespace EffectPack
 
             _effectDamageStackText.text = _damageStacks < 1 ? "" : $"x{_damageStacks}";
             
-            _effectTimer = Mathf.Max(_effectTimer, 0) + effectLength;
+            _effectTimer = Mathf.Max(_effectTimer, 0) + effectContext.Duration;
 
             _canBeDamaged.SpriteRenderer.color = _pickedEffectBase.EffectColor;
             

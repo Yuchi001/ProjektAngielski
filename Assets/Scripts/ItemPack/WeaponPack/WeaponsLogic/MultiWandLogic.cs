@@ -12,7 +12,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         
         protected override List<EItemSelfStatType> UsedStats { get; } = new()
         {
-            
+            EItemSelfStatType.ProjectileScale
         };
 
         public override IEnumerable<EItemSelfStatType> GetUsedStats()

@@ -13,16 +13,17 @@ MonoBehaviour:
   m_Name: Vision
   m_EditorClassIdentifier: 
   structureName: Vision
-  structureType: 0
   structureDescription: 
   structureSprite: {fileID: 21300000, guid: 22f6b3868bb967743925b1fc261ba4e2, type: 3}
   activeSprite: {fileID: 21300000, guid: 6c571c9527d368a40a7470d38134a312, type: 3}
   usedStructureSprite: {fileID: 21300000, guid: 22f6b3868bb967743925b1fc261ba4e2, type: 3}
+  minimapIcon: {fileID: 21300000, guid: b0c348b27a3df174f87bde021804262c, type: 3}
   structureScale: 0.5
   interactionLimit: 3
   bottomHoverMessage: Pay $x$ souls
   interactionDeclineMessage: Not enough souls!
   usesUI: 0
+  visibleOnMinimap: 1
   uIPrefabName: 
   baseCost: 5
   stageBaseMultiplier: 2

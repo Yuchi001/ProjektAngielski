@@ -7,6 +7,7 @@ using Managers.Other;
 using MapPack;
 using Other;
 using Other.Enums;
+using PlayerPack.Decorators;
 using UnityEngine;
 
 //TODO: Optimize effects manager for pool mechanism
@@ -55,9 +56,10 @@ namespace EffectPack
             foreach (var status in _statuses.Values) status.Setup();
         }
 
-        public void AddEffect(EEffectType effectType, float time)
+        public void AddEffect(EffectContext effectContext)
         {
-            _statuses[effectType].StackEffect(time);
+            if (effectContext.EffectType == EEffectType.None) return;
+            _statuses[effectContext.EffectType].StackEffect(effectContext);
         }
 
         public bool HasEffect(EEffectType effectType)
