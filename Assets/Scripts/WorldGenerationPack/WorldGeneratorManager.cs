@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnemyPack;
 using GameLoaderPack;
 using Managers;
 using Managers.Other;
@@ -29,8 +30,9 @@ namespace WorldGenerationPack
         
         private static WorldGeneratorManager Instance { get; set; }
         public static MinimapManager MinimapManager { get; private set; }
+        public static EnemySpawner EnemySpawner { get; private set; }
         private const string MINIMAP_UI_KEY = "MINIMAP_UI_KEY";
-        
+
         private void Awake()
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
@@ -88,6 +90,10 @@ namespace WorldGenerationPack
             visionStructure.SetZone(randomVision);
             PlayerManager.SetPosition(randomVision.transform.position);
             MinimapManager.RenderOnMinimap("MAIN_PLAYER", new FollowRenderStrategy(PlayerManager.GetTransform(), PlayerManager.PickedCharacter.CharacterIcon));
+
+            var spawnerPrefab = missionData.SpawnerPrefab;
+            EnemySpawner = Instantiate(spawnerPrefab);
+            EnemySpawner.Setup(missionData);
         }
         
         private List<Vector2Int> PlaceVision(Vector2Int worldSize,  IEnumerable<Vector2Int> exceptList)

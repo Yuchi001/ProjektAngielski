@@ -1,8 +1,8 @@
 ﻿using System;
-using AccessorPack;
 using EnemyPack.SO;
 using PlayerPack;
 using UnityEngine;
+using WorldGenerationPack;
 
 namespace EnemyPack.States
 {
@@ -73,7 +73,7 @@ namespace EnemyPack.States
             var direction = (PlayerPos - (Vector2)position).normalized;
 
             var separation = Vector2.zero;
-            foreach (var poolObj in MainSceneAccessor.EnemySpawner.GetActiveEnemies())
+            foreach (var poolObj in WorldGeneratorManager.EnemySpawner.GetActiveEnemies())
             {
                 if (poolObj.gameObject == transform.gameObject) continue;
                 var pushAway = (Vector2)(transform.position - poolObj.transform.position);

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using AccessorPack;
 using Other;
 using PoolPack;
 using UnityEngine;
 using Utils;
+using WorldGenerationPack;
 
 namespace ProjectilePack
 {
@@ -41,7 +41,7 @@ namespace ProjectilePack
         {
             _enemiesThisFrame.Clear();
             
-            foreach (var hit in MainSceneAccessor.EnemySpawner.GetActiveEnemies())
+            foreach (var hit in WorldGeneratorManager.EnemySpawner.GetActiveEnemies())
             {
                 if (hit == null) continue;
                 

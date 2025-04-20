@@ -14,6 +14,7 @@ using PlayerPack;
 using PlayerPack.PlayerEnchantmentPack;
 using PoolPack;
 using UnityEngine;
+using WorldGenerationPack;
 
 namespace EnemyPack
 {
@@ -157,12 +158,14 @@ namespace EnemyPack
         public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)
         {
             WorldItemManager.SpawnSouls(transform.position, EnemyData.GetSoulDropCount());
+            WorldGeneratorManager.EnemySpawner.IncrementDeadEnemies(this, EnemyData);
 
             base.OnDie(destroyObj, _enemySpawner);
         }
 
         public void DieWithoutGem()
         {
+            WorldGeneratorManager.EnemySpawner.IncrementDeadEnemies(this, EnemyData);
             base.OnDie();
         }
         

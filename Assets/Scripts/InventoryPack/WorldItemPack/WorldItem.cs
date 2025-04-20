@@ -21,7 +21,6 @@ namespace InventoryPack.WorldItemPack
         [SerializeField] private MinMax throwSpeed;
         [SerializeField] private float throwSlowAcceleration = 3f;
         [SerializeField] private float pickUpCooldown = 0.75f;
-        [SerializeField] private float lifeTime;
         
         private SpriteRenderer _spriteRenderer;
         private Animator _anim;
@@ -136,9 +135,9 @@ namespace InventoryPack.WorldItemPack
             if (dist > pickUpDistance && !_pickedUp || !_item.CanPickUp() || PlayerManager.PlayerItemManager.IsFull())
             {
                 _lifeTimeTimer += deltaTime;
-                if (_lifeTimeTimer >= lifeTime)
+                //TODO: jakis indikator ze item zniknie
+                if (_lifeTimeTimer >= _item.WorldLifeTime)
                 {
-                    //TODO: jakis indikator ze item zniknie
                     _poolManager.ReleasePoolObject(this);
                 }
                 return;

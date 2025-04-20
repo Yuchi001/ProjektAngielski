@@ -12,6 +12,7 @@ namespace ItemPack.SO
         [SerializeField] protected Sprite itemSprite;
         [SerializeField] protected List<EItemTag> itemTags;
         [SerializeField] protected EItemType itemType;
+        [SerializeField] protected float worldLifeTime;
         
         public string ItemName => itemName;
         public int ItemPrice => itemPrice;
@@ -19,6 +20,7 @@ namespace ItemPack.SO
         public List<EItemTag> ItemTags => itemTags;
         public EItemType ItemType => itemType;
         public Sprite ItemSprite => itemSprite;
+        public float WorldLifeTime => worldLifeTime;
 
         public abstract bool OnPickUp(params int[] paramArray);
 

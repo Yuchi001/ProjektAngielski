@@ -1,9 +1,6 @@
-﻿using System;
-using Managers;
-using Managers.Base;
+﻿using Managers;
 using Managers.Other;
 using Other;
-using Other.Enums;
 using PoolPack;
 using UnityEngine.Pool;
 
@@ -47,9 +44,9 @@ namespace MarkerPackage
             return _markers.Get() as T;
         }
 
-        public static void SpawnMarker(SpawnerBase _spawnerPool, EEntityType entityType)
+        public static void SpawnMarker(IUseMarker _spawnerPool)
         {
-            Instance.GetPoolObject<SpawnMarkedEntity>().SetReady(entityType, _spawnerPool, Instance);
+            Instance.GetPoolObject<SpawnMarkedEntity>().SetReady(_spawnerPool, Instance);
         }
 
         public override void ReleasePoolObject(PoolObject poolObject)

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using AccessorPack;
 using ItemPack;
 using Managers;
 using Managers.Enums;
@@ -19,6 +17,7 @@ using UIPack.OpenStrategies;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utils;
+using WorldGenerationPack;
 
 namespace PlayerPack
 {
@@ -214,7 +213,7 @@ namespace PlayerPack
         public static void StartPlayerExitSequence(Action rewardPlayerAction)
         {
             //TODO: portal open audio
-            MainSceneAccessor.EnemySpawner.SetState(ESpawnerState.Stop);
+            WorldGeneratorManager.EnemySpawner.StopSpawning();
             rewardPlayerAction.Invoke();
         }
 

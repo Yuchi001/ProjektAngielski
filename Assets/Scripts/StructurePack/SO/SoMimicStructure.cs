@@ -1,6 +1,6 @@
-﻿using AccessorPack;
-using EnemyPack.SO;
+﻿using EnemyPack.SO;
 using UnityEngine;
+using WorldGenerationPack;
 
 namespace StructurePack.SO
 {
@@ -10,7 +10,7 @@ namespace StructurePack.SO
         [SerializeField] private SoEnemy mimicEnemy;
         public override bool OnInteract(StructureBase structureBase)
         { 
-            MainSceneAccessor.EnemySpawner.SpawnEnemy(mimicEnemy, structureBase.transform.position);
+            WorldGeneratorManager.EnemySpawner.SpawnEnemy(mimicEnemy, structureBase.transform.position);
             Destroy(structureBase.gameObject);
             return true;
         }

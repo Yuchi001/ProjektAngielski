@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EnemyPack;
 using Managers;
 using Managers.Enums;
 using StagePack;
@@ -70,6 +71,7 @@ namespace MapPack
             public DifficultyExtensions.EDifficulty Difficulty { get; }
             public EThemeType ThemeType { get; }
             public Sprite BackgroundSprite { get; }
+            public EnemySpawner SpawnerPrefab { get; }
             public float GetScaledDifficulty(float time) => _region.RegionData.GetScaledDifficulty(time, Difficulty);
             public TileBase GetTile(int x, int y) => _region.RegionData.GetTile(x, y, WorldSize);
             public List<(Vector2Int position, SoStructure structure)> Structures { get; }
@@ -84,6 +86,7 @@ namespace MapPack
                 ThemeType = region.RegionData.RegionTheme;
                 BackgroundSprite = region.RegionData.BackgroundSprite;
                 Structures = region.RegionData.GetStructures(WorldSize);
+                SpawnerPrefab = region.RegionData.EnemySpawner;
                 _region = region;
             }
             

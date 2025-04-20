@@ -56,12 +56,7 @@ namespace StagePack
             _ => null
         };
 
-        public EnemySpawner SpawnSpawner()
-        {
-            // TODO: set spawner scene!
-            var spawner = Instantiate(uniqueSpawner);
-            return spawner;
-        }
+        public EnemySpawner EnemySpawner => uniqueSpawner;
 
         private static EOrientation? GetOrientation(int x, int y, Vector2 worldSize)
         {

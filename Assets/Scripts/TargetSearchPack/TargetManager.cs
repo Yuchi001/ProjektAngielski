@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AccessorPack;
 using EnemyPack;
 using PoolPack;
 using Utils;
+using WorldGenerationPack;
 
 namespace TargetSearchPack
 {
@@ -17,7 +17,7 @@ namespace TargetSearchPack
 
         public static bool TryFindViableEnemies(FindTargetStrategyBase strategyBase, out List<PoolObject> targets, List<int> usedTargets = null, float? range = null)
         {
-            targets = MainSceneAccessor.EnemySpawner.GetActiveEnemies();
+            targets = WorldGeneratorManager.EnemySpawner.GetActiveEnemies();
             if (usedTargets != null) targets = targets.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
             if (range != null) targets = targets.Where(e => e.transform.Distance(strategyBase.Center) <= range).ToList();
             return targets.Count > 0;
