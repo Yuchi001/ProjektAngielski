@@ -2,9 +2,9 @@
 using PlayerPack;
 using UnityEngine;
 
-namespace EnemyPack.States.Mimic
+namespace EnemyPack.States.RootStates
 {
-    public class MimicMain : StateBase
+    public class MimicMain : StateBase, IRootState
     {
         public override bool CanBeStunned => false;
         public override bool CanBePushed => false;
@@ -44,6 +44,11 @@ namespace EnemyPack.States.Mimic
         public override ESpriteRotation GetRotation(EnemyLogic state)
         {
             return ESpriteRotation.None;
+        }
+
+        public void Compose(EnemyLogic logic)
+        {
+            
         }
     }
 }

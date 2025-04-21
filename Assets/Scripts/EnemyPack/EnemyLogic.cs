@@ -71,9 +71,9 @@ namespace EnemyPack
             
             EnemyData = enemy.As<SoEnemy>();
             //rb2d.mass = Mass;
-            
+
+            Animator.speed = EnemyData.MovementSpeed;
             _currentHealth = MaxHealth;
-            
 
             var scale = EnemyData.BodyScale;
             transform.localScale = new Vector3(scale,scale,scale);
@@ -85,7 +85,9 @@ namespace EnemyPack
             
             _enemyHealthBar.Setup(SpriteRenderer);
 
-            _currentState = StateFactory.GetState(EnemyData.EnemyBehaviour);
+            var baseState = StateFactory.GetState(EnemyData.EnemyBehaviour);
+            baseState.Compose(this);
+            _currentState = (StateBase)baseState;
             _currentState.Reset(this);
             _currentState.Enter(this);
             
@@ -158,6 +160,8 @@ namespace EnemyPack
         public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)
         {
             WorldItemManager.SpawnSouls(transform.position, EnemyData.GetSoulDropCount());
+            var scrapCount = EnemyData.GetScrapDropCount();
+            if (scrapCount > 0) WorldItemManager.SpawnScraps(transform.position, scrapCount);
             WorldGeneratorManager.EnemySpawner.IncrementDeadEnemies(this, EnemyData);
 
             base.OnDie(destroyObj, _enemySpawner);

@@ -6,6 +6,7 @@ using ItemPack.WeaponPack.Other;
 using Managers;
 using Managers.Enums;
 using Other;
+using ProjectilePack;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
 using UnityEngine;

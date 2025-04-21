@@ -28,14 +28,7 @@ MonoBehaviour:
       min: 0.001
       max: 0.005
   uniqueEffects: []
-  maxMissionTimeEstimation: 120
-  maxMissionTimeEstimationPerDifficulty: 60
-  soulToCoinRatioPerDiff:
-    min: -1
-    max: -5
-  soulToCoinRatioBase:
-    min: 25
-    max: 50
+  uniqueSpawner: {fileID: 1469964570941688561, guid: b419b73374d1f654685a43bc2391a611, type: 3}
   soulCountPerDiff:
     min: 20
     max: 40
@@ -72,33 +65,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  waveGapChanceCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  gapTime:
-    min: 5
-    max: 15
   tileVariants:
   - {fileID: 11400000, guid: 63292cae2e73a1945acfe038dde4c296, type: 2}
   - {fileID: 11400000, guid: f3986160632d479438f5af84e734b7a1, type: 2}

@@ -39,6 +39,20 @@ namespace Utils
             return current.Distance(searched) < dist;
         }
         
+        public static Vector2 RandomPointInRange(this Transform transform, float range)
+        {
+            Vector2 center = transform.position;
+            var offset = Random.insideUnitCircle * range;
+            return center + offset;
+        }
+        
+        public static Vector2 RandomPointInRange(this Transform transform, Vector2 center, float range)
+        {
+            var offset = Random.insideUnitCircle * range;
+            return center + offset;
+        }
+
+        
         public static float Distance(this Transform current, Vector2 searched)
         {
             return (searched - (Vector2)current.transform.position).sqrMagnitude;
@@ -46,7 +60,7 @@ namespace Utils
 
         public static void MoveTowards(this Transform current, Vector2 target, float speed)
         {
-            current.position = Vector2.MoveTowards(current.position, target, speed * Time.deltaTime);
+            current.position = Vector2.MoveTowards(current.position, target, speed);
         }
     }
 }

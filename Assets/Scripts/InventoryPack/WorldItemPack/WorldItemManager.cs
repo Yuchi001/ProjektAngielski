@@ -17,6 +17,7 @@ namespace InventoryPack.WorldItemPack
         private List<SoCoinItem> _coins;
         private SoHealingOrbItem _healingOrb;
         private SoSoulItem _soulItem;
+        private SoScrapItem _scrapItem;
 
         #region Singleton
 
@@ -40,6 +41,7 @@ namespace InventoryPack.WorldItemPack
         private void GmStart()
         {
             _soulItem = Resources.Load<SoSoulItem>("Items/Soul");
+            _scrapItem = Resources.Load<SoScrapItem>("Items/Scrap");
             _healingOrb = Resources.Load<SoHealingOrbItem>("Items/HealingOrb");
             _coins = Resources.LoadAll<SoCoinItem>("Items").ToList();
             _coins.Sort((c1, c2) => c2.ItemPrice - c1.ItemPrice);
@@ -66,6 +68,14 @@ namespace InventoryPack.WorldItemPack
             for (var i = 0; i < count; i++)
             {
                 SpawnItem(Instance._soulItem, position);
+            }
+        }
+        
+        public static void SpawnScraps(Vector2 position, int count)
+        {
+            for (var i = 0; i < count; i++)
+            {
+                SpawnItem(Instance._scrapItem, position);
             }
         }
         
@@ -105,16 +115,6 @@ namespace InventoryPack.WorldItemPack
         public override void ReleasePoolObject(PoolObject poolObject)
         {
             _pool.Release((WorldItem)poolObject);
-        }
-
-        [System.Serializable]
-        public struct CoinData
-        {
-            [SerializeField] private SoCoinItem coinItem;
-            [SerializeField] private int coinValue;
-
-            public SoCoinItem CoinItem => coinItem;
-            public int CoinValue => coinValue;
         }
     }
 }

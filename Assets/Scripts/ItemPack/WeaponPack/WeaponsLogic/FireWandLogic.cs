@@ -8,6 +8,7 @@ using ItemPack.WeaponPack.Other;
 using Managers.Enums;
 using Other;
 using Other.Enums;
+using ProjectilePack;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
 using TargetSearchPack;

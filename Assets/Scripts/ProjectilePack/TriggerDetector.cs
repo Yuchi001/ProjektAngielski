@@ -18,11 +18,13 @@ namespace ProjectilePack
 
         private readonly Transform _monoTransform;
         private readonly float _range;
+        private readonly string _targetTag;
 
-        public TriggerDetector(Transform monoTransform, float range)
+        public TriggerDetector(Transform monoTransform, float range, string targetTag)
         {
             _range = range;
             _monoTransform = monoTransform;
+            _targetTag = targetTag;
         }
 
         public TriggerDetector SetOnTriggerEnter(Action<CanBeDamaged> onTriggerEnter)
@@ -45,7 +47,9 @@ namespace ProjectilePack
             {
                 if (hit == null) continue;
                 
-                if (hit is not CanBeDamaged canBeDamaged) continue; ;
+                if (hit is not CanBeDamaged canBeDamaged) continue;
+                
+                if (!hit.CompareTag(_targetTag)) continue;
                 
                 if (!IsInHitRange(canBeDamaged)) continue;
 

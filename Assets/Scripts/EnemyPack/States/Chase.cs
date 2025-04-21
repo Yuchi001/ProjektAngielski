@@ -8,54 +8,30 @@ namespace EnemyPack.States
 {
     public class Chase : StateBase
     {
-        public override bool CanBeStunned => _canBeStunned;
-        private bool _canBeStunned = true;
-        public override bool CanBePushed => _canBePushed;
-        private bool _canBePushed = true;
+        private float _timer = 0;
+        private readonly float? _attackRange = null;
+        private float? _maxRange = null;
 
-        private Action<EnemyLogic> _onPlayerInRange = null;
-
-        private float _range = 0.5f;
-
+        private readonly Action<EnemyLogic> _onPlayerInRange = null;
+        private  Action<EnemyLogic> _onPlayerOutOfRange = null;
         private SoEnemy _data;
-
         private Transform _transform;
-
-        private const string CHASE_ATTACK_TIMER_ID = "CHASE_ATTACK_TIMER";
-
-        private new static Vector2 PlayerPos => PlayerManager.PlayerPos;
-
-        public Chase(StateBase nextState, bool runAwa)
-        {
-            _onPlayerInRange = logic => logic.SwitchState(nextState);
-        }
-
+        
         public Chase()
         {
             _onPlayerInRange = null;
         }
 
-        public Chase SetRange(float range)
-        {
-            _range = range;
-            return this;
-        }
-
-        public Chase SetCanBePushed(bool canBePushed)
-        {
-            _canBePushed = canBePushed;
-            return this;
-        }
-        
-        public Chase SetCanBeStunned(bool canBeStunned)
-        {
-            _canBeStunned = canBeStunned;
-            return this;
-        }
-
-        public Chase SetOnPlayerInRange(Action<EnemyLogic> onPlayerInRange)
+        public Chase(Action<EnemyLogic> onPlayerInRange, float? attackRange = null)
         {
             _onPlayerInRange = onPlayerInRange;
+            _attackRange = attackRange;
+        }
+
+        public Chase SetOutOfRangeAction(Action<EnemyLogic> onPlayerOutOfRange, float maxRange)
+        {
+            _onPlayerOutOfRange = onPlayerOutOfRange;
+            _maxRange = maxRange;
             return this;
         }
         
@@ -63,35 +39,46 @@ namespace EnemyPack.States
         {
             _data = state.EnemyData;
             _transform = state.transform;
-            state.SetTimer(CHASE_ATTACK_TIMER_ID);
+            _timer = 0;
         }
 
         public override void Execute(EnemyLogic state, float deltaTime)
         {
-            var transform = state.transform;
-            var position = transform.position;
+            var position = _transform.position;
             var direction = (PlayerPos - (Vector2)position).normalized;
 
             var separation = Vector2.zero;
             foreach (var poolObj in WorldGeneratorManager.EnemySpawner.GetActiveEnemies())
             {
-                if (poolObj.gameObject == transform.gameObject) continue;
-                var pushAway = (Vector2)(transform.position - poolObj.transform.position);
+                if (poolObj.gameObject == _transform.gameObject) continue;
+                var pushAway = (Vector2)(_transform.position - poolObj.transform.position);
                 var dist = pushAway.magnitude;
                 if (dist > 0) separation += pushAway.normalized / dist;
             }
 
             var finalDir = (direction + separation * 0.1f).normalized;
 
-            transform.position += (Vector3)(finalDir * (deltaTime * state.EnemyData.MovementSpeed));
+            _transform.position += (Vector3)(finalDir * (deltaTime * state.EnemyData.MovementSpeed));
+
+            if (!InRange(state, _maxRange) && _onPlayerOutOfRange != null)
+            {
+                _onPlayerOutOfRange.Invoke(state);
+                return;
+            }
             
-            if (Vector2.Distance(_transform.position, PlayerPos) > _range) return;
+            if (!InRange(state, _attackRange)) return;
 
-            if (state.CheckTimer(CHASE_ATTACK_TIMER_ID) < 1f / _data.AttackSpeed) return;
-            state.SetTimer(CHASE_ATTACK_TIMER_ID);
+            if (_onPlayerInRange != null)
+            {
+                _onPlayerInRange.Invoke(state);
+                return;
+            }
 
-            if (_onPlayerInRange != null) _onPlayerInRange.Invoke(state);
-            else PlayerManager.PlayerHealth.GetDamaged(_data.Damage);
+            _timer += deltaTime;
+            if (_timer < 1f / _data.AttackSpeed) return;
+            _timer = 0;
+
+            PlayerManager.PlayerHealth.GetDamaged(_data.Damage);
         }
 
         public override void Reset(EnemyLogic state)

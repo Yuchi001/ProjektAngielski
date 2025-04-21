@@ -5,6 +5,7 @@ using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Other;
 using Other.Enums;
+using ProjectilePack;
 using UnityEngine;
 
 namespace ItemPack.WeaponPack.WeaponsLogic

@@ -19,7 +19,7 @@ namespace EnemyPack
 {
     public abstract class EnemySpawner : PoolManager, IUseMarker
     {
-        [SerializeField] private float maxDistanceFromPlayer = 20;
+        [SerializeField] private float maxDistanceFromPlayer = 60;
         [SerializeField] private float standardDifficultyDeviation = 0.2f;
         [SerializeField] private float _waitBeforeSpawn = 1.5f;
         
@@ -47,12 +47,12 @@ namespace EnemyPack
 
         public virtual void Setup(MapManager.MissionData currentMission)
         {
+            _allEnemies = Resources.LoadAll<SoEnemy>("Enemies").Select(Instantiate).ToList();
             _allEnemies = _allEnemies.Where(e => e.OccurenceList.Contains(currentMission.RegionType)).ToList();
             _currentMission = currentMission;
             
             DeadEnemies = 0;
 
-            _allEnemies = Resources.LoadAll<SoEnemy>("Enemies").Select(Instantiate).ToList();
             
             var enemyPrefab = GameManager.GetPrefab<EnemyLogic>(PrefabNames.Enemy);
             _enemyPool = PoolHelper.CreatePool(this, enemyPrefab, true);

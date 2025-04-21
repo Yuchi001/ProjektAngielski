@@ -10,19 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
-  m_Name: Mimic
+  m_Name: BatSmall_2
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: d1c613ea31047d04d814e3f2c3058c68, type: 3}
-  walkingAnimationClip: {fileID: 7400000, guid: 3e66f7e11dbbc1748b0c4791e8862e25, type: 2}
-  maxHealth: 100
+  sprite: {fileID: -1889125415, guid: f64fe974b294e2745bca8c184be0a21d, type: 3}
+  walkingAnimationClip: {fileID: 7400000, guid: c5be1da10868ef040959d425e42d33ca, type: 2}
+  maxHealth: 25
   bodyScale: 1
   movementSpeed: 2
-  attackSpeed: 0.1
+  attackSpeed: 1
   damage: 5
-  difficulty: 1
-  occurenceList: 
+  difficulty: 2
+  occurenceList: 00000000
   spriteRotation: 2
+  useCustomDropCount: 1
   soulDropCount:
+    min: 1
+    max: 1
+  scrapDropCount:
     min: 0
     max: 0
-  enemyBehaviour: 1
+  enemyBehaviour: 0

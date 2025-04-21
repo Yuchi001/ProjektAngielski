@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
+  m_Name: GolemVerySmall_1
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 355063189, guid: a1ab1e086a1ec7345aa72749621ba1bb, type: 3}
+  walkingAnimationClip: {fileID: 7400000, guid: 4baa0ca5870ed0745b11eab80936c096, type: 2}
+  maxHealth: 100
+  bodyScale: 1
+  movementSpeed: 0.5
+  attackSpeed: 1
+  damage: 25
+  difficulty: 2
+  occurenceList: 00000000
+  spriteRotation: 2
+  useCustomDropCount: 1
+  soulDropCount:
+    min: 0
+    max: 1
+  scrapDropCount:
+    min: 0
+    max: 1
+  enemyBehaviour: 3

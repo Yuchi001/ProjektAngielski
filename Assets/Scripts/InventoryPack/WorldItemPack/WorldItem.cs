@@ -21,6 +21,7 @@ namespace InventoryPack.WorldItemPack
         [SerializeField] private MinMax throwSpeed;
         [SerializeField] private float throwSlowAcceleration = 3f;
         [SerializeField] private float pickUpCooldown = 0.75f;
+        [SerializeField] private float itemLifeTime = 20;
         
         private SpriteRenderer _spriteRenderer;
         private Animator _anim;
@@ -45,6 +46,8 @@ namespace InventoryPack.WorldItemPack
         private Vector2 _randomDir;
 
         private Vector2 _pickUpStartPos;
+
+        private float _calculatedLifeTime;
         
         public override void OnCreate(PoolManager poolManager)
         {
@@ -87,6 +90,8 @@ namespace InventoryPack.WorldItemPack
             _item = item;
             _paramArray = paramArray;
             _spriteRenderer.sprite = item.ItemSprite;
+            
+            _calculatedLifeTime = _item.WorldLifeTime > 0 ? _item.WorldLifeTime : itemLifeTime;
         }
 
         private void Ready()
@@ -136,7 +141,7 @@ namespace InventoryPack.WorldItemPack
             {
                 _lifeTimeTimer += deltaTime;
                 //TODO: jakis indikator ze item zniknie
-                if (_lifeTimeTimer >= _item.WorldLifeTime)
+                if (_lifeTimeTimer >= _calculatedLifeTime)
                 {
                     _poolManager.ReleasePoolObject(this);
                 }
