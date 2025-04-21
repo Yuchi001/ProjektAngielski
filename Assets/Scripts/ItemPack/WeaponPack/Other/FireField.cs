@@ -14,7 +14,7 @@ namespace ItemPack.WeaponPack.Other
         [SerializeField] private float bodyScale;
             
         private BookOfFireLogic _bookOfFireLogic;
-        private TriggerDetector _triggerDetector;
+        private TargetDetector _targetDetector;
         
         private float _timer = 0;
         
@@ -23,9 +23,9 @@ namespace ItemPack.WeaponPack.Other
         public void Setup(BookOfFireLogic bookOfFireLogic)
         {
             _bookOfFireLogic = bookOfFireLogic;
-            _triggerDetector = new TriggerDetector(transform, bodyScale);
-            _triggerDetector.SetOnTriggerEnter(BurnEnemy);
-            _triggerDetector.SetOnTriggerStay(TriggerBurn);
+            _targetDetector = new TargetDetector(transform, bodyScale);
+            _targetDetector.SetOnTriggerEnter(BurnEnemy);
+            _targetDetector.SetOnTriggerStay(TriggerBurn);
         }
 
         private void Update()
@@ -39,7 +39,7 @@ namespace ItemPack.WeaponPack.Other
             transform.position = PlayerManager.PlayerPos;
             _timer += Time.deltaTime;
             
-            _triggerDetector.CheckForTriggers();
+            _targetDetector.CheckForTriggers();
         }
 
         private void TriggerBurn(CanBeDamaged canBeDamaged)

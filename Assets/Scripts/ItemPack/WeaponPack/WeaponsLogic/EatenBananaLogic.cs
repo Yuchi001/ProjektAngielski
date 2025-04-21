@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using AudioPack;
-using EnemyPack;
 using ItemPack.Enums;
-using ItemPack.WeaponPack.Other;
-using Managers;
 using Managers.Enums;
 using Other;
+using PlayerPack;
 using ProjectilePack;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
@@ -27,35 +25,30 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         
         protected override bool Use()
         {
-            var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
-
-            projectile.Setup(Damage, 0)
+            ProjectileManager.SpawnProjectile(IProjectileMovementStrategy.IGNORE, this)
                 .SetSprite(projectileSprite)
                 .SetScale(0.5f)
                 .SetOnHitAction(OnHit)
-                .SetOnHitParticles(boomParticles, BlastRange * 2)
-                .SetReady();
+                .Ready();
 
             return true;
         }
 
-        private void OnHit(CanBeDamaged hitObj, Projectile projectile)
+        private bool OnHit(Projectile projectile, CanBeDamaged hitObj)
         {
             AudioManager.PlaySound(ESoundType.BananaBoom);
 
             var projectilePos = projectile.transform.position;
             SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionBig, projectilePos, BlastRange);
 
-            var results = new Collider2D[50];
-            Physics2D.OverlapCircleNonAlloc(projectilePos, BlastRange, results);
-
-            foreach (var hit in results)
+            foreach (var enemy in TargetDetector.EnemiesInRange(projectile.transform.position, BlastRange))
             {
-                if (hit == null) continue;
-                if(!hit.TryGetComponent<EnemyLogic>(out var enemy)) continue;
-                
-                enemy.GetDamaged(Damage);
+                var damageContext = PlayerManager.GetDamageContextManager()
+                    .GetDamageContext(Damage, hitObj, InventoryItem.ItemTags);
+                enemy.GetDamaged(damageContext.Damage);
             }
+
+            return false;
         }
     }
 }

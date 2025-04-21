@@ -2,9 +2,12 @@
 using System.Linq;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
+using PlayerPack;
 using ProjectilePack;
+using ProjectilePack.MovementStrategies;
 using TargetSearchPack;
 using UnityEngine;
+using Utils;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
@@ -45,47 +48,40 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 spawnedProjectiles++;
                 
-                var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
-                
-                targetedEnemies.Add(target.GetInstanceID());
-                projectile.Setup(Damage, Speed)
-                    .SetDirection(target.transform.position)
-                    .SetDontDestroyOnHit()
-                    .SetOutOfRangeBehaviour(OutOfRangeBehaviour)
+                var projectileMovementStrategy = new DirectionMovementStrategy(PlayerPos, 
+                    target.transform.position, Speed, rotationSpeed);
+                ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)
+                    .SetDestroyOnCollision(false)
+                    .SetOutOfRangeAction(OutOfRangeBehaviour)
                     .SetSprite(projectileSprite)
                     .SetScale(0.5f)
                     .SetRange(Range)
                     .SetPushForce(PushForce)
-                    .SetRotationSpeed(rotationSpeed)
-                    .SetReady();
+                    .Ready();
             }
 
             return spawnedProjectiles > 0;
         }
 
-        private void OutOfRangeBehaviour(Projectile projectile)
+        private bool OutOfRangeBehaviour(Projectile projectile)
         {
-            var newProjectile = Instantiate(Projectile, projectile.transform.position, Quaternion.identity);
-            
-            newProjectile.Setup(Damage, Speed)
-                .SetTarget(PlayerTransform)
+            var projectileMovementStrategy = new TargetMovementStrategy(PlayerManager.GetTransform(), Speed, rotationSpeed);
+            ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)
+                .SetDestroyOnCollision(false)
+                .SetUpdateAction(ProjectileUpdate)
                 .SetSprite(projectileSprite)
-                .SetDontDestroyOnHit()
                 .SetScale(0.5f)
-                .SetRotationSpeed(rotationSpeed)
-                .SetUpdate(ProjectileUpdate)
-                .SetReady();
+                .SetRange(9999)
+                .Ready();
             
-            Destroy(projectile.gameObject);
+            return false;
         }
 
         private void ProjectileUpdate(Projectile projectile)
         {
-            var projectilePos = projectile.transform.position;
-            var playerPos = PlayerTransform.position;
-            if (Vector2.Distance(projectilePos, playerPos) > 0.1f) return;
-            
-            Destroy(projectile.gameObject);
+            if (!projectile.transform.InRange(PlayerPos, 0.1f)) return;
+
+            ProjectileManager.ReturnProjectile(projectile);
         }
     }
 }

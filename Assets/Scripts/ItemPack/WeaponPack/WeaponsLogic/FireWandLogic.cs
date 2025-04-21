@@ -4,16 +4,16 @@ using System.Linq;
 using AudioPack;
 using EnemyPack;
 using ItemPack.Enums;
-using ItemPack.WeaponPack.Other;
 using Managers.Enums;
 using Other;
 using Other.Enums;
+using PlayerPack;
 using ProjectilePack;
+using ProjectilePack.MovementStrategies;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
 using TargetSearchPack;
 using UnityEngine;
-using Utils;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
@@ -56,15 +56,12 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 spawnedProjectiles++;
                 
-                var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
-                
-                projectile.Setup(Damage, Speed)
-                    .SetTarget(target.transform)
-                    .SetOnHitParticles(onHitParticles)
+                var projectileMovementStrategy = new DirectionMovementStrategy(PlayerPos, 
+                    target.transform.position, Speed);
+                ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)
                     .SetOnHitAction(OnHitAction)
-                    .SetFlightParticles(flightParticles)
                     .SetEffect(EEffectType.Burn, EffectDuration)
-                    .SetReady();
+                    .Ready(); // TODO: flight particles
                 
                 targetedEnemies.Add(target.GetInstanceID());
             }
@@ -72,34 +69,32 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             return spawnedProjectiles > 0;
         }
 
-        private void OnHitAction(CanBeDamaged enemy, Projectile projectile)
+        private bool OnHitAction(Projectile projectile, CanBeDamaged enemy)
         {
             var range = GetStatValue(EItemSelfStatType.BlastRange);
             var damage = GetStatValueAsInt(EItemSelfStatType.BlastDamage);
             
             if (this != null) StartCoroutine(BoomCoroutine(enemy, range, damage));
+
+            return false;
         }
 
         private IEnumerator BoomCoroutine(CanBeDamaged impactEnemy, float range, int damage)
         {
             var enemyInstanceId = impactEnemy.GetInstanceID();
-            var results = new Collider2D[50];
             var position = impactEnemy.transform.position;
-            Physics2D.OverlapCircleNonAlloc(position, range, results);
             SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionMedium, position, range);
             AudioManager.PlaySound(ESoundType.BananaBoom);
-            foreach (var hitCollider in results)
+            foreach (var enemy in TargetDetector.EnemiesInRange(position, range))
             {
-                if(hitCollider == null) continue;
-                
-                if(!hitCollider.TryGetComponent<EnemyLogic>(out var enemy)) continue;
-                
                 if(enemy.GetInstanceID() == enemyInstanceId) continue;
                 
                 var particles = Instantiate(onHitParticles, enemy.transform.position, Quaternion.identity);
                 Destroy(particles, 2f);
                 
-                enemy.GetDamaged(damage);
+                var damageContext = PlayerManager.GetDamageContextManager()
+                    .GetDamageContext(damage, enemy, InventoryItem.ItemTags);
+                enemy.GetDamaged(damageContext.Damage);
 
                 yield return new WaitForSeconds(0.1f);
             }

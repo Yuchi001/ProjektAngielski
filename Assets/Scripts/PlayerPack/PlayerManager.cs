@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ItemPack;
+using ItemPack.Enums;
 using Managers;
 using Managers.Enums;
 using Managers.Other;
@@ -238,9 +239,10 @@ namespace PlayerPack
             _damageModifiers.RemoveAll(m => m.Key == key);
         }
         
-        public DamageContext GetDamageContext(int damage, ItemLogicBase source)
+        public DamageContext GetDamageContext(int damage, CanBeDamaged hitObject, List<EItemTag> tags = null)
         {
-            var context = new DamageContext(damage, source.InventoryItem.ItemTags, source);
+            tags ??= new List<EItemTag>();
+            var context = new DamageContext(damage, tags, hitObject);
             foreach (var pair in _damageModifiers)
             {
                 pair.Value.ModifyDamageContext(context);

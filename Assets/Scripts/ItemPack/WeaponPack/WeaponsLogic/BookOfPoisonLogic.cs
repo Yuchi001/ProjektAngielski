@@ -2,11 +2,13 @@
 using System.Linq;
 using EnemyPack;
 using ItemPack.Enums;
-using ItemPack.WeaponPack.Other;
 using Other;
 using Other.Enums;
+using PlayerPack;
 using ProjectilePack;
+using ProjectilePack.MovementStrategies;
 using UnityEngine;
+using Utils;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
@@ -21,7 +23,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         private float DamageRate => GetStatValue(EItemSelfStatType.DamageRate);
         private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration);
 
-        private const string DamageRateName = "DamageRate";
+        private const string BOOK_OF_POISON_TIMER_ID = "BOOK_OF_POISON_TIMER_ID";
 
         private readonly List<Projectile> _poisonFields = new();
 
@@ -39,42 +41,33 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
             if (_poisonFields.FirstOrDefault(go => IsTooClose(go.transform.position))) return false;
             
-            var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
-
-            projectile.Setup(Damage, 0)
-                .SetScale(Scale / 2f)
-                .SetSprite(fieldSprite, Scale * 2)
+            var spawnedPoisonFields = ProjectileManager.SpawnProjectile(IProjectileMovementStrategy.IGNORE, this)
+                .SetScale(Scale)
+                .SetSprite(fieldSprite)
                 .SetLifeTime(Duration)
-                .SetDontDestroyOnHit()
-                .SetNewCustomValue(DamageRateName)
+                .SetDestroyOnCollision(false)
                 .SetSortingLayer("Floor", 1)
-                .SetUpdate(ParticleUpdate)
-                .SetOnCollisionStay(CollisionStay)
+                .SetOnHitStayAction(HitStayAction)
                 .SetEffect(EEffectType.Poison, EffectDuration)
-                .SetFlightParticles(fieldParticles, Scale * 2, true)
-                .SetReady();
+                .Ready(); //TODO PARTICLES
             
-            _poisonFields.Add(projectile);
+            spawnedPoisonFields.SetTimer(BOOK_OF_POISON_TIMER_ID);
+            
+            _poisonFields.Add(spawnedPoisonFields);
 
             return true;
 
-            bool IsTooClose(Vector2 pos) => Vector2.Distance(pos, PlayerPos) < minimalFieldDistance;
+            bool IsTooClose(Vector2 pos) => PlayerManager.GetTransform().InRange(pos, minimalFieldDistance);
         }
 
-        private void ParticleUpdate(Projectile projectile)
+        private void HitStayAction(Projectile projectile, CanBeDamaged enemy)
         {
-            var currentRate = projectile.GetCustomValue(DamageRateName);
-            projectile.SetCustomValue(DamageRateName, currentRate + Time.deltaTime);
-        }
-
-        private void CollisionStay(CanBeDamaged enemy, Projectile projectile)
-        {
-            if (projectile.GetCustomValue(DamageRateName) < 1f / DamageRate) return;
+            if (projectile.CheckTimer(BOOK_OF_POISON_TIMER_ID) < 1f / DamageRate) return;
+            projectile.SetTimer(BOOK_OF_POISON_TIMER_ID);
 
             if (enemy is not EnemyLogic enemyScript) return;
             
             enemyScript.GetDamaged(Damage);
-            projectile.SetCustomValue(DamageRateName, 0);
         }
     }
 }

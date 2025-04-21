@@ -1,4 +1,6 @@
 ﻿using System;
+using ItemPack;
+using ItemPack.SO;
 using Managers;
 using Managers.Other;
 using PoolPack;
@@ -8,6 +10,9 @@ namespace ProjectilePack
 {
     public class ProjectileManager : PoolManager
     {
+        public static string PLAYER_TAG = "Player";
+        public static string ENEMY_TAG = "Enemy";
+        
         private ObjectPool<Projectile> _pool;
         private static ProjectileManager Instance { get; set; }
         private void Awake()
@@ -30,9 +35,19 @@ namespace ProjectilePack
             _pool.Release((Projectile)poolObject);
         }
 
-        public static Projectile SpawnProjectile()
+        public static Projectile SpawnProjectile(IProjectileMovementStrategy movementStrategy, int damage, string targetTag)
         {
-            return Instance.GetPoolObject<Projectile>();
+            return Instance.GetPoolObject<Projectile>().Setup(movementStrategy, damage, targetTag);
+        }
+        
+        public static Projectile SpawnProjectile(IProjectileMovementStrategy movementStrategy, ItemLogicBase item)
+        {
+            return Instance.GetPoolObject<Projectile>().Setup(movementStrategy, item.Damage, ENEMY_TAG, item.InventoryItem.ItemTags);
+        }
+
+        public static void ReturnProjectile(Projectile projectile)
+        {
+            Instance.ReleasePoolObject(projectile);
         }
 
         private void Update()

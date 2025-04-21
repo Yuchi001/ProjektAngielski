@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ItemPack.Enums;
-using Other.Enums;
+using ProjectilePack;
+using ProjectilePack.MovementStrategies;
 using TargetSearchPack;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class AxeLogic : ItemLogicBase
     {
         [SerializeField] private Sprite projectileSprite;
-        [FormerlySerializedAs("rotationSpeed")] [SerializeField] private float rotationSpeedModifier;
+        [SerializeField] private float rotationSpeedModifier;
 
         private float ProjectileScale => GetStatValue(EItemSelfStatType.ProjectileScale);
 
@@ -33,7 +33,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 return _findStrategy ??= new BiggestGroupNearPlayerStrategy(new NearPlayerStrategy());
             }
         }
-
+        
         protected override bool Use()
         {
             var spawnedProjectiles = 0;
@@ -45,18 +45,15 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 targetedEnemies.Add(target.GetInstanceID());
                 spawnedProjectiles++;
-                
-                var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
 
-                projectile.Setup(Damage, Speed)
-                    .SetDirection(target.transform.position)
-                    .SetDontDestroyOnHit()
+                var projectileMovementStrategy = new DirectionMovementStrategy(PlayerPos, 
+                    target.transform.position, Speed, -rotationSpeedModifier * Speed);
+                ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)
+                    .SetDestroyOnCollision(false)
                     .SetSprite(projectileSprite)
-                    .SetPushForce(PushForce)
                     .SetScale(ProjectileScale)
-                    .SetRotationSpeed(-rotationSpeedModifier * Speed);
-                
-                projectile.SetReady();
+                    .SetPushForce(PushForce)
+                    .Ready();
             }
 
             return spawnedProjectiles > 0;

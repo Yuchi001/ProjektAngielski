@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ItemPack;
 using ItemPack.Enums;
+using Other;
 
 namespace PlayerPack.Decorators
 {
@@ -8,13 +9,13 @@ namespace PlayerPack.Decorators
     {
         public int Damage { get; private set; }
         public List<EItemTag> Tags { get; private set; }
-        public ItemLogicBase Source { get; }
+        public CanBeDamaged HitObj { get; }
 
-        public DamageContext(int damage, List<EItemTag> tags, ItemLogicBase source)
+        public DamageContext(int damage, List<EItemTag> tags, CanBeDamaged hitObj)
         {
             Damage = damage;
             Tags = tags;
-            Source = source;
+            HitObj = hitObj;
         }
 
         public void SetTags(List<EItemTag> tags) => Tags = tags;
