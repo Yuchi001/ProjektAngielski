@@ -239,10 +239,10 @@ namespace PlayerPack
             _damageModifiers.RemoveAll(m => m.Key == key);
         }
         
-        public DamageContext GetDamageContext(int damage, CanBeDamaged hitObject, List<EItemTag> tags = null)
+        public DamageContext GetDamageContext(int damage, MonoBehaviour source, CanBeDamaged hitObject, List<EItemTag> tags = null)
         {
             tags ??= new List<EItemTag>();
-            var context = new DamageContext(damage, tags, hitObject);
+            var context = new DamageContext(damage, source, hitObject, tags);
             foreach (var pair in _damageModifiers)
             {
                 pair.Value.ModifyDamageContext(context);

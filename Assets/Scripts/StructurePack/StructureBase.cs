@@ -94,7 +94,7 @@ namespace StructurePack
                 return;
             }
 
-            if (!_structureData.Reusable || _interactionCount >= _structureData.InteractionLimit)
+            if (!_structureData.Reusable || (_interactionCount >= _structureData.InteractionLimit && _interactionCount > 0))
             {
                 structureSpriteRenderer.sprite = _structureData.GetSprite(SoStructure.EState.USED);
                 _spriteLight.enabled = false;

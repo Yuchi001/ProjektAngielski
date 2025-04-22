@@ -6,8 +6,6 @@ using InventoryPack.WorldItemPack;
 using ItemPack.SO;
 using Managers;
 using MapPack;
-using MinimapPack;
-using MinimapPack.Strategies;
 using PlayerPack;
 using UnityEngine;
 using Utils;
@@ -34,8 +32,8 @@ namespace StructurePack.SO
             
             if (!PlayerCollectibleManager.HasCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SOUL, data.SoulCount)) return false;
 
+            //structureBase.SetCanInteract(false);
             PlayerManager.StartPlayerExitSequence(() => RewardPlayer(structureBase));
-            structureBase.SetCanInteract(false);
             
             return true;
         }

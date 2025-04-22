@@ -23,7 +23,7 @@ namespace ItemPack.WeaponPack.Other
         public void Setup(BookOfFireLogic bookOfFireLogic)
         {
             _bookOfFireLogic = bookOfFireLogic;
-            _targetDetector = new TargetDetector(transform, bodyScale);
+            _targetDetector = new TargetDetector(transform, bodyScale, ProjectileManager.ENEMY_TAG);
             _targetDetector.SetOnTriggerEnter(BurnEnemy);
             _targetDetector.SetOnTriggerStay(TriggerBurn);
         }

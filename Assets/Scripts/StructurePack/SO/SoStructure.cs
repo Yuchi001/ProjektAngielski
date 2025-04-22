@@ -29,7 +29,7 @@ namespace StructurePack.SO
         public float StructureScale => structureScale;
         public string StructureName => structureName;
         public string StructureDescription => structureDescription;
-        public bool Reusable => interactionLimit > 1;
+        public bool Reusable => interactionLimit > 1 && interactionLimit != 0;
         public int InteractionLimit => interactionLimit;
         public string InteractionDeclineMessage => interactionDeclineMessage;
 

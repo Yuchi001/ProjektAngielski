@@ -18,17 +18,18 @@ MonoBehaviour:
   itemSprite: {fileID: 21300000, guid: 77caf879fdc03a24facf7652360a16c2, type: 3}
   itemTags: 
   itemType: 0
+  customWorldLifeTime: 0
   oneTimeSpawnLogic: 0
   itemPrefab: {fileID: 5679424887727705593, guid: 51b8214004e8c9246a98ad9ae5463170, type: 3}
   startingStats:
   - selfStatType: 9
-    statValue: 0.5
-    canUpgrade: 0
+    statValue: 30
+    canUpgrade: 1
     useMax: 0
-    useMin: 0
+    useMin: 1
     maximum: 0
-    minimum: 0
-    mod: 0
+    minimum: 10
+    mod: -2
   - selfStatType: 2
     statValue: 5
     canUpgrade: 1

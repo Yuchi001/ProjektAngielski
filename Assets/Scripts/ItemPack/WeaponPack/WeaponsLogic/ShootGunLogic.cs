@@ -41,8 +41,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 for (var i = 0; i < ProjectileCount; i++)
                 {
                     SpawnProjectile(position)
-                        .SetDontDestroyOnHit()
-                        .SetReady();
+                        .SetDestroyOnCollision(false)
+                        .Ready();
                     
                     var waitTime = Random.Range(0.001f, maxGrainTimeBreak + 0.001f);
                 

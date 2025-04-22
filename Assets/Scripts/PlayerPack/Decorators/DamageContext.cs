@@ -2,6 +2,7 @@
 using ItemPack;
 using ItemPack.Enums;
 using Other;
+using UnityEngine;
 
 namespace PlayerPack.Decorators
 {
@@ -10,12 +11,14 @@ namespace PlayerPack.Decorators
         public int Damage { get; private set; }
         public List<EItemTag> Tags { get; private set; }
         public CanBeDamaged HitObj { get; }
+        public MonoBehaviour Source { get; }
 
-        public DamageContext(int damage, List<EItemTag> tags, CanBeDamaged hitObj)
+        public DamageContext(int damage, MonoBehaviour source, CanBeDamaged hitObj, List<EItemTag> tags)
         {
             Damage = damage;
             Tags = tags;
             HitObj = hitObj;
+            Source = source;
         }
 
         public void SetTags(List<EItemTag> tags) => Tags = tags;

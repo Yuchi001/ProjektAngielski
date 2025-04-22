@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Other;
+using ProjectilePack;
 using UnityEngine;
 
 namespace PoolPack
@@ -10,7 +11,6 @@ namespace PoolPack
         [SerializeField] protected float maxUpdateStackDuration = 0.5f;
         [field: SerializeField, Range(10, 1000)] public int PoolSize { get; protected set; }
         public List<PoolObject> ActiveObjects { get; } = new();
-
         protected abstract T GetPoolObject<T>() where T: PoolObject;
         public abstract void ReleasePoolObject(PoolObject poolObject);
         
@@ -30,7 +30,6 @@ namespace PoolPack
         protected void RunUpdatePoolStack()
         {
             if (updateStack.Count == 0) PrepareQueue();
-
             
             var fps = 1.0f / Time.unscaledDeltaTime;
             var requiredRate = updateStack.Count / maxUpdateStackDuration;

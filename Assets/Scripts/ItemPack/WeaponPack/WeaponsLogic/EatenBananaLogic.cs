@@ -44,7 +44,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             foreach (var enemy in TargetDetector.EnemiesInRange(projectile.transform.position, BlastRange))
             {
                 var damageContext = PlayerManager.GetDamageContextManager()
-                    .GetDamageContext(Damage, hitObj, InventoryItem.ItemTags);
+                    .GetDamageContext(Damage, projectile, hitObj, InventoryItem.ItemTags);
                 enemy.GetDamaged(damageContext.Damage);
             }
 

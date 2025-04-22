@@ -3,16 +3,18 @@ using ItemPack;
 using ItemPack.SO;
 using Managers;
 using Managers.Other;
+using PlayerPack;
 using PoolPack;
+using UnityEngine;
 using UnityEngine.Pool;
 
 namespace ProjectilePack
 {
     public class ProjectileManager : PoolManager
     {
-        public static string PLAYER_TAG = "Player";
-        public static string ENEMY_TAG = "Enemy";
-        
+        public const string PLAYER_TAG = "Player";
+        public const string ENEMY_TAG = "Enemy";
+
         private ObjectPool<Projectile> _pool;
         private static ProjectileManager Instance { get; set; }
         private void Awake()
@@ -32,17 +34,20 @@ namespace ProjectilePack
 
         public override void ReleasePoolObject(PoolObject poolObject)
         {
+            poolObject.OnRelease();
             _pool.Release((Projectile)poolObject);
         }
 
-        public static Projectile SpawnProjectile(IProjectileMovementStrategy movementStrategy, int damage, string targetTag)
+        public static Projectile SpawnProjectile(IProjectileMovementStrategy movementStrategy, int damage, Vector2 spawnPosition, string targetTag)
         {
             return Instance.GetPoolObject<Projectile>().Setup(movementStrategy, damage, targetTag);
         }
         
         public static Projectile SpawnProjectile(IProjectileMovementStrategy movementStrategy, ItemLogicBase item)
         {
-            return Instance.GetPoolObject<Projectile>().Setup(movementStrategy, item.Damage, ENEMY_TAG, item.InventoryItem.ItemTags);
+            var projectile = Instance.GetPoolObject<Projectile>().Setup(movementStrategy, item.Damage, ENEMY_TAG, item.InventoryItem.ItemTags);
+            projectile.transform.position = PlayerManager.PlayerPos;
+            return projectile;
         }
 
         public static void ReturnProjectile(Projectile projectile)

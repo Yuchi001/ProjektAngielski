@@ -84,7 +84,9 @@ namespace PlayerPack.PlayerItemPack
         public void ScrapItem(int index)
         {
             var slot = _itemSlots[index];
-            PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SCRAP, slot.ViewItem().level);
+            var level = slot.ViewItem().level;
+            var scrapCount = Mathf.CeilToInt((float)level * level / 2);
+            PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SCRAP, scrapCount);
             slot.SetItem(null, -1);
             AudioManager.PlaySound(ESoundType.ScrapWeapon);
             RefreshInventory();

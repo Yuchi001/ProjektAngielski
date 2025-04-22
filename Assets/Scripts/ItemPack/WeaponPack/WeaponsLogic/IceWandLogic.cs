@@ -2,6 +2,8 @@
 using System.Linq;
 using ItemPack.Enums;
 using Other.Enums;
+using ProjectilePack;
+using ProjectilePack.MovementStrategies;
 using TargetSearchPack;
 using UnityEngine;
 
@@ -14,10 +16,12 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private GameObject flightParticles;
 
         private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration);
+        private float Scale => GetStatValue(EItemSelfStatType.ProjectileScale);
 
         protected override List<EItemSelfStatType> UsedStats { get; } = new()
         {
-            EItemSelfStatType.EffectDuration
+            EItemSelfStatType.EffectDuration,
+            EItemSelfStatType.ProjectileScale
         };
 
         public override IEnumerable<EItemSelfStatType> GetUsedStats()
@@ -45,14 +49,12 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 spawnedProjectiles++;
                 
-                var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
-                
-                projectile.Setup(Damage, Speed)
-                    .SetTarget(target.transform)
+                var projectileMovementStrategy = new TargetMovementStrategy(target.transform, Speed);
+                ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)
                     .SetSprite(projectileSprites, animSpeed)
-                    .SetFlightParticles(flightParticles)
                     .SetEffect(EEffectType.Slow, EffectDuration)
-                    .SetReady();
+                    .SetScale(Scale)
+                    .Ready(); // TODO: flightParticles
                 
                 targetedEnemies.Add(target.GetInstanceID());
             }

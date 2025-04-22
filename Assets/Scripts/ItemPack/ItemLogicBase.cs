@@ -2,12 +2,7 @@
 using System.Linq;
 using ItemPack.Enums;
 using ItemPack.SO;
-using ItemPack.WeaponPack.Other;
-using Managers;
-using Managers.Other;
 using PlayerPack;
-using PlayerPack.PlayerEnchantmentPack;
-using ProjectilePack;
 using UnityEngine;
 
 namespace ItemPack
@@ -16,7 +11,7 @@ namespace ItemPack
     {
         public int Level { get; private set; } = 0;
         public float TimerScaled => 1 - _timer / Cooldown;
-        public int Damage => PlayerManager.GetDamageContextManager().GetDamageContext(GetStatValueAsInt(EItemSelfStatType.Damage), this).Damage; // TODO: przenieś do projectile
+        public int Damage => GetStatValueAsInt(EItemSelfStatType.Damage); 
         protected float Speed => GetStatValue(EItemSelfStatType.ProjectileSpeed);
         protected int ProjectileCount => GetStatValueAsInt(EItemSelfStatType.ProjectilesCount);
         protected float PushForce => GetStatValue(EItemSelfStatType.PushForce);

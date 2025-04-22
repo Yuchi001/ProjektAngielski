@@ -45,5 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSprite: {fileID: 21300000, guid: b4efbac65d22d8541b1c48b44456283f, type: 3}
-  rotationSpeed: 10
-  projectilePrefab: {fileID: 1996234102917140788, guid: 2413cf475826b9446be16fe3e8393093, type: 3}
+  rotationSpeedModifier: 3

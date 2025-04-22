@@ -3,6 +3,7 @@ using ItemPack;
 using ItemPack.Enums;
 using Other;
 using PlayerPack.Decorators;
+using UnityEngine;
 
 namespace PlayerPack.Interface
 {
@@ -10,6 +11,6 @@ namespace PlayerPack.Interface
     {
         public void AddDamageModifier(string key, IDamageModifier modifier);
         public void RemoveDamageModifier(string key);
-        public DamageContext GetDamageContext(int damage, CanBeDamaged hitObject, List<EItemTag> itemTags = null);
+        public DamageContext GetDamageContext(int damage, MonoBehaviour source, CanBeDamaged hitObj, List<EItemTag> tags);
     }
 }

@@ -107,16 +107,23 @@ namespace PlayerPack.PlayerItemPack
                 return;
             }
 
-            var (item, cost) = slot1Empty ? item2 : item1;
-            ++cost;
+            var (item, level) = slot1Empty ? item2 : item1;
+            var cost = GetCost(level + 1);
             var canPay = PlayerCollectibleManager.GetCollectibleCount(PlayerCollectibleManager.ECollectibleType.SCRAP) >= cost;
             costField.text = $"Cost <sprite name=\"scraps\">: x{cost}";
             costField.color = canPay ? costFieldDefaultColor : costFieldErrorColor;
             costField.gameObject.SetActive(true);
 
             if (!canPay) return;
-            _itemSlots[RESULT_SLOT].SetItem(item, cost, false);
+            _itemSlots[RESULT_SLOT].SetItem(item, level + 1, false);
             _currentCost = cost;
+        }
+        
+        private static int GetCost(int level)
+        {
+            const float a = 1.3f;
+            const float b = 2.2f;
+            return Mathf.RoundToInt(a * Mathf.Pow(level - 1, b));
         }
 
         public override bool CanAdd(Box fromBox, ItemSlot itemSlot, int targetSlotIndex)

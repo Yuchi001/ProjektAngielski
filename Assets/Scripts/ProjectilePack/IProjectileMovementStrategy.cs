@@ -1,17 +1,14 @@
-﻿using ProjectilePack.MovementStrategies;
-using UnityEngine;
-
-namespace ProjectilePack
+﻿namespace ProjectilePack
 {
     public interface IProjectileMovementStrategy
     {
-        public void MoveProjectile(Projectile projectile);
+        public void MoveProjectile(Projectile projectile, float deltaTime);
 
         public static IProjectileMovementStrategy IGNORE => new IgnoreMovementStrategy();
         
         public class IgnoreMovementStrategy : IProjectileMovementStrategy
         {
-            public void MoveProjectile(Projectile projectile) { } // IGNORE
+            public void MoveProjectile(Projectile projectile, float deltaTime) { } // IGNORE
         }
     }
 }

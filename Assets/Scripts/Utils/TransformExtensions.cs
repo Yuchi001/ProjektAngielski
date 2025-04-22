@@ -62,5 +62,10 @@ namespace Utils
         {
             current.position = Vector2.MoveTowards(current.position, target, speed);
         }
+
+        public static void MoveInDirection(this Transform current, Vector2 direction, float speed)
+        {
+            current.position += (Vector3)(direction * speed);
+        }
     }
 }

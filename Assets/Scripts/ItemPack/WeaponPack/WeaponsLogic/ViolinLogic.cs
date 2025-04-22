@@ -4,6 +4,8 @@ using System.Linq;
 using AudioPack;
 using ItemPack.Enums;
 using Managers.Enums;
+using ProjectilePack;
+using ProjectilePack.MovementStrategies;
 using TargetSearchPack;
 using UnityEngine;
 
@@ -52,14 +54,14 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 var note = GetRandomNote(weightSum);
                 
-                var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
-                
-                projectile.Setup(Mathf.CeilToInt(Damage * note.damageMultiplier), Speed)
-                    .SetDirection(GetDirection(position), checkX: true)
-                    .SetSprite(note.noteSprite)
-                    .SetSpriteRotation(90)
+                var direction = GetDirection(position);
+                var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
+                var projectileMovementStrategy = new DirectionMovementStrategy(direction, Speed);
+                ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)
+                    .SetSprite(note.noteSprite, angle)
+                    .SetFlip(flipX: direction.x < 0)
                     .SetScale(Scale)
-                    .SetReady();
+                    .Ready();
                 
                 yield return new WaitForSeconds(0.1f);
             }
@@ -78,10 +80,10 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         private Vector2 GetDirection(Vector2 pickedTargetPos)
         {
-            var pos = pickedTargetPos;
-            pos.x += Random.Range(-Spread, Spread);
-            pos.y += Random.Range(-Spread, Spread);
-            return pos;
+            var direction = (pickedTargetPos - PlayerPos).normalized;
+            var angleOffset = Random.Range(-Spread, Spread);
+            var rotated = Quaternion.Euler(0, 0, angleOffset) * direction;
+            return rotated.normalized;
         }
     }
 

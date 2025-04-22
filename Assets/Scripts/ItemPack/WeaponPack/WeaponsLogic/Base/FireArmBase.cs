@@ -7,6 +7,7 @@ using ItemPack.WeaponPack.Other;
 using Managers.Enums;
 using Other;
 using ProjectilePack;
+using ProjectilePack.MovementStrategies;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
 using UnityEngine;
@@ -42,11 +43,13 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
         /// <returns></returns>
         protected Projectile SpawnProjectile(Vector2 position)
         {
-            var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
+            var direction = GetDirection(position);
+            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
+            var projectileMovementStrategy = new DirectionMovementStrategy(direction, Speed);
+            var projectile = ProjectileManager.SpawnProjectile(projectileMovementStrategy, this);
 
-            projectile.Setup(Damage, Speed)
-                .SetDirection(GetDirection(position))
-                .SetSprite(projectileSprite)
+            projectile
+                .SetSprite(projectileSprite, angle)
                 .SetScale(bulletScale)
                 .SetTrail(trailTime)
                 .SetPushForce(PushForce);
@@ -56,10 +59,10 @@ namespace ItemPack.WeaponPack.WeaponsLogic.Base
         
         private Vector2 GetDirection(Vector2 pickedTargetPos)
         {
-            var pos = pickedTargetPos;
-            pos.x += Random.Range(-Spread, Spread);
-            pos.y += Random.Range(-Spread, Spread);
-            return pos;
+            var direction = (pickedTargetPos - PlayerPos).normalized;
+            var angleOffset = Random.Range(-Spread, Spread);
+            var rotated = Quaternion.Euler(0, 0, angleOffset) * direction;
+            return rotated.normalized;
         }
     }
 }

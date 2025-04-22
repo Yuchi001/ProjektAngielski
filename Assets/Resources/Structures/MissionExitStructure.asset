@@ -19,7 +19,7 @@ MonoBehaviour:
   usedStructureSprite: {fileID: 0}
   minimapIcon: {fileID: 21300000, guid: 84bdcfa3bb07b274fa4de26ce8d44804, type: 3}
   structureScale: 1
-  interactionLimit: 0
+  interactionLimit: 3
   bottomHoverMessage: Pay $x$ souls
   interactionDeclineMessage: Not enough souls!
   usesUI: 0

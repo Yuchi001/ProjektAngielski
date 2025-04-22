@@ -36,7 +36,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             {
                 AudioManager.PlaySound(ESoundType.PistolShoot);
 
-                SpawnProjectile(position).SetReady();
+                SpawnProjectile(position).Ready();
                 
                 yield return new WaitForSeconds(Cooldown / (2 * ProjectileCount));
             }

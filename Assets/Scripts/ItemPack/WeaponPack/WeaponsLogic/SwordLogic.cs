@@ -4,9 +4,13 @@ using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using Other;
+using PlayerPack;
 using ProjectilePack;
+using ProjectilePack.MovementStrategies;
 using TargetSearchPack;
+using TMPro;
 using UnityEngine;
+using Utils;
 using TransformExtensions = Utils.TransformExtensions;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
@@ -47,80 +51,80 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             if (target == null) return false;
 
             _didComeBack = false;
-            var spawnedSword = Instantiate(Projectile, PlayerPos, Quaternion.identity);
 
-            var enemyPos = target.transform.position;
+            var enemyPos = (Vector2)target.transform.position;
+            var direction = (enemyPos - PlayerPos).normalized;
+            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 45;
+            var projectileMovementStrategy = new LerpMovementStrategy(PlayerPos, enemyPos, 1f / Speed);
+            var spawnedSword = ProjectileManager.SpawnProjectile(projectileMovementStrategy, this);
 
-            spawnedSword.Setup(Damage, Speed)
-                .SetDirection(enemyPos)
-                .SetLerp(enemyPos, 0.3f)
-                .SetSprite(projectileSprite)
-                .SetSpriteRotation(45)
-                .SetDontDestroyOnHit()
-                .SetUpdate(ProjectileUpdate)
-                .SetDisableDamageOnHit()
-                .SetNewCustomValue(HitEnemyCountName)
+            spawnedSword
+                .SetSprite(projectileSprite, angle)
+                .SetDestroyOnCollision(false)
+                .SetUpdateAction(ProjectileUpdate)
+                .SetAdditionalData(new SwordData())
                 .SetOnHitAction(OnHit)
                 .SetScale(0.4f)
                 .SetRange(MaxRange)
-                .SetOutOfRangeBehaviour(OnOutOfRange);
+                .SetOutOfRangeAction(OnOutOfRange);
 
-            spawnedSword.SetReady();
+            spawnedSword.Ready();
 
             return true;
         }
 
-        private void OnHit(CanBeDamaged onHit, Projectile projectile)
+        private bool OnHit(Projectile projectile, CanBeDamaged hitObj)
         {
-            if (onHit is not EnemyLogic enemyLogic) return;
-            
-            var count = projectile.GetCustomValue(HitEnemyCountName);
-            count++;
-            enemyLogic.GetDamaged(Damage * (int)count);
-            projectile.SetCustomValue(HitEnemyCountName, count);
+            var data = projectile.GetAdditionalData<SwordData>();
+            data.IncrementEnemiesCount();
+            projectile.SetAdditionalData(data);
+            hitObj.GetDamaged(Damage * data.GetHitEnemiesCount());
+
+            return true;
         }
-
-        private void OnOutOfRange(Projectile projectile)
+        
+        private bool OnOutOfRange(Projectile projectile)
         {
-            var newProjectile = Instantiate(Projectile, projectile.transform.position, Quaternion.identity);
+            var projectileMovementStrategy = new LerpToTargetMovementStrategy(projectile.transform.position,
+                PlayerManager.GetTransform(), 1f / Speed);
+            var newProjectile = ProjectileManager.SpawnProjectile(projectileMovementStrategy, this);
 
-            newProjectile.Setup(Damage, Speed)
-                .SetTarget(PlayerTransform)
-                .SetLerp(PlayerTransform, 0.3f)
-                .SetDirection(PlayerPos, 0, true)
-                .SetSpriteRotation(225)
+            newProjectile
                 .SetSprite(projectileSprite)
-                .SetDontDestroyOnHit()
-                .SetDisableDamageOnHit()
+                .SetDestroyOnCollision(false)
                 .SetScale(0.4f)
-                .SetUpdate(BackProjectileUpdate)
-                .SetReady();
+                .SetOnHitAction(Projectile.CancelHit)
+                .SetUpdateAction(BackProjectileUpdate)
+                .Ready();
 
-            Destroy(projectile.gameObject);
+            return false;
         }
 
         private void BackProjectileUpdate(Projectile projectile)
         {
-            //projectile.SetSpeed(Speed + GetStatValue(EItemSelfStatType.ProjectileRange) * Time.deltaTime);
-            var projectilePos = projectile.transform.position;
-            var playerPos = PlayerTransform.position;
-
-            var sr = projectile.GetSpriteRenderer().transform;
+            var sr = projectile.SpriteRenderer.transform;
             TransformExtensions.LookAt(sr, PlayerPos);
             sr.Rotate(0, 0, 225);
 
-            if (Vector2.Distance(projectilePos, playerPos) > 0.1f) return;
+            if (!PlayerTransform.InRange(projectile.transform.position, 0.1f)) return;
 
             _didComeBack = true;
-            Destroy(projectile.gameObject);
+            ProjectileManager.ReturnProjectile(projectile);
         }
 
         private void ProjectileUpdate(Projectile projectile)
         {
-            //projectile.SetSpeed(Speed + GetStatValue(EItemSelfStatType.ProjectileRange) * Time.deltaTime);
-            var sr = projectile.GetSpriteRenderer().transform;
+            var sr = projectile.SpriteRenderer.transform;
             TransformExtensions.LookAt(sr, PlayerPos);
             sr.Rotate(0, 0, 45 + 180);
+        }
+
+        private class SwordData
+        {
+            private int _hitEnemiesCount = 0;
+
+            public int GetHitEnemiesCount() => _hitEnemiesCount;
+            public void IncrementEnemiesCount() => _hitEnemiesCount++;
         }
     }
 }

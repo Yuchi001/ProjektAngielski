@@ -45,8 +45,8 @@ namespace EnemyPack.SO
         public int GetSoulDropCount()
         {
             if (useCustomDropCount) return soulDropCount.RandomInt();
-            var halfDiff = difficulty / 2;
-            return new MinMax(Mathf.Max(1, halfDiff), halfDiff + 2).RandomInt();
+            var modDiff = difficulty / 3;
+            return new MinMax(Mathf.Max(1, modDiff), modDiff + 1).RandomInt();
         }
 
         public int GetScrapDropCount()

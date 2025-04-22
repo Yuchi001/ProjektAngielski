@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using ItemPack.Enums;
-using ItemPack.WeaponPack.Other;
 using Other.Enums;
+using ProjectilePack;
+using ProjectilePack.MovementStrategies;
 using TargetSearchPack;
 using UnityEngine;
-using Utils;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
     public class ShurikenLogic : ItemLogicBase
     {
         [SerializeField] private Sprite projectileSprite;
-        [SerializeField] private float rotationSpeed;
+        [SerializeField] private float rotationSpeedModifier;
         
         protected override List<EItemSelfStatType> UsedStats { get; } = new()
         {
@@ -47,15 +47,13 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 var target = TargetManager.FindTarget(FindStrategy);
                 if (target == null) continue;
 
-                var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
-                
-                projectile.Setup(Damage, Speed)
-                    .SetDirection(target.transform.position)
+                var projectileMovementStrategy = new DirectionMovementStrategy(PlayerPos, target.transform.position, Speed, rotationSpeedModifier * Speed);
+                ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)
                     .SetSprite(projectileSprite)
                     .SetScale(0.3f)
-                    .SetRotationSpeed(rotationSpeed)
                     .SetEffect(EEffectType.Bleed, 999)
-                    .SetReady();
+                    .Ready();
+                
                 yield return new WaitForSeconds(0.1f);
             }
         }

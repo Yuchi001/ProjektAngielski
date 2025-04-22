@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using ItemPack.Enums;
+using ProjectilePack;
+using ProjectilePack.MovementStrategies;
 using UnityEngine;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
@@ -54,13 +56,11 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 
                 for (var j = 0; j < rotCount; j++)
                 {
-                    var projectile = Instantiate(Projectile, PlayerPos, Quaternion.identity);
-                    
-                    projectile.Setup(Damage, Speed)
-                        .SetSprite(projectileSprite)
+                    var projectileMovementStrategy = new DirectionMovementStrategy(Quaternion.Euler(0, 0, currentAngle) * rotations[j], Speed);
+                    ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)
+                        .SetSprite(projectileSprite, currentAngle)
                         .SetScale(Scale)
-                        .SetDirection(rotations[j], currentAngle)
-                        .SetReady();
+                        .Ready();
                 }
                 
                 currentAngle += alpha;

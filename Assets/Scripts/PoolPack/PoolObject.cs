@@ -26,6 +26,7 @@ namespace PoolPack
         public virtual void OnGet(SoPoolObject so)
         {
             Active = true;
+            deltaTime = Time.deltaTime;
             _lastUpdatedTime = Time.time;
         }
         

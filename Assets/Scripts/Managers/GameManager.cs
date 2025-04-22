@@ -110,7 +110,7 @@ namespace Managers
             MainCamera.InOutAnim(0.3f, () =>
             {
                 SceneManager.UnloadSceneAsync((int)EScene.GAME);
-                SceneManager.LoadSceneAsync((int)EScene.MAP);
+                SceneManager.LoadSceneAsync((int)EScene.MAP, LoadSceneMode.Additive);
             }, () =>
             {
                 PlayerManager.SetPlayerState(PlayerManager.State.IN_MAP);

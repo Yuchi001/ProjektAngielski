@@ -21,6 +21,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     {
         [SerializeField] private GameObject flightParticles;
         [SerializeField] private GameObject onHitParticles;
+        [SerializeField] private Sprite projectileSprite;
 
         private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration);
 
@@ -61,6 +62,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)
                     .SetOnHitAction(OnHitAction)
                     .SetEffect(EEffectType.Burn, EffectDuration)
+                    .SetSprite(projectileSprite)
+                    .SetScale(0.3f)
                     .Ready(); // TODO: flight particles
                 
                 targetedEnemies.Add(target.GetInstanceID());
@@ -74,12 +77,12 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var range = GetStatValue(EItemSelfStatType.BlastRange);
             var damage = GetStatValueAsInt(EItemSelfStatType.BlastDamage);
             
-            if (this != null) StartCoroutine(BoomCoroutine(enemy, range, damage));
+            if (this != null) StartCoroutine(BoomCoroutine(enemy, projectile, range, damage));
 
             return false;
         }
 
-        private IEnumerator BoomCoroutine(CanBeDamaged impactEnemy, float range, int damage)
+        private IEnumerator BoomCoroutine(CanBeDamaged impactEnemy, Projectile projectile, float range, int damage)
         {
             var enemyInstanceId = impactEnemy.GetInstanceID();
             var position = impactEnemy.transform.position;
@@ -93,7 +96,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 Destroy(particles, 2f);
                 
                 var damageContext = PlayerManager.GetDamageContextManager()
-                    .GetDamageContext(damage, enemy, InventoryItem.ItemTags);
+                    .GetDamageContext(damage, projectile, enemy, InventoryItem.ItemTags);
                 enemy.GetDamaged(damageContext.Damage);
 
                 yield return new WaitForSeconds(0.1f);

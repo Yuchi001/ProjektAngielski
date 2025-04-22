@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Utils;
 
 namespace ProjectilePack.MovementStrategies
 {
@@ -22,10 +23,10 @@ namespace ProjectilePack.MovementStrategies
             _speed = speed;
         }
         
-        public void MoveProjectile(Projectile projectile)
+        public void MoveProjectile(Projectile projectile, float deltaTime)
         {
             if (_rotationSpeed.HasValue) projectile.SpriteRenderer.transform.Rotate(0, 0, _rotationSpeed.Value);
-            projectile.transform.Translate(_direction * (_speed * projectile.DeltaTime));
+            projectile.transform.MoveInDirection(_direction, _speed * deltaTime);
         }
     }
 }

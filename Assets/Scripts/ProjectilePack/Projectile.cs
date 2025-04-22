@@ -7,7 +7,6 @@ using Other.Enums;
 using PlayerPack;
 using PoolPack;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utils;
 
 namespace ProjectilePack
@@ -19,10 +18,9 @@ namespace ProjectilePack
         [SerializeField] private SpriteRenderer projectileSpriteRenderer;
         [SerializeField] private float maxDistance = 20f;
         [SerializeField] private float bulletRange;
-        
+
         // GETTERS
         public SpriteRenderer SpriteRenderer => projectileSpriteRenderer;
-        public float DeltaTime => deltaTime;
 
         // RESET VALUES
         private float RESET_bulletRange;
@@ -35,6 +33,7 @@ namespace ProjectilePack
         
         // UPDATE VALUES
         private float UPDATE_currentLifeTime;
+        private float UPDATE_animationTimer;
 
         private IProjectileMovementStrategy _projectileMovementStrategy;
         private TargetDetector _targetDetector;
@@ -48,6 +47,10 @@ namespace ProjectilePack
         private float? _pushForce;
         private float? _lifeTime;
         private List<EItemTag> _itemTags;
+        
+        // ANIMATION
+        private CircularEnumerable<Sprite> _animationSprites;
+        private float _animationSpeed;
         
         // ADDITIONAL ACTIONS
         private Func<Projectile, CanBeDamaged, bool> _onHitAction;
@@ -72,6 +75,7 @@ namespace ProjectilePack
         
         public Projectile Setup(IProjectileMovementStrategy projectileMovementStrategy, int damage, string targetTag, List<EItemTag> itemTags)
         {
+            OnGet(null);
             _projectileMovementStrategy = projectileMovementStrategy;
             _damage = damage;
             _targetTag = targetTag;
@@ -91,6 +95,13 @@ namespace ProjectilePack
             return this;
         }
 
+        public Projectile SetTrail(float trailTime)
+        {
+            trailRenderer.enabled = true;
+            trailRenderer.time = trailTime;
+            return this;
+        }
+
         public Projectile SetOutOfRangeAction(Func<Projectile, bool> outOfRangeAction)
         {
             _onOutOfRangeAction = outOfRangeAction;
@@ -100,13 +111,6 @@ namespace ProjectilePack
         public Projectile SetDestroyOnCollision(bool destroyOnCollision)
         {
             _destroyOnCollision = destroyOnCollision;
-            return this;
-        }
-
-        public Projectile SetSprite(Sprite sprite)
-        {
-            projectileSpriteRenderer.sprite = sprite;
-            projectileSpriteRenderer.gameObject.SetActive(true);
             return this;
         }
 
@@ -126,6 +130,28 @@ namespace ProjectilePack
         {
             _lifeTime = lifeTime;
             return this;
+        }
+        
+        public Projectile SetSprite(Sprite sprite, float spriteAngle = 0)
+        {
+            projectileSpriteRenderer.sprite = sprite;
+            projectileSpriteRenderer.enabled = true;
+            projectileSpriteRenderer.transform.rotation = Quaternion.Euler(0, 0, spriteAngle);
+            return this;
+        }
+
+        public Projectile SetFlip(bool flipX = false, bool flipY = false)
+        {
+            projectileSpriteRenderer.flipX = flipX;
+            projectileSpriteRenderer.flipY = flipY;
+            return this;
+        }
+
+        public Projectile SetSprite(List<Sprite> sprites, float animSpeed, float spriteAngle = 0)
+        {
+            _animationSprites = new CircularEnumerable<Sprite>(sprites);
+            _animationSpeed = animSpeed;
+            return SetSprite(sprites[0], spriteAngle);
         }
         
         public Projectile SetOnHitStayAction(Action<Projectile, CanBeDamaged> onHitStayAction)
@@ -156,11 +182,12 @@ namespace ProjectilePack
 
         public Projectile Ready()
         {
-            _targetDetector = new TargetDetector(transform, transform.localScale.x * bulletRange, _targetTag);
+            _targetDetector = new TargetDetector(transform, bulletRange, _targetTag);
             _targetDetector.SetOnTriggerEnter(OnTargetHit);
             _targetDetector.SetOnTriggerStay(OnTargetHitStay);
             SET_startPosition = transform.position;
             UPDATE_currentLifeTime = 0;
+            UPDATE_animationTimer = 0;
             return this;
         }
 
@@ -176,50 +203,52 @@ namespace ProjectilePack
 
         public override void OnGet(SoPoolObject so)
         {
+            base.OnGet(so);
             _damage = 0;
             _itemTags = new List<EItemTag>();
             _pushForce = null;
             _lifeTime = null;
+            _animationSprites = new CircularEnumerable<Sprite>();
             _destroyOnCollision = true;
             transform.localScale = Vector3.one;
-            trailRenderer.gameObject.SetActive(false);
-            projectileSpriteRenderer.gameObject.SetActive(false);
+            trailRenderer.enabled = false;
             maxDistance = RESET_maxDistance;
             bulletRange = RESET_bulletRange;
+            
+            projectileSpriteRenderer.enabled = false;
             projectileSpriteRenderer.sortingLayerName = RESET_sortingLayer;
             projectileSpriteRenderer.sortingOrder = RESET_sortingOrder;
+            projectileSpriteRenderer.transform.rotation = Quaternion.identity;
+            projectileSpriteRenderer.flipX = false;
+            projectileSpriteRenderer.flipY = false;
+            
             _effectType = EEffectType.None;
             _effectTime = 0;
             _targetTag = "";
-            base.OnGet(so);
         }
 
         public override void OnRelease()
         {
+            base.OnRelease();
             _targetDetector = null;
             _onHitAction = null;
             _onHitStayAction = null;
             _onUpdateAction = null;
             _additionalData = null;
             _onOutOfRangeAction = null;
-            base.OnRelease();
         }
 
         public override void InvokeUpdate()
         {
+            if (!Active) return;
+            
             base.InvokeUpdate();
-            if (_lifeTime.HasValue)
-            {
-                UPDATE_currentLifeTime += deltaTime;
-                if (UPDATE_currentLifeTime >= _lifeTime.Value)
-                {
-                    _poolManager.ReleasePoolObject(this);
-                    _lifeTime = null;
-                }
-            }
+            ManageLifeTime();
+            ManageAnimation();
+            _targetDetector?.CheckForTriggers();
             
             _onUpdateAction?.Invoke(this);
-            _projectileMovementStrategy.MoveProjectile(this);
+            _projectileMovementStrategy.MoveProjectile(this, deltaTime);
 
             if (transform.InRange(SET_startPosition, maxDistance)) return;
             
@@ -227,6 +256,27 @@ namespace ProjectilePack
             if (shouldBrake) return;
             
             _poolManager.ReleasePoolObject(this);
+        }
+
+        private void ManageAnimation()
+        {
+            if (!_animationSprites.CanCycle()) return;
+
+            UPDATE_animationTimer += deltaTime;
+            if (UPDATE_animationTimer < 1 / _animationSpeed) return;
+            UPDATE_animationTimer = 0;
+
+            projectileSpriteRenderer.sprite = _animationSprites.Next();
+        }
+
+        private void ManageLifeTime()
+        {
+            if (!_lifeTime.HasValue) return;
+            
+            UPDATE_currentLifeTime += deltaTime;
+            if (UPDATE_currentLifeTime < _lifeTime.Value) return;
+            _poolManager.ReleasePoolObject(this);
+            _lifeTime = null;
         }
 
         public Projectile SetAdditionalData<T>(T data) where T : class, new()
@@ -246,7 +296,7 @@ namespace ProjectilePack
             var shouldBrake = _onHitAction?.Invoke(this, hitObj) ?? false;
             if (shouldBrake) return;
 
-            var damageContext = PlayerManager.GetDamageContextManager().GetDamageContext(_damage, hitObj, _itemTags);
+            var damageContext = PlayerManager.GetDamageContextManager().GetDamageContext(_damage, this, hitObj, _itemTags);
             hitObj.GetDamaged(damageContext.Damage);
             if (_pushForce.HasValue && hitObj is EnemyLogic enemyLogic) enemyLogic.PushEnemy(transform.position, _pushForce.Value);
             if (_effectType != EEffectType.None) hitObj.AddEffect(PlayerManager.GetEffectContextManager().GetEffectContext(_effectType, _effectTime, hitObj));
@@ -258,5 +308,12 @@ namespace ProjectilePack
         {
             _onHitStayAction?.Invoke(this, hitObj);
         }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(transform.position, bulletRange);
+        }
+
+        public static bool CancelHit(Projectile _, CanBeDamaged __) => true;
     }
 }

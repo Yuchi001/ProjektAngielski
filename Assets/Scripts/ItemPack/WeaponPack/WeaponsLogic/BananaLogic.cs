@@ -48,8 +48,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 spawnedProjectiles++;
                 
-                var projectileMovementStrategy = new DirectionMovementStrategy(PlayerPos, 
-                    target.transform.position, Speed, rotationSpeed);
+                var projectileMovementStrategy = new DirectionMovementStrategy(PlayerPos, target.transform.position, Speed, rotationSpeed);
                 ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)
                     .SetDestroyOnCollision(false)
                     .SetOutOfRangeAction(OutOfRangeBehaviour)
@@ -66,8 +65,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         private bool OutOfRangeBehaviour(Projectile projectile)
         {
             var projectileMovementStrategy = new TargetMovementStrategy(PlayerManager.GetTransform(), Speed, rotationSpeed);
-            ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)
-                .SetDestroyOnCollision(false)
+            var newProjectile = ProjectileManager.SpawnProjectile(projectileMovementStrategy, this);
+            newProjectile.transform.position = projectile.transform.position;
+            newProjectile.SetDestroyOnCollision(false)
                 .SetUpdateAction(ProjectileUpdate)
                 .SetSprite(projectileSprite)
                 .SetScale(0.5f)

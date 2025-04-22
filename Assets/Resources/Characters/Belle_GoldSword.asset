@@ -32,4 +32,4 @@ MonoBehaviour:
     statValue: 0
   - statType: 5
     statValue: 0
-  startingItem: {fileID: 11400000, guid: 4673578fe660b3f4d969fc5314acb66f, type: 2}
+  startingItem: {fileID: 11400000, guid: 205ded1fcfc6fae49ae6c29c1c55fa0e, type: 2}
