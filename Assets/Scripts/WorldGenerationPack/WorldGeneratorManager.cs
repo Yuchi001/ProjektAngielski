@@ -71,7 +71,7 @@ namespace WorldGenerationPack
                 {
                     var tile = missionData.GetTile(x, y);
                     var current = new Vector3Int(x, y, 0);
-                    var spawnPos = (Vector3)current - offset;
+                    var spawnPos = (Vector3)current - offset + new Vector3(Random.Range(0f, 0.5f), Random.Range(0f, 0.5f));
                     var structurePair = missionData.Structures.FirstOrDefault(p => p.position == (Vector2Int)current);
 
                     if (exitPosition == (Vector2Int)current)
@@ -92,7 +92,7 @@ namespace WorldGenerationPack
             MinimapManager.RenderOnMinimap("MAIN_PLAYER", new FollowRenderStrategy(PlayerManager.GetTransform(), PlayerManager.PickedCharacter.CharacterIcon));
 
             var spawnerPrefab = missionData.SpawnerPrefab;
-            EnemySpawner = Instantiate(spawnerPrefab);
+            EnemySpawner = Instantiate(spawnerPrefab, transform);
             EnemySpawner.Setup(missionData);
         }
         

@@ -137,7 +137,7 @@ namespace InventoryPack.WorldItemPack
             }
 
             var dist = transform.Distance(playerPos);
-            if (dist > pickUpDistance && !_pickedUp || !_item.CanPickUp() || PlayerManager.PlayerItemManager.IsFull())
+            if (dist > pickUpDistance && !_pickedUp || !_item.CanPickUp() || (PlayerManager.PlayerItemManager.IsFull() && _item.ItemType == EItemType.InventoryItem))
             {
                 _lifeTimeTimer += deltaTime;
                 //TODO: jakis indikator ze item zniknie

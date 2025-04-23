@@ -21,7 +21,7 @@ namespace SavePack
             }
             catch (Exception e)
             {
-                Debug.LogError(e);
+                UnityEngine.Debug.LogError(e);
                 throw;
             }
         }
@@ -38,7 +38,7 @@ namespace SavePack
             }
             catch (Exception e)
             {
-                Debug.LogError(e);
+                UnityEngine.Debug.LogError(e);
                 throw;
             }
         }
@@ -50,14 +50,14 @@ namespace SavePack
                 if (File.Exists(SAVE_FILE_PATH))
                 {
                     File.Delete(SAVE_FILE_PATH);
-                    Debug.Log("Deleted file: " + SAVE_FILE_PATH);
+                    UnityEngine.Debug.Log("Deleted file: " + SAVE_FILE_PATH);
                     return;
                 }
-                Debug.LogWarning("No save file found in: " + SAVE_FILE_PATH);
+                UnityEngine.Debug.LogWarning("No save file found in: " + SAVE_FILE_PATH);
             }
             catch (Exception e)
             {
-                Debug.LogError(e);
+                UnityEngine.Debug.LogError(e);
                 throw;
             }
         }

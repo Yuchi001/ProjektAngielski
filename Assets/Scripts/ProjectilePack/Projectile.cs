@@ -236,6 +236,7 @@ namespace ProjectilePack
             _onUpdateAction = null;
             _additionalData = null;
             _onOutOfRangeAction = null;
+            trailRenderer.Clear();
         }
 
         public override void InvokeUpdate()

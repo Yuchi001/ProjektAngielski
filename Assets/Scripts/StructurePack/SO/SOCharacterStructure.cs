@@ -1,12 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using MainCameraPack;
 using Managers;
 using PlayerPack;
 using PlayerPack.Enums;
 using PlayerPack.SO;
-using UIPack.CloseStrategies;
-using UIPack.OpenStrategies;
 using Unity.VisualScripting;
 using UnityEngine;
 using Utils;

@@ -101,7 +101,7 @@ namespace ProjectilePack
             var enemiesInRange = new List<EnemyLogic>();
             foreach (var hit in WorldGeneratorManager.EnemySpawner.GetActiveEnemies())
             {
-                if (hit is not EnemyLogic enemyLogic || IsInHitRange(enemyLogic, center, range)) continue;
+                if (hit is not EnemyLogic enemyLogic || !IsInHitRange(enemyLogic, center, range)) continue;
                 enemiesInRange.Add(enemyLogic);
             }
 

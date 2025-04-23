@@ -6,6 +6,7 @@ using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.SideClasses;
 using Managers.Enums;
+using ProjectilePack;
 using SpecialEffectPack;
 using SpecialEffectPack.Enums;
 using UnityEngine;
@@ -38,27 +39,23 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         protected override bool Use()
         {
-            var results = new Collider2D[100];
-            var size = Physics2D.OverlapCircleNonAlloc(PlayerPos, Range, results);
-
+            var results = TargetDetector.EnemiesInRange(PlayerPos, Range);
             StartCoroutine(QueueDeaths(results));
 
-            return size > 0;
+            return results.Count > 0;
         }
 
-        private IEnumerator QueueDeaths(IEnumerable<Collider2D> targets)
+        private IEnumerator QueueDeaths(IEnumerable<EnemyLogic> targets)
         {
-            foreach (var colliderObj in targets)
+            foreach (var enemy in targets)
             {
-                if(colliderObj == null) continue;
+                if(enemy == null) continue;
 
                 AudioManager.PlaySound(ESoundType.BulletExplode);
                 SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionMedium,
-                    colliderObj.transform.position, 0.3f);
+                    enemy.transform.position, 0.3f);
                 
                 var randomNum = Random.Range(0, 101);
-                var success = colliderObj.TryGetComponent<EnemyLogic>(out var enemy);
-                if(!success) continue;
                 
                 enemy.SpawnBlood();
                 if(randomNum < DropExpChance) enemy.OnDie();

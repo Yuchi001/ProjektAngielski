@@ -94,8 +94,9 @@ namespace StructurePack
                 return;
             }
 
-            if (!_structureData.Reusable || (_interactionCount >= _structureData.InteractionLimit && _interactionCount > 0))
+            if (!_structureData.Reusable || (_interactionCount >= _structureData.InteractionLimit && _structureData.InteractionLimit > 0))
             {
+                Debug.Log(StructureData.StructureName);
                 structureSpriteRenderer.sprite = _structureData.GetSprite(SoStructure.EState.USED);
                 _spriteLight.enabled = false;
                 bottomInteractionMessageField.gameObject.SetActive(false);
