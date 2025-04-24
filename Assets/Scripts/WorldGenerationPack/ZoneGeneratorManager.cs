@@ -70,7 +70,7 @@ namespace WorldGenerationPack
 
         public static void GenerateZone(Vector2 position, string key, float scale, bool withAnim = true)
         {
-            var zone = Instantiate(Instance._zonePrefab, position, Quaternion.identity);
+            var zone = Instantiate(Instance._zonePrefab, position, Quaternion.identity, Instance.transform);
             zone.SetSize(scale, withAnim);
             Instance._zoneDict.Add(key, zone);
         }

@@ -47,16 +47,17 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             
                 var rotations = new List<Vector2>(rotCount)
                 {
-                    up + position,
-                    -up + position,
-                    right + position,
-                    -right + position,
+                    up ,
+                    -up ,
+                    right ,
+                    -right ,
                 };
 
                 
                 for (var j = 0; j < rotCount; j++)
                 {
-                    var projectileMovementStrategy = new DirectionMovementStrategy(Quaternion.Euler(0, 0, currentAngle) * rotations[j], Speed);
+                    var direction = (Quaternion.Euler(0, 0, currentAngle) * rotations[j]).normalized;
+                    var projectileMovementStrategy = new DirectionMovementStrategy(direction, Speed);
                     ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)
                         .SetSprite(projectileSprite, currentAngle)
                         .SetScale(Scale)

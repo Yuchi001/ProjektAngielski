@@ -7,7 +7,7 @@ namespace PoolPack
 {
     public abstract class PoolObject : MonoBehaviour
     {
-        protected bool Active { get; private set; }
+        public bool Active { get; private set; }
         private readonly Dictionary<string, float> _lastMeasure = new();
         private float _lastUpdatedTime;
         

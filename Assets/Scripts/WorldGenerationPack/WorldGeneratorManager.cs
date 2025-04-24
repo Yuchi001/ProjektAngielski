@@ -86,7 +86,7 @@ namespace WorldGenerationPack
                 }
             }
 
-            var randomVision = placedVisions.RandomElement();
+            var randomVision =  placedVisions.RandomElement();
             visionStructure.SetZone(randomVision);
             PlayerManager.SetPosition(randomVision.transform.position);
             MinimapManager.RenderOnMinimap("MAIN_PLAYER", new FollowRenderStrategy(PlayerManager.GetTransform(), PlayerManager.PickedCharacter.CharacterIcon));

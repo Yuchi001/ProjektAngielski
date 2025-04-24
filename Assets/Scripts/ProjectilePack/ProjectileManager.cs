@@ -34,6 +34,7 @@ namespace ProjectilePack
 
         public override void ReleasePoolObject(PoolObject poolObject)
         {
+            if (!poolObject.Active) return;
             poolObject.OnRelease();
             _pool.Release((Projectile)poolObject);
         }
