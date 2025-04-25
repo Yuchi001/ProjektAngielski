@@ -21,9 +21,13 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         protected override List<EItemSelfStatType> UsedStats { get; } = new()
         {
             EItemSelfStatType.ProjectileScale,
-            EItemSelfStatType.ProjectilesCount,
             EItemSelfStatType.Spread
         };
+
+        public override IEnumerable<EItemSelfStatType> GetUsedStats()
+        {
+            return base.GetUsedStats().Concat(_otherDefaultStatsNoPush);
+        }
 
         private NearPlayerStrategy _findStrategy;
         private NearPlayerStrategy FindStrategy

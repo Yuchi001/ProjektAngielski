@@ -41,10 +41,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
             slash.Setup(Damage, ProjectileScale)
                 .SetPushForce(PushForce)
-                .SetEffect(useEffect ? effectType : null, EffectDuration)
-                .Ready();
+                .SetEffect(useEffect ? effectType : null, EffectDuration);
                 
-            return true;
+            return slash.DamageEnemies();
         }
     }
 }

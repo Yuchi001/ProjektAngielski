@@ -31,7 +31,7 @@ namespace EffectPack.SO
         /// <summary>
         /// Called also when removing effect
         /// </summary>
-        public abstract void OnResolve(EffectsManager effectsManager, int stacks, CanBeDamaged canBeDamaged);
+        public abstract void OnResolve(EffectsManager effectsManager, int stacks, CanBeDamaged canBeDamaged, int additionalDamage);
         public virtual void OnAdd(EffectsManager effectsManager, int stacks, CanBeDamaged canBeDamaged){}
     }
 }

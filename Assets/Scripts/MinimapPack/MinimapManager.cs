@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Managers;
 using Managers.Other;
 using UIPack;
@@ -49,7 +50,7 @@ namespace MinimapPack
             Instance._minimapElements.TryAdd(key, minimapElement);
         }
 
-        public MinimapElement SpawnMinimapElement(Vector2 worldPos)
+        public static MinimapElement SpawnMinimapElement(Vector2 worldPos)
         {
             var prefab = GameManager.GetPrefab<MinimapElement>(PrefabNames.BaseMinimapElement);
             var spawnedElement = Instantiate(prefab, Instance.worldImage.rectTransform);
@@ -57,6 +58,17 @@ namespace MinimapPack
             spawnedElement.transform.SetParent(Instance.worldImage.rectTransform);
             spawnedElement.transform.localPosition = minimapPosition;
             return spawnedElement;
+        }
+
+        public override void OnClose()
+        {
+            foreach (var element in _minimapElements.Values)
+            {
+                if (element == null) continue;
+                Destroy(element.gameObject);
+            }
+
+            base.OnClose();
         }
     }
 }

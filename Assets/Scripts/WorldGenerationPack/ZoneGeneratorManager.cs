@@ -36,7 +36,7 @@ namespace WorldGenerationPack
         {
             foreach (var zone in Instance._zoneDict.Values)
             {
-                if (!zone.ContainsEntity(pos)) continue;
+                if (zone == null || !zone.ContainsEntity(pos)) continue;
                 return true;
             }
 

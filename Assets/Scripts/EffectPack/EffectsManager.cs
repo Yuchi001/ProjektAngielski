@@ -66,6 +66,11 @@ namespace EffectPack
         {
             return _statuses[effectType].IsActive;
         }
+        
+        public int GetEffectStacks(EEffectType effectType)
+        {
+            return _statuses[effectType].IsActive ? _statuses[effectType].CurrentStacks : 0;
+        }
 
         public bool TryGetAnyEffect(out SoEffectBase returnedEffect)
         {

@@ -8,9 +8,9 @@ namespace EffectPack.SO
     {
         [SerializeField] private int poisonDamage;
         
-        public override void OnResolve(EffectsManager effectsManager, int stacks, CanBeDamaged canBeDamaged)
+        public override void OnResolve(EffectsManager effectsManager, int stacks, CanBeDamaged canBeDamaged, int additionalDamage)
         {
-            canBeDamaged.GetDamaged(poisonDamage * 1);
+            canBeDamaged.GetDamaged(poisonDamage * (1 + stacks));
         }
     }
 }

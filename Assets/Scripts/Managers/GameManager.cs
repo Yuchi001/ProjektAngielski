@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AudioPack;
 using GameLoaderPack;
+using InventoryPack.WorldItemPack;
 using MainCameraPack;
 using Managers.Other;
 using MapPack;
@@ -34,6 +36,8 @@ namespace Managers
         private List<MapManager.MissionData> _currentMissions = new();
         public static List<MapManager.MissionData> GetMissions() => Instance._currentMissions;
         public static void SetMissions(List<MapManager.MissionData> missions) => Instance._currentMissions = missions;
+        private readonly Queue<Action> _unloadGameSceneActions = new();
+        public static void EnqueueUnloadGameAction(Action action) => Instance._unloadGameSceneActions.Enqueue(action);
 
         private static GameManager Instance { get; set; }
 
@@ -109,8 +113,12 @@ namespace Managers
             PlayerManager.LockKeys();
             MainCamera.InOutAnim(0.3f, () =>
             {
+                WorldItemManager.ClearItems();
+                var queue = Instance._unloadGameSceneActions;
+                while (queue.Count > 0) queue.Dequeue().Invoke();
                 SceneManager.UnloadSceneAsync((int)EScene.GAME);
                 SceneManager.LoadSceneAsync((int)EScene.MAP, LoadSceneMode.Additive);
+                PlayerManager.SetPosition(Vector2.zero);
             }, () =>
             {
                 PlayerManager.SetPlayerState(PlayerManager.State.IN_MAP);

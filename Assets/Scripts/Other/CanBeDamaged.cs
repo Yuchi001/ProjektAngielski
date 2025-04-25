@@ -59,6 +59,11 @@ namespace Other
             return _effectsManager.HasEffect(effectType);
         }
         
+        public int GetEffectStacks(EEffectType effectType)
+        {
+            return _effectsManager.GetEffectStacks(effectType);
+        }
+        
         public virtual void GetDamaged(int value, Color? flashColor = null)
         {
             flashColor ??= Color.white;

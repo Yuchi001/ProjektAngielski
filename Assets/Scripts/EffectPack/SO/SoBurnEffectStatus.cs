@@ -7,9 +7,9 @@ namespace EffectPack.SO
     public class SoBurnEffectStatus : SoEffectBase
     {
         [SerializeField] private int burnDamage;
-        public override void OnResolve(EffectsManager effectsManager, int stacks, CanBeDamaged canBeDamaged)
+        public override void OnResolve(EffectsManager effectsManager, int stacks, CanBeDamaged canBeDamaged, int additionalDamage)
         {
-            canBeDamaged.GetDamaged(burnDamage);
+            canBeDamaged.GetDamaged(burnDamage + additionalDamage);
         }
     }
 }

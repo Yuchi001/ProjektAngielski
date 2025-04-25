@@ -20,6 +20,7 @@ namespace PoolPack
         
         public virtual void OnCreate(PoolManager poolManager)
         {
+            //transform.SetParent(poolManager.transform);
             Active = false;
         }
         

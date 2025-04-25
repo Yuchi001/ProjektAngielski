@@ -78,6 +78,11 @@ namespace InventoryPack.WorldItemPack
                 SpawnItem(Instance._scrapItem, position);
             }
         }
+
+        public static void ClearItems()
+        {
+            Instance.ClearAll(Instance._pool);
+        }
         
         public static void SpawnHealingOrb(Vector2 position)
         {

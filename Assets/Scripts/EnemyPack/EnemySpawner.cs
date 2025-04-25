@@ -24,6 +24,7 @@ namespace EnemyPack
         [SerializeField] private float _waitBeforeSpawn = 1.5f;
         
         private readonly Queue<SoEnemy> _despawnQueue = new();
+        private int _despawnCount = 0;
 
         private List<SoEnemy> _allEnemies = new();
 
@@ -56,6 +57,7 @@ namespace EnemyPack
             
             var enemyPrefab = GameManager.GetPrefab<EnemyLogic>(PrefabNames.Enemy);
             _enemyPool = PoolHelper.CreatePool(this, enemyPrefab, true);
+            GameManager.EnqueueUnloadGameAction(() => ClearAll(_enemyPool));
             PrepareQueue();
             
             _spawn = true;
@@ -63,6 +65,12 @@ namespace EnemyPack
 
         protected virtual void Update()
         {
+            while (_despawnCount > 0)
+            {
+                SpawnLogic();
+                _despawnCount--;
+            }
+            
             _progression += Time.deltaTime;
             RunUpdatePoolStack();
 
@@ -87,6 +95,7 @@ namespace EnemyPack
             if (!current.transform.InRange(PlayerManager.PlayerPos, maxDistanceFromPlayer))
             {
                 _despawnQueue.Enqueue(current.As<EnemyLogic>().EnemyData);
+                _despawnCount++;
                 ReleasePoolObject(current);
             }
 
@@ -140,6 +149,7 @@ namespace EnemyPack
 
         public override void ReleasePoolObject(PoolObject poolObject)
         {
+            if (!poolObject.Active) return;
             _enemyPool.Release(poolObject as EnemyLogic);
         }
 

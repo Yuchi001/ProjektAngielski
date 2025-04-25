@@ -4,6 +4,7 @@ using EnemyPack;
 using Other;
 using PlayerPack;
 using PoolPack;
+using TargetSearchPack;
 using UnityEngine;
 using Utils;
 using WorldGenerationPack;
@@ -106,6 +107,27 @@ namespace ProjectilePack
             }
 
             return enemiesInRange;
+        }
+        
+        public static List<EnemyLogic> EnemiesInSpriteBoundsArea(Vector2 bottomLeft, Vector2 topRight)
+        {
+            var enemiesInArea = new List<EnemyLogic>();
+
+            foreach (var enemy in WorldGeneratorManager.EnemySpawner.GetActiveEnemies())
+            {
+                if (enemy is not EnemyLogic canBeDamaged)
+                    continue;
+
+                var pos = (Vector2)canBeDamaged.transform.position;
+
+                if (pos.x >= bottomLeft.x && pos.x <= topRight.x &&
+                    pos.y >= bottomLeft.y && pos.y <= topRight.y)
+                {
+                    enemiesInArea.Add(canBeDamaged);
+                }
+            }
+
+            return enemiesInArea;
         }
     }
 }

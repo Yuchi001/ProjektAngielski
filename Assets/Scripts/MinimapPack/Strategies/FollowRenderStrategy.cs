@@ -19,7 +19,7 @@ namespace MinimapPack.Strategies
         
         public bool Render(out MinimapElement minimapElement, string key)
         {
-            _minimapElement = minimapElement = WorldGeneratorManager.MinimapManager.SpawnMinimapElement(_followObject.transform.position);
+            _minimapElement = minimapElement = MinimapManager.SpawnMinimapElement(_followObject.transform.position);
             _minimapElement.AddComponent<FollowRenderMono>().Setup(_followObject, this);
             _minimapElement.MainImage.sprite = _icon;
             ReRender();

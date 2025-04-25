@@ -13,6 +13,7 @@ namespace EffectPack
         private TextMeshProUGUI _effectDamageStackText;
 
         private int _damageStacks;
+        private int _additionalDamage;
 
         private SoEffectBase _pickedEffectBase;
         public SoEffectBase EffectBase => _pickedEffectBase;
@@ -30,6 +31,7 @@ namespace EffectPack
         private bool _hasParticles;
         
         public bool IsActive { get; private set; }
+        public int CurrentStacks => _damageStacks;
 
         private void Awake()
         {
@@ -76,6 +78,7 @@ namespace EffectPack
             _damageStacks = 0;
             _resolveTimer = 0;
             _effectTimer = 0;
+            _additionalDamage = 0;
             
             if (_hasParticles)
             {
@@ -95,6 +98,8 @@ namespace EffectPack
             
             gameObject.SetActive(true);
             if (_pickedEffectBase.CanStack || _damageStacks == 0) _damageStacks++;
+            _damageStacks += effectContext.AdditionalStacks;
+            _additionalDamage = effectContext.AdditionalDamage;
 
             _effectDamageStackText.text = _damageStacks < 1 ? "" : $"x{_damageStacks}";
             
@@ -110,7 +115,7 @@ namespace EffectPack
             _effectTimer -= Time.deltaTime;
             if (_effectTimer < 0)
             {
-                if (_pickedEffectBase.IsCountinues) _pickedEffectBase.OnResolve(_effectsManager, _damageStacks, _canBeDamaged);
+                if (_pickedEffectBase.IsCountinues) _pickedEffectBase.OnResolve(_effectsManager, _damageStacks, _canBeDamaged, _additionalDamage);
                 gameObject.SetActive(false);
                 IsActive = false;
                 _canBeDamaged.SpriteRenderer.color = _effectsManager.TryGetAnyEffect(out var effect) ? effect.EffectColor : Color.white;
@@ -123,7 +128,7 @@ namespace EffectPack
             if (_resolveTimer < _pickedEffectBase.ResolveRate) return;
             _resolveTimer = 0;
 
-            _pickedEffectBase.OnResolve(_effectsManager, _damageStacks, _canBeDamaged);
+            _pickedEffectBase.OnResolve(_effectsManager, _damageStacks, _canBeDamaged, _additionalDamage);
             if (_hasParticles) _spawnedParticles.Play();
         }
     }

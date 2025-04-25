@@ -2,6 +2,7 @@
 using Managers;
 using Other.Enums;
 using PlayerPack;
+using ProjectilePack;
 using TargetSearchPack;
 using UnityEngine;
 using Utils;
@@ -53,22 +54,23 @@ namespace ItemPack.WeaponPack.Other
             _pushForce = force;
             return this;
         }
-
-        public void Ready()
-        {
-            DamageEnemies();
-        }
-
+        
         #endregion
 
-        private void DamageEnemies()
+        public bool DamageEnemies()
         {
             var spriteRender = spriteRenderer;
             var bounds = spriteRender.bounds;
             
             var newPos = transform.position;
             var target = TargetManager.FindTarget(FindStrategy, range: baseScale.x);
-            var lookingRight = target == null || target.transform.position.x > PlayerPos.x;
+            if (target == null)
+            {
+                Destroy(gameObject);
+                return false;
+            }
+            
+            var lookingRight = target.transform.position.x > PlayerPos.x;
             var mod = lookingRight ? 1 : -1;
             var offset = mod * bounds.size.x / 2;
 
@@ -81,12 +83,8 @@ namespace ItemPack.WeaponPack.Other
             var bottomLeft = bounds.min;
             bottomLeft.x += offset;
 
-            var results = new Collider2D[50];
-            Physics2D.OverlapAreaNonAlloc(topRight, bottomLeft, results);
-            foreach (var t in results)
+            foreach (var enemy in TargetDetector.EnemiesInSpriteBoundsArea(bottomLeft, topRight))
             {
-                if(t == null || !t.TryGetComponent<EnemyLogic>(out var enemy)) continue;
-                
                 enemy.PushEnemy(PlayerPos, _pushForce);
                 enemy.GetDamaged(_damage);
                 if (!_effectType.HasValue) continue; 
@@ -95,6 +93,7 @@ namespace ItemPack.WeaponPack.Other
                 enemy.AddEffect(effectContext);
             }
             Destroy(gameObject, animTime);
+            return true;
         }
     }
 }

@@ -48,6 +48,8 @@ namespace MapPack
                 var missionBase = StructureManager.SpawnStructure(missionStructure, mission.MapPosition, GameManager.EScene.MAP);
                 missionBase.SetData(mission);
             }
+            
+            GameManager.SetMissions(_missions);
         }
 
         private MissionData GenerateMission(DifficultyExtensions.EDifficulty? currentDifficulty = null)

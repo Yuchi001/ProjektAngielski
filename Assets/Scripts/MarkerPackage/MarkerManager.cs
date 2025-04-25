@@ -30,6 +30,7 @@ namespace MarkerPackage
         {
             var markerPrefab = GameManager.GetPrefab<SpawnMarkedEntity>(PrefabNames.SpawnIndicator);
             _markers = PoolHelper.CreatePool(this, markerPrefab, false);
+            GameManager.EnqueueUnloadGameAction(() => ClearAll(_markers));
             
             PrepareQueue();
         }
@@ -51,6 +52,7 @@ namespace MarkerPackage
 
         public override void ReleasePoolObject(PoolObject poolObject)
         {
+            if (!poolObject.Active) return;
             _markers.Release(poolObject as SpawnMarkedEntity);
         }
     }

@@ -37,11 +37,13 @@ namespace WorldGenerationPack
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
+            
+            GameManager.EnqueueUnloadGameAction(RemoveMinimap);
         }
 
-        private void OnDestroy()
+        public void RemoveMinimap()
         {
-            if (MinimapManager != null) UIManager.CloseUI(MINIMAP_UI_KEY);
+            UIManager.CloseUI(MINIMAP_UI_KEY);
         }
 
         public void Init(MapManager.MissionData missionData)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Other;
 using ProjectilePack;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace PoolPack
 {
@@ -45,6 +46,17 @@ namespace PoolPack
             var toRet = updateStack.Pop();
             toRet.InvokeUpdate();
             return toRet;
+        }
+        
+        protected void ClearAll<T>(ObjectPool<T> pool) where T: PoolObject
+        {
+            foreach (var obj in ActiveObjects)
+            {
+                if (obj != null && obj.gameObject.activeInHierarchy)
+                    Destroy(obj.gameObject); 
+            }
+            ActiveObjects.Clear();
+            pool.Clear();
         }
     }
 }

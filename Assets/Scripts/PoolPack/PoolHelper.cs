@@ -16,7 +16,7 @@ namespace PoolPack
 
         private static T Create<T>(T prefab, PoolManager poolManager) where T: PoolObject
         {
-            var obj = Object.Instantiate(prefab);
+            var obj = Object.Instantiate(prefab, poolManager != null ? poolManager.transform : null);
             obj.gameObject.SetActive(false);
             var ret = obj.GetComponent<T>();
             ret.OnCreate(poolManager);
@@ -32,6 +32,8 @@ namespace PoolPack
         
         private static void OnRelease(PoolObject obj, PoolManager poolManager)
         {
+            if (!obj.Active) return;
+            
             obj.gameObject.SetActive(false);
             obj.OnRelease();
             poolManager.ActiveObjects.Remove(obj);

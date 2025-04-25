@@ -61,6 +61,7 @@ namespace ParticlesPack
                 PoolSize = data.PoolSize;
                 maxUpdateStackDuration = data.MaxUpdateTime;
                 _pool = PoolHelper.CreatePool(this, data.ParticlesPrefab, true);
+                GameManager.EnqueueUnloadGameAction(() => ClearAll(_pool));
                 
                 PrepareQueue();
             }

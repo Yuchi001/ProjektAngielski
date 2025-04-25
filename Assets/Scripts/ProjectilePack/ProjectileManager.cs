@@ -25,6 +25,8 @@ namespace ProjectilePack
             var prefab = GameManager.GetPrefab<Projectile>(PrefabNames.Projectile);
             _pool = PoolHelper.CreatePool(this, prefab, false);
             PrepareQueue();
+            
+            GameManager.EnqueueUnloadGameAction(() => ClearAll(_pool));
         }
 
         protected override T GetPoolObject<T>()
@@ -35,7 +37,6 @@ namespace ProjectilePack
         public override void ReleasePoolObject(PoolObject poolObject)
         {
             if (!poolObject.Active) return;
-            poolObject.OnRelease();
             _pool.Release((Projectile)poolObject);
         }
 

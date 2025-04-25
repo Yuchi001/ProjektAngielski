@@ -17,7 +17,7 @@ namespace MinimapPack.Strategies
         
         public bool Render(out MinimapElement minimapElement, string key)
         {
-            _minimapElement = minimapElement = WorldGeneratorManager.MinimapManager.SpawnMinimapElement(_zone.transform.position);
+            _minimapElement = minimapElement = MinimapManager.SpawnMinimapElement(_zone.transform.position);
             _minimapElement.AddComponent<MinimapZoneScaleTracker>().Setup(this, _zone);
             var color = Color.white;
             color.a = 0.3f;
@@ -48,6 +48,8 @@ namespace MinimapPack.Strategies
             
             private void Update()
             {
+                if (_zone == null) return;
+                
                 if (_lastScale.magnitude >= _zone.transform.localScale.magnitude) return;
 
                 _lastScale = _zone.transform.localScale;
