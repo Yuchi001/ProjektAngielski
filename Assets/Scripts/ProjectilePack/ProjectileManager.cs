@@ -42,14 +42,14 @@ namespace ProjectilePack
 
         public static Projectile SpawnProjectile(IProjectileMovementStrategy movementStrategy, int damage, Vector2 spawnPosition, string targetTag)
         {
-            return Instance.GetPoolObject<Projectile>().Setup(movementStrategy, damage, targetTag);
+            var projectile = Instance.GetPoolObject<Projectile>().Setup(movementStrategy, damage, targetTag);
+            projectile.transform.position = spawnPosition;
+            return projectile;
         }
         
         public static Projectile SpawnProjectile(IProjectileMovementStrategy movementStrategy, ItemLogicBase item)
         {
-            var projectile = Instance.GetPoolObject<Projectile>().Setup(movementStrategy, item.Damage, ENEMY_TAG, item.InventoryItem.ItemTags);
-            projectile.transform.position = PlayerManager.PlayerPos;
-            return projectile;
+            return SpawnProjectile(movementStrategy, item.Damage, PlayerManager.PlayerPos, ENEMY_TAG);
         }
 
         public static void ReturnProjectile(Projectile projectile)

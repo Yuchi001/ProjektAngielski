@@ -1,27 +1,19 @@
-﻿namespace EnemyPack.States.RootStates
+﻿using System;
+using System.Collections.Generic;
+
+namespace EnemyPack.States.RootStates
 {
-    public class GolemMain : StateBase, IRootState
+    public class GolemMain : RootStateBase
     {
-        private Chase _chaseState;
+        protected override StateBase GoToState => _chaseState;
+
+        private ChaseState _chaseState;
         
-        public void Compose(EnemyLogic logic)
+        public override void Compose(EnemyLogic logic)
         {
-            _chaseState = new Chase();
-        }
-        
-        public override void Enter(EnemyLogic state)
-        {
-            state.SwitchState(_chaseState);
+            _chaseState = new ChaseState();
         }
 
-        public override void Execute(EnemyLogic state, float deltaTime)
-        {
-            
-        }
-
-        public override void Reset(EnemyLogic state)
-        {
-            
-        }
+        public override List<Type> RequiredDataTypes => new();
     }
 }

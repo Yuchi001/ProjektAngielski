@@ -7,7 +7,7 @@ namespace EnemyPack.States
 {
     public static class StateFactory
     {
-        private static readonly Dictionary<EEnemyBehaviour, Func<IRootState>> _states = new()
+        private static readonly Dictionary<EEnemyBehaviour, Func<RootStateBase>> _states = new()
         {
             { EEnemyBehaviour.BatSmall, () => new BatSmallMain() },
             { EEnemyBehaviour.Mimic, () => new MimicMain() },
@@ -16,7 +16,7 @@ namespace EnemyPack.States
             { EEnemyBehaviour.Monument, () => new MonumentMain() }
         };
 
-        public static IRootState GetState(EEnemyBehaviour type)
+        public static RootStateBase GetState(EEnemyBehaviour type)
         {
             return _states[type].Invoke();
         }

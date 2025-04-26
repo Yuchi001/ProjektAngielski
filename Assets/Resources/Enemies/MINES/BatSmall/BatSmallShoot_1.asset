@@ -16,6 +16,7 @@ MonoBehaviour:
   walkingAnimationClip: {fileID: 7400000, guid: fff58336f44dda94c941de4f55f8c133, type: 2}
   maxHealth: 15
   bodyScale: 1
+  animationSpeed: 1
   movementSpeed: 1.5
   attackSpeed: 1
   damage: 5
@@ -29,4 +30,7 @@ MonoBehaviour:
   scrapDropCount:
     min: 0
     max: 0
+  statesData:
+  - {fileID: 0}
+  - {fileID: 0}
   enemyBehaviour: 1

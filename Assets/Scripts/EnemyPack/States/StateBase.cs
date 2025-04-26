@@ -14,7 +14,7 @@ namespace EnemyPack.States
         protected static Vector2 PlayerPos => PlayerManager.PlayerPos;
         
         public abstract void Enter(EnemyLogic state);
-        public abstract void Execute(EnemyLogic state, float deltaTime);
+        public abstract void Execute(EnemyLogic state);
 
         public abstract void Reset(EnemyLogic state);
 

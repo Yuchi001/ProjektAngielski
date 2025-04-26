@@ -1,35 +1,39 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using EnemyPack.States.StateData;
+using UnityEngine;
 
 namespace EnemyPack.States.RootStates
 {
-    public class BatSmallMain : StateBase, IRootState
+    public class BatSmallMain : RootStateBase
     {
-        private const float IDLE_RANGE = 4f;
-        private const float PATROL_RANGE = 4f;
-        private const float DETECTION_RANGE = 4f;
+        protected override StateBase GoToState => _patrolState;
 
-        private Chase _chaseState;
-        private Patrol _patrolState;
+        private ChaseState _chaseState;
+        private PatrolState _patrolState;
         
-        public void Compose(EnemyLogic logic)
+        public override void Compose(EnemyLogic logic)
         {
-            _chaseState = new Chase().SetOutOfRangeAction(enemyLogic => enemyLogic.SwitchState(_patrolState), IDLE_RANGE);
-            _patrolState = new Patrol(PATROL_RANGE).SetOnPlayerInRange(DETECTION_RANGE, enemyLogic => enemyLogic.SwitchState(_chaseState));
+            var data = logic.EnemyData.GetStateData<BatSmallData>();
+            _chaseState = new ChaseState().SetOutOfRangeAction(enemyLogic => enemyLogic.SwitchState(_patrolState), data.IdleRange);
+            _patrolState = new PatrolState(data.PatrolRange).SetOnPlayerInRange(data.DetectionRange, enemyLogic => enemyLogic.SwitchState(_chaseState));
         }
 
-        public override void Enter(EnemyLogic state)
+        public override List<Type> RequiredDataTypes => new()
         {
-            state.SwitchState(_patrolState);
-        }
+            typeof(BatSmallData)
+        };
 
-        public override void Execute(EnemyLogic state, float deltaTime)
+        [System.Serializable]
+        public class BatSmallData : StateDataBase
         {
-            
-        }
+            [SerializeField] private float idleRange;
+            [SerializeField] private float patrolRange;
+            [SerializeField] private float detectionRange;
 
-        public override void Reset(EnemyLogic state)
-        {
-            
+            public float IdleRange => idleRange;
+            public float PatrolRange => patrolRange;
+            public float DetectionRange => detectionRange;
         }
     }
 }

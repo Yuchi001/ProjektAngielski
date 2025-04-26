@@ -1,32 +1,37 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Collections.Generic;
+using EnemyPack.States.StateData;
+using UnityEngine;
 
 namespace EnemyPack.States.RootStates
 {
-    public class BatSmallShootMain : StateBase, IRootState
+    public class BatSmallShootMain : RootStateBase
     {
-        private const float PATROL_RANGE = 4f;
-        private const float DETECTION_RANGE = 3f;
 
-        private Patrol _patrolState;
+        protected override StateBase GoToState => _patrolState;
+        private PatrolState _patrolState;
         
-        public void Compose(EnemyLogic logic)
+        public override void Compose(EnemyLogic logic)
         {
-            _patrolState = new Patrol(PATROL_RANGE, enemyLogic => { }).SetOnPlayerInRange(DETECTION_RANGE, enemyLogic => enemyLogic.SwitchState(_patrolState)); // TODO: implement shoot
+            var baseData = logic.EnemyData.GetStateData<BatSmallShootData>();
+            var shootStateData = logic.EnemyData.GetStateData<ShootStateData>();
+            _patrolState = new PatrolState(baseData.PatrolRange, enemyLogic => shootStateData.Shoot(enemyLogic)).SetOnPlayerInRange(baseData.DetectionRange, enemyLogic => enemyLogic.SwitchState(_patrolState));
         }
 
-        public override void Enter(EnemyLogic state)
+        public override List<Type> RequiredDataTypes => new()
         {
-            state.SwitchState(_patrolState);
-        }
+            typeof(BatSmallShootData),
+            typeof(ShootStateData)
+        };
 
-        public override void Execute(EnemyLogic state, float deltaTime)
+        [System.Serializable]
+        public class BatSmallShootData : StateDataBase
         {
-            
-        }
+            [SerializeField] private float patrolRange;
+            [SerializeField] private float detectionRange;
 
-        public override void Reset(EnemyLogic state)
-        {
-            
+            public float PatrolRange => patrolRange;
+            public float DetectionRange => detectionRange;
         }
     }
 }

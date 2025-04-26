@@ -72,7 +72,7 @@ namespace EnemyPack
             EnemyData = enemy.As<SoEnemy>();
             //rb2d.mass = Mass;
 
-            Animator.speed = EnemyData.MovementSpeed;
+            Animator.speed = EnemyData.AnimationSpeed;
             _currentHealth = MaxHealth;
 
             var scale = EnemyData.BodyScale;
@@ -126,7 +126,7 @@ namespace EnemyPack
             
             _enemyHealthBar.ManageHealthBar();
             
-            _currentState.Execute(this, deltaTime);
+            _currentState.Execute(this);
         }
 
         public void SwitchState(StateBase state)

@@ -11,7 +11,7 @@ namespace PoolPack
         private readonly Dictionary<string, float> _lastMeasure = new();
         private float _lastUpdatedTime;
         
-        protected float deltaTime { get; private set; }
+        public float deltaTime { get; private set; }
 
         public T As<T>() where T: PoolObject
         {

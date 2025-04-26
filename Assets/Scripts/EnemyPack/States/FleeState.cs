@@ -1,34 +1,32 @@
 ﻿using EnemyPack.SO;
+using EnemyPack.States.StateData;
 using UnityEngine;
 using WorldGenerationPack;
 
 namespace EnemyPack.States
 {
-    public class Flee : StateBase
+    public class FleeState : StateBase
     {
-        private readonly float _minRange;
-
         private readonly StateBase _returnState;
-
-        private SoEnemy _data;
+        private readonly FleeStateData _data;
+        
         private Transform _transform;
 
-        public Flee(StateBase returnState, float minRange)
+        public FleeState(StateBase returnState, FleeStateData data)
         {
             _returnState = returnState;
-            _minRange = minRange;
+            _data = data;
         }
 
         public override void Enter(EnemyLogic state)
         {
-            _data = state.EnemyData;
             _transform = state.transform;
         }
 
-        public override void Execute(EnemyLogic state, float deltaTime)
+        public override void Execute(EnemyLogic state)
         {
             var position = _transform.position;
-            var direction = ((Vector2)position - PlayerPos).normalized; // odwrotna niż Chase
+            var direction = ((Vector2)position - PlayerPos).normalized;
 
             var separation = Vector2.zero;
             foreach (var poolObj in WorldGeneratorManager.EnemySpawner.GetActiveEnemies())
@@ -41,9 +39,9 @@ namespace EnemyPack.States
 
             var finalDir = (direction + separation * 0.1f).normalized;
 
-            _transform.position += (Vector3)(finalDir * (deltaTime * _data.MovementSpeed));
+            _transform.position += (Vector3)(finalDir * (state.deltaTime * _data.FleeMovementSpeed));
             
-            if (InRange(state, _minRange)) return;
+            if (InRange(state, _data.FleeDetectionRange)) return;
             
             state.SwitchState(_returnState);
         }
@@ -51,6 +49,15 @@ namespace EnemyPack.States
         public override void Reset(EnemyLogic state)
         {
             
+        }
+
+        public sealed class FleeStateData : StateDataBase
+        {
+            [SerializeField] private float fleeMovementSpeed;
+            [SerializeField] private float fleeDetectionRange;
+
+            public float FleeMovementSpeed => fleeMovementSpeed;
+            public float FleeDetectionRange => fleeDetectionRange;
         }
     }
 }

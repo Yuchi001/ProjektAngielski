@@ -49,6 +49,7 @@ namespace PlayerPack.Editor
             EditorGUILayout.PropertyField(walkingAnim);
             EditorGUILayout.PropertyField(idleAnim);
             EditorGUILayout.PropertyField(characterColor);
+            
             EditorGUILayout.Space();
             EditorGUILayout.Space();
 
