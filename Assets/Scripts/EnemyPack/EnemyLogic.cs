@@ -24,7 +24,6 @@ namespace EnemyPack
         [Header("General")] 
         [SerializeField] private float knockbackTime;
         [SerializeField] private Animator animator;
-
         public Animator Animator => animator;
         public static Vector2 PlayerPos => PlayerManager.PlayerPos;
         private EnemyHealthBar _enemyHealthBar;
@@ -84,12 +83,9 @@ namespace EnemyPack
             animator.runtimeAnimatorController = aoc;
             
             _enemyHealthBar.Setup(SpriteRenderer);
-
-            var baseState = StateFactory.GetState(EnemyData.EnemyBehaviour);
-            baseState.Compose(this);
-            _currentState = (StateBase)baseState;
-            _currentState.Reset(this);
-            _currentState.Enter(this);
+            
+            _currentState = StateFactory.GetState(EnemyData.EnemyBehaviour, EnemyData);
+            _currentState.Enter(this, _currentState);
             
             SpriteRenderer.enabled = true;
         }
@@ -129,10 +125,13 @@ namespace EnemyPack
             _currentState.Execute(this);
         }
 
-        public void SwitchState(StateBase state)
+        public bool SwitchState(StateBase state)
         {
-            state.Enter(this);
+            if (state == _currentState) return false;
+            
+            state.Enter(this, _currentState);
             _currentState = state;
+            return true;
         }
         
         public void PushEnemy(Vector2 rootPos, float force)

@@ -1,37 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using EnemyPack.SO;
 using EnemyPack.States.StateData;
-using UnityEngine;
 
 namespace EnemyPack.States.RootStates
 {
     public class BatSmallShootMain : RootStateBase
     {
-
-        protected override StateBase GoToState => _patrolState;
-        private PatrolState _patrolState;
+        protected override StateBase GoToState => _combinedPatrolState;
+        private readonly StateCombiner _combinedPatrolState;
         
-        public override void Compose(EnemyLogic logic)
+        public BatSmallShootMain(SoEnemy data) : base(data)
         {
-            var baseData = logic.EnemyData.GetStateData<BatSmallShootData>();
-            var shootStateData = logic.EnemyData.GetStateData<ShootStateData>();
-            _patrolState = new PatrolState(baseData.PatrolRange, enemyLogic => shootStateData.Shoot(enemyLogic)).SetOnPlayerInRange(baseData.DetectionRange, enemyLogic => enemyLogic.SwitchState(_patrolState));
+            if (data == null) return;
+            
+            var shootState = new ShootState(data);
+            var patrolState = new PatrolState(data, shootState);
+            var fleeState = new FleeState(data, patrolState);
+            var distanceTriggerState = new DistanceTriggerState(data, fleeState);
+            _combinedPatrolState = new StateCombiner(patrolState, distanceTriggerState);
         }
 
         public override List<Type> RequiredDataTypes => new()
         {
-            typeof(BatSmallShootData),
-            typeof(ShootStateData)
+            typeof(ShootStateData),
+            typeof(PatrolStateData),
+            typeof(FleeStateData),
+            typeof(DistanceTriggerStateData),
         };
-
-        [System.Serializable]
-        public class BatSmallShootData : StateDataBase
-        {
-            [SerializeField] private float patrolRange;
-            [SerializeField] private float detectionRange;
-
-            public float PatrolRange => patrolRange;
-            public float DetectionRange => detectionRange;
-        }
     }
 }

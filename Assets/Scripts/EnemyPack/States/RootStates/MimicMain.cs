@@ -1,38 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using EnemyPack.Enums;
+using EnemyPack.SO;
 using EnemyPack.States.StateData;
-using UnityEngine;
 
 namespace EnemyPack.States.RootStates
 {
     public class MimicMain : RootStateBase
     {
-        protected override StateBase GoToState => _distanceTriggerState;
-        private DistanceTriggerState _distanceTriggerState;
-
-        public override bool CanBeStunned => false;
-        public override bool CanBePushed => false;
+        protected override StateBase GoToState => _freezeState;
+        private readonly FreezeForDistanceState _freezeState;
         
-        public override void Compose(EnemyLogic state)
+        public MimicMain(SoEnemy data) : base(data)
         {
-            state.SetInvincible(true);
-            state.Animator.enabled = false;
-            state.SpriteRenderer.flipX = false;
+            if (data == null) return;
 
-            var sprite = state.EnemyData.EnemySprite;
-            state.SpriteRenderer.sprite = sprite;
-
-            var data = state.EnemyData.GetStateData<MimicData>();
-            _distanceTriggerState = new DistanceTriggerState(data.DetectionRange, OnPlayerEnter);
-        }
-
-        private void OnPlayerEnter(EnemyLogic state)
-        {
-            state.Animator.enabled = true;
-            state.Animator.Play("Idle");
-            
-            state.SwitchState(new ChaseState());
+            var attackState = new MeleeAttackState(data);
+            var chaseState = new ChaseState(data, attackState);
+            _freezeState = new FreezeForDistanceState(data, chaseState);
         }
 
         public override ESpriteRotation GetRotation(EnemyLogic state)
@@ -42,15 +27,9 @@ namespace EnemyPack.States.RootStates
 
         public override List<Type> RequiredDataTypes => new()
         {
-            typeof(MimicData)
+            typeof(MeleeAttackStateData),
+            typeof(ChaseStateData),
+            typeof(FreezeForDistanceStateData),
         };
-
-        [System.Serializable]
-        public class MimicData : StateDataBase
-        {
-            [SerializeField] private float detectionRange;
-
-            public float DetectionRange => detectionRange;
-        }
     }
 }

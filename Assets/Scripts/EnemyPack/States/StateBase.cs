@@ -1,4 +1,6 @@
-﻿using EnemyPack.Enums;
+﻿using System;
+using EnemyPack.Enums;
+using EnemyPack.SO;
 using Other;
 using PlayerPack;
 using UnityEngine;
@@ -13,7 +15,7 @@ namespace EnemyPack.States
 
         protected static Vector2 PlayerPos => PlayerManager.PlayerPos;
         
-        public abstract void Enter(EnemyLogic state);
+        public abstract void Enter(EnemyLogic state, StateBase lastState);
         public abstract void Execute(EnemyLogic state);
 
         public abstract void Reset(EnemyLogic state);
@@ -21,6 +23,11 @@ namespace EnemyPack.States
         public virtual ESpriteRotation GetRotation(EnemyLogic state)
         {
             return state.EnemyData.SpriteRotation;
+        }
+        
+        public StateBase(SoEnemy data)
+        {
+            
         }
 
         public T SetCanBePushed<T>(bool canBePushed) where T : StateBase

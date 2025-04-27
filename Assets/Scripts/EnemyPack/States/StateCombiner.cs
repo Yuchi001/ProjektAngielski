@@ -1,19 +1,21 @@
-﻿namespace EnemyPack.States
+﻿using EnemyPack.SO;
+
+namespace EnemyPack.States
 {
     public class StateCombiner : StateBase
     {
         private readonly StateBase _primaryState;
-        private readonly StateBase _secondaryState;
+        private readonly CompositionStateBase _secondaryState;
 
-        public StateCombiner(StateBase primaryState, StateBase secondaryState)
+        public StateCombiner(StateBase primaryState, CompositionStateBase secondaryState) : base(null)
         {
             _primaryState = primaryState;
             _secondaryState = secondaryState;
         }
         
-        public override void Enter(EnemyLogic state)
+        public override void Enter(EnemyLogic state, StateBase lastState)
         {
-            _primaryState.Enter(state);
+            _primaryState.Enter(state, lastState);
         }
 
         public override void Execute(EnemyLogic state)

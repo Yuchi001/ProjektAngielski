@@ -12,13 +12,13 @@ namespace EnemyPack.States
         
         private Transform _transform;
 
-        public FleeState(StateBase returnState, FleeStateData data)
+        public FleeState(SoEnemy data, StateBase returnState) : base(data)
         {
+            _data = data.GetStateData<FleeStateData>();
             _returnState = returnState;
-            _data = data;
         }
 
-        public override void Enter(EnemyLogic state)
+        public override void Enter(EnemyLogic state, StateBase lastState)
         {
             _transform = state.transform;
         }
@@ -49,15 +49,6 @@ namespace EnemyPack.States
         public override void Reset(EnemyLogic state)
         {
             
-        }
-
-        public sealed class FleeStateData : StateDataBase
-        {
-            [SerializeField] private float fleeMovementSpeed;
-            [SerializeField] private float fleeDetectionRange;
-
-            public float FleeMovementSpeed => fleeMovementSpeed;
-            public float FleeDetectionRange => fleeDetectionRange;
         }
     }
 }

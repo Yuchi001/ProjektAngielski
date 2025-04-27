@@ -49,7 +49,9 @@ namespace ProjectilePack
         
         public static Projectile SpawnProjectile(IProjectileMovementStrategy movementStrategy, ItemLogicBase item)
         {
-            return SpawnProjectile(movementStrategy, item.Damage, PlayerManager.PlayerPos, ENEMY_TAG);
+            var projectile = Instance.GetPoolObject<Projectile>().Setup(movementStrategy, item.Damage, ENEMY_TAG, item.InventoryItem.ItemTags);
+            projectile.transform.position = PlayerManager.PlayerPos;
+            return projectile;
         }
 
         public static void ReturnProjectile(Projectile projectile)

@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: Mimic
   m_EditorClassIdentifier: 
   structureName: Mimic
-  structureType: 0
   structureDescription: 
   structureSprite: {fileID: 21300000, guid: 996ad7580c9bcd443ac4760dd60a4fa0, type: 3}
   activeSprite: {fileID: 0}
   usedStructureSprite: {fileID: 0}
+  minimapIcon: {fileID: 0}
   structureScale: 0.5
   interactionLimit: 0
   bottomHoverMessage: Open
   interactionDeclineMessage: 
   usesUI: 0
+  visibleOnMinimap: 0
   uIPrefabName: 
-  mimicEnemy: {fileID: 11400000, guid: ffec49f39be2e3a4895cadcc66270eda, type: 2}
+  mimicEnemy: {fileID: 11400000, guid: 5921de52a5946f14fad2fdfa079cde3f, type: 2}

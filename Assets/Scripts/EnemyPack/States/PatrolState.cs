@@ -1,4 +1,4 @@
-﻿using System;
+﻿using EnemyPack.SO;
 using EnemyPack.States.StateData;
 using UnityEngine;
 using Utils;
@@ -7,29 +7,19 @@ namespace EnemyPack.States
 {
     public class PatrolState : StateBase
     {
-        private float _detectionRange;
-
         private Vector2 _startPos;
         private Vector2 _currentDestination;
-        private Action<EnemyLogic> _onNewDestination = null;
-        private Action<EnemyLogic> _onDetect = null;
 
-        private PatrolStateData _data;
+        private readonly PatrolStateData _data;
+        private readonly StateBase _newDestinationState;
 
-        public PatrolState(PatrolStateData data, Action<EnemyLogic> onNewDestination = null)
+        public PatrolState(SoEnemy data, StateBase newDestinationState = null) : base(data)
         {
-            _data = data;
-            _onNewDestination = onNewDestination;
-        }
-
-        public PatrolState SetOnPlayerInRange(float detectionRange, Action<EnemyLogic> onDetect)
-        {
-            _detectionRange = detectionRange;
-            _onDetect = onDetect;
-            return this;
+            _newDestinationState = newDestinationState;
+            _data = data.GetStateData<PatrolStateData>();
         }
         
-        public override void Enter(EnemyLogic state)
+        public override void Enter(EnemyLogic state, StateBase lastState)
         {
             _startPos = state.transform.position;
             _currentDestination = state.transform.RandomPointInRange(_data.PatrolRange);
@@ -40,26 +30,17 @@ namespace EnemyPack.States
             var enemyTransform = state.transform;
             enemyTransform.MoveTowards(_currentDestination, state.deltaTime * _data.PatrolMovementSpeed);
             
-            if (_onDetect != null && enemyTransform.InRange(PlayerPos, _detectionRange)) _onDetect.Invoke(state);
-            
             if (!enemyTransform.InRange(_currentDestination, 0.15f)) return;
 
             _currentDestination = enemyTransform.RandomPointInRange(_startPos, _data.PatrolRange);
-            _onNewDestination?.Invoke(state);
+            if (_newDestinationState != null) state.SwitchState(_newDestinationState);
         }
 
         public override void Reset(EnemyLogic state)
         {
-            _onNewDestination = null;
+            
         }
 
-        public class PatrolStateData : StateDataBase
-        {
-            [SerializeField] private float patrolMovementSpeed;
-            [SerializeField] private float patrolRange;
-
-            public float PatrolMovementSpeed => patrolMovementSpeed;
-            public float PatrolRange => patrolRange;
-        }
+        
     }
 }

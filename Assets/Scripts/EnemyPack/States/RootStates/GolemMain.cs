@@ -1,19 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using EnemyPack.SO;
+using EnemyPack.States.StateData;
 
 namespace EnemyPack.States.RootStates
 {
     public class GolemMain : RootStateBase
     {
         protected override StateBase GoToState => _chaseState;
-
-        private ChaseState _chaseState;
+        private readonly ChaseState _chaseState;
         
-        public override void Compose(EnemyLogic logic)
+        public GolemMain(SoEnemy data) : base(data)
         {
-            _chaseState = new ChaseState();
+            if (data == null) return;
+            
+            var attackState = new MeleeAttackState(data);
+            _chaseState = new ChaseState(data, attackState);
         }
-
-        public override List<Type> RequiredDataTypes => new();
+       
+        public override List<Type> RequiredDataTypes => new()
+        {
+			typeof(MeleeAttackStateData),
+			typeof(ChaseStateData),
+        };
     }
 }

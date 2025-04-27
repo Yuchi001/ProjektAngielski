@@ -3,6 +3,7 @@ using EnemyPack.SO;
 using EnemyPack.States;
 using EnemyPack.States.StateData;
 using UnityEditor;
+using UnityEngine;
 using Utils;
 
 namespace EnemyPack.Editor
@@ -19,10 +20,25 @@ namespace EnemyPack.Editor
 
         public override void OnInspectorGUI()
         {
-            //base.OnInspectorGUI();
             BaseInspector();
+
+            if (!_enemy.HasStateData()) return;
             
-            var rootState = StateFactory.GetState(_enemy.EnemyBehaviour);
+            if (GUILayout.Button("CLEAR"))
+            {
+                _enemy.SetStatesData(new List<StateDataBase>());
+                var path = AssetDatabase.GetAssetPath(target);
+                var assets = AssetDatabase.LoadAllAssetRepresentationsAtPath(path);
+                foreach (var asset in assets)
+                {
+                    DestroyImmediate(asset, true);
+                }
+
+                return;
+            }
+            
+            var changed = false;
+            var rootState = StateFactory.GetState(_enemy.EnemyBehaviour, null);
             var types = rootState.RequiredDataTypes;
 
             var list = new List<StateDataBase>();
@@ -30,30 +46,37 @@ namespace EnemyPack.Editor
             {
                 EditorGUILayout.Space();
                 EditorGUILayout.Space();
-                var obj = _enemy.GetStateData(type) ?? (StateDataBase)CreateInstance(type);
+                
+                var obj = _enemy.GetStateData(type);
                 var serializedObj = new SerializedObject(obj);
                 var iterator = serializedObj.GetIterator();
                 var typeStr = type.ToString();
-                var startIndex = typeStr.LastIndexOf('.') + 1;
-                var title = typeStr.Contains('+') ? "Base State" : typeStr[startIndex..].Replace("Data", "").SplitCamelCase();
+                var startIndex = (typeStr.Contains('+') ? typeStr.LastIndexOf('+') : typeStr.LastIndexOf('.')) + 1;
+                var title = typeStr[startIndex..].Replace("Data", "").SplitCamelCase();
                 EditorGUILayout.LabelField(title, EditorStyles.boldLabel);   
                 EditorGUILayout.Space();
                 iterator.NextVisible(true);
+                
+                EditorGUI.BeginChangeCheck();
                 while (iterator.NextVisible(false))
                 {
                     EditorGUILayout.PropertyField(iterator, true);
                 }
-
+                if (EditorGUI.EndChangeCheck()) changed = true;
+                
                 serializedObj.ApplyModifiedProperties();
                 list.Add(obj);
             }
-            _enemy.SetStatesData(list);
+
+            if (!changed) return;
             
+            _enemy.SetStatesData(list);
+            EditorUtility.SetDirty(_enemy);
+            AssetDatabase.SaveAssets();
             serializedObject.ApplyModifiedProperties();
             
-            EditorUtility.SetDirty(_enemy);
         }
-
+        
         private void BaseInspector()
         {
             serializedObject.Update();

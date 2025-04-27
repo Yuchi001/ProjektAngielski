@@ -10,19 +10,19 @@ namespace EnemyPack.States
     public class ChaseState : StateBase
     {
         private readonly ChaseStateData _data;
-        private readonly Action<EnemyLogic> _onPlayerInDetectionRange;
-        private readonly Action<EnemyLogic> _onPlayerOutOfChaseRange = null;
+        private readonly StateBase _inRangeState;
+        private readonly StateBase _outOfRangeState;
         
         private Transform _transform;
 
-        public ChaseState(ChaseStateData data, Action<EnemyLogic> onPlayerInDetectionRange, Action<EnemyLogic> onPlayerOutOfChaseChaseRange = null)
+        public ChaseState(SoEnemy enemyData, StateBase inRangeState, StateBase outOfRangeStateBase = null) : base(enemyData)
         {
-            _onPlayerInDetectionRange = onPlayerInDetectionRange;
-            _onPlayerOutOfChaseRange = onPlayerOutOfChaseChaseRange;
-            _data = data;
+            _data = enemyData.GetStateData<ChaseStateData>();
+            _inRangeState = inRangeState;
+            _outOfRangeState = outOfRangeStateBase;
         }
 
-        public override void Enter(EnemyLogic state)
+        public override void Enter(EnemyLogic state, StateBase lastState)
         {
             _transform = state.transform;
         }
@@ -30,46 +30,47 @@ namespace EnemyPack.States
         public override void Execute(EnemyLogic state)
         {
             var deltaTime = state.deltaTime;
-             
             var position = _transform.position;
             var direction = (PlayerPos - (Vector2)position).normalized;
 
             var separation = Vector2.zero;
+            var minSeparationDistance = 1.5f;
+
             foreach (var poolObj in WorldGeneratorManager.EnemySpawner.GetActiveEnemies())
             {
                 if (poolObj.gameObject == _transform.gameObject) continue;
+
                 var pushAway = (Vector2)(_transform.position - poolObj.transform.position);
                 var dist = pushAway.magnitude;
-                if (dist > 0) separation += pushAway.normalized / dist;
+
+                if (dist < minSeparationDistance)
+                {
+                    var bodySizeFactor = state.EnemyData.BodyScale * state.transform.localScale.x;
+                    separation += pushAway.normalized * ((minSeparationDistance - dist) * bodySizeFactor);
+                }
+                else
+                {
+                    separation += pushAway.normalized * 0.05f;
+                }
             }
 
-            var finalDir = (direction + separation * 0.1f).normalized;
+            var finalDir = (direction + separation * (0.1f * state.transform.localScale.x)).normalized;
 
             _transform.position += (Vector3)(finalDir * (deltaTime * _data.ChaseMovementSpeed));
 
-            if (_onPlayerOutOfChaseRange != null && !InRange(state, _data.ChaseStopRange))
+            if (_outOfRangeState != null && !InRange(state, _data.ChaseStopRange))
             {
-                _onPlayerOutOfChaseRange.Invoke(state);
+                state.SwitchState(_outOfRangeState);
                 return;
             }
 
-            if (InRange(state, _data.ChaseDetectionRange)) _onPlayerInDetectionRange.Invoke(state);
+            if (InRange(state, _data.ChaseDetectionRange)) state.SwitchState(_inRangeState);
         }
+
 
         public override void Reset(EnemyLogic state)
         {
             
-        }
-
-        public class ChaseStateData : StateDataBase
-        {
-            [SerializeField] private float chaseMovementSpeed;
-            [SerializeField] private float chaseDetectionRange;
-            [SerializeField] private float chaseStopRange;
-
-            public float ChaseMovementSpeed => chaseMovementSpeed;
-            public float ChaseDetectionRange => chaseDetectionRange;
-            public float ChaseStopRange => chaseStopRange;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EnemyPack.SO;
 using EnemyPack.States.StateData;
 
 namespace EnemyPack.States.RootStates
@@ -8,9 +9,7 @@ namespace EnemyPack.States.RootStates
     {
         protected abstract StateBase GoToState { get; }
         
-        public abstract void Compose(EnemyLogic state);
-        
-        public override void Enter(EnemyLogic state)
+        public override void Enter(EnemyLogic state, StateBase lastState)
         {
             state.SwitchState(GoToState);   
         }
@@ -26,5 +25,9 @@ namespace EnemyPack.States.RootStates
         }
 
         public abstract List<Type> RequiredDataTypes { get; }
+
+        protected RootStateBase(SoEnemy data) : base(data)
+        {
+        }
     }
 }

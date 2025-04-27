@@ -68,6 +68,7 @@ namespace ProjectilePack
 
         public Projectile Setup(IProjectileMovementStrategy projectileMovementStrategy, int damage, string targetTag)
         {
+            OnGet(null);
             _projectileMovementStrategy = projectileMovementStrategy;
             _damage = damage;
             _targetTag = targetTag;
@@ -265,7 +266,7 @@ namespace ProjectilePack
             if (!_animationSprites.CanCycle()) return;
 
             UPDATE_animationTimer += deltaTime;
-            if (UPDATE_animationTimer < 1 / _animationSpeed) return;
+            if (UPDATE_animationTimer < 1f / _animationSpeed) return;
             UPDATE_animationTimer = 0;
 
             projectileSpriteRenderer.sprite = _animationSprites.Next();

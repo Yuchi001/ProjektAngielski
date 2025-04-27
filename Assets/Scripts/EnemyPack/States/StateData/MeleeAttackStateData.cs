@@ -1,12 +1,15 @@
-﻿using PlayerPack;
+﻿using UnityEngine;
 
 namespace EnemyPack.States.StateData
 {
-    public class MeleeAttackStateData : AttackStateData
+    public class MeleeAttackStateData : StateDataBase
     {
-        public void DamagePlayer()
-        {
-            PlayerManager.PlayerHealth.GetDamaged(damage);
-        }
+        [SerializeField] protected float attackRange;
+        [SerializeField] protected float attackRate;
+        [SerializeField] protected int damage;
+
+        public float AttackRange => attackRange;
+        public float AttackRate => attackRate;
+        public int Damage => damage;
     }
 }
