@@ -73,6 +73,7 @@ namespace EffectPack
         
         public void Setup()
         {
+            IsActive = false;
             _transform.position = Vector3.zero;
             
             _damageStacks = 0;

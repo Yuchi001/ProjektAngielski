@@ -156,18 +156,17 @@ namespace EnemyPack
         public override SoPoolObject GetRandomPoolData()
         {
             if (_despawnQueue.Any()) return _despawnQueue.Dequeue();
-
-            var enemies = GetValidEnemies();
-            var soEnemies = enemies as SoEnemy[] ?? enemies.ToArray();
-            return soEnemies.ElementAt(Random.Range(0, soEnemies.Length));
-
-            IEnumerable<SoEnemy> GetValidEnemies()
+            
+            var pickedDifficulty = GetRandomDifficulty();
+            var current = new List<SoEnemy>();
+            do
             {
-                var current = new List<SoEnemy>();
-                var pickedDifficulty = GetRandomDifficulty();
-                foreach (var enemy in _allEnemies) if (enemy.Difficulty <= pickedDifficulty) current.Add(enemy);
-                return current.Count > 0 ? current : new List<SoEnemy> {_allEnemies[0]};
-            }
+                foreach (var enemy in _allEnemies) 
+                    if (enemy.Difficulty == pickedDifficulty) 
+                        current.Add(enemy);
+                pickedDifficulty--;
+            } while (current.Count == 0 && pickedDifficulty > 0);
+            return current.RandomElement();
         }
         
         protected virtual int GetRandomDifficulty()

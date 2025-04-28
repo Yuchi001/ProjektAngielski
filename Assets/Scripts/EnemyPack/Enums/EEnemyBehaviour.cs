@@ -6,6 +6,7 @@
         BatSmallShoot,
         Mimic,
         Golem,
-        Monument
+        Monument,
+        Bat
     }
 }

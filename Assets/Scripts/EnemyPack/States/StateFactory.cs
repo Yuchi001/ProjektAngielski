@@ -14,7 +14,8 @@ namespace EnemyPack.States
             { EEnemyBehaviour.Mimic, enemy => new MimicMain(enemy) },
             { EEnemyBehaviour.Golem, enemy => new GolemMain(enemy) },
             { EEnemyBehaviour.BatSmallShoot, enemy => new BatSmallShootMain(enemy) },
-            { EEnemyBehaviour.Monument, enemy => new MonumentMain(enemy) }
+            { EEnemyBehaviour.Monument, enemy => new MonumentMain(enemy) },
+            { EEnemyBehaviour.Bat, enemy => new BatMain(enemy) }
         };
 
         public static RootStateBase GetState(EEnemyBehaviour behaviour, SoEnemy data)

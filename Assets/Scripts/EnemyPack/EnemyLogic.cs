@@ -28,7 +28,6 @@ namespace EnemyPack
         public static Vector2 PlayerPos => PlayerManager.PlayerPos;
         private EnemyHealthBar _enemyHealthBar;
         public override int MaxHealth => Mathf.CeilToInt(EnemyData.MaxHealth * DifficultyManager.EnemyHpScale);
-        private static PlayerEnchantments PlayerEnchantments => PlayerManager.PlayerEnchantments;
         private Vector2 knockbackVelocity;
 
         public bool Invincible { get; private set; }

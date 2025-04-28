@@ -29,5 +29,6 @@
         public const string PlayerEnchantmentUI = "PlayerEnchantmentUI";
         public const string BaseMinimapElement = "BaseMinimapElement";
         public const string MinimapManager = "MinimapManager";
+        public const string OfferWindow = "OfferWindow";
     }
 }

@@ -32,7 +32,7 @@ MonoBehaviour:
   maxHealth: 500
   bodyScale: 2
   animationSpeed: 0.5
-  difficulty: 8
+  difficulty: 9
   occurenceList: 00000000
   spriteRotation: 2
   useCustomDropCount: 1

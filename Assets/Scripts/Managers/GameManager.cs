@@ -11,6 +11,7 @@ using MapPack;
 using PlayerPack;
 using PlayerPack.SO;
 using SavePack;
+using ShopPack;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
@@ -25,8 +26,8 @@ namespace Managers
         private readonly Dictionary<string, GameObject> _prefabs = new();
         public static bool HasInstance() => Instance != null;
 
-        private int stageCount = 0;
-        public static int StageCount => Instance.stageCount;
+        private int _stageCount = 1;
+        public static int StageCount => Instance._stageCount;
 
         public delegate void InitDelegate();
         public static event InitDelegate OnGMStart;
@@ -99,6 +100,7 @@ namespace Managers
             PlayerManager.LockKeys();
             MainCamera.InOutAnim(0.3f, () =>
             {
+                ShopManager.RefreshOffers();
                 SceneManager.UnloadSceneAsync((int)EScene.TAVERN);
                 SceneManager.LoadSceneAsync((int)EScene.MAP, LoadSceneMode.Additive);
             }, () =>
@@ -119,6 +121,8 @@ namespace Managers
                 SceneManager.UnloadSceneAsync((int)EScene.GAME);
                 SceneManager.LoadSceneAsync((int)EScene.MAP, LoadSceneMode.Additive);
                 PlayerManager.SetPosition(Vector2.zero);
+                Instance._stageCount++;
+                ShopManager.RefreshOffers();
             }, () =>
             {
                 PlayerManager.SetPlayerState(PlayerManager.State.IN_MAP);

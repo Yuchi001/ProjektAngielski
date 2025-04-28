@@ -75,7 +75,7 @@ namespace PlayerPack
                 child.gameObject.SetActive(active);
             }
 
-            var isOnMission = state == PlayerManager.State.ON_MISSION;
+            var isOnMission = state is PlayerManager.State.ON_MISSION or PlayerManager.State.IN_MAP;
             scrapField.gameObject.SetActive(isOnMission);
             soulField.gameObject.SetActive(isOnMission);
             coinField.gameObject.SetActive(isOnMission);

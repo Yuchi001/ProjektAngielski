@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-839281581945266269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b506d1152dea496995e674f3e7272731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseMovementSpeed: 1.5
+  chaseDetectionRange: 999
+  chaseStopRange: 999
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
+  m_Name: Bat
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 1619251684, guid: 1d7d354870386c24496a0e87454841fc, type: 3}
+  walkingAnimationClip: {fileID: 7400000, guid: 143209ca4790ad24ba6c3a6152c34e1b, type: 2}
+  maxHealth: 50
+  bodyScale: 0.5
+  animationSpeed: 1
+  difficulty: 3
+  occurenceList: 00000000
+  spriteRotation: 2
+  useCustomDropCount: 0
+  soulDropCount:
+    min: 0
+    max: 0
+  scrapDropCount:
+    min: 0
+    max: 0
+  statesData:
+  - {fileID: 8509663949546088731}
+  - {fileID: -839281581945266269}
+  enemyBehaviour: 5
+--- !u!114 &8509663949546088731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 322fd9c8fbc14a13b671ba774b1c7096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRange: 0.3
+  attackRate: 2
+  damage: 10

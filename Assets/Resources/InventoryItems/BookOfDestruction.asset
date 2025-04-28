@@ -18,6 +18,7 @@ MonoBehaviour:
   itemSprite: {fileID: 21300000, guid: bf82be54333fa3649b0ce7f40949eb2a, type: 3}
   itemTags: 0600000001000000
   itemType: 0
+  customWorldLifeTime: 0
   oneTimeSpawnLogic: 1
   itemPrefab: {fileID: 8613480531276933046, guid: 3fbda3aa0cbee3441833825b0e7504ad, type: 3}
   startingStats:

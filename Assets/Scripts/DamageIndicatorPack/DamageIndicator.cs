@@ -11,6 +11,7 @@ namespace DamageIndicatorPack
     {
         [SerializeField] private TextMeshProUGUI damageText;
         [SerializeField] private float lifeTime = 0.3f;
+        [SerializeField] private Animator animator;
         
         private const string DAMAGE_INDICATOR_TIMER_ID = "DAMAGE_INDICATOR_TIMER_ID";
 
@@ -21,6 +22,7 @@ namespace DamageIndicatorPack
             base.OnCreate(poolManager);
 
             _poolManager = (IndicatorManager)poolManager;
+            animator.updateMode = AnimatorUpdateMode.UnscaledTime;
             
             transform.SetParent(UIManager.WorldCanvas);
         }

@@ -1,7 +1,6 @@
 ﻿using Managers;
 using MinimapPack;
 using MinimapPack.Strategies;
-using StructurePack.Enum;
 using UIPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;

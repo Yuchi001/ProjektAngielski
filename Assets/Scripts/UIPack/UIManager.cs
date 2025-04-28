@@ -43,6 +43,11 @@ namespace UIPack
             if (removeFromList) RemoveUI(key);
         }
 
+        public static bool IsOpen(string key)
+        {
+            return Instance.UIBaseList.FirstOrDefault(e => e.Key == key && e.Script.Open) != default;
+        }
+
         public static void CloseAllUIs()
         {
             foreach (var record in Instance.UIBaseList.Where(record => record.Script.Open))
