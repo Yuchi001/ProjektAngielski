@@ -124,7 +124,7 @@ namespace EnemyPack
         {
             var enemyObj = _enemyPool.Get();
             enemyObj.OnGet(enemy);
-            enemyObj.transform.position = position;
+            enemyObj.SetPosition(position);
         }
 
         public virtual void SpawnRandomEntity(Vector2 position)

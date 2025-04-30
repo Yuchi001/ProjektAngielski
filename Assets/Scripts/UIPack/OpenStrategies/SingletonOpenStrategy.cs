@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace UIPack.OpenStrategies
 {
-    public class SingletonOpenStrategy<T> : IOpenStrategy
+    public class SingletonOpenStrategy<T> : IOpenStrategy where T: UIBase
     {
         private readonly Type _instanceType = typeof(T);
         private readonly UIBase _basePrefab;

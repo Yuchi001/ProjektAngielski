@@ -6,7 +6,7 @@ using EnemyPack.States.StateData;
 
 namespace EnemyPack.States.RootStates
 {
-    public class MimicMain : RootStateBase
+    public sealed class MimicMain : RootStateBase
     {
         protected override StateBase GoToState => _freezeState;
         private readonly FreezeForDistanceState _freezeState;
@@ -16,8 +16,8 @@ namespace EnemyPack.States.RootStates
             if (data == null) return;
 
             var attackState = new MeleeAttackState(data);
-            var chaseState = new ChaseState(data, attackState);
-            _freezeState = new FreezeForDistanceState(data, chaseState);
+            var chaseState = new ChaseState(data, () => attackState);
+            _freezeState = new FreezeForDistanceState(data, () => chaseState);
         }
 
         public override ESpriteRotation GetRotation(EnemyLogic state)

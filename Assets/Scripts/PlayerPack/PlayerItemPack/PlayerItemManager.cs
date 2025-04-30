@@ -33,6 +33,7 @@ namespace PlayerPack.PlayerItemPack
             InitBox(slotPrefab);
             
             _allItems = Resources.LoadAll<SoInventoryItem>("InventoryItems").Select(Instantiate).ToList();
+            _allItems.RemoveAll(i => i.ItemName is "Sword" or "Book of Destruction"); // TODO: USUN TO
 
             var weightItemList = _allItems.Select(item => (weight: 1f / item.ItemPrice, item: item)).ToList();
             weightSum = weightItemList.Sum(w => w.weight);

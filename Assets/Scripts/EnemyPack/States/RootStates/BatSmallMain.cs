@@ -5,7 +5,7 @@ using EnemyPack.States.StateData;
 
 namespace EnemyPack.States.RootStates
 {
-    public class BatSmallMain : RootStateBase
+    public sealed class BatSmallMain : RootStateBase
     {
         protected override StateBase GoToState => _combinedPatrolState;
         private readonly StateCombiner _combinedPatrolState;
@@ -16,9 +16,9 @@ namespace EnemyPack.States.RootStates
             
             var patrolState = new PatrolState(data);
             var meleeAttackState = new MeleeAttackState(data);
-            var chaseState = new ChaseState(data, meleeAttackState, patrolState);
-            var triggerState = new DistanceTriggerState(data, chaseState);
-            _combinedPatrolState = new StateCombiner(patrolState, triggerState);
+            var chaseState = new ChaseState(data, () => meleeAttackState, () => patrolState);
+            var triggerState = new DistanceTriggerState(data, () => chaseState);
+            _combinedPatrolState = new StateCombiner(() =>patrolState, () =>triggerState);
         }
 
         public override List<Type> RequiredDataTypes => new()

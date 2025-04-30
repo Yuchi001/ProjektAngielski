@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace EnemyPack.States.RootStates
 {
-    public class MonumentMain : RootStateBase
+    public sealed class MonumentMain : RootStateBase
     {
         protected override StateBase GoToState => _freezeState;
         private readonly FreezeForDistanceState _freezeState;
@@ -16,7 +16,7 @@ namespace EnemyPack.States.RootStates
             if (data == null) return;
             
             var shootingState = new ShootState(data);
-            _freezeState = new FreezeForDistanceState(data, shootingState);
+            _freezeState = new FreezeForDistanceState(data, () => shootingState);
         }
 
         public override List<Type> RequiredDataTypes => new()

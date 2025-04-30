@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4846468948850348461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41af0ec490de421d9461f381be861fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useFreezeSprite: 0
+  invincible: 0
+  freezeSprite: {fileID: 0}
+  freezeTime: 2
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
+  m_Name: Face 2
+  m_EditorClassIdentifier: 
+  sprite: {fileID: -522814512, guid: 03b4904f9983b59459f4f20c947d805c, type: 3}
+  walkingAnimationClip: {fileID: 7400000, guid: 8be96569e4a5c2c449e1a250779baea3, type: 2}
+  maxHealth: 100
+  bodyScale: 1.5
+  animationSpeed: 0.1
+  difficulty: 5
+  occurenceList: 01000000
+  spriteRotation: 2
+  useCustomDropCount: 0
+  soulDropCount:
+    min: 0
+    max: 0
+  scrapDropCount:
+    min: 0
+    max: 0
+  statesData:
+  - {fileID: 8288027242608834634}
+  - {fileID: -4846468948850348461}
+  enemyBehaviour: 9
+--- !u!114 &8288027242608834634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd101cfc3224cb7b5def35f4231f68a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chargeAttackRange: 0.3
+  chargeMovementSpeed: 3
+  chargePositionUpdateRate: 3
+  chargePrecision: 0.4
+  chargeDamage: 20
+  useFreezeSprite: 1
+  freezeSprite: {fileID: 1282729780, guid: 03b4904f9983b59459f4f20c947d805c, type: 3}

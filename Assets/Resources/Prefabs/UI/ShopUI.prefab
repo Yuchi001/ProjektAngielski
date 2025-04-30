@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -219,8 +219,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5751355260131366157}
   - component: {fileID: 8307923610131015363}
-  - component: {fileID: 5699291293973643939}
   - component: {fileID: 1633112679866637148}
+  - component: {fileID: 682219316744797542}
   m_Layer: 0
   m_Name: RefreshButton
   m_TagString: Untagged
@@ -256,37 +256,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3506975646522664677}
   m_CullTransparentMesh: 1
---- !u!114 &5699291293973643939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3506975646522664677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d178d5649aea4539a4220957f2e73fec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4655165661300819032}
-        m_TargetAssemblyTypeName: ShopPack.ShopUI, Assembly-CSharp
-        m_MethodName: RefreshOffers
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  animationObject: {fileID: 2948749383250472793}
-  textField: {fileID: 4974475646726333639}
-  enabledColor: {r: 1, g: 1, b: 1, a: 1}
-  disabledColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
 --- !u!114 &1633112679866637148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,6 +286,36 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &682219316744797542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3506975646522664677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5345af05f27c4b7ead725b46d2d6e347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 682219316744797542}
+        m_TargetAssemblyTypeName: ShopPack.RefreshOffersButton, Assembly-CSharp
+        m_MethodName: OnRefresh
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  animationObject: {fileID: 6898989339065200585}
 --- !u!1 &4386173455257061035
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,7 +382,7 @@ MonoBehaviour:
   - capacity: 18
     grid: {fileID: 6559534452844162022}
   offerHolder: {fileID: 3260182157433632090}
-  refreshButton: {fileID: 5699291293973643939}
+  refreshButton: {fileID: 682219316744797542}
 --- !u!1 &4649459071176243630
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,7 +465,6 @@ GameObject:
   - component: {fileID: 2948749383250472793}
   - component: {fileID: 8037935441923878099}
   - component: {fileID: 6898989339065200585}
-  - component: {fileID: 7813069801618678652}
   m_Layer: 0
   m_Name: visual
   m_TagString: Untagged
@@ -532,37 +530,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7813069801618678652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4740548929455625179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d178d5649aea4539a4220957f2e73fec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4655165661300819032}
-        m_TargetAssemblyTypeName: ShopPack.ShopUI, Assembly-CSharp
-        m_MethodName: RefreshOffers
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  animationObject: {fileID: 2948749383250472793}
-  textField: {fileID: 0}
-  enabledColor: {r: 1, g: 1, b: 1, a: 1}
-  disabledColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
 --- !u!1 &5738751142825932606
 GameObject:
   m_ObjectHideFlags: 0

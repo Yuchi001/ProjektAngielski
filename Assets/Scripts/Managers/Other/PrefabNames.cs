@@ -30,5 +30,6 @@
         public const string BaseMinimapElement = "BaseMinimapElement";
         public const string MinimapManager = "MinimapManager";
         public const string OfferWindow = "OfferWindow";
+        public const string DisplayMissionUI = "DisplayMissionUI";
     }
 }

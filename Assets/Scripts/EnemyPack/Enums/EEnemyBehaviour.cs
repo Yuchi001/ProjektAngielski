@@ -7,6 +7,10 @@
         Mimic,
         Golem,
         Monument,
-        Bat
+        Bat,
+        Brain,
+        Crab,
+        StoneMan,
+        Face
     }
 }

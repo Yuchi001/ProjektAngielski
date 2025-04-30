@@ -22,6 +22,7 @@ namespace PlayerPack.Decorators
         public void SetForceStackingEffect() => ForceStackingEffect = true;
         public void ModifyDuration(float duration) => Duration = duration;
         public void ModifyAdditionalDamage(int damage) => AdditionalDamage = damage;
+        public void AddAdditionalDamage(int damage) => AdditionalDamage += damage;
         public void ModifyAdditionalStacks(int stacks) => AdditionalStacks = stacks;
         public void ModifyEffectType(EEffectType effectType) => EffectType = effectType;
     }

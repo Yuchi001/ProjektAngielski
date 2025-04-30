@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4770106590137454435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b506d1152dea496995e674f3e7272731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseMovementSpeed: 1.7
+  chaseDetectionRange: 2
+  chaseStopRange: 3
+--- !u!114 &-2518878339047495663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa541cfd34c84476ae57b04dd8fa827d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useFreezeSprite: 1
+  invincible: 0
+  freezeSprite: {fileID: 1147783402, guid: 384fd50e4e0d01b49a224c592570b985, type: 3}
+  freezeDetectionRange: 3
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
+  m_Name: Brain
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 630288567, guid: 384fd50e4e0d01b49a224c592570b985, type: 3}
+  walkingAnimationClip: {fileID: 7400000, guid: 5ba4886c002345346976500986a2be03, type: 2}
+  maxHealth: 50
+  bodyScale: 1
+  animationSpeed: 1
+  difficulty: 2
+  occurenceList: 01000000
+  spriteRotation: 2
+  useCustomDropCount: 0
+  soulDropCount:
+    min: 0
+    max: 0
+  scrapDropCount:
+    min: 0
+    max: 0
+  statesData:
+  - {fileID: 5781151410456830800}
+  - {fileID: -4770106590137454435}
+  - {fileID: -2518878339047495663}
+  enemyBehaviour: 6
+--- !u!114 &5781151410456830800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 322fd9c8fbc14a13b671ba774b1c7096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRange: 0.3
+  attackRate: 2
+  damage: 5

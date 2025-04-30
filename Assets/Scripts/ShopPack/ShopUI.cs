@@ -16,9 +16,10 @@ namespace ShopPack
     public class ShopUI : Box, IStructure
     {
         [SerializeField] private RectTransform offerHolder;
-        [SerializeField] private TextButton refreshButton;
+        [SerializeField] private RefreshOffersButton refreshButton;
 
         private readonly List<OfferWindow> _spawnedOfferWindows = new();
+        private readonly List<IShopUIElement> _uiElements = new();
         
         protected override void Awake()
         {
@@ -28,12 +29,20 @@ namespace ShopPack
             {
                 var offerWindow = Instantiate(offerWindowPrefab, offerHolder);
                 _spawnedOfferWindows.Add(offerWindow);
+                offerWindow.SetShop(this);
+                _uiElements.Add(offerWindow);
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate(offerHolder);
             
             InitBox();
         }
-        
+
+        private void Start()
+        {
+            refreshButton.SetShop(this);
+            _uiElements.Add(refreshButton);
+        }
+
         public void Setup(SoStructure structureData, StructureBase structureBase)
         {
             
@@ -48,8 +57,7 @@ namespace ShopPack
         {
             base.OnOpen(key);
             Time.timeScale = 0;
-
-            refreshButton.SetText($"R E F R E S H {ShopManager.RefreshCost}$");
+            
             PopulateOfferWindows();
         }
 
@@ -65,19 +73,17 @@ namespace ShopPack
             for (var i = 0; i < ShopManager.OffersCount; i++)
             {
                 var offer = offers[i];
-                _spawnedOfferWindows[i].Setup(offer, i);
+                _spawnedOfferWindows[i].SetOffer(offer, i);
             }
+        }
+
+        public void UpdateUI()
+        {
+            _uiElements.ForEach(e => e.OnUIUpdate());   
         }
 
         public void RefreshOffers()
         {
-            var coinCount = PlayerCollectibleManager.GetCollectibleCount(PlayerCollectibleManager.ECollectibleType.COIN);
-            if (coinCount < ShopManager.RefreshCost)
-            {
-                IndicatorManager.SpawnIndicator(refreshButton.transform.position, "Not enough coins!", Color.red);
-                return;
-            }
-            
             PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.COIN, -ShopManager.RefreshCost);
             ShopManager.RefreshOffers(true);
             PopulateOfferWindows();

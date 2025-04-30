@@ -1,4 +1,5 @@
-﻿using EnemyPack.SO;
+﻿using System;
+using EnemyPack.SO;
 using EnemyPack.States.StateData;
 using UnityEngine;
 using WorldGenerationPack;
@@ -7,12 +8,12 @@ namespace EnemyPack.States
 {
     public class FleeState : StateBase
     {
-        private readonly StateBase _returnState;
+        private readonly Func<StateBase> _returnState;
         private readonly FleeStateData _data;
         
         private Transform _transform;
 
-        public FleeState(SoEnemy data, StateBase returnState) : base(data)
+        public FleeState(SoEnemy data, Func<StateBase> returnState) : base(data)
         {
             _data = data.GetStateData<FleeStateData>();
             _returnState = returnState;
@@ -43,7 +44,7 @@ namespace EnemyPack.States
             
             if (InRange(state, _data.FleeDetectionRange)) return;
             
-            state.SwitchState(_returnState);
+            state.SwitchState(_returnState.Invoke());
         }
 
         public override void Reset(EnemyLogic state)

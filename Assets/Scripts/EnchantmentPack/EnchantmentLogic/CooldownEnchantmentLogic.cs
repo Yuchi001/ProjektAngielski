@@ -21,7 +21,13 @@ namespace EnchantmentPack.EnchantmentLogic
         protected virtual void Update()
         {
             _timer += Time.deltaTime;
+            if (_timer < _cooldownData.Cooldown) return;
+
+            var result = TryUseEnchant();
+            _timer = result ? 0 : _cooldownData.Cooldown;
         }
+
+        protected abstract bool TryUseEnchant();
 
         public override void AttachDisplayStrategy(EnchantmentItemAccessor accessor) =>
             accessor.gameObject.AddComponent<CdrDisplayStrategy>().SetLogic(this, accessor);

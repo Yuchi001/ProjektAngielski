@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
+  m_Name: StoneMan
+  m_EditorClassIdentifier: 
+  sprite: {fileID: -1166382092, guid: 8bdae47b6c8eeec46a2d25ca054d7d71, type: 3}
+  walkingAnimationClip: {fileID: 7400000, guid: c62ab29894129a747aae928dd490ad8c, type: 2}
+  maxHealth: 100
+  bodyScale: 1
+  animationSpeed: 0.1
+  difficulty: 2
+  occurenceList: 01000000
+  spriteRotation: 2
+  useCustomDropCount: 1
+  soulDropCount:
+    min: 0
+    max: 0
+  scrapDropCount:
+    min: 0
+    max: 2
+  statesData:
+  - {fileID: 7768032604111720186}
+  - {fileID: 6529476178770965585}
+  enemyBehaviour: 8
+--- !u!114 &6529476178770965585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa541cfd34c84476ae57b04dd8fa827d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useFreezeSprite: 1
+  invincible: 0
+  freezeSprite: {fileID: 13798006, guid: 8bdae47b6c8eeec46a2d25ca054d7d71, type: 3}
+  freezeDetectionRange: 2
+--- !u!114 &7768032604111720186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1728f1dbb3284f18a6d6f4c569b10634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRange: 9
+  attackRate: 0.25
+  damage: 5
+  bulletSprites:
+  - {fileID: 21300000, guid: 4d798d5cdb86cd04e972e4f95f0122d7, type: 3}
+  - {fileID: 21300000, guid: ac6fa8dc108642446a2e3a1d2975b665, type: 3}
+  bulletAnimationRate: 10
+  bulletSpeed: 1
+  bulletScale: 0.3
+  bulletCount: 10

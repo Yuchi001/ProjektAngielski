@@ -16,7 +16,7 @@ MonoBehaviour:
   itemDescription: 
   itemPrice: 3
   itemSprite: {fileID: 21300000, guid: 5cffaf3ab50366648acc8e28da5bd84f, type: 3}
-  itemTags: 
+  itemTags: 060000000400000008000000
   itemType: 0
   customWorldLifeTime: 0
   oneTimeSpawnLogic: 0

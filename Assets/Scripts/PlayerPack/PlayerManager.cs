@@ -17,6 +17,7 @@ using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using Utils;
 using WorldGenerationPack;
 
@@ -226,6 +227,9 @@ namespace PlayerPack
             PlayerItemManager.enabled = false;
 
             OnPlayerDeath?.Invoke();
+            
+            // TODO: IMPLEMENT THIS SHIT
+            SceneManager.LoadScene(0);
         }
 
         public void AddDamageModifier(string key, IDamageModifier modifier)

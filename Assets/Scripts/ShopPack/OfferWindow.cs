@@ -1,6 +1,4 @@
-﻿using DamageIndicatorPack;
-using ItemPack.Enums;
-using PlayerPack;
+﻿using ItemPack.Enums;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +6,7 @@ using Button = UIPack.Elements.Button;
 
 namespace ShopPack
 {
-    public class OfferWindow : MonoBehaviour
+    public class OfferWindow : MonoBehaviour, IShopUIElement
     {
         [SerializeField] private Image itemImage;
         [SerializeField] private TextMeshProUGUI priceText;
@@ -16,11 +14,16 @@ namespace ShopPack
         [SerializeField] private GameObject soldObject;
         [SerializeField] private Button offerButton;
 
+        private ShopUI _shopUI;
         private ShopManager.ShopOffer _offer;
         private int _index;
         
-
-        public void Setup(ShopManager.ShopOffer offer, int index)
+        public void SetShop(ShopUI shopUI)
+        {
+            _shopUI = shopUI;
+        }
+        
+        public void SetOffer(ShopManager.ShopOffer offer, int index)
         {
             soldObject.SetActive(false);
             _offer = offer;
@@ -33,24 +36,30 @@ namespace ShopPack
             priceText.gameObject.SetActive(true);
             paramText.gameObject.SetActive(true);
             itemImage.gameObject.SetActive(true);
-            offerButton.enabled = true;
+
+            OnUIUpdate();
         }
 
         public void OnBuy()
         {
-            var success = ShopManager.BuyItem(_index);
-            if (success)
-            {
-                _offer = null;
-                itemImage.gameObject.SetActive(false);
-                priceText.gameObject.SetActive(false);
-                paramText.gameObject.SetActive(false);
-                offerButton.enabled = false;
-                soldObject.SetActive(true);
-                return;
-            }
+            ShopManager.BuyItem(_index);
+            _offer = null;
+            _index = -1;
+            itemImage.gameObject.SetActive(false);
+            priceText.gameObject.SetActive(false);
+            paramText.gameObject.SetActive(false);
+            offerButton.EnableButton(false);
+            soldObject.SetActive(true);
+
+            _shopUI.UpdateUI();
+        }
+
+        public void OnUIUpdate()
+        {
+            if (_offer == null) return;
             
-            IndicatorManager.SpawnIndicator(itemImage.transform.position, "Cannot buy item!", Color.red);
+            var canAfford = ShopManager.CanAfford(_index);
+            offerButton.EnableButton(canAfford);
         }
     }
 }

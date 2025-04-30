@@ -61,6 +61,20 @@ namespace ShopPack
                 Instance._offers[i] = Instance.CreateOffer();
             }
         }
+        
+        public static void BuyItem(int offerIndex)
+        {
+            Instance._offers[offerIndex].Buy();
+            PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.COIN, -Instance._offers[offerIndex].Price);
+            Instance._offers[offerIndex] = null;
+        }
+
+        public static bool CanAfford(int offerIndex)
+        {
+            var offer = Instance._offers[offerIndex];
+            if (offer == null) return false;
+            return PlayerCollectibleManager.GetCollectibleCount(PlayerCollectibleManager.ECollectibleType.COIN) >= offer.Price;
+        }
 
         private ShopOffer CreateOffer()
         {
@@ -82,16 +96,6 @@ namespace ShopPack
             return Mathf.CeilToInt(price * stagePriceMultiplier * StageCount);
         }
 
-        public static bool BuyItem(int index)
-        {
-            var success = Instance._offers[index].Buy();
-            if (!success) return false;
-            
-            PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.COIN, -Instance._offers[index].Price);
-            Instance._offers[index] = null;
-            return true;
-        }
-
         public class ShopOffer
         {
             public readonly SoItem Item;
@@ -105,15 +109,9 @@ namespace ShopPack
                 Param = param;
             }
 
-            public bool Buy()
+            public void Buy()
             {
-                if (Item.ItemType != EItemType.WorldOnlyItem && PlayerManager.PlayerItemManager.IsFull()) return false;
-
-                var coinCount = PlayerCollectibleManager.GetCollectibleCount(PlayerCollectibleManager.ECollectibleType.COIN); 
-                if (coinCount < Price) return false;
-                
                 Item.OnPickUp(Param);
-                return true;
             }
         }
     }

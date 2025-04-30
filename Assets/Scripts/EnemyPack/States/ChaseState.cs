@@ -10,12 +10,12 @@ namespace EnemyPack.States
     public class ChaseState : StateBase
     {
         private readonly ChaseStateData _data;
-        private readonly StateBase _inRangeState;
-        private readonly StateBase _outOfRangeState;
+        private readonly Func<StateBase> _inRangeState;
+        private readonly Func<StateBase> _outOfRangeState;
         
         private Transform _transform;
 
-        public ChaseState(SoEnemy enemyData, StateBase inRangeState, StateBase outOfRangeStateBase = null) : base(enemyData)
+        public ChaseState(SoEnemy enemyData, Func<StateBase> inRangeState, Func<StateBase> outOfRangeStateBase = null) : base(enemyData)
         {
             _data = enemyData.GetStateData<ChaseStateData>();
             _inRangeState = inRangeState;
@@ -60,11 +60,11 @@ namespace EnemyPack.States
 
             if (_outOfRangeState != null && !InRange(state, _data.ChaseStopRange))
             {
-                state.SwitchState(_outOfRangeState);
+                state.SwitchState(_outOfRangeState.Invoke());
                 return;
             }
 
-            if (InRange(state, _data.ChaseDetectionRange)) state.SwitchState(_inRangeState);
+            if (InRange(state, _data.ChaseDetectionRange)) state.SwitchState(_inRangeState.Invoke());
         }
 
 

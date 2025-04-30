@@ -5,7 +5,7 @@ using EnemyPack.States.StateData;
 
 namespace EnemyPack.States.RootStates
 {
-    public class BatMain : RootStateBase
+    public sealed class BatMain : RootStateBase
     {
         protected override StateBase GoToState => _chaseState;
         private readonly ChaseState _chaseState;
@@ -15,7 +15,7 @@ namespace EnemyPack.States.RootStates
             if (data == null) return;
             
             var meleeAttackState = new MeleeAttackState(data);
-            _chaseState = new ChaseState(data, meleeAttackState);
+            _chaseState = new ChaseState(data, () => meleeAttackState);
         }
 
         public override List<Type> RequiredDataTypes => new()

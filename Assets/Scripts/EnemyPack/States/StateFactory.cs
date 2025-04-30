@@ -15,7 +15,11 @@ namespace EnemyPack.States
             { EEnemyBehaviour.Golem, enemy => new GolemMain(enemy) },
             { EEnemyBehaviour.BatSmallShoot, enemy => new BatSmallShootMain(enemy) },
             { EEnemyBehaviour.Monument, enemy => new MonumentMain(enemy) },
-            { EEnemyBehaviour.Bat, enemy => new BatMain(enemy) }
+            { EEnemyBehaviour.Bat, enemy => new BatMain(enemy) },
+            { EEnemyBehaviour.StoneMan, enemy => new StoneManMain(enemy) },
+            { EEnemyBehaviour.Crab, enemy => new CrabMain(enemy) },
+            { EEnemyBehaviour.Brain, enemy => new BrainMain(enemy) },
+            { EEnemyBehaviour.Face, enemy => new FaceMain(enemy) },
         };
 
         public static RootStateBase GetState(EEnemyBehaviour behaviour, SoEnemy data)

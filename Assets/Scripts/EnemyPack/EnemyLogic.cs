@@ -83,10 +83,14 @@ namespace EnemyPack
             
             _enemyHealthBar.Setup(SpriteRenderer);
             
+            SpriteRenderer.enabled = true;
+        }
+
+        public void SetPosition(Vector2 spawnPos)
+        {
+            transform.position = spawnPos;
             _currentState = StateFactory.GetState(EnemyData.EnemyBehaviour, EnemyData);
             _currentState.Enter(this, _currentState);
-            
-            SpriteRenderer.enabled = true;
         }
 
         public override void OnRelease()
@@ -101,7 +105,7 @@ namespace EnemyPack
         {
             base.InvokeUpdate();
             
-            animator.speed = Stuned ? 0 : Slowed ? 0.5f : 1;
+            animator.speed = Stuned ? 0 : Slowed ? EnemyData.AnimationSpeed / 2f : EnemyData.AnimationSpeed;
             if (Dead || (Stuned && _currentState.CanBeStunned) || !Active) return;
 
             if (_pushTime > 0)
@@ -128,6 +132,7 @@ namespace EnemyPack
         {
             if (state == _currentState) return false;
             
+            _currentState.Exit(this);
             state.Enter(this, _currentState);
             _currentState = state;
             return true;
@@ -143,6 +148,8 @@ namespace EnemyPack
 
         public override void GetDamaged(int value, Color? color = null)
         {
+            if (Invincible) return;
+            
             base.GetDamaged(value, color);
             
             AudioManager.PlaySound(ESoundType.EnemyHurt);

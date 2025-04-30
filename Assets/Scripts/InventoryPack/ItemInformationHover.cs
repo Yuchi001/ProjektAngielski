@@ -28,22 +28,12 @@ namespace InventoryPack
             _cameraMain = Camera.main;
             itemImage.sprite = inventoryItem.ItemSprite;
             nameField.text = inventoryItem.ItemName;
-            levelField.text = LevelToStr(level);
+            levelField.text = level.ToString();
             descriptionField.text = inventoryItem.ItemDescription;
             categoriesField.text = CategoriesToString(inventoryItem.ItemTags);
             transform.SetPositionToMousePos(_cameraMain);
             
             gameObject.SetActive(true);
-        }
-
-        private static string LevelToStr(int level)
-        {
-            var builder = new StringBuilder();
-            for (var i = 0; i < level; i++)
-            {
-                builder.Append("I");
-            }
-            return builder.ToString();
         }
 
         private static string CategoriesToString(List<EItemTag> tags)

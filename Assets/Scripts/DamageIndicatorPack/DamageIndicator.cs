@@ -12,8 +12,8 @@ namespace DamageIndicatorPack
         [SerializeField] private TextMeshProUGUI damageText;
         [SerializeField] private float lifeTime = 0.3f;
         [SerializeField] private Animator animator;
-        
-        private const string DAMAGE_INDICATOR_TIMER_ID = "DAMAGE_INDICATOR_TIMER_ID";
+
+        private float _timer = 0;
 
         private IndicatorManager _poolManager;
 
@@ -39,13 +39,14 @@ namespace DamageIndicatorPack
             damageText.color = color;
             
             OnGet(null);
-            
-            SetTimer(DAMAGE_INDICATOR_TIMER_ID);
+
+            _timer = 0;
         }
 
         public override void InvokeUpdate()
         {
-            if (CheckTimer(DAMAGE_INDICATOR_TIMER_ID) < lifeTime) return;
+            _timer += deltaTime;
+            if (_timer < lifeTime) return;
             
             _poolManager.ReleasePoolObject(this);
         }

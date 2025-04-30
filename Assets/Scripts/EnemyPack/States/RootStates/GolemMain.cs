@@ -5,7 +5,7 @@ using EnemyPack.States.StateData;
 
 namespace EnemyPack.States.RootStates
 {
-    public class GolemMain : RootStateBase
+    public sealed class GolemMain : RootStateBase
     {
         protected override StateBase GoToState => _chaseState;
         private readonly ChaseState _chaseState;
@@ -15,7 +15,7 @@ namespace EnemyPack.States.RootStates
             if (data == null) return;
             
             var attackState = new MeleeAttackState(data);
-            _chaseState = new ChaseState(data, attackState);
+            _chaseState = new ChaseState(data, () => attackState);
         }
        
         public override List<Type> RequiredDataTypes => new()

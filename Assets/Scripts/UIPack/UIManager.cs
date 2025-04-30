@@ -62,10 +62,10 @@ namespace UIPack
             return Instantiate(uiBase, Instance.mainCanvas);
         }
 
-        public void ChangeToWorldPos(string key, Vector2 position)
+        public static void ChangeToWorldPos(string key, Vector2 position)
         {
             var uiTransform = Instance.UIBaseList.First(r => r.Key == key).Script.transform;
-            uiTransform.SetParent(worldCanvas);
+            uiTransform.SetParent(Instance.worldCanvas);
             uiTransform.position = position;
         }
 

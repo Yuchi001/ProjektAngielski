@@ -1,4 +1,5 @@
-﻿using EnemyPack.SO;
+﻿using System;
+using EnemyPack.SO;
 using EnemyPack.States.StateData;
 using UnityEngine;
 using Utils;
@@ -11,9 +12,9 @@ namespace EnemyPack.States
         private Vector2 _currentDestination;
 
         private readonly PatrolStateData _data;
-        private readonly StateBase _newDestinationState;
+        private readonly Func<StateBase> _newDestinationState;
 
-        public PatrolState(SoEnemy data, StateBase newDestinationState = null) : base(data)
+        public PatrolState(SoEnemy data, Func<StateBase> newDestinationState = null) : base(data)
         {
             _newDestinationState = newDestinationState;
             _data = data.GetStateData<PatrolStateData>();
@@ -33,7 +34,7 @@ namespace EnemyPack.States
             if (!enemyTransform.InRange(_currentDestination, 0.15f)) return;
 
             _currentDestination = enemyTransform.RandomPointInRange(_startPos, _data.PatrolRange);
-            if (_newDestinationState != null) state.SwitchState(_newDestinationState);
+            if (_newDestinationState != null) state.SwitchState(_newDestinationState.Invoke());
         }
 
         public override void Reset(EnemyLogic state)

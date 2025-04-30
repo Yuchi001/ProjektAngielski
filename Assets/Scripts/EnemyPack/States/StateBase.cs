@@ -24,22 +24,15 @@ namespace EnemyPack.States
         {
             return state.EnemyData.SpriteRotation;
         }
+
+        public virtual void Exit(EnemyLogic state)
+        {
+            
+        }
         
         public StateBase(SoEnemy data)
         {
             
-        }
-
-        public T SetCanBePushed<T>(bool canBePushed) where T : StateBase
-        {
-            CanBePushed = canBePushed;
-            return (T)this;
-        }
-        
-        public T SetCanBeStunned<T>(bool canBeStunned) where T : StateBase
-        {
-            CanBeStunned = canBeStunned;
-            return (T)this;
         }
         
         protected bool InRange(CanBeDamaged state, float? range = null)

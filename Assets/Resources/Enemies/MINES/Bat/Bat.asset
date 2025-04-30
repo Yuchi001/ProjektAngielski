@@ -30,7 +30,7 @@ MonoBehaviour:
   sprite: {fileID: 1619251684, guid: 1d7d354870386c24496a0e87454841fc, type: 3}
   walkingAnimationClip: {fileID: 7400000, guid: 143209ca4790ad24ba6c3a6152c34e1b, type: 2}
   maxHealth: 50
-  bodyScale: 0.5
+  bodyScale: 1
   animationSpeed: 1
   difficulty: 3
   occurenceList: 00000000
