@@ -59,7 +59,7 @@ namespace EnemyPack.States
             var separation = Vector2.zero;
             var minSeparationDistance = 1.5f;
 
-            foreach (var poolObj in WorldGeneratorManager.EnemySpawner.GetActiveEnemies())
+            foreach (var poolObj in EnemyManager.GetActiveEnemies())
             {
                 if (poolObj.gameObject == state.transform.gameObject) continue;
 

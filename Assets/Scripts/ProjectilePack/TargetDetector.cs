@@ -69,7 +69,7 @@ namespace ProjectilePack
 
         private void ManageEnemies()
         {
-            foreach (var hit in WorldGeneratorManager.EnemySpawner.GetActiveEnemies())
+            foreach (var hit in EnemyManager.GetActiveEnemies())
             {
                 if (hit is not CanBeDamaged canBeDamaged) continue;
                 ManageTarget(canBeDamaged);
@@ -100,7 +100,7 @@ namespace ProjectilePack
         public static List<EnemyLogic> EnemiesInRange(Vector2 center, float range)
         {
             var enemiesInRange = new List<EnemyLogic>();
-            foreach (var hit in WorldGeneratorManager.EnemySpawner.GetActiveEnemies())
+            foreach (var hit in EnemyManager.GetActiveEnemies())
             {
                 if (hit is not EnemyLogic enemyLogic || !IsInHitRange(enemyLogic, center, range)) continue;
                 enemiesInRange.Add(enemyLogic);
@@ -113,7 +113,7 @@ namespace ProjectilePack
         {
             var enemiesInArea = new List<EnemyLogic>();
 
-            foreach (var enemy in WorldGeneratorManager.EnemySpawner.GetActiveEnemies())
+            foreach (var enemy in EnemyManager.GetActiveEnemies())
             {
                 if (enemy is not EnemyLogic canBeDamaged)
                     continue;

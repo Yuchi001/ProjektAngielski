@@ -1,4 +1,5 @@
-﻿using EnemyPack.SO;
+﻿using EnemyPack;
+using EnemyPack.SO;
 using UnityEngine;
 using WorldGenerationPack;
 
@@ -10,7 +11,7 @@ namespace StructurePack.SO
         [SerializeField] private SoEnemy mimicEnemy;
         public override bool OnInteract(StructureBase structureBase)
         { 
-            WorldGeneratorManager.EnemySpawner.SpawnEnemy(mimicEnemy, structureBase.transform.position);
+            EnemyManager.SpawnEnemy(mimicEnemy, structureBase.transform.position);
             Destroy(structureBase.gameObject);
             return true;
         }

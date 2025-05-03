@@ -1,6 +1,5 @@
-﻿using EnchantmentPack.EnchantmentLogic;
+﻿using EnchantmentPack.EnchantmentUIStrategy;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace EnchantmentPack.SO
 {
@@ -18,6 +17,13 @@ namespace EnchantmentPack.SO
 
         public abstract string GetDescription();
 
-        public abstract EnchantmentLogicBase GetLogicPrefab();
+        public virtual void OnApply(EnchantmentLogic enchantmentLogic) {}
+        public virtual void OnUpdate(EnchantmentLogic enchantmentLogic) {}
+        public virtual void OnRemove(EnchantmentLogic enchantmentLogic) {}
+
+        public virtual void HandleDisplayStrategy(EnchantmentItemAccessor accessor, EnchantmentLogic logic)
+        {
+            // IGNORE
+        }
     }
 }

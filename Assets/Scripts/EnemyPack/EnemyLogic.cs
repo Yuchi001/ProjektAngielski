@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AudioPack;
 using DamageIndicatorPack;
@@ -11,10 +10,8 @@ using InventoryPack.WorldItemPack;
 using Managers.Enums;
 using Other;
 using PlayerPack;
-using PlayerPack.PlayerEnchantmentPack;
 using PoolPack;
 using UnityEngine;
-using WorldGenerationPack;
 
 namespace EnemyPack
 {
@@ -98,7 +95,7 @@ namespace EnemyPack
             base.OnRelease();
 
             if (_enemySpawner == null) return;
-            _enemySpawner.IncrementDeadEnemies(this, EnemyData);
+            EnemyManager.RegisterEnemyDeath(this);
         }
 
         public override void InvokeUpdate()
@@ -167,16 +164,11 @@ namespace EnemyPack
             WorldItemManager.SpawnSouls(transform.position, EnemyData.GetSoulDropCount());
             var scrapCount = EnemyData.GetScrapDropCount();
             if (scrapCount > 0) WorldItemManager.SpawnScraps(transform.position, scrapCount);
-            WorldGeneratorManager.EnemySpawner.IncrementDeadEnemies(this, EnemyData);
 
             base.OnDie(destroyObj, _enemySpawner);
         }
 
-        public void DieWithoutGem()
-        {
-            WorldGeneratorManager.EnemySpawner.IncrementDeadEnemies(this, EnemyData);
-            base.OnDie();
-        }
+        public void DieWithoutGem() => base.OnDie();
         
         //TODO: Dash kill mechanic on player
     }

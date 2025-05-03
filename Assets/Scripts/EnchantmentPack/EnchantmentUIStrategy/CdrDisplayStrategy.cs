@@ -1,20 +1,19 @@
-﻿using System;
-using System.Globalization;
-using EnchantmentPack.EnchantmentLogic;
+﻿using System.Globalization;
+using EnchantmentPack.SO;
 using UnityEngine;
 
 namespace EnchantmentPack.EnchantmentUIStrategy
 {
     public sealed class CdrDisplayStrategy : EnchantmentDisplayStrategy
     {
-        private CooldownEnchantmentLogic _logic;
+        private SoCooldownEnchantment.CooldownData _data;
         private EnchantmentItemAccessor _accessor;
         
-        public override void SetLogic(EnchantmentLogicBase logicBase, EnchantmentItemAccessor uiAccessor)
+        public override void SetDisplayData(EnchantmentLogic logicBase, EnchantmentItemAccessor uiAccessor)
         {
-            base.SetLogic(logicBase, uiAccessor);
+            base.SetDisplayData(logicBase, uiAccessor);
             _accessor = uiAccessor;
-            _logic = (CooldownEnchantmentLogic)logicBase;
+            _data = logicBase.GetData<SoCooldownEnchantment.CooldownData>();
             
             uiAccessor.MainText.gameObject.SetActive(true);
             uiAccessor.SecondaryImage.gameObject.SetActive(true);
@@ -25,7 +24,7 @@ namespace EnchantmentPack.EnchantmentUIStrategy
 
         private void Update()
         {
-            var percentage = _logic.CooldownPercentage;
+            var percentage = _data.GetPercentage();
             if (percentage >= 0.99f)
             {
                 _accessor.MainText.text = "";

@@ -1,27 +1,33 @@
-﻿using EnchantmentPack.EnchantmentLogic;
+﻿using System;
+using EnchantmentPack.SO;
 
 namespace EnchantmentPack.EnchantmentUIStrategy
 {
     public sealed class StackDisplayStrategy : EnchantmentDisplayStrategy
     {
+        private int _currentStacks = 0;
+        private SoStackEnchantment.StackData _data;
         private EnchantmentItemAccessor _accessor;
         
-        public override void SetLogic(EnchantmentLogicBase logicBase, EnchantmentItemAccessor uiAccessor)
+        public override void SetDisplayData(EnchantmentLogic logicBase, EnchantmentItemAccessor uiAccessor)
         {
-            base.SetLogic(logicBase, uiAccessor);
+            base.SetDisplayData(logicBase, uiAccessor);
 
-            var stackEnchantmentLogic = (StackEnchantmentLogic)logicBase;
+            _data = logicBase.GetData<SoStackEnchantment.StackData>();
             _accessor = uiAccessor;
             
             uiAccessor.CornerText.gameObject.SetActive(true);
             uiAccessor.CornerText.text = "0";
-            
-            stackEnchantmentLogic.Subscribe(OnStacksChange);
+            _currentStacks = 0;
         }
 
-        private void OnStacksChange(int newValue)
+        private void Update()
         {
-            _accessor.CornerText.text = newValue.ToString();
+            var newStackCount = _data.StackCount;
+            if (_currentStacks == newStackCount) return;
+
+            _currentStacks = newStackCount;
+            _accessor.CornerText.text = newStackCount.ToString();
         }
     }
 }

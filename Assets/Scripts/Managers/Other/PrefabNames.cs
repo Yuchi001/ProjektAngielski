@@ -31,5 +31,6 @@
         public const string MinimapManager = "MinimapManager";
         public const string OfferWindow = "OfferWindow";
         public const string DisplayMissionUI = "DisplayMissionUI";
+        public const string EnchantmentLogic = "EnchantmentLogic";
     }
 }

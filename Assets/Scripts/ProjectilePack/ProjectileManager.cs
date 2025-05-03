@@ -34,6 +34,8 @@ namespace ProjectilePack
             return _pool.Get() as T;
         }
 
+        public static int CountActive => Instance._pool.CountActive;
+
         public override void ReleasePoolObject(PoolObject poolObject)
         {
             if (!poolObject.Active) return;

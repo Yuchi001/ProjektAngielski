@@ -1,4 +1,5 @@
 ﻿using PlayerPack.Interface;
+using UnityEngine;
 
 namespace PlayerPack.Decorators
 {
@@ -14,7 +15,7 @@ namespace PlayerPack.Decorators
 
         public void ModifyHealContext(HealContext healContext)
         {
-            healContext.ModifyValue((int)(value * healContext.Value));
+            healContext.ModifyValue(Mathf.CeilToInt(value * healContext.Value));
         }
     }
 }

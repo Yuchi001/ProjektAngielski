@@ -30,7 +30,7 @@ namespace EnemyPack.States
             var direction = ((Vector2)position - PlayerPos).normalized;
 
             var separation = Vector2.zero;
-            foreach (var poolObj in WorldGeneratorManager.EnemySpawner.GetActiveEnemies())
+            foreach (var poolObj in EnemyManager.GetActiveEnemies())
             {
                 if (poolObj.gameObject == _transform.gameObject) continue;
                 var pushAway = (Vector2)(_transform.position - poolObj.transform.position);

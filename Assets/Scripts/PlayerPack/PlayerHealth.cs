@@ -56,10 +56,8 @@ namespace PlayerPack
             Invincible = false;
         }
 
-        private IEnumerator Start()
+        public void Setup()
         {
-            yield return new WaitUntil(() => PlayerStatsManager != null);
-            
             _currentHealth = MaxHealth;
         }
 

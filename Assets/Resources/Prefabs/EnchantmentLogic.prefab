@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3911032320257114304
+--- !u!1 &4575043424713462875
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8421815704096918212}
-  - component: {fileID: 2197494518264478672}
+  - component: {fileID: 6525970339319308040}
+  - component: {fileID: 4683434835728189923}
   m_Layer: 0
-  m_Name: DashStackEnchantment
+  m_Name: EnchantmentLogic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8421815704096918212
+--- !u!4 &6525970339319308040
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3911032320257114304}
+  m_GameObject: {fileID: 4575043424713462875}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.92065936, y: -2.1430368, z: -0.14749597}
+  m_LocalPosition: {x: -3.5391457, y: -4.2744946, z: 1.1894058}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2197494518264478672
+--- !u!114 &4683434835728189923
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3911032320257114304}
+  m_GameObject: {fileID: 4575043424713462875}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a16196736dc4e1b87d263b9ef57aeec, type: 3}
+  m_Script: {fileID: 11500000, guid: 2655656f20ca460e831fdb32ed0b859b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

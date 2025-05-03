@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EnchantmentPack.EnchantmentLogic;
+using EnchantmentPack;
 using EnchantmentPack.SO;
+using Managers;
+using Managers.Other;
 using UnityEngine;
 
 namespace PlayerPack.PlayerEnchantmentPack
@@ -11,18 +13,21 @@ namespace PlayerPack.PlayerEnchantmentPack
     {
         private static PlayerEnchantments Instance => PlayerManager.PlayerEnchantments;
 
-        private readonly Dictionary<string, EnchantmentLogicBase> _spawnedEnchantments = new();
+        private readonly Dictionary<string, EnchantmentLogic> _spawnedEnchantments = new();
         private Dictionary<string, Stack<SoEnchantment>> _enchantmentPool;
 
-        public delegate void AddEnchantmentDelegate(EnchantmentLogicBase logic);
+        public delegate void AddEnchantmentDelegate(EnchantmentLogic logic);
         public static AddEnchantmentDelegate OnAddEnchantment;
         
         public delegate void RemoveEnchantmentDelegate(string enchantmentName);
         public static RemoveEnchantmentDelegate OnRemoveEnchantment;
 
+        private EnchantmentLogic _enchantmentLogicPrefab;
+
         private void Awake()
         {
             _enchantmentPool = new Dictionary<string, Stack<SoEnchantment>>();
+            _enchantmentLogicPrefab = GameManager.GetPrefab<EnchantmentLogic>(PrefabNames.EnchantmentLogic);
 
             var allEnchantments = Resources.LoadAll<SoEnchantment>("Enchantments").ToList();
 
@@ -77,17 +82,17 @@ namespace PlayerPack.PlayerEnchantmentPack
             }
 
             var top = stack.Pop();
-            var logic = Instantiate(top.GetLogicPrefab());
+            var logic = Instantiate(Instance._enchantmentLogicPrefab);
 
             var success = Instance._spawnedEnchantments.TryAdd(top.Name, logic);
             if (!success)
             {
                 OnRemoveEnchantment?.Invoke(top.Name); // invoke before actually deleting enchant so logic script will not be null
-                Instance._spawnedEnchantments[top.Name].RemoveEnchantment();
+                Instance._spawnedEnchantments[top.Name].Remove();
                 Instance._spawnedEnchantments[top.Name] = logic;
             }
 
-            logic.ApplyEnchantment(top); // apply before event, because we need initialization before subscribers can access enchantment
+            logic.Add(top); // apply before event, because we need initialization before subscribers can access enchantment
             OnAddEnchantment?.Invoke(logic);
             
             if (stack.Count == 0) Instance._enchantmentPool.Remove(enchantmentName);

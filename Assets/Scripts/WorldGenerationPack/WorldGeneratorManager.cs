@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EnemyPack;
 using GameLoaderPack;
@@ -14,7 +13,7 @@ using StructurePack.SO;
 using UIPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
-using UnityEngine;
+using UnityEngine; 
 using UnityEngine.Tilemaps;
 using Utils;
 using Random = UnityEngine.Random;
@@ -30,7 +29,6 @@ namespace WorldGenerationPack
         
         private static WorldGeneratorManager Instance { get; set; }
         public static MinimapManager MinimapManager { get; private set; }
-        public static EnemySpawner EnemySpawner { get; private set; }
         private const string MINIMAP_UI_KEY = "MINIMAP_UI_KEY";
 
         private void Awake()
@@ -93,9 +91,7 @@ namespace WorldGenerationPack
             PlayerManager.SetPosition(randomVision.transform.position);
             MinimapManager.RenderOnMinimap("MAIN_PLAYER", new FollowRenderStrategy(PlayerManager.GetTransform(), PlayerManager.PickedCharacter.CharacterIcon));
 
-            var spawnerPrefab = missionData.SpawnerPrefab;
-            EnemySpawner = Instantiate(spawnerPrefab, transform);
-            EnemySpawner.Setup(missionData);
+            EnemyManager.SetCurrentSpawner(missionData);
         }
         
         private List<Vector2Int> PlaceVision(Vector2Int worldSize,  IEnumerable<Vector2Int> exceptList)

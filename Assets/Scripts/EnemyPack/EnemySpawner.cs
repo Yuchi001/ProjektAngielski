@@ -28,12 +28,7 @@ namespace EnemyPack
 
         private List<SoEnemy> _allEnemies = new();
 
-        public delegate void EnemyDieDelegate(EnemyLogic enemyLogic);
-        public static event EnemyDieDelegate OnEnemyDie;
-
         private ObjectPool<EnemyLogic> _enemyPool;
-        
-        public int DeadEnemies { get; private set; }
         
         private MapManager.MissionData _currentMission;
         
@@ -51,10 +46,7 @@ namespace EnemyPack
             _allEnemies = Resources.LoadAll<SoEnemy>("Enemies").Select(Instantiate).ToList();
             _allEnemies = _allEnemies.Where(e => e.OccurenceList.Contains(currentMission.RegionType)).ToList();
             _currentMission = currentMission;
-            
-            DeadEnemies = 0;
 
-            
             var enemyPrefab = GameManager.GetPrefab<EnemyLogic>(PrefabNames.Enemy);
             _enemyPool = PoolHelper.CreatePool(this, enemyPrefab, true);
             GameManager.EnqueueUnloadGameAction(() => ClearAll(_enemyPool));
@@ -100,12 +92,6 @@ namespace EnemyPack
             }
 
             return current;
-        }
-
-        public virtual void IncrementDeadEnemies(EnemyLogic enemyLogic, SoEnemy enemy)
-        {
-            OnEnemyDie?.Invoke(enemyLogic);
-            DeadEnemies++;
         }
 
         protected virtual void SpawnLogic()

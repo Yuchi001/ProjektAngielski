@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using EnchantmentPack;
-using EnchantmentPack.EnchantmentLogic;
 using Managers;
 using Managers.Other;
 using UIPack;
@@ -33,11 +32,11 @@ namespace PlayerPack.PlayerEnchantmentPack
             PlayerEnchantments.OnRemoveEnchantment -= OnRemoveEnchantment;
         }
 
-        private void OnEnchantmentAdd(EnchantmentLogicBase logic)
+        private void OnEnchantmentAdd(EnchantmentLogic logic)
         {
             var displayStrategy = Instantiate(_enchantmentItemAccessorPrefab, enchantmentContainer);
-            logic.AttachDisplayStrategy(displayStrategy);
-            _spawnedEnchantments.Add(logic.GetData.Name, displayStrategy);
+            logic.ApplyDisplayStrategy(displayStrategy);
+            _spawnedEnchantments.Add(logic.Enchantment.Name, displayStrategy);
             LayoutRebuilder.ForceRebuildLayoutImmediate(enchantmentContainer);
         }
 

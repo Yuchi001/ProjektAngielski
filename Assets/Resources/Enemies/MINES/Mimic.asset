@@ -35,7 +35,7 @@ MonoBehaviour:
   difficulty: 1
   occurenceList: 
   spriteRotation: 0
-  useCustomDropCount: 0
+  useCustomDropCount: 1
   soulDropCount:
     min: 0
     max: 0
@@ -75,6 +75,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useFreezeSprite: 1
+  invincible: 0
   freezeSprite: {fileID: 21300000, guid: d1c613ea31047d04d814e3f2c3058c68, type: 3}
   freezeDetectionRange: 1
-  isInvincibleDuringFreeze: 1

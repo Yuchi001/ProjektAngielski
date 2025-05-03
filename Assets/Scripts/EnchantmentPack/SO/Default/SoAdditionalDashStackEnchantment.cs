@@ -1,5 +1,4 @@
-﻿using EnchantmentPack.EnchantmentLogic;
-using EnchantmentPack.EnchantmentLogic.Default;
+﻿using PlayerPack;
 using UnityEngine;
 
 namespace EnchantmentPack.SO.Default
@@ -7,16 +6,21 @@ namespace EnchantmentPack.SO.Default
     [CreateAssetMenu(fileName = "new AdditionalDashStackEnchantment", menuName = "Custom/Enchantments/DashStack")]
     public class SoAdditionalDashStackEnchantment : SoEnchantment
     {
-        [SerializeField] private AdditionalDashStackEnchantmentLogic logicPrefab;
-        
         public override string GetDescription()
         {
             return Description;
         }
 
-        public override EnchantmentLogicBase GetLogicPrefab()
+        public override void OnApply(EnchantmentLogic enchantmentLogic)
         {
-            return logicPrefab;
+            base.OnApply(enchantmentLogic);
+            PlayerManager.PlayerMovement.AddDashStack();
+        }
+
+        public override void OnRemove(EnchantmentLogic enchantmentLogic)
+        {
+            base.OnApply(enchantmentLogic);
+            PlayerManager.PlayerMovement.AddDashStack(-1);
         }
     }
 }

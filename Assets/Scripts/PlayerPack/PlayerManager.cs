@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EnemyPack;
 using ItemPack;
 using ItemPack.Enums;
 using Managers;
@@ -165,6 +166,7 @@ namespace PlayerPack
             Instance._pickedCharacter = newCharacter;
             Instance.playerSpriteRenderer.sprite = PickedCharacter.CharacterSprite;
             PlayerStatsManager.SetCharacter(newCharacter);
+            PlayerHealth.Setup();
 
             Instance.animator.SetCharacterAnimations(newCharacter);
             PlayerItemManager.CleanInventory();
@@ -215,7 +217,7 @@ namespace PlayerPack
         public static void StartPlayerExitSequence(Action rewardPlayerAction)
         {
             //TODO: portal open audio
-            WorldGeneratorManager.EnemySpawner.StopSpawning();
+            EnemyManager.StopSpawning();
             rewardPlayerAction.Invoke();
         }
 

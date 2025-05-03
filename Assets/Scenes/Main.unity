@@ -156,8 +156,8 @@ MonoBehaviour:
   enemiesHpScalePerSecond: 0.01
   spawnRate:
     min: 0.5
-    max: 4
-  spawnRatePerSeconds: 0.01
+    max: 1.5
+  spawnRatePerSeconds: 0.0001
 --- !u!4 &21715228
 Transform:
   m_ObjectHideFlags: 0
@@ -821,6 +821,50 @@ Canvas:
   m_SortingLayerID: -1894480037
   m_SortingOrder: 1
   m_TargetDisplay: 0
+--- !u!1 &1188747286
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1188747288}
+  - component: {fileID: 1188747287}
+  m_Layer: 0
+  m_Name: EnemyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1188747287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188747286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 729d07eb34244b9a96d79e336ca095dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1188747288
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188747286}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.5391457, y: -4.2744946, z: 1.1894058}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1246294617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1283,6 +1327,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7307024760713697914, guid: 117aa2273c8e42543a0116c5a1ca65b6, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8560034769882968070, guid: 117aa2273c8e42543a0116c5a1ca65b6, type: 3}
       propertyPath: m_Name
       value: CameraFollow
@@ -1351,3 +1399,4 @@ SceneRoots:
   - {fileID: 147836248}
   - {fileID: 21715228}
   - {fileID: 1382204876}
+  - {fileID: 1188747288}
