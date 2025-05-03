@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 303ad9df09f541778a51541999e44895, type: 3}
+  m_Name: PlainsRegion
+  m_EditorClassIdentifier: 
+  regionType: 1
+  regionTheme: 1
+  structures:
+  - structure: {fileID: 11400000, guid: f30d9f681a327fc4d82283fe672a159e, type: 2}
+    countPerSquare:
+      min: 0.01
+      max: 0.005
+  - structure: {fileID: 11400000, guid: d44a612a9d19e544fa2259f2bd617209, type: 2}
+    countPerSquare:
+      min: 0.01
+      max: 0.005
+  uniqueEffects: []
+  uniqueSpawner: {fileID: 2460370905230009043, guid: 0e8a7dde9c78aa741bb50ed18f5fa55c, type: 3}
+  soulCountPerDiff:
+    min: 20
+    max: 40
+  soulCountBase:
+    min: 10
+    max: 20
+  coinRewardPerDiff:
+    min: 10
+    max: 20
+  coinRewardBase:
+    min: 30
+    max: 60
+  difficultyScalingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.6
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  tileVariants:
+  - {fileID: 11400000, guid: 5790d48ae02ec284f896262898eec08a, type: 2}
+  - {fileID: 11400000, guid: 6aee4b7513310044cae705d38491ebf8, type: 2}
+  - {fileID: 11400000, guid: 9ca989bdf68397644b7e0e933e12b1ce, type: 2}
+  - {fileID: 11400000, guid: 7d39d6cf089a1744e9ee197b36907df9, type: 2}
+  - {fileID: 11400000, guid: d0639289e3349f643a4a2997b5db124a, type: 2}
+  - {fileID: 11400000, guid: 695b7fff265f3a04fa63648a7b03f6c9, type: 2}
+  bottomTile: {fileID: 11400000, guid: c66474dfe3cd05a4898b189e373b858e, type: 2}
+  topTile: {fileID: 11400000, guid: 9125735a0dfd29243a995a8b76100a1f, type: 2}
+  leftTile: {fileID: 11400000, guid: b937964c8a777bc48904a0749678f87c, type: 2}
+  rightTile: {fileID: 11400000, guid: f236ce1497f89c148955b9a9d4f6687d, type: 2}
+  topRightCornerTile: {fileID: 11400000, guid: b4f774a3ed66d86448388c0c6f8c6c9c, type: 2}
+  topLeftCornerTile: {fileID: 11400000, guid: 8a5aae9d7b59ea94ca17b02df1d58aea, type: 2}
+  bottomRightCornerTile: {fileID: 11400000, guid: 2aab8f8f6acdd68429dfa7d02737d741, type: 2}
+  bottomLeftCornerTile: {fileID: 11400000, guid: ee987af80ccfb49419458f23aab25aa5, type: 2}
+  averageWorldSizeX:
+    min: 15
+    max: 30
+  averageWorldSizeY:
+    min: 15
+    max: 30
+  backgroundSprite: {fileID: 232169588, guid: 2f82523736271b046ae94cc682d4d558, type: 3}

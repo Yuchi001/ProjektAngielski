@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4879993285280728702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25fb4ffda64e49b8b1aa22e011b3ee2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useFreezeSprite: 1
+  invincible: 1
+  freezeSprite: {fileID: 21300000, guid: 7a6507653ee218f429e9b60357a480df, type: 3}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
+  m_Name: Crab 4
+  m_EditorClassIdentifier: 
+  sprite: {fileID: -990082883, guid: c4868c995afcf77419421fb138e36f16, type: 3}
+  walkingAnimationClip: {fileID: 7400000, guid: 94cc08d260a12474eb0f02e3c0ce953c, type: 2}
+  maxHealth: 30
+  bodyScale: 1.5
+  animationSpeed: 1
+  difficulty: 6
+  occurenceList: 01000000
+  spriteRotation: 2
+  useCustomDropCount: 0
+  soulDropCount:
+    min: 0
+    max: 0
+  scrapDropCount:
+    min: 0
+    max: 0
+  statesData:
+  - {fileID: -4879993285280728702}
+  - {fileID: 8793582745867955836}
+  - {fileID: 376573898102611586}
+  enemyBehaviour: 7
+--- !u!114 &376573898102611586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b506d1152dea496995e674f3e7272731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseMovementSpeed: 3
+  chaseDetectionRange: 999
+  chaseStopRange: 999
+--- !u!114 &8793582745867955836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 322fd9c8fbc14a13b671ba774b1c7096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRange: 0.3
+  attackRate: 3
+  damage: 25

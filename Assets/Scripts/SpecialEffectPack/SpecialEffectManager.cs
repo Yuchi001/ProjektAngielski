@@ -1,53 +1,54 @@
 ﻿using System;
-using System.Collections.Generic;
+using Managers;
+using Managers.Other;
+using PoolPack;
 using SpecialEffectPack.Enums;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace SpecialEffectPack
 {
-    public class SpecialEffectManager : MonoBehaviour
+    public class SpecialEffectManager : PoolManager
     {
         #region Singleton
 
-        public static SpecialEffectManager Instance { get; private set; }
+        private static SpecialEffectManager Instance { get; set; }
 
         private void Awake()
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
+
+            var prefab = GameManager.GetPrefab<ExplosionAnimation>(PrefabNames.ExplosionBase);
+            _explosionPool = PoolHelper.CreatePool(this, prefab, false);
+            
+            PrepareQueue();
         }
 
         #endregion
-
-        [SerializeField] private List<ExplosionEffectData> explosionEffects = new();
-
-        private readonly Dictionary<ESpecialEffectType, GameObject> _effectDictionary = new();
         
-        private void Start()
+        private ObjectPool<ExplosionAnimation> _explosionPool;
+        
+        protected override T GetPoolObject<T>()
         {
-           explosionEffects.ForEach(e => _effectDictionary.Add(e.SpecialEffectType, e.ExplosionPrefab));            
+            return _explosionPool.Get() as T;
         }
 
-        public ExplosionAnimation SpawnExplosion(ESpecialEffectType specialEffectType, Vector2 position, float range)
+        public override void ReleasePoolObject(PoolObject poolObject)
         {
-            if (_effectDictionary.TryGetValue(specialEffectType, out var value))
-            {
-                var explosion = Instantiate(value, position, Quaternion.identity);
-                return explosion.GetComponent<ExplosionAnimation>().Trigger(range);
-            }
-            
-            Debug.LogError($"{specialEffectType} has not been defined!");
-            return null;
+            _explosionPool.Release(poolObject as ExplosionAnimation);
         }
 
-        [System.Serializable]
-        public struct ExplosionEffectData
+        private void Update()
         {
-            [SerializeField] private ESpecialEffectType specialEffectType;
-            [SerializeField] private GameObject explosionPrefab;
+            RunUpdatePoolStack();
+        }
 
-            public ESpecialEffectType SpecialEffectType => specialEffectType;
-            public GameObject ExplosionPrefab => explosionPrefab;
+        public static void SpawnExplosion(ESpecialEffectType specialEffectType, Vector2 position, float range, Color color = default)
+        {
+            var anim = Instance.GetPoolObject<ExplosionAnimation>();
+            anim.Setup(specialEffectType, range, color);
+            anim.transform.position = position;
         }
     }
 }

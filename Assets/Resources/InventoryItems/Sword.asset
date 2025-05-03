@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 602bfeddf230e9643b831c0703599da2, type: 3}
+  m_Name: Sword
+  m_EditorClassIdentifier: 
+  itemName: Sword
+  itemDescription: 
+  itemPrice: 1
+  itemSprite: {fileID: 21300000, guid: 962e9e936d4e0bd42bc6c82ceff146e2, type: 3}
+  itemTags: 0700000003000000
+  itemType: 0
+  customWorldLifeTime: 0
+  oneTimeSpawnLogic: 0
+  itemPrefab: {fileID: 2265100316909724686, guid: 311f0087cefd9f64b88b94b7f70dc9c7, type: 3}
+  startingStats:
+  - selfStatType: 5
+    statValue: 1
+    canUpgrade: 1
+    useMax: 1
+    useMin: 0
+    maximum: 3
+    minimum: 0
+    mod: 0.2
+  - selfStatType: 2
+    statValue: 10
+    canUpgrade: 1
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
+    mod: 2
+  - selfStatType: 1
+    statValue: 0
+    canUpgrade: 0
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
+    mod: 0
+  - selfStatType: 4
+    statValue: 1
+    canUpgrade: 0
+    useMax: 0
+    useMin: 0
+    maximum: 0
+    minimum: 0
+    mod: 0
+  - selfStatType: 3
+    statValue: 2
+    canUpgrade: 1
+    useMax: 1
+    useMin: 0
+    maximum: 3
+    minimum: 0
+    mod: 0.1

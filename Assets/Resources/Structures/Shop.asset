@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d954a9e82c21495aa27efd11fc9bdeb8, type: 3}
+  m_Name: Shop
+  m_EditorClassIdentifier: 
+  structureName: Shop
+  structureDescription: 
+  structureSprite: {fileID: 21300000, guid: b92c86e8de8231149aafb63efc8a74a8, type: 3}
+  activeSprite: {fileID: 0}
+  usedStructureSprite: {fileID: 0}
+  minimapIcon: {fileID: 0}
+  structureScale: 0.5
+  interactionLimit: 0
+  bottomHoverMessage: Open Shop
+  interactionDeclineMessage: 
+  usesUI: 1
+  visibleOnMinimap: 0
+  uIPrefabName: ShopUI

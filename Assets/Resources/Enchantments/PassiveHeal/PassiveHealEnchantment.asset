@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 168084c3ec7c4f65be28e2c0fcb84de7, type: 3}
+  m_Name: PassiveHealEnchantment
+  m_EditorClassIdentifier: 
+  enchantmentName: Passive Heal
+  enchantmentDescription: Heal $x$ max health each $y$ seconds.
+  enchantmentSprite: {fileID: 21300000, guid: b596927cb5273b0409cc077695c5698e, type: 3}
+  enchantmentLevel: 1
+  logicPrefab: {fileID: 3700286112164491694, guid: 52cb877c45abe404dac771e986647fa4, type: 3}
+  cooldown: 30
+  healthPercentage: 0.5

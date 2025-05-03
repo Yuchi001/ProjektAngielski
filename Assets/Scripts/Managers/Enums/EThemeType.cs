@@ -2,7 +2,9 @@
 {
     public enum EThemeType
     {
-        Main1,
+        Mines,
+        Volcano,
+        IceCave,
         Menu1,
     }
 }

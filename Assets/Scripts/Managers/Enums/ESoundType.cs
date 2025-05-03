@@ -15,6 +15,8 @@
         PoisonShare,
         BulletExplode,
         PowerUp,
-        HealOrb
+        HealOrb,
+        Coin,
+        ScrapWeapon
     }
 }

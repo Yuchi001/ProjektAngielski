@@ -2,6 +2,7 @@
 {
     public enum EEffectType
     {
+        None,
         Poison,
         Burn,
         Stun,

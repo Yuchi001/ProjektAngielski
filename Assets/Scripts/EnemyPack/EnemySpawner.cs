@@ -1,153 +1,186 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EnemyPack.CustomEnemyLogic;
+using DifficultyPack;
 using EnemyPack.SO;
-using ExpPackage.Enums;
 using Managers;
-using Managers.Base;
-using Managers.Enums;
+using Managers.Other;
+using MapPack;
+using MarkerPackage;
 using Other;
-using Other.Enums;
 using PlayerPack;
-using Unity.VisualScripting;
+using PoolPack;
 using UnityEngine;
+using UnityEngine.Pool;
+using Utils;
 using Random = UnityEngine.Random;
 
 namespace EnemyPack
 {
-    public class EnemySpawner : SpawnerBase
+    public abstract class EnemySpawner : PoolManager, IUseMarker
     {
-        [SerializeField] private float enemiesHpScaleMultiplierPerKill = 0.001f;
-        [SerializeField] private float enemiesHpScale = 1;
-        [SerializeField] private int maxEnemiesCount = 300;
-        [SerializeField] private GameObject enemyPrefab;
-        [Space(10)]
-        [SerializeField] private AnimationCurve enemySpawnRateCurve;
-        [SerializeField] private float enemySpawnRateMultiplierPerKill = 0.001f;
-        [SerializeField] private float enemySpawnRate;
-        [Space(10)]
-        [SerializeField, Tooltip("In seconds")] private int maximumDifficultyTimeCap = 3600;
-        [SerializeField] private List<GemRarityTuple> gemRarityList;
-        private static PlayerManager PlayerManager => GameManager.Instance.CurrentPlayer;
+        [SerializeField] private float maxDistanceFromPlayer = 60;
+        [SerializeField] private float standardDifficultyDeviation = 0.2f;
+        [SerializeField] private float _waitBeforeSpawn = 1.5f;
+        
+        private readonly Queue<SoEnemy> _despawnQueue = new();
+        private int _despawnCount = 0;
 
         private List<SoEnemy> _allEnemies = new();
 
-        public List<EnemyLogic> SpawnedEnemies
-        {
-            get
-            {
-                _spawnedEnemies.RemoveAll(e => e == null);
-                return _spawnedEnemies;
-            }
-            private set => _spawnedEnemies = value;
-        }
-
-        public int ShootingEnemiesCount { get; private set; } = 0;
-
-        private List<EnemyLogic> _spawnedEnemies = new();
-
-        private float _difficultyTimer = 0;
-
-        public delegate void EnemyDieDelegate(EnemyLogic enemyLogic);
-        public static event EnemyDieDelegate OnEnemyDie; 
- 
-        public int DeadEnemies { get; private set; }
-
-        public void IncrementDeadEnemies(EnemyLogic enemyLogic, SoEnemy enemy)
-        {
-            OnEnemyDie?.Invoke(enemyLogic);
-            DeadEnemies++;
-            if (enemy.CanShoot) ShootingEnemiesCount--;
-        }
-
-        private float EnemySpawnRate => enemySpawnRate + 1f * enemySpawnRateMultiplierPerKill * DeadEnemies;
-        protected override float MaxTimer => 1f / (enemySpawnRateCurve.Evaluate(_difficultyTimer / maximumDifficultyTimeCap) * EnemySpawnRate);
-        public float EnemiesHpScale => enemiesHpScale + Mathf.Pow(1f * DeadEnemies * enemiesHpScaleMultiplierPerKill, 2);
+        private ObjectPool<EnemyLogic> _enemyPool;
         
-        private IEnumerator Start()
-        {
-            yield return new WaitUntil(() => GameManager.Instance.MapGenerator != null);
-            
-            DeadEnemies = 0;
+        private MapManager.MissionData _currentMission;
+        
+        private float _progression = 0;
+        private float _timer = 0;
+        private float _waitTimer = 0;
+        
+        protected bool _spawn = false;
 
+        private float ScaledDifficulty => _currentMission.GetScaledDifficulty(_progression);
+        private float MaxTimer => 1f / DifficultyManager.GetEnemySpawnRate(ScaledDifficulty);
+
+        public virtual void Setup(MapManager.MissionData currentMission)
+        {
             _allEnemies = Resources.LoadAll<SoEnemy>("Enemies").Select(Instantiate).ToList();
-        }
+            _allEnemies = _allEnemies.Where(e => e.OccurenceList.Contains(currentMission.RegionType)).ToList();
+            _currentMission = currentMission;
 
-        protected override void Update()
-        {
-            base.Update();
-
-            if (_state == ESpawnerState.Stop) return;
-            _difficultyTimer += Time.deltaTime;
-        }
-
-        protected override void SpawnLogic()
-        {
-            if (GameObject.FindGameObjectsWithTag("Enemy").Length >= maxEnemiesCount || PlayerManager == null) return;
+            var enemyPrefab = GameManager.GetPrefab<EnemyLogic>(PrefabNames.Enemy);
+            _enemyPool = PoolHelper.CreatePool(this, enemyPrefab, true);
+            GameManager.EnqueueUnloadGameAction(() => ClearAll(_enemyPool));
+            PrepareQueue();
             
-            var enemySo = GetEnemy(false);
-            
-            SpawnEntity.InstantiateSpawnEntity()
-                .Setup(enemyPrefab)
-                .SetEntityType(EEntityType.Negative)
-                .SetScale(enemySo.BodyScale)
-                .SetSpawnAction((spawnedObj) => SetupEnemy(spawnedObj, enemySo))
-                .SetReady();
+            _spawn = true;
         }
 
-        private SoEnemy GetEnemy(bool isHorde)
+        protected virtual void Update()
         {
-            var validEnemies = _allEnemies.Where(e => e.IsHorde == isHorde).ToList();
-
-            var sum = gemRarityList.Sum(g => g.weight);
-            var randomInt = Random.Range(0, sum + 1) * (1 - Mathf.Clamp(_difficultyTimer / maximumDifficultyTimeCap, 0, 1));
-            var pickedGemType = EExpGemType.Common;
-            gemRarityList.Sort((a, b) => a.weight - b.weight);
-            foreach (var gemRarityTuple in gemRarityList)
+            while (_despawnCount > 0)
             {
-                if (randomInt <= gemRarityTuple.weight)
-                {
-                    pickedGemType = gemRarityTuple.gemType;
-                    break;
-                }
+                SpawnLogic();
+                _despawnCount--;
+            }
+            
+            _progression += Time.deltaTime;
+            RunUpdatePoolStack();
 
-                randomInt -= gemRarityTuple.weight;
+            if (!_spawn) return;
+            
+            if (_waitTimer < _waitBeforeSpawn)
+            {
+                _waitTimer += Time.deltaTime;
+                return;
             }
 
-            validEnemies = validEnemies.Where(e => e.ExpGemType == pickedGemType).ToList();
-            
-            return validEnemies.Count != 0 ? validEnemies[Random.Range(0, validEnemies.Count)] : _allEnemies[0];
+            _timer += Time.deltaTime;
+            if (_timer < MaxTimer) return;
+            _timer = 0;
+
+            SpawnLogic();
         }
 
-        private void SetupEnemy(GameObject enemyObj, SoEnemy enemy)
+        protected override PoolObject InvokeQueueUpdate()
         {
-            var enemyScript = enemyObj.GetComponent<EnemyLogic>();
-            var scale = enemy.BodyScale;
-            enemyObj.transform.localScale = new Vector3(scale, scale, scale);
-            
-            enemyScript.Setup(enemy, PlayerManager.transform, this);
-            SpawnedEnemies.Add(enemyScript);
-            if (enemy.CanShoot) ShootingEnemiesCount++;
+            var current = base.InvokeQueueUpdate();
+            if (!current.transform.InRange(PlayerManager.PlayerPos, maxDistanceFromPlayer))
+            {
+                _despawnQueue.Enqueue(current.As<EnemyLogic>().EnemyData);
+                _despawnCount++;
+                ReleasePoolObject(current);
+            }
+
+            return current;
         }
 
-        public void SpawnEnemy(SoEnemy enemy, Vector2 position)
+        protected virtual void SpawnLogic()
         {
-            var enemyObj = Instantiate(enemyPrefab, position, Quaternion.identity);
-            var enemyScript = enemyObj.GetComponent<EnemyLogic>();
-            var scale = enemy.BodyScale;
-            enemyObj.transform.localScale = new Vector3(scale, scale, scale);
-            
-            enemyScript.Setup(enemy, PlayerManager.transform, this);
-            SpawnedEnemies.Add(enemyScript);
-            if (enemy.CanShoot) ShootingEnemiesCount++;
-        }
-    }
+            if (!PlayerManager.HasInstance() || _enemyPool == null) return;
 
-    [System.Serializable]
-    public class GemRarityTuple
-    {
-        public EExpGemType gemType;
-        public int weight;
+            MarkerManager.SpawnMarker(this);
+        }
+
+        public virtual void StopSpawning()
+        {
+            _spawn = false;
+        }
+
+        public virtual void SpawnEnemy(SoEnemy enemy, Vector2 position)
+        {
+            var enemyObj = _enemyPool.Get();
+            enemyObj.OnGet(enemy);
+            enemyObj.SetPosition(position);
+        }
+
+        public virtual void SpawnRandomEntity(Vector2 position)
+        {
+            SpawnEnemy(GetRandomPoolData() as SoEnemy, position);
+        }
+
+        public virtual Color GetMarkerColor()
+        {
+            return Color.red;
+        }
+
+        public List<PoolObject> GetActiveEnemies()
+        {
+            return ActiveObjects;
+        }
+
+        protected override T GetPoolObject<T>()
+        {
+            return _enemyPool.Get() as T;
+        }
+
+        public override void ReleasePoolObject(PoolObject poolObject)
+        {
+            if (!poolObject.Active) return;
+            _enemyPool.Release(poolObject as EnemyLogic);
+        }
+
+        public override SoPoolObject GetRandomPoolData()
+        {
+            if (_despawnQueue.Any()) return _despawnQueue.Dequeue();
+            
+            var pickedDifficulty = GetRandomDifficulty();
+            var current = new List<SoEnemy>();
+            do
+            {
+                foreach (var enemy in _allEnemies) 
+                    if (enemy.Difficulty == pickedDifficulty) 
+                        current.Add(enemy);
+                pickedDifficulty--;
+            } while (current.Count == 0 && pickedDifficulty > 0);
+            return current.RandomElement();
+        }
+        
+        protected virtual int GetRandomDifficulty()
+        {
+            var bounds = _currentMission.Difficulty.EnemyDifficultyBounds();
+            var maxDifficulty = Mathf.CeilToInt(Mathf.Lerp(bounds.Min, bounds.Max, ScaledDifficulty));
+            
+            var mean = Mathf.Lerp(1f, maxDifficulty, ScaledDifficulty);
+            var stdDev = maxDifficulty * standardDifficultyDeviation;
+
+            var weights = new List<float>();
+            for (var i = 1; i <= maxDifficulty; i++)
+            {
+                var weight = Mathf.Exp(-Mathf.Pow(i - mean, 2) / (2 * stdDev * stdDev));
+                weights.Add(weight);
+            }
+
+            var totalWeight = weights.Sum();
+            var rand = Random.value * totalWeight;
+            var cumulative = 0f;
+
+            for (var i = 0; i < weights.Count; i++)
+            {
+                cumulative += weights[i];
+                if (rand <= cumulative) return i + 1;
+            }
+
+            throw new Exception("There should always be a difficulty to find");
+        }
     }
 }

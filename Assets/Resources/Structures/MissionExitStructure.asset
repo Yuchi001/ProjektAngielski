@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54cc540caaa4409f8b84ccb4e3541a0d, type: 3}
+  m_Name: MissionExitStructure
+  m_EditorClassIdentifier: 
+  structureName: Mission Exit
+  structureDescription: 
+  structureSprite: {fileID: 21300000, guid: c336f14bf07e28f44bf11ef9bd82c39d, type: 3}
+  activeSprite: {fileID: 0}
+  usedStructureSprite: {fileID: 0}
+  minimapIcon: {fileID: 21300000, guid: 84bdcfa3bb07b274fa4de26ce8d44804, type: 3}
+  structureScale: 1
+  interactionLimit: 0
+  bottomHoverMessage: Pay $x$ souls
+  interactionDeclineMessage: Not enough souls!
+  usesUI: 0
+  visibleOnMinimap: 1
+  uIPrefabName: 
+  weaponPerCoin:
+    min: 0.1
+    max: 0.01
+  waitBeforeReturn: 3

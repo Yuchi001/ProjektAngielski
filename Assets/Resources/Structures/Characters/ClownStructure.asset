@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbb791376a0b4ada84aab1747b6c2dc0, type: 3}
+  m_Name: ClownStructure
+  m_EditorClassIdentifier: 
+  structureName: ClownStructure
+  structureDescription: 
+  structureSprite: {fileID: -1623650543, guid: 40d668d3e0c4ebd49863ccd39521dc46, type: 3}
+  activeSprite: {fileID: 0}
+  usedStructureSprite: {fileID: 0}
+  structureScale: 1
+  interactionLimit: 0
+  maintainData: 1
+  bottomHoverMessage: Switch
+  interactionDeclineMessage: 
+  usesUI: 0
+  uIPrefabName: 
+  character: {fileID: 11400000, guid: b780849af7f3c624ba1f09cf3ddd7d28, type: 2}
+  playerAnimController: {fileID: 9100000, guid: 8f4291f2db45ee3428794304fff3358b, type: 2}
