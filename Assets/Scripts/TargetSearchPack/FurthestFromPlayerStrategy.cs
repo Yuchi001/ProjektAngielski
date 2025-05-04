@@ -8,9 +8,9 @@ namespace TargetSearchPack
 {
     public class FurthestFromPlayerStrategy : FindTargetStrategyBase
     {
-        public override EnemyLogic FindEnemy(List<PoolObject> enemies)
+        public override EnemyLogic FindEnemy(List<EnemyLogic> enemies)
         {
-            (PoolObject enemy, float distance) farthest = (enemies[0], 0);
+            (EnemyLogic enemy, float distance) farthest = (enemies[0], 0);
             foreach (var enemy in enemies)
             {
                 var distance = enemy.transform.Distance(PlayerManager.PlayerPos);
@@ -18,7 +18,7 @@ namespace TargetSearchPack
                 farthest = (enemy, distance);
             }
 
-            return farthest.enemy.As<EnemyLogic>();
+            return farthest.enemy;
         }
     }
 }

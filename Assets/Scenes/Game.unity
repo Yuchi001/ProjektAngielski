@@ -407,7 +407,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxUpdateStackDuration: 0.002
-  <PoolSize>k__BackingField: 200
+  <PoolSize>k__BackingField: 30
 --- !u!4 &786756427
 Transform:
   m_ObjectHideFlags: 0

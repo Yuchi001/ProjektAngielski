@@ -5,6 +5,7 @@ using AudioPack;
 using EnemyPack;
 using ItemPack.Enums;
 using Managers.Enums;
+using NUnit.Framework;
 using Other;
 using Other.Enums;
 using PlayerPack;
@@ -52,7 +53,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = TargetManager.FindTarget(FindStrategy, targetedEnemies);
+                var target = TargetManager.FindTarget(FindStrategy, 20f, targetedEnemies);
                 if (target == null) continue;
 
                 spawnedProjectiles++;
@@ -88,7 +89,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var position = impactEnemy.transform.position;
             SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionMedium, position, range);
             AudioManager.PlaySound(ESoundType.BananaBoom);
-            foreach (var enemy in TargetDetector.EnemiesInRange(position, range))
+            var results = new List<EnemyLogic>(TargetDetector.EnemiesInRange(position, range));
+            foreach (var enemy in results)
             {
                 if(enemy.GetInstanceID() == enemyInstanceId) continue;
                 

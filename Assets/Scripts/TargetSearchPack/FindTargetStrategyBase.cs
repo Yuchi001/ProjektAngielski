@@ -10,6 +10,6 @@ namespace TargetSearchPack
     {
         public virtual Vector2 Center => PlayerManager.PlayerPos;
         
-        public abstract EnemyLogic FindEnemy(List<PoolObject> enemies);
+        public abstract EnemyLogic FindEnemy(List<EnemyLogic> enemies);
     }
 }

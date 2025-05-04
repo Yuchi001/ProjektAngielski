@@ -15,6 +15,7 @@ MonoBehaviour:
   id: debug
   characterName: Debug
   characterSprite: {fileID: 21848188, guid: a27a0f283b0f76a409ed919119e9fcd0, type: 3}
+  characterIcon: {fileID: 0}
   walkingAnim: {fileID: 7400000, guid: 3b4933883a3c0b84a9206ace12c522d7, type: 2}
   idleAnim: {fileID: 7400000, guid: 3b4933883a3c0b84a9206ace12c522d7, type: 2}
   characterColor: {r: 0, g: 0, b: 0, a: 0}
@@ -22,7 +23,7 @@ MonoBehaviour:
   - statType: 0
     statValue: 10
   - statType: 1
-    statValue: 999
+    statValue: 999999
   - statType: 2
     statValue: 9
   - statType: 3

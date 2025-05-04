@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxUpdateStackDuration: 0.02
-  <PoolSize>k__BackingField: 150
+  <PoolSize>k__BackingField: 50
   sounds:
   - AudioClip: {fileID: 8300000, guid: 7c8538fa233774d47a8e57f8d093c412, type: 3}
     SoundType: 0

@@ -9,17 +9,18 @@ namespace TargetSearchPack
 {
     public static class TargetManager
     {
-        public static EnemyLogic FindTarget(FindTargetStrategyBase strategyBase, List<int> usedTargets = null, float? range = null)
+        public static EnemyLogic FindTarget(FindTargetStrategyBase strategyBase, float range, List<int> usedTargets = null)
         {
-            var found = TryFindViableEnemies(strategyBase, out var enemies, usedTargets, range);
+            var found = TryFindViableEnemies(strategyBase, out var enemies, range, usedTargets);
             return found ? strategyBase.FindEnemy(enemies) : null;
         }
 
-        public static bool TryFindViableEnemies(FindTargetStrategyBase strategyBase, out List<PoolObject> targets, List<int> usedTargets = null, float? range = null)
+        public static bool TryFindViableEnemies(FindTargetStrategyBase strategyBase, out List<EnemyLogic> targets, float range, List<int> usedTargets = null)
         {
-            targets = EnemyManager.GetActiveEnemies();
+            targets = new List<EnemyLogic>();
+            var found = EnemyManager.GetNearbyEnemies(strategyBase.Center, range, ref targets);
+            if (!found) return false;
             if (usedTargets != null) targets = targets.Where(e => !usedTargets.Contains(e.GetInstanceID())).ToList();
-            if (range != null) targets = targets.Where(e => e.transform.Distance(strategyBase.Center) <= range).ToList();
             return targets.Count > 0;
         }
     }

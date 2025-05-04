@@ -7,9 +7,9 @@ namespace TargetSearchPack
 {
     public class RandomStrategy : FindTargetStrategyBase
     {
-        public override EnemyLogic FindEnemy(List<PoolObject> enemies)
+        public override EnemyLogic FindEnemy(List<EnemyLogic> enemies)
         {
-            return enemies.RandomElement().As<EnemyLogic>();
+            return enemies.RandomElement();
         }
     }
 }

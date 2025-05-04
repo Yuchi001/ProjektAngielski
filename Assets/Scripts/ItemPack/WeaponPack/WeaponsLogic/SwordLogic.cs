@@ -47,7 +47,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         {
             if (!_didComeBack) return false;
             
-            var target = TargetManager.FindTarget(FindStrategy);
+            var target = TargetManager.FindTarget(FindStrategy, MaxRange);
             if (target == null) return false;
 
             _didComeBack = false;

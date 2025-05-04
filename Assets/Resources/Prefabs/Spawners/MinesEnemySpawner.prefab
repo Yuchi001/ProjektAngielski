@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxUpdateStackDuration: 0.002
-  <PoolSize>k__BackingField: 200
+  <PoolSize>k__BackingField: 30
   maxDistanceFromPlayer: 60
   standardDifficultyDeviation: 0.2
   _waitBeforeSpawn: 1.5

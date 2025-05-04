@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using EnemyPack;
-using ItemPack;
 using ItemPack.Enums;
 using Managers;
-using Managers.Enums;
 using Managers.Other;
 using Other;
 using Other.Enums;
@@ -13,6 +11,7 @@ using PlayerPack.Interface;
 using PlayerPack.PlayerEnchantmentPack;
 using PlayerPack.PlayerItemPack;
 using PlayerPack.SO;
+using SpatialGridPack;
 using UIPack;
 using UIPack.CloseStrategies;
 using UIPack.OpenStrategies;
@@ -20,7 +19,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Utils;
-using WorldGenerationPack;
 
 namespace PlayerPack
 {
@@ -55,6 +53,8 @@ namespace PlayerPack
         private readonly List<KeyValuePair<string, IEffectModifier>> _effectModifiers = new();
         private readonly List<KeyValuePair<string, IHealModifier>> _healModifiers = new();
 
+        private SingleSpatialGrid<PlayerHealth> _playerSpatialGrid;
+        private Vector3 _lastPos;
 
         private PlayerInput _playerInput;
         public static PlayerInput PlayerInput
@@ -135,6 +135,8 @@ namespace PlayerPack
 
         public void Setup(SoCharacter pickedCharacter, State defaultState)
         {
+            _playerSpatialGrid = new SingleSpatialGrid<PlayerHealth>(1, transform.position);
+            
             var playerItemManagerPrefab = GameManager.GetPrefab<PlayerItemManager>(PrefabNames.PlayerInventoryManager);
             var playerItemManagerOpenStrategy = new SingletonOpenStrategy<PlayerItemManager>(playerItemManagerPrefab);
             var playerItemManagerCloseStrategy = new DefaultCloseStrategy();
@@ -152,7 +154,20 @@ namespace PlayerPack
             
             SetPlayerState(defaultState);
             
+            _lastPos = transform.position;
+
             OnPlayerReady?.Invoke();
+        }
+
+        private void Update()
+        {
+            if (transform.position != _lastPos) _playerSpatialGrid.UpdatePosition(transform.position);
+            _lastPos = transform.position;
+        }
+
+        public static bool IsPlayerNearby(Vector2 center, float range)
+        {
+            return Instance._playerSpatialGrid.IsNear(center, range);
         }
 
         public static void SetPosition(Vector2 position)

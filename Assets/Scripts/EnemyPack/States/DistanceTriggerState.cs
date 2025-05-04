@@ -1,6 +1,7 @@
 ﻿using System;
 using EnemyPack.SO;
 using EnemyPack.States.StateData;
+using PlayerPack;
 using UnityEngine;
 using Utils;
 
@@ -19,6 +20,8 @@ namespace EnemyPack.States
         
         public override void Execute(EnemyLogic state)
         {
+            if (PlayerManager.IsPlayerNearby(state.transform.position, _data.TriggerDistance)) return;
+            
             var inRange = state.transform.InRange(PlayerPos, _data.TriggerDistance);
             if (inRange && _data.TriggerType == DistanceTriggerStateData.ETriggerType.ENTER) state.SwitchState(_nextState.Invoke());
             if (!inRange && _data.TriggerType == DistanceTriggerStateData.ETriggerType.EXIT) state.SwitchState(_nextState.Invoke());

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using EnemyPack;
-using GameLoaderPack;
-using MapPack;
 using ProjectilePack;
 using UnityEngine;
 
@@ -34,7 +32,7 @@ namespace DebugPack
             if (timer < sampleInterval) return;
             
             var fps = (int)(1f / Time.unscaledDeltaTime);
-            var enemies = EnemyManager.GetActiveEnemies().Count;
+            var enemies = EnemyManager.CountActive;
             var bullets = ProjectileManager.CountActive;
 
             lines.Add($"{(int)(elapsedTime * 1000)},{fps},{enemies},{bullets}");

@@ -8,9 +8,9 @@ namespace TargetSearchPack
 {
     public class NearPlayerStrategy : FindTargetStrategyBase
     {
-        public override EnemyLogic FindEnemy(List<PoolObject> enemies)
+        public override EnemyLogic FindEnemy(List<EnemyLogic> enemies)
         {
-            (PoolObject enemy, float distance) closest = (enemies[0], 999f);
+            (EnemyLogic enemy, float distance) closest = (enemies[0], 999f);
             foreach (var enemy in enemies)
             {
                 var distance = enemy.transform.Distance(PlayerManager.PlayerPos);
@@ -18,7 +18,7 @@ namespace TargetSearchPack
                 closest = (enemy, distance);
             }
 
-            return closest.enemy.As<EnemyLogic>();
+            return closest.enemy;
         }
     }
 }

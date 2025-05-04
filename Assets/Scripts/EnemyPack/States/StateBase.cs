@@ -37,9 +37,11 @@ namespace EnemyPack.States
         
         protected bool InRange(CanBeDamaged state, float? range = null)
         {
-            var playerRadius = PlayerManager.PlayerHealth.BodyRadius;
             var enemyRadius = state.BodyRadius * state.transform.localScale.x;
             range ??= enemyRadius;
+            if (!PlayerManager.IsPlayerNearby(state.transform.position, range.Value)) return false;
+            
+            var playerRadius = PlayerManager.PlayerHealth.BodyRadius;
             var totalRange = 0.1f + playerRadius + range.Value;
             var totalRangeSqr = totalRange * totalRange;
 

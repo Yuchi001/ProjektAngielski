@@ -44,6 +44,8 @@ namespace EnemyPack
         private EnemySpawner _enemySpawner;
 
         private StateBase _currentState;
+
+        private Vector3 _lastPos;
         
         public override void OnCreate(PoolManager poolManager)
         {
@@ -88,6 +90,7 @@ namespace EnemyPack
             transform.position = spawnPos;
             _currentState = StateFactory.GetState(EnemyData.EnemyBehaviour, EnemyData);
             _currentState.Enter(this, _currentState);
+            _lastPos = transform.position;
         }
 
         public override void OnRelease()
@@ -104,6 +107,9 @@ namespace EnemyPack
             
             animator.speed = Stuned ? 0 : Slowed ? EnemyData.AnimationSpeed / 2f : EnemyData.AnimationSpeed;
             if (Dead || (Stuned && _currentState.CanBeStunned) || !Active) return;
+
+            if (_lastPos != transform.position) EnemyManager.UpdatePos(this, _lastPos);
+            _lastPos = transform.position;
 
             if (_pushTime > 0)
             {
@@ -145,7 +151,7 @@ namespace EnemyPack
 
         public override void GetDamaged(int value, Color? color = null)
         {
-            if (Invincible) return;
+            if (Invincible || Dead) return;
             
             base.GetDamaged(value, color);
             
@@ -156,19 +162,28 @@ namespace EnemyPack
             
             _enemyHealthBar.UpdateHealthBar(_currentHealth, MaxHealth);
             
-            if(_currentHealth <= 0) OnDie();
+            if (_currentHealth <= 0) OnDie();
         }
 
         public override void OnDie(bool destroyObj = true, PoolManager poolManager = null)
         {
+            if (Dead) return;
+            
             WorldItemManager.SpawnSouls(transform.position, EnemyData.GetSoulDropCount());
             var scrapCount = EnemyData.GetScrapDropCount();
             if (scrapCount > 0) WorldItemManager.SpawnScraps(transform.position, scrapCount);
 
+            EnemyManager.RemovePos(this);
             base.OnDie(destroyObj, _enemySpawner);
         }
 
-        public void DieWithoutGem() => base.OnDie();
+        public void DieWithoutGem()
+        {
+            if (Dead) return;
+            
+            EnemyManager.RemovePos(this);
+            base.OnDie();
+        }
         
         //TODO: Dash kill mechanic on player
     }

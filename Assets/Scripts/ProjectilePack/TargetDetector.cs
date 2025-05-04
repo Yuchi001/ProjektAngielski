@@ -69,11 +69,11 @@ namespace ProjectilePack
 
         private void ManageEnemies()
         {
-            foreach (var hit in EnemyManager.GetActiveEnemies())
-            {
-                if (hit is not CanBeDamaged canBeDamaged) continue;
-                ManageTarget(canBeDamaged);
-            }
+            var potentialTargets = new List<EnemyLogic>();
+            var success = EnemyManager.GetNearbyEnemies(_monoTransform.position, _range, ref potentialTargets);
+            if (!success) return;
+            
+            foreach (var enemy in potentialTargets) ManageTarget(enemy);
         }
 
         private bool IsInHitRange(CanBeDamaged canBeDamaged)
@@ -100,9 +100,10 @@ namespace ProjectilePack
         public static List<EnemyLogic> EnemiesInRange(Vector2 center, float range)
         {
             var enemiesInRange = new List<EnemyLogic>();
-            foreach (var hit in EnemyManager.GetActiveEnemies())
+            if (!EnemyManager.GetNearbyEnemies(center, range, ref enemiesInRange)) return enemiesInRange;
+            foreach (var enemyLogic in enemiesInRange)
             {
-                if (hit is not EnemyLogic enemyLogic || !IsInHitRange(enemyLogic, center, range)) continue;
+                if (!IsInHitRange(enemyLogic, center, range)) continue;
                 enemiesInRange.Add(enemyLogic);
             }
 
@@ -113,17 +114,23 @@ namespace ProjectilePack
         {
             var enemiesInArea = new List<EnemyLogic>();
 
-            foreach (var enemy in EnemyManager.GetActiveEnemies())
-            {
-                if (enemy is not EnemyLogic canBeDamaged)
-                    continue;
+            var center = (bottomLeft + topRight) * 0.5f;
+            var halfWidth = (topRight.x - bottomLeft.x) * 0.5f;
+            var halfHeight = (topRight.y - bottomLeft.y) * 0.5f;
+            var maxDistanceSqr = halfWidth * halfWidth + halfHeight * halfHeight;
 
-                var pos = (Vector2)canBeDamaged.transform.position;
+            var candidates = new List<EnemyLogic>();
+            if (!EnemyManager.GetNearbyEnemies(center, Mathf.Sqrt(maxDistanceSqr), ref candidates))
+                return enemiesInArea;
+
+            foreach (var enemy in candidates)
+            {
+                var pos = (Vector2)enemy.transform.position;
 
                 if (pos.x >= bottomLeft.x && pos.x <= topRight.x &&
                     pos.y >= bottomLeft.y && pos.y <= topRight.y)
                 {
-                    enemiesInArea.Add(canBeDamaged);
+                    enemiesInArea.Add(enemy);
                 }
             }
 

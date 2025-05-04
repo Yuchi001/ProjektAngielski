@@ -40,7 +40,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         
         protected override bool Use()
         {
-            var target = TargetManager.FindTarget(FindStrategy);
+            var target = TargetManager.FindTarget(FindStrategy, 20f);
 
             if (target == null) return false;
             var position = target.transform.position;

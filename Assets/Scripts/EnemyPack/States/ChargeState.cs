@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using EnemyPack.SO;
 using EnemyPack.States.StateData;
 using PlayerPack;
@@ -59,7 +60,9 @@ namespace EnemyPack.States
             var separation = Vector2.zero;
             var minSeparationDistance = 1.5f;
 
-            foreach (var poolObj in EnemyManager.GetActiveEnemies())
+            var nearbyEnemies = new List<EnemyLogic>();
+            EnemyManager.GetNearbyEnemies(state.transform.position, minSeparationDistance, ref nearbyEnemies);
+            foreach (var poolObj in nearbyEnemies)
             {
                 if (poolObj.gameObject == state.transform.gameObject) continue;
 

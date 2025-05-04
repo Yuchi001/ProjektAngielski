@@ -3,6 +3,7 @@ using EnemyPack.SO;
 using Managers;
 using MapPack;
 using PoolPack;
+using SpatialGridPack;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,6 +19,8 @@ namespace EnemyPack
 
         public static bool Ready => _currentSpawner != null;
 
+        private SpatialGrid<EnemyLogic> _activeEnemies;
+
         private void Awake()
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
@@ -30,6 +33,8 @@ namespace EnemyPack
             _currentSpawner.Setup(missionData);
             var scene = SceneManager.GetSceneByBuildIndex((int)GameManager.EScene.GAME);
             SceneManager.MoveGameObjectToScene(_currentSpawner.gameObject, scene);
+            var offset = missionData.WorldSize / 2;
+            Instance._activeEnemies = new SpatialGrid<EnemyLogic>(1, -offset, offset);
         }
 
         public static void RegisterEnemyDeath(EnemyLogic logic)
@@ -47,6 +52,19 @@ namespace EnemyPack
             _currentSpawner.SpawnEnemy(enemy, position);
         }
 
-        public static List<PoolObject> GetActiveEnemies() => _currentSpawner.GetActiveEnemies();
+        public static void UpdatePos(EnemyLogic enemyLogic, Vector2 lastPos)
+        {
+            Instance._activeEnemies.UpdatePosition(enemyLogic, lastPos, enemyLogic.transform.position);
+        }
+
+        public static void RemovePos(EnemyLogic enemyLogic)
+        {
+            Instance._activeEnemies.Remove(enemyLogic, enemyLogic.transform.position);
+        }
+
+        public static int CountActive => _currentSpawner.CountActive;
+
+        public static bool GetNearbyEnemies(Vector2 position, float range, ref List<EnemyLogic> enemies) =>
+            Instance._activeEnemies.GetObjectsNear(position, range, ref enemies);
     }
 }

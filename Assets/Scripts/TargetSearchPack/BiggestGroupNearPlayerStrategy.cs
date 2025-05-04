@@ -15,10 +15,10 @@ namespace TargetSearchPack
             _pickInGroup = pickInGroupStrategyBase;
         }
 
-        public override EnemyLogic FindEnemy(List<PoolObject> enemies)
+        public override EnemyLogic FindEnemy(List<EnemyLogic> enemies)
         {
-            var left = new List<PoolObject>();
-            var right = new List<PoolObject>();
+            var left = new List<EnemyLogic>();
+            var right = new List<EnemyLogic>();
             foreach (var enemy in enemies)
             {
                 if (enemy.transform.position.x > Center.x) right.Add(enemy);

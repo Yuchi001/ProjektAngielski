@@ -48,12 +48,6 @@ namespace EnchantmentPack
 
         public abstract class Data
         {
-            private bool _initialized = false;
-
-            public void SetInitialized()
-            {
-                _initialized = true;
-            }
         }
     }
 }

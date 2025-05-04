@@ -37,14 +37,14 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         protected override bool Use()
         {
             StartCoroutine(ThrowShurikens());
-            return TargetManager.TryFindViableEnemies(FindStrategy, out var enemies);
+            return TargetManager.TryFindViableEnemies(FindStrategy, out var enemies, 20);
         }
 
         private IEnumerator ThrowShurikens()
         {
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = TargetManager.FindTarget(FindStrategy);
+                var target = TargetManager.FindTarget(FindStrategy, 20f);
                 if (target == null) continue;
 
                 var projectileMovementStrategy = new DirectionMovementStrategy(PlayerPos, target.transform.position, Speed, rotationSpeedModifier * Speed);

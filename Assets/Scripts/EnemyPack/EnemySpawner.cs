@@ -55,6 +55,8 @@ namespace EnemyPack
             _spawn = true;
         }
 
+        public int CountActive => _enemyPool.CountActive;
+
         protected virtual void Update()
         {
             while (_despawnCount > 0)

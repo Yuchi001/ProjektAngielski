@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using EnemyPack.SO;
 using EnemyPack.States.StateData;
 using UnityEngine;
@@ -30,12 +31,26 @@ namespace EnemyPack.States
             var direction = ((Vector2)position - PlayerPos).normalized;
 
             var separation = Vector2.zero;
-            foreach (var poolObj in EnemyManager.GetActiveEnemies())
+            var minSeparationDistance = 1.5f;
+            
+            var nearbyEnemies = new List<EnemyLogic>();
+            EnemyManager.GetNearbyEnemies(state.transform.position, minSeparationDistance, ref nearbyEnemies);
+            foreach (var poolObj in nearbyEnemies)
             {
-                if (poolObj.gameObject == _transform.gameObject) continue;
-                var pushAway = (Vector2)(_transform.position - poolObj.transform.position);
+                if (poolObj.gameObject == state.transform.gameObject) continue;
+
+                var pushAway = (Vector2)(state.transform.position - poolObj.transform.position);
                 var dist = pushAway.magnitude;
-                if (dist > 0) separation += pushAway.normalized / dist;
+
+                if (dist < minSeparationDistance)
+                {
+                    var bodySizeFactor = state.EnemyData.BodyScale * state.transform.localScale.x;
+                    separation += pushAway.normalized * ((minSeparationDistance - dist) * bodySizeFactor);
+                }
+                else
+                {
+                    separation += pushAway.normalized * 0.05f;
+                }
             }
 
             var finalDir = (direction + separation * 0.1f).normalized;
