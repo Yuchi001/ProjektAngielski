@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.WeaponPack.Other;
 using PlayerPack;
@@ -43,7 +44,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = TargetManager.FindTarget(NearPlayerStrategy, Range, targetedEnemies); 
+                var target = FindTarget(NearPlayerStrategy, Range, targetedEnemies); 
                 if (target == null) continue;
 
                 spawnedProjectiles++;

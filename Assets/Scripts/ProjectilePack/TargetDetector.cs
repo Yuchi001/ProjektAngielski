@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using EnemyPack;
 using Other;
 using PlayerPack;
-using PoolPack;
-using TargetSearchPack;
 using UnityEngine;
 using Utils;
-using WorldGenerationPack;
 
 namespace ProjectilePack
 {
@@ -22,6 +19,8 @@ namespace ProjectilePack
         private readonly Transform _monoTransform;
         private readonly float _range;
         private readonly string _targetTag;
+
+        private List<EnemyLogic> _cachedTargetList = new();
 
         public TargetDetector(Transform monoTransform, float range, string targetTag)
         {
@@ -49,7 +48,7 @@ namespace ProjectilePack
             if (_targetTag == ProjectileManager.ENEMY_TAG) ManageEnemies();
             else if (_targetTag == ProjectileManager.PLAYER_TAG && PlayerManager.HasInstance()) ManageTarget(PlayerManager.PlayerHealth);
 
-            _currentTargets?.RemoveWhere(enemy => !_enemiesThisFrame.Contains(enemy));
+            _currentTargets?.ExceptWith(_enemiesThisFrame);
         }
 
         private void ManageTarget(CanBeDamaged target)
@@ -69,11 +68,11 @@ namespace ProjectilePack
 
         private void ManageEnemies()
         {
-            var potentialTargets = new List<EnemyLogic>();
-            var success = EnemyManager.GetNearbyEnemies(_monoTransform.position, _range, ref potentialTargets);
+            var success = EnemyManager.GetNearbyEnemies(_monoTransform.position, _range, ref _cachedTargetList);
             if (!success) return;
             
-            foreach (var enemy in potentialTargets) ManageTarget(enemy);
+            foreach (var enemy in _cachedTargetList) ManageTarget(enemy);
+            _cachedTargetList.Clear();
         }
 
         private bool IsInHitRange(CanBeDamaged canBeDamaged)
@@ -97,31 +96,27 @@ namespace ProjectilePack
             return (transform.position - center).sqrMagnitude <= totalRangeSqr;
         }
 
-        public static List<EnemyLogic> EnemiesInRange(Vector2 center, float range)
+        public static bool TryGetEnemiesInRange(Vector2 center, float range, ref List<EnemyLogic> foundTargets)
         {
-            var enemiesInRange = new List<EnemyLogic>();
-            if (!EnemyManager.GetNearbyEnemies(center, range, ref enemiesInRange)) return enemiesInRange;
-            foreach (var enemyLogic in enemiesInRange)
+            if (!EnemyManager.GetNearbyEnemies(center, range, ref foundTargets)) return false;
+
+            for (var i = foundTargets.Count - 1; i >= 0; i--)
             {
-                if (!IsInHitRange(enemyLogic, center, range)) continue;
-                enemiesInRange.Add(enemyLogic);
+                if (IsInHitRange(foundTargets[i], center, range)) continue;
+                foundTargets.RemoveAt(i);
             }
 
-            return enemiesInRange;
+            return foundTargets.Count > 0;
         }
         
-        public static List<EnemyLogic> EnemiesInSpriteBoundsArea(Vector2 bottomLeft, Vector2 topRight)
+        public static bool EnemiesInSpriteBoundsArea(Vector2 bottomLeft, Vector2 topRight, ref List<EnemyLogic> candidates)
         {
-            var enemiesInArea = new List<EnemyLogic>();
-
             var center = (bottomLeft + topRight) * 0.5f;
             var halfWidth = (topRight.x - bottomLeft.x) * 0.5f;
             var halfHeight = (topRight.y - bottomLeft.y) * 0.5f;
             var maxDistanceSqr = halfWidth * halfWidth + halfHeight * halfHeight;
 
-            var candidates = new List<EnemyLogic>();
-            if (!EnemyManager.GetNearbyEnemies(center, Mathf.Sqrt(maxDistanceSqr), ref candidates))
-                return enemiesInArea;
+            if (!EnemyManager.GetNearbyEnemies(center, Mathf.Sqrt(maxDistanceSqr), ref candidates)) return false;
 
             foreach (var enemy in candidates)
             {
@@ -130,11 +125,11 @@ namespace ProjectilePack
                 if (pos.x >= bottomLeft.x && pos.x <= topRight.x &&
                     pos.y >= bottomLeft.y && pos.y <= topRight.y)
                 {
-                    enemiesInArea.Add(enemy);
+                    candidates.Add(enemy);
                 }
             }
 
-            return enemiesInArea;
+            return candidates.Count > 0;
         }
     }
 }

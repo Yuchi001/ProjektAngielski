@@ -38,6 +38,7 @@ namespace ParticlesPack
             {
                 var manager = new GameObject(so.ParticlesType + "Manager");
                 var script = manager.AddComponent<ParticlePool>();
+                script.transform.SetParent(transform);
                 script.Init(so);
                 _particlesDict.Add(so.ParticlesType, script);
             }

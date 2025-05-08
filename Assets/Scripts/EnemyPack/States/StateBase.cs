@@ -2,6 +2,7 @@
 using EnemyPack.Enums;
 using EnemyPack.SO;
 using Other;
+using Other.Enums;
 using PlayerPack;
 using UnityEngine;
 using Utils;
@@ -46,6 +47,11 @@ namespace EnemyPack.States
             var totalRangeSqr = totalRange * totalRange;
 
             return state.transform.InRange(PlayerPos, totalRangeSqr);
+        }
+
+        protected float GetMovementSpeed(EnemyLogic state, float baseMovementSpeed)
+        {
+            return state.deltaTime * baseMovementSpeed * (state.HasEffect(EEffectType.Slow) ? 0.5f : 1f);
         }
     }
 }

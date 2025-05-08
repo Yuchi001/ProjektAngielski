@@ -1,11 +1,9 @@
 ﻿using System.Collections;
 using AudioPack;
 using ItemPack.WeaponPack.WeaponsLogic.Base;
-using Managers;
 using Managers.Enums;
 using TargetSearchPack;
 using UnityEngine;
-using Utils;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
@@ -25,7 +23,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         
         protected override bool Use()
         {
-            var target = TargetManager.FindTarget(FindStrategy, 20f);
+            var target = FindTarget(FindStrategy, 20f);
 
             if (target == null) return false;
             var position = target.transform.position;

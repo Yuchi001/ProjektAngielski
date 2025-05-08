@@ -20,6 +20,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         private float Range => GetStatValue(EItemSelfStatType.BlastRange);
         private float DropExpChance => GetStatValue(EItemSelfStatType.DropExpChance);
 
+        private List<EnemyLogic> _cachedTargetList = new();
+
         private void Start()
         {
             var prefab = Instantiate(destructionCirclePrefab);
@@ -39,17 +41,17 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         protected override bool Use()
         {
-            var results = TargetDetector.EnemiesInRange(PlayerPos, Range);
-            StartCoroutine(QueueDeaths(results));
+            var found = TargetDetector.TryGetEnemiesInRange(PlayerPos, Range, ref _cachedTargetList);
+            if (found) StartCoroutine(QueueDeaths());
 
-            return results.Count > 0;
+            return found;
         }
 
-        private IEnumerator QueueDeaths(IEnumerable<EnemyLogic> targets)
+        private IEnumerator QueueDeaths()
         {
-            foreach (var enemy in targets)
+            foreach (var enemy in _cachedTargetList)
             {
-                if(enemy == null) continue;
+                if(enemy == null || !enemy.Active) continue;
 
                 AudioManager.PlaySound(ESoundType.BulletExplode);
                 SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionMedium,
@@ -63,6 +65,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 yield return new WaitForSeconds(0.05f);
             }
+            _cachedTargetList.Clear();
         } 
 
         public float GetRange()

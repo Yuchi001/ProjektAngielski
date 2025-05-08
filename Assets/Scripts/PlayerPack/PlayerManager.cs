@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EnchantmentPack.SO.Default;
 using EnemyPack;
 using ItemPack.Enums;
 using Managers;

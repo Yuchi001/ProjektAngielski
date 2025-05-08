@@ -1,11 +1,10 @@
-﻿using EnemyPack;
-using Managers;
+﻿using System.Collections.Generic;
+using EnemyPack;
 using Other.Enums;
 using PlayerPack;
 using ProjectilePack;
 using TargetSearchPack;
 using UnityEngine;
-using Utils;
 
 namespace ItemPack.WeaponPack.Other
 {
@@ -32,6 +31,8 @@ namespace ItemPack.WeaponPack.Other
                 return _findStrategy ??= new BiggestGroupNearPlayerStrategy(new NearPlayerStrategy());
             }
         }
+
+        private List<EnemyLogic> _cachedTargetList = new();
 
         #region Setup methods
 
@@ -63,12 +64,21 @@ namespace ItemPack.WeaponPack.Other
             var bounds = spriteRender.bounds;
             
             var newPos = transform.position;
-            var target = TargetManager.FindTarget(FindStrategy, range: baseScale.x);
+            var found = TargetManager.TryFindViableTargets(FindStrategy, ref _cachedTargetList, baseScale.x);
+            if (!found)
+            {
+                Destroy(gameObject);
+                return false;
+            }
+
+            var target = FindStrategy.FindEnemy(_cachedTargetList);
             if (target == null)
             {
                 Destroy(gameObject);
                 return false;
             }
+            
+            _cachedTargetList.Clear();
             
             var lookingRight = target.transform.position.x > PlayerPos.x;
             var mod = lookingRight ? 1 : -1;
@@ -83,7 +93,8 @@ namespace ItemPack.WeaponPack.Other
             var bottomLeft = bounds.min;
             bottomLeft.x += offset;
 
-            foreach (var enemy in TargetDetector.EnemiesInSpriteBoundsArea(bottomLeft, topRight))
+            TargetDetector.EnemiesInSpriteBoundsArea(bottomLeft, topRight, ref _cachedTargetList);
+            foreach (var enemy in _cachedTargetList)
             {
                 enemy.PushEnemy(PlayerPos, _pushForce);
                 enemy.GetDamaged(_damage);
@@ -92,6 +103,7 @@ namespace ItemPack.WeaponPack.Other
                 var effectContext = PlayerManager.GetEffectContextManager().GetEffectContext(_effectType.Value, _effectTime, enemy);
                 enemy.AddEffect(effectContext);
             }
+            _cachedTargetList.Clear();
             Destroy(gameObject, animTime);
             return true;
         }

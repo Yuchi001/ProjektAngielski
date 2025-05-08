@@ -17,7 +17,7 @@ namespace UIPack.CloseStrategies
         {
             UIManager.RemoveUI(_key);
             spawnedBase.OnClose();
-            Object.Destroy(spawnedBase, _destroyTime);
+            Object.Destroy(spawnedBase.gameObject, _destroyTime);
         }
     }
 }

@@ -64,7 +64,6 @@ namespace ShopPack
         
         public static void BuyItem(int offerIndex)
         {
-            Instance._offers[offerIndex].Buy();
             PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.COIN, -Instance._offers[offerIndex].Price);
             Instance._offers[offerIndex] = null;
         }
@@ -107,11 +106,6 @@ namespace ShopPack
                 Item = item;
                 Price = price;
                 Param = param;
-            }
-
-            public void Buy()
-            {
-                Item.OnPickUp(Param);
             }
         }
     }

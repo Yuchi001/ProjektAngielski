@@ -29,7 +29,7 @@ namespace EnemyPack.States
         public override void Execute(EnemyLogic state)
         {
             var enemyTransform = state.transform;
-            enemyTransform.MoveTowards(_currentDestination, state.deltaTime * _data.PatrolMovementSpeed);
+            enemyTransform.MoveTowards(_currentDestination, GetMovementSpeed(state, _data.PatrolMovementSpeed));
             
             if (!enemyTransform.InRange(_currentDestination, 0.15f)) return;
 

@@ -7,25 +7,32 @@ namespace PoolPack
     {
         public static ObjectPool<T> CreatePool<T>(PoolManager manager, T prefab, bool randomGet) where T: PoolObject
         {
-            return new ObjectPool<T>(
+            var pool = new ObjectPool<T>(
                 () => Create<T>(prefab, manager), 
                 (obj) => OnGet(obj, manager, randomGet), 
                 (obj) => OnRelease(obj, manager),    
                 OnDestroy, true, manager.PoolSize, manager.PoolSize * 2);
+            for (var i = 0; i < manager.PoolSize; i++)
+            {
+                var obj = pool.Get();
+                pool.Release(obj);
+            }
+
+            return pool;
         }
 
         private static T Create<T>(T prefab, PoolManager poolManager) where T: PoolObject
         {
             var obj = Object.Instantiate(prefab, poolManager != null ? poolManager.transform : null);
-            obj.gameObject.SetActive(false);
             var ret = obj.GetComponent<T>();
             ret.OnCreate(poolManager);
+            ret.SetActive(true);
             return ret;
         }
 
         private static void OnGet(PoolObject obj, PoolManager poolManager, bool randomGet)
         {
-            obj.gameObject.SetActive(true);
+            obj.SetActive(true);
             if (randomGet) obj.OnGet(poolManager.GetRandomPoolData());
             poolManager.ActiveObjects.Add(obj);
         }
@@ -34,7 +41,7 @@ namespace PoolPack
         {
             if (!obj.Active) return;
             
-            obj.gameObject.SetActive(false);
+            obj.SetActive(false);
             obj.OnRelease();
             poolManager.ActiveObjects.Remove(obj);
         }

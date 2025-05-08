@@ -17,24 +17,26 @@ namespace PoolPack
         {
             return (T)this;
         }
+
+        public void SetActive(bool active)
+        {
+            gameObject.SetActive(active);
+            Active = active;
+        }
         
         public virtual void OnCreate(PoolManager poolManager)
         {
-            //transform.SetParent(poolManager.transform);
-            Active = false;
+            
         }
         
         public virtual void OnGet(SoPoolObject so)
         {
-            Active = true;
             deltaTime = Time.deltaTime;
             _lastUpdatedTime = Time.time;
         }
         
         public virtual void OnRelease()
         {
-            Active = false;
-            
             _lastMeasure.Clear();
         }
 

@@ -10,10 +10,9 @@ namespace ParticlesPack
         private ParticleManager.ParticlePool _particleManager;
         
         private ParticleSystem _particleSystem;
-        private float _time;
+        private float _lifeTime;
 
-        private const string PARTICLE_TIMER_ID = "PARTICLE_TIMER";
-        
+        private float _timer = 0;
 
         public override void OnGet(SoPoolObject so)
         {
@@ -22,13 +21,15 @@ namespace ParticlesPack
             var data = (SoParticles)so;
             
             _particleSystem.Play();
-            _time = data.LifeTime;
-            SetTimer(PARTICLE_TIMER_ID);
+            _lifeTime = data.LifeTime;
+            _timer = 0;
         }
 
         public override void InvokeUpdate()
         {
-            if (CheckTimer(PARTICLE_TIMER_ID) < _time) return;
+            base.InvokeUpdate();
+            _timer += deltaTime;
+            if (_timer < _lifeTime) return;
             
             _particleManager.ReleasePoolObject(this);
         }

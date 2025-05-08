@@ -21,6 +21,7 @@ namespace PlayerPack.PlayerItemPack
         {
             InitBox();
             costField.gameObject.SetActive(false);
+            PlayerCollectibleManager.OnCollectibleModify += HandleScrapCountChange;
         }
 
         protected override Vector2 GetItemDropPosition()
@@ -59,6 +60,13 @@ namespace PlayerPack.PlayerItemPack
         {
             if (itemSlot.Index == RESULT_SLOT) HandleResultSlotChange();
             else HandleIngredientSlotChange();
+        }
+
+        private void HandleScrapCountChange(PlayerCollectibleManager.ECollectibleType type, int current)
+        {
+            if (type != PlayerCollectibleManager.ECollectibleType.SCRAP) return;
+            
+            HandleIngredientSlotChange();
         }
 
         private void HandleResultSlotChange()
@@ -100,8 +108,8 @@ namespace PlayerPack.PlayerItemPack
                     return;
                 }
 
-                var combinedLevel = item1.level + item2.level;
-                _itemSlots[RESULT_SLOT].SetItem(item1.item, combinedLevel, false);
+                var maxLevel = Mathf.Max(item1.level, item2.level) + 1;
+                _itemSlots[RESULT_SLOT].SetItem(item1.item, maxLevel, false);
                 costField.gameObject.SetActive(false);
                 _currentCost = -1;
                 return;
@@ -114,7 +122,11 @@ namespace PlayerPack.PlayerItemPack
             costField.color = canPay ? costFieldDefaultColor : costFieldErrorColor;
             costField.gameObject.SetActive(true);
 
-            if (!canPay) return;
+            if (!canPay)
+            {
+                _itemSlots[RESULT_SLOT].SetItem(null, -1, false);
+                return;
+            }
             _itemSlots[RESULT_SLOT].SetItem(item, level + 1, false);
             _currentCost = cost;
         }

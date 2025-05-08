@@ -15,6 +15,7 @@ MonoBehaviour:
   id: tyron
   characterName: Tyron the Knight
   characterSprite: {fileID: 408462228, guid: 5fede68b578eb9e4c9a9b5f14b62bce4, type: 3}
+  characterIcon: {fileID: 0}
   walkingAnim: {fileID: 7400000, guid: 76c5e83c78e1dd54cbd27ba1b200c58b, type: 2}
   idleAnim: {fileID: 7400000, guid: 235e48fbac3cd1344ac2d4148c001345, type: 2}
   characterColor: {r: 0.1764706, g: 0.2784314, b: 0.2784314, a: 1}
@@ -31,4 +32,4 @@ MonoBehaviour:
     statValue: 0
   - statType: 5
     statValue: 0
-  startingItem: {fileID: 11400000, guid: 43ed8a3172351c44d9889e12c61ec31d, type: 2}
+  startingItem: {fileID: 11400000, guid: b4dd1940f3f5d6646bfadd7058601535, type: 2}

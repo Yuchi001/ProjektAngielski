@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EnemyPack;
 using ItemPack.Enums;
 using ItemPack.SO;
 using PlayerPack;
+using TargetSearchPack;
 using UnityEngine;
 
 namespace ItemPack
@@ -24,6 +26,16 @@ namespace ItemPack
 
         private float _timer = 0;
         private bool spawned = false;
+        
+        private List<EnemyLogic> _cachedTargetList = new();
+
+        public EnemyLogic FindTarget(FindTargetStrategyBase strategyBase, float range, List<int> usedTargets = null)
+        {
+            var found = TargetManager.TryFindViableTargets(strategyBase, ref _cachedTargetList, range, usedTargets);
+            var foundTarget = found ? strategyBase.FindEnemy(_cachedTargetList) : null;
+            _cachedTargetList.Clear();
+            return foundTarget;
+        }
 
         /// <summary>
         /// Remember to override GetUseStats to have full control over returned stats. <para /> 

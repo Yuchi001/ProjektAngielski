@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AudioPack;
 using DamageIndicatorPack;
@@ -91,6 +92,7 @@ namespace EnemyPack
             _currentState = StateFactory.GetState(EnemyData.EnemyBehaviour, EnemyData);
             _currentState.Enter(this, _currentState);
             _lastPos = transform.position;
+            EnemyManager.AddPos(this);
         }
 
         public override void OnRelease()
@@ -99,6 +101,12 @@ namespace EnemyPack
 
             if (_enemySpawner == null) return;
             EnemyManager.RegisterEnemyDeath(this);
+            EnemyManager.RemovePos(this);
+        }
+
+        private void OnDestroy()
+        {
+            EnemyManager.RemovePos(this);
         }
 
         public override void InvokeUpdate()
@@ -173,7 +181,6 @@ namespace EnemyPack
             var scrapCount = EnemyData.GetScrapDropCount();
             if (scrapCount > 0) WorldItemManager.SpawnScraps(transform.position, scrapCount);
 
-            EnemyManager.RemovePos(this);
             base.OnDie(destroyObj, _enemySpawner);
         }
 
@@ -181,10 +188,7 @@ namespace EnemyPack
         {
             if (Dead) return;
             
-            EnemyManager.RemovePos(this);
             base.OnDie();
         }
-        
-        //TODO: Dash kill mechanic on player
     }
 }

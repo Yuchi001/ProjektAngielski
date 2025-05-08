@@ -25,6 +25,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private Sprite projectileSprite;
 
         private float EffectDuration => GetStatValue(EItemSelfStatType.EffectDuration);
+        private List<EnemyLogic> _explosionTargetsCachedList = new();
 
         protected override List<EItemSelfStatType> UsedStats { get; } = new()
         {
@@ -53,13 +54,12 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = TargetManager.FindTarget(FindStrategy, 20f, targetedEnemies);
+                var target = FindTarget(FindStrategy, 20f, targetedEnemies);
                 if (target == null) continue;
 
                 spawnedProjectiles++;
                 
-                var projectileMovementStrategy = new DirectionMovementStrategy(PlayerPos, 
-                    target.transform.position, Speed);
+                var projectileMovementStrategy = new DirectionMovementStrategy(PlayerPos, target.transform.position, Speed);
                 ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)
                     .SetOnHitAction(OnHitAction)
                     .SetEffect(EEffectType.Burn, EffectDuration)
@@ -89,8 +89,10 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var position = impactEnemy.transform.position;
             SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionMedium, position, range);
             AudioManager.PlaySound(ESoundType.BananaBoom);
-            var results = new List<EnemyLogic>(TargetDetector.EnemiesInRange(position, range));
-            foreach (var enemy in results)
+            var found = TargetDetector.TryGetEnemiesInRange(position, range, ref _explosionTargetsCachedList);
+            if (!found) yield break;
+            
+            foreach (var enemy in _explosionTargetsCachedList)
             {
                 if(enemy.GetInstanceID() == enemyInstanceId) continue;
                 
@@ -103,6 +105,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 yield return new WaitForSeconds(0.1f);
             }
+            _explosionTargetsCachedList.Clear();
         }
     }
 }

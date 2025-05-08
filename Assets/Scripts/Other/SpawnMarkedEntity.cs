@@ -13,7 +13,7 @@ namespace Other
 
         private IUseMarker _invoker;
 
-        private static readonly string SPAWN_TIMER_ID = "SPAWN_TIMER";
+        private float _timer;
 
         #region Setup methods
 
@@ -28,7 +28,7 @@ namespace Other
             _invoker = invoker;
 
             _spriteRenderer.color = invoker.GetMarkerColor();
-            SetTimer(SPAWN_TIMER_ID);
+            _timer = 0;
             var randomPosition = ZoneGeneratorManager.GetRandomPos();
             if (!randomPosition.HasValue)
             {
@@ -44,12 +44,14 @@ namespace Other
 
         public override void InvokeUpdate()
         {
-            if (CheckTimer(SPAWN_TIMER_ID) < spawnTime) return;
+            base.InvokeUpdate();
+
+            _timer += deltaTime;
+            if (_timer < spawnTime) return;
 
             _invoker.SpawnRandomEntity(transform.position);
             
             MarkerManager.Instance.ReleasePoolObject(this);
-            SetTimer(SPAWN_TIMER_ID);
         }
     }
 }

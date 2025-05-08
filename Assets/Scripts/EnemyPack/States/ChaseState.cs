@@ -15,6 +15,7 @@ namespace EnemyPack.States
         private readonly Func<StateBase> _outOfRangeState;
         
         private Transform _transform;
+        private List<EnemyLogic> _cachedNearbyEnemies = new();
 
         public ChaseState(SoEnemy enemyData, Func<StateBase> inRangeState, Func<StateBase> outOfRangeStateBase = null) : base(enemyData)
         {
@@ -30,16 +31,14 @@ namespace EnemyPack.States
 
         public override void Execute(EnemyLogic state)
         {
-            var deltaTime = state.deltaTime;
             var position = _transform.position;
             var direction = (PlayerPos - (Vector2)position).normalized;
 
             var separation = Vector2.zero;
             var minSeparationDistance = 1.5f;
 
-            var nearbyEnemies = new List<EnemyLogic>();
-            EnemyManager.GetNearbyEnemies(state.transform.position, minSeparationDistance, ref nearbyEnemies);
-            foreach (var poolObj in nearbyEnemies)
+            EnemyManager.GetNearbyEnemies(state.transform.position, minSeparationDistance, ref _cachedNearbyEnemies);
+            foreach (var poolObj in _cachedNearbyEnemies)
             {
                 if (poolObj.gameObject == _transform.gameObject) continue;
 
@@ -56,10 +55,11 @@ namespace EnemyPack.States
                     separation += pushAway.normalized * 0.05f;
                 }
             }
-
+            _cachedNearbyEnemies.Clear();
+            
             var finalDir = (direction + separation * (0.1f * state.transform.localScale.x)).normalized;
 
-            _transform.position += (Vector3)(finalDir * (deltaTime * _data.ChaseMovementSpeed));
+            _transform.position += (Vector3)(finalDir * GetMovementSpeed(state, _data.ChaseMovementSpeed));
 
             if (_outOfRangeState != null && !InRange(state, _data.ChaseStopRange))
             {

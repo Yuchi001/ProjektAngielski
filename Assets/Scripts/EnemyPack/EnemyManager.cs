@@ -51,6 +51,11 @@ namespace EnemyPack
         {
             _currentSpawner.SpawnEnemy(enemy, position);
         }
+        
+        public static void AddPos(EnemyLogic enemyLogic)
+        {
+            Instance._activeEnemies.Add(enemyLogic, enemyLogic.transform.position);
+        }
 
         public static void UpdatePos(EnemyLogic enemyLogic, Vector2 lastPos)
         {
@@ -59,12 +64,14 @@ namespace EnemyPack
 
         public static void RemovePos(EnemyLogic enemyLogic)
         {
-            Instance._activeEnemies.Remove(enemyLogic, enemyLogic.transform.position);
+            Instance._activeEnemies?.Remove(enemyLogic, enemyLogic.transform.position);
         }
 
         public static int CountActive => _currentSpawner.CountActive;
 
-        public static bool GetNearbyEnemies(Vector2 position, float range, ref List<EnemyLogic> enemies) =>
-            Instance._activeEnemies.GetObjectsNear(position, range, ref enemies);
+        public static bool GetNearbyEnemies(Vector2 position, float range, ref List<EnemyLogic> enemies)
+        {
+            return Instance._activeEnemies.GetObjectsNear(position, range, ref enemies);
+        }
     }
 }

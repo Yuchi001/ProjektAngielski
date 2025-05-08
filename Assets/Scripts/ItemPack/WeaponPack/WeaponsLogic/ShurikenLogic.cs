@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using EnemyPack;
 using ItemPack.Enums;
 using Other.Enums;
 using ProjectilePack;
@@ -36,16 +37,18 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         protected override bool Use()
         {
-            StartCoroutine(ThrowShurikens());
-            return TargetManager.TryFindViableEnemies(FindStrategy, out var enemies, 20);
+            var target = FindTarget(FindStrategy, 20f);
+            if (target == null) return false;
+            
+            StartCoroutine(ThrowShurikens(target));
+            return true;
         }
 
-        private IEnumerator ThrowShurikens()
+        private IEnumerator ThrowShurikens(EnemyLogic target)
         {
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = TargetManager.FindTarget(FindStrategy, 20f);
-                if (target == null) continue;
+                if (target == null) yield break;
 
                 var projectileMovementStrategy = new DirectionMovementStrategy(PlayerPos, target.transform.position, Speed, rotationSpeedModifier * Speed);
                 ProjectileManager.SpawnProjectile(projectileMovementStrategy, this)

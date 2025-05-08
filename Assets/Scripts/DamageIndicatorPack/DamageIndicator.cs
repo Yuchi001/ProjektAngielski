@@ -45,6 +45,7 @@ namespace DamageIndicatorPack
 
         public override void InvokeUpdate()
         {
+            base.InvokeUpdate();
             _timer += deltaTime;
             if (_timer < lifeTime) return;
             

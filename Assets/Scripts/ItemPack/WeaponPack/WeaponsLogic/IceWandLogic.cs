@@ -44,7 +44,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = TargetManager.FindTarget(FindStrategy, 20f, targetedEnemies);
+                var target = FindTarget(FindStrategy, 20f, targetedEnemies);
                 if (target == null) continue;
 
                 spawnedProjectiles++;

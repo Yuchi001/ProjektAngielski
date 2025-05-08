@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using EnemyPack.SO;
 using EnemyPack.States.StateData;
 using UnityEngine;
-using WorldGenerationPack;
 
 namespace EnemyPack.States
 {
@@ -13,6 +12,8 @@ namespace EnemyPack.States
         private readonly FleeStateData _data;
         
         private Transform _transform;
+
+        private List<EnemyLogic> _cachedNearbyEnemies = new();
 
         public FleeState(SoEnemy data, Func<StateBase> returnState) : base(data)
         {
@@ -32,10 +33,9 @@ namespace EnemyPack.States
 
             var separation = Vector2.zero;
             var minSeparationDistance = 1.5f;
-            
-            var nearbyEnemies = new List<EnemyLogic>();
-            EnemyManager.GetNearbyEnemies(state.transform.position, minSeparationDistance, ref nearbyEnemies);
-            foreach (var poolObj in nearbyEnemies)
+
+            EnemyManager.GetNearbyEnemies(state.transform.position, minSeparationDistance, ref _cachedNearbyEnemies);
+            foreach (var poolObj in _cachedNearbyEnemies)
             {
                 if (poolObj.gameObject == state.transform.gameObject) continue;
 
@@ -52,10 +52,11 @@ namespace EnemyPack.States
                     separation += pushAway.normalized * 0.05f;
                 }
             }
+            _cachedNearbyEnemies.Clear();
 
             var finalDir = (direction + separation * 0.1f).normalized;
-
-            _transform.position += (Vector3)(finalDir * (state.deltaTime * _data.FleeMovementSpeed));
+            
+            _transform.position += (Vector3)(finalDir * GetMovementSpeed(state, _data.FleeMovementSpeed));
             
             if (InRange(state, _data.FleeDetectionRange)) return;
             

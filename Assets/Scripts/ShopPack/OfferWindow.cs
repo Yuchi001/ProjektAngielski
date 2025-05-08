@@ -1,4 +1,8 @@
-﻿using ItemPack.Enums;
+﻿using InventoryPack.WorldItemPack;
+using ItemPack.Enums;
+using ItemPack.SO;
+using PlayerPack;
+using PlayerPack.PlayerItemPack;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,6 +46,13 @@ namespace ShopPack
 
         public void OnBuy()
         {
+            if (_offer.Item is SoInventoryItem inventoryItem && PlayerManager.PlayerItemManager.IsFull())
+            {
+                if (_shopUI.IsFull()) WorldItemManager.SpawnInventoryItem(inventoryItem, PlayerManager.PlayerPos, _offer.Param);
+                else _shopUI.AddItem(inventoryItem, _offer.Param);
+            }
+            else _offer.Item.OnPickUp(_offer.Param);
+            
             ShopManager.BuyItem(_index);
             _offer = null;
             _index = -1;

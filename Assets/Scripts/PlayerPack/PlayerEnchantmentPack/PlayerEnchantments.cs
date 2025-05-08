@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EnchantmentPack;
 using EnchantmentPack.SO;
+using EnchantmentPack.SO.Default;
 using Managers;
 using Managers.Other;
 using UnityEngine;
@@ -55,6 +56,9 @@ namespace PlayerPack.PlayerEnchantmentPack
 
                 _enchantmentPool.Add(enchantmentName, stack);
             }
+
+            var enchant = GetRandomEnchantment();
+            TryAddEnchantment(enchant.Name);
         }
 
         public static SoEnchantment GetRandomEnchantment()

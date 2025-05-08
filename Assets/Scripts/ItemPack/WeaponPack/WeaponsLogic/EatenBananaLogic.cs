@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AudioPack;
+using EnemyPack;
 using ItemPack.Enums;
 using Managers.Enums;
 using Other;
@@ -17,6 +18,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         [SerializeField] private GameObject boomParticles;
 
         private float BlastRange => GetStatValue(EItemSelfStatType.BlastRange);
+        private List<EnemyLogic> _cachedTargetList = new();
 
         protected override List<EItemSelfStatType> UsedStats { get; } = new()
         {
@@ -41,12 +43,16 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var projectilePos = projectile.transform.position;
             SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionBig, projectilePos, BlastRange);
 
-            foreach (var enemy in TargetDetector.EnemiesInRange(projectile.transform.position, BlastRange))
+            var found = TargetDetector.TryGetEnemiesInRange(projectilePos, BlastRange, ref _cachedTargetList);
+            if (!found) return false;
+            
+            foreach (var enemy in _cachedTargetList)
             {
                 var damageContext = PlayerManager.GetDamageContextManager()
                     .GetDamageContext(Damage, projectile, hitObj, InventoryItem.ItemTags);
                 enemy.GetDamaged(damageContext.Damage);
             }
+            _cachedTargetList.Clear();
 
             return false;
         }

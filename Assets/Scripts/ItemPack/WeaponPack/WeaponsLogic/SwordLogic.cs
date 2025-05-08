@@ -1,17 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EnemyPack;
 using ItemPack.Enums;
-using ItemPack.WeaponPack.Other;
 using Other;
 using PlayerPack;
 using ProjectilePack;
 using ProjectilePack.MovementStrategies;
 using TargetSearchPack;
-using TMPro;
 using UnityEngine;
 using Utils;
-using TransformExtensions = Utils.TransformExtensions;
 
 namespace ItemPack.WeaponPack.WeaponsLogic
 {
@@ -47,7 +43,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         {
             if (!_didComeBack) return false;
             
-            var target = TargetManager.FindTarget(FindStrategy, MaxRange);
+            var target = FindTarget(FindStrategy, MaxRange);
             if (target == null) return false;
 
             _didComeBack = false;

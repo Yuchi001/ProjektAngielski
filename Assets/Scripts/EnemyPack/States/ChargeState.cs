@@ -17,6 +17,8 @@ namespace EnemyPack.States
         private Vector2 _direction;
         private float _timer = 0;
         private bool _didDamagePlayer = false;
+
+        private List<EnemyLogic> _cachedNearbyEnemies = new();
         
         public ChargeState(SoEnemy data, Func<StateBase> nextState) : base(data)
         {
@@ -60,9 +62,8 @@ namespace EnemyPack.States
             var separation = Vector2.zero;
             var minSeparationDistance = 1.5f;
 
-            var nearbyEnemies = new List<EnemyLogic>();
-            EnemyManager.GetNearbyEnemies(state.transform.position, minSeparationDistance, ref nearbyEnemies);
-            foreach (var poolObj in nearbyEnemies)
+            EnemyManager.GetNearbyEnemies(state.transform.position, minSeparationDistance, ref _cachedNearbyEnemies);
+            foreach (var poolObj in _cachedNearbyEnemies)
             {
                 if (poolObj.gameObject == state.transform.gameObject) continue;
 
@@ -79,9 +80,11 @@ namespace EnemyPack.States
                     separation += pushAway.normalized * 0.05f;
                 }
             }
+
+            _cachedNearbyEnemies.Clear();
             
             var finalDir = (_direction + separation * (0.1f * state.transform.localScale.x)).normalized;
-            state.transform.position += (Vector3)(finalDir * (_data.ChargeMovementSpeed * state.deltaTime));
+            state.transform.position += (Vector3)(finalDir * GetMovementSpeed(state, _data.ChargeMovementSpeed));
             
             if (!_didDamagePlayer && InRange(state, _data.ChargeAttackRange))
             {

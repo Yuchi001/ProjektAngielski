@@ -19,6 +19,7 @@ namespace ProjectilePack.MovementStrategies
             _target = target;
             _speed = speed;
             _onTargetNullAction = onTargetNullAction;
+            _currentDir = (target.transform.position - _lastPos).normalized;
         }
         
         public TargetMovementStrategy(Transform target, float speed, float rotationSpeed, Func<Projectile, bool> onTargetNullAction = null)
@@ -27,6 +28,7 @@ namespace ProjectilePack.MovementStrategies
             _speed = speed;
             _rotationSpeed = rotationSpeed;
             _onTargetNullAction = onTargetNullAction;
+            _currentDir = (target.transform.position - _lastPos).normalized;
         }
         
         public void MoveProjectile(Projectile projectile, float deltaTime)

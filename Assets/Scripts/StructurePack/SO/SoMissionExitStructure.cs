@@ -42,6 +42,7 @@ namespace StructurePack.SO
         {
             PlayerManager.PlayerHealth.Invincible = true;
             PlayerManager.LockKeys();
+            PlayerManager.PlayerItemManager.DestroyAllItems();
             //TODO: Animacja znikania gracza
             //TODO: dźwięk znikania gracza
             yield return new WaitForSeconds(waitBeforeReturn);

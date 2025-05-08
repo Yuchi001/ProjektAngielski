@@ -87,6 +87,7 @@ namespace ShopPack
             PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.COIN, -ShopManager.RefreshCost);
             ShopManager.RefreshOffers(true);
             PopulateOfferWindows();
+            UpdateUI();
         }
     }
 }

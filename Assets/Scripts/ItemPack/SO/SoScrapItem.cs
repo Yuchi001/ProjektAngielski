@@ -11,7 +11,8 @@ namespace ItemPack.SO
         public override bool OnPickUp(params int[] paramArray)
         {
             AudioManager.PlaySound(ESoundType.ScrapWeapon);
-            PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SCRAP, 1);
+            var count = paramArray.Length == 1 ? paramArray[0] : 1;
+            PlayerCollectibleManager.ModifyCollectibleAmount(PlayerCollectibleManager.ECollectibleType.SCRAP, count);
             return true;
         }
     }
