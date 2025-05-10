@@ -114,5 +114,10 @@ namespace PlayerPack
             
             base.OnDie(destroyObj);
         }
+
+        protected override void LazyUpdate(float lazyDeltaTime)
+        {
+            // IGNORE
+        }
     }
 }

@@ -4,8 +4,6 @@ using EnemyPack.SO;
 using EnemyPack.States.StateData;
 using PlayerPack;
 using UnityEngine;
-using Utils;
-using WorldGenerationPack;
 
 namespace EnemyPack.States
 {
@@ -15,6 +13,7 @@ namespace EnemyPack.States
         private readonly Func<StateBase> _nextState;
 
         private Vector2 _direction;
+        private Vector2 _separation;
         private float _timer = 0;
         private bool _didDamagePlayer = false;
 
@@ -28,6 +27,7 @@ namespace EnemyPack.States
 
         public override void Enter(EnemyLogic state, StateBase lastState)
         {
+            _separation = Vector2.zero;
             _direction = (PlayerPos - (Vector2)state.transform.position).normalized;
             _didDamagePlayer = false;
             _timer = 0;
@@ -51,7 +51,7 @@ namespace EnemyPack.States
                 return;
             }
             
-            _timer += state.fixedDeltaTime;
+            _timer += Time.deltaTime;
             if (_timer > 1f / _data.ChargePositionUpdateRate)
             {
                 _timer = 0;
@@ -59,8 +59,20 @@ namespace EnemyPack.States
                 _direction = Vector3.Lerp(_direction, currentToPlayer, _data.ChargePrecision);
             }
 
-            var separation = Vector2.zero;
-            var minSeparationDistance = 1.5f;
+            var finalDir = (_direction + _separation * (0.1f * state.transform.localScale.x)).normalized;
+            state.transform.position += (Vector3)(finalDir * (_data.ChargeMovementSpeed * SlowModificator(state) * Time.deltaTime));
+            
+            if (!_didDamagePlayer && InRange(state, _data.ChargeAttackRange))
+            {
+                _didDamagePlayer = true;
+                PlayerManager.PlayerHealth.GetDamaged(_data.ChargeDamage);
+            }
+        }
+
+        public override void LazyExecute(EnemyLogic state, float lazyDeltaTime)
+        {
+            _separation = Vector2.zero;
+            const float minSeparationDistance = 1.5f;
 
             EnemyManager.GetNearbyEnemies(state.transform.position, minSeparationDistance, ref _cachedNearbyEnemies);
             foreach (var poolObj in _cachedNearbyEnemies)
@@ -73,30 +85,15 @@ namespace EnemyPack.States
                 if (dist < minSeparationDistance)
                 {
                     var bodySizeFactor = state.EnemyData.BodyScale * state.transform.localScale.x;
-                    separation += pushAway.normalized * ((minSeparationDistance - dist) * bodySizeFactor);
+                    _separation += pushAway.normalized * ((minSeparationDistance - dist) * bodySizeFactor);
                 }
                 else
                 {
-                    separation += pushAway.normalized * 0.05f;
+                    _separation += pushAway.normalized * 0.05f;
                 }
             }
 
             _cachedNearbyEnemies.Clear();
-            
-            var finalDir = (_direction + separation * (0.1f * state.transform.localScale.x)).normalized;
-            state.transform.position += (Vector3)(finalDir * GetMovementSpeed(state, _data.ChargeMovementSpeed));
-            
-            if (!_didDamagePlayer && InRange(state, _data.ChargeAttackRange))
-            {
-                _didDamagePlayer = true;
-                PlayerManager.PlayerHealth.GetDamaged(_data.ChargeDamage);
-            }
-        }
-
-        public override void Reset(EnemyLogic state)
-        {
-            _didDamagePlayer = false;
-            _timer = 0;
         }
     }
 }

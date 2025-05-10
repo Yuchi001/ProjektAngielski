@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 643100654181602699}
   - component: {fileID: 8481847915760244031}
   - component: {fileID: -6588434987953268906}
+  - component: {fileID: 5287939021840919822}
   m_Layer: 0
   m_Name: HealParticles
   m_TagString: Untagged
@@ -4910,3 +4911,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed3144fe40ae4620a4c205a730af6be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!210 &5287939021840919822
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688343070385823546}
+  m_Enabled: 1
+  m_SortingLayerID: -1930559287
+  m_SortingLayer: -3
+  m_SortingOrder: 0
+  m_SortAtRoot: 0

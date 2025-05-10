@@ -15,10 +15,5 @@ namespace EnemyPack.States
         {
             // IGNORE
         }
-
-        public sealed override void Reset(EnemyLogic state)
-        {
-            // IGNORE
-        }
     }
 }

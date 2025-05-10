@@ -57,7 +57,7 @@ namespace ProjectilePack
         private Func<Projectile, CanBeDamaged, bool> _onHitAction;
         private Action<Projectile, CanBeDamaged> _onHitStayAction;
         private Action<Projectile> _onUpdateAction;
-        private Action<Projectile> _onFixedUpdateAction;
+        private Action<Projectile, float> _onLazyUpdateAction;
         private Func<Projectile, bool> _onOutOfRangeAction; // returns info if we should brake from base behaviour
 
         // CUSTOM DATA
@@ -176,9 +176,9 @@ namespace ProjectilePack
             return this;
         }
         
-        public Projectile SetFixedUpdateAction(Action<Projectile> onFixedUpdateAction)
+        public Projectile SetLazyUpdateAction(Action<Projectile, float> onLazyUpdateAction)
         {
-            _onFixedUpdateAction = onFixedUpdateAction;
+            _onLazyUpdateAction = onLazyUpdateAction;
             return this;
         }
 
@@ -258,14 +258,12 @@ namespace ProjectilePack
             _onUpdateAction?.Invoke(this);
             _projectileMovementStrategy.MoveProjectile(this, Time.deltaTime);
         }
-
-        public override void InvokeFixedUpdate()
+        
+        protected override void LazyUpdate(float lazyDeltaTime)
         {
             if (!Active) return;
             
-            base.InvokeFixedUpdate();
-            
-            _onFixedUpdateAction?.Invoke(this);
+            _onLazyUpdateAction?.Invoke(this, lazyDeltaTime);
             _targetDetector?.CheckForTriggers();
 
             if (transform.InRange(SET_startPosition, maxDistance)) return;

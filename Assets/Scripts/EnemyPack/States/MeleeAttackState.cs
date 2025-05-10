@@ -28,23 +28,20 @@ namespace EnemyPack.States
 
         public override void Execute(EnemyLogic state)
         {
-            if (!InRange(state, meleeAttackStateData.AttackRange))
-            {
-                state.SwitchState(_lastState);
-                return;
-            }
-            
             _lastState.Execute(state);
-            _timer += state.fixedDeltaTime;
+            _timer += Time.deltaTime;
             if (_timer < AttackSpeed) return;
 
             _timer = 0;
             PlayerManager.PlayerHealth.GetDamaged(meleeAttackStateData.Damage);
         }
 
-        public override void Reset(EnemyLogic state)
+        public override void LazyExecute(EnemyLogic state, float lazyDeltaTime)
         {
-            _timer = -1;
+            _lastState.LazyExecute(state, lazyDeltaTime);
+            
+            if (InRange(state, meleeAttackStateData.AttackRange)) return;
+            state.SwitchState(_lastState);
         }
     }
 }

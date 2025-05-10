@@ -7,7 +7,7 @@ using UnityEngine;
 namespace SpecialEffectPack
 {
     [RequireComponent(typeof(Animator))]
-    public class ExplosionAnimation : PoolObject
+    public class ExplosionAnimation : SimplePoolObject
     {
         [SerializeField] private Animator animator;
         [SerializeField] private SpriteRenderer spriteRenderer;

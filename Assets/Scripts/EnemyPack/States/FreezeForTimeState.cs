@@ -1,6 +1,7 @@
 ﻿using System;
 using EnemyPack.SO;
 using EnemyPack.States.StateData;
+using UnityEngine;
 
 namespace EnemyPack.States
 {
@@ -27,15 +28,10 @@ namespace EnemyPack.States
         {
             base.Execute(state);
             
-            _timer += state.fixedDeltaTime;
+            _timer += Time.deltaTime;
             if (_timer < _data.FreezeTime) return;
 
             state.SwitchState(_nextState.Invoke());
-        }
-
-        public override void Reset(EnemyLogic state)
-        {
-            _timer = 0;
         }
     }
 }

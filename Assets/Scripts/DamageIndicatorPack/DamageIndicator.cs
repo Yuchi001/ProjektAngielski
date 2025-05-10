@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace DamageIndicatorPack
 {
-    public class DamageIndicator : PoolObject
+    public class DamageIndicator : SimplePoolObject
     {
         [SerializeField] private TextMeshProUGUI damageText;
         [SerializeField] private float lifeTime = 0.3f;

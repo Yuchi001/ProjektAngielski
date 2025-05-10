@@ -18,9 +18,7 @@ namespace EnemyPack.States
         
         public abstract void Enter(EnemyLogic state, StateBase lastState);
         public abstract void Execute(EnemyLogic state);
-        public virtual void FixedExecute(EnemyLogic state) { }
-
-        public abstract void Reset(EnemyLogic state);
+        public abstract void LazyExecute(EnemyLogic state, float lazyDeltaTime);
 
         public virtual ESpriteRotation GetRotation(EnemyLogic state)
         {
@@ -50,9 +48,6 @@ namespace EnemyPack.States
             return state.transform.InRange(PlayerPos, totalRangeSqr);
         }
 
-        protected float GetMovementSpeed(EnemyLogic state, float baseMovementSpeed)
-        {
-            return state.fixedDeltaTime * baseMovementSpeed * (state.HasEffect(EEffectType.Slow) ? 0.5f : 1f);
-        }
+        protected float SlowModificator(EnemyLogic state) => state.HasEffect(EEffectType.Slow) ? 0.5f : 1f;
     }
 }

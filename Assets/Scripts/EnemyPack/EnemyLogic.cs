@@ -118,8 +118,8 @@ namespace EnemyPack
             
             if (_pushTime > 0)
             {
-                _pushTime -= fixedDeltaTime;
-                transform.position += (Vector3)(knockbackVelocity * fixedDeltaTime);
+                _pushTime -= Time.deltaTime;
+                transform.position += (Vector3)(knockbackVelocity * Time.deltaTime);
                 return;
             }
 
@@ -134,16 +134,14 @@ namespace EnemyPack
             _currentState.Execute(this);
         }
 
-        public override void InvokeFixedUpdate()
+        protected override void LazyUpdate(float lazyDeltaTime)
         {
-            base.InvokeFixedUpdate();
-            
             animator.speed = Stuned ? 0 : Slowed ? EnemyData.AnimationSpeed / 2f : EnemyData.AnimationSpeed;
             if (Dead || (Stuned && _currentState.CanBeStunned) || !Active) return;
             
             _enemyHealthBar.ManageHealthBar();
             
-            _currentState.FixedExecute(this);
+            _currentState.LazyExecute(this, lazyDeltaTime);
         }
 
         public bool SwitchState(StateBase state)

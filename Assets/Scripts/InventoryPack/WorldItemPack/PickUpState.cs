@@ -39,7 +39,7 @@ namespace InventoryPack.WorldItemPack
             else item.SwitchState(_nextState.Invoke());
         }
 
-        public void FixedExecute(WorldItem item)
+        public void LazyExecute(WorldItem item, float lazyDeltaTime)
         {
             
         }

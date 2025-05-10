@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3324939141604835074}
   - component: {fileID: 1897219968927282808}
   - component: {fileID: -6591812738546476801}
+  - component: {fileID: 6604673179720821092}
   m_Layer: 0
   m_Name: ConfettiParticles
   m_TagString: Untagged
@@ -4910,3 +4911,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed3144fe40ae4620a4c205a730af6be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!210 &6604673179720821092
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112026594148288758}
+  m_Enabled: 1
+  m_SortingLayerID: -1930559287
+  m_SortingLayer: -3
+  m_SortingOrder: 0
+  m_SortAtRoot: 0

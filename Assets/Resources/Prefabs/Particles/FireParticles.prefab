@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5234486555243701574}
   - component: {fileID: 5413277840586447474}
   - component: {fileID: -4890151894442733676}
+  - component: {fileID: 3135921858178140890}
   m_Layer: 0
   m_Name: FireParticles
   m_TagString: Untagged
@@ -4852,3 +4853,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed3144fe40ae4620a4c205a730af6be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!210 &3135921858178140890
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7040954496325281963}
+  m_Enabled: 1
+  m_SortingLayerID: -1930559287
+  m_SortingLayer: -3
+  m_SortingOrder: 0
+  m_SortAtRoot: 0

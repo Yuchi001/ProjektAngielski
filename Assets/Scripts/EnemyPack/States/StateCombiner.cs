@@ -25,9 +25,10 @@ namespace EnemyPack.States
             _secondaryState.Invoke().Execute(state);
         }
 
-        public override void Reset(EnemyLogic state)
+        public override void LazyExecute(EnemyLogic state, float lazyDeltaTime)
         {
-            _primaryState.Invoke().Reset(state);
+            _primaryState.Invoke().LazyExecute(state, lazyDeltaTime);
+            _secondaryState.Invoke().LazyExecute(state, lazyDeltaTime);
         }
 
         public override void Exit(EnemyLogic state)

@@ -29,19 +29,17 @@ namespace EnemyPack.States
         public override void Execute(EnemyLogic state)
         {
             var enemyTransform = state.transform;
-            enemyTransform.MoveTowards(_currentDestination, GetMovementSpeed(state, _data.PatrolMovementSpeed));
-            
+            var ms = _data.PatrolMovementSpeed * SlowModificator(state) * Time.deltaTime;
+            enemyTransform.MoveTowards(_currentDestination, ms);
+        }
+
+        public override void LazyExecute(EnemyLogic state, float lazyDeltaTime)
+        {
+            var enemyTransform = state.transform;
             if (!enemyTransform.InRange(_currentDestination, 0.15f)) return;
 
             _currentDestination = enemyTransform.RandomPointInRange(_startPos, _data.PatrolRange);
             if (_newDestinationState != null) state.SwitchState(_newDestinationState.Invoke());
         }
-
-        public override void Reset(EnemyLogic state)
-        {
-            
-        }
-
-        
     }
 }

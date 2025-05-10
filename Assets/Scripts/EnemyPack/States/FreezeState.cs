@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EnemyPack.States
 {
-    public class FreezeState : StateBase
+    public class FreezeState : DefaultStateBase
     {
         private readonly FreezeStateData _data;
         
@@ -55,12 +55,7 @@ namespace EnemyPack.States
             state.Animator.Play("Idle");
             state.SetInvincible(false);
         }
-
-        public override void Reset(EnemyLogic state)
-        {
-            
-        }
-
+        
         protected void SwitchToNextState(EnemyLogic logic, StateBase state)
         {
             if (_data.UseFreezeSprite)

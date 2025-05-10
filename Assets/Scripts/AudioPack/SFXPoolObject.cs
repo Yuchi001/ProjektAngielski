@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Managers;
 using Managers.Enums;
 using Managers.Other;
 using PoolPack;
@@ -9,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace AudioPack
 {
-    public class SFXPoolObject : PoolObject
+    public class SFXPoolObject : SimplePoolObject
     {
         private Dictionary<ESoundType, SoundData> _sounds = new();
         private AudioSource _audioSource;

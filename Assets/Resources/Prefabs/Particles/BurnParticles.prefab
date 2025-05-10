@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6018507598625937068}
   - component: {fileID: 1116305134846646067}
   - component: {fileID: -3992645235130622103}
+  - component: {fileID: 8766389584927432740}
   m_Layer: 0
   m_Name: BurnParticles
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 4335675135845145051}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.07, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4910,3 +4911,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed3144fe40ae4620a4c205a730af6be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!210 &8766389584927432740
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4335675135845145051}
+  m_Enabled: 1
+  m_SortingLayerID: -1930559287
+  m_SortingLayer: -3
+  m_SortingOrder: 0
+  m_SortAtRoot: 0

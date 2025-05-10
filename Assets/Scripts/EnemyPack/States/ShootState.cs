@@ -3,6 +3,7 @@ using EnemyPack.States.StateData;
 using PlayerPack;
 using ProjectilePack;
 using ProjectilePack.MovementStrategies;
+using UnityEngine;
 
 namespace EnemyPack.States
 {
@@ -31,13 +32,7 @@ namespace EnemyPack.States
         {
             _lastState.Execute(state);
 
-            if (!InRange(state, _data.AttackRange))
-            {
-                state.SwitchState(_lastState);
-                return;
-            }
-            
-            _timer += state.fixedDeltaTime;
+            _timer += Time.deltaTime;
             if (_timer < AttackSpeed) return;
 
             _timer = 0;
@@ -50,10 +45,13 @@ namespace EnemyPack.States
                 .SetScale(_data.BulletScale)
                 .Ready();
         }
-
-        public override void Reset(EnemyLogic state)
+        
+        public override void LazyExecute(EnemyLogic state, float lazyDeltaTime)
         {
-            _timer = -1;
+            _lastState.LazyExecute(state,lazyDeltaTime);
+            
+            if (InRange(state, _data.AttackRange)) return;
+            state.SwitchState(_lastState);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace EnemyPack.States.RootStates
             var shootState = new ShootState(data);
             var patrolState = new PatrolState(data, () => shootState);
             var fleeState = new FleeState(data, () => patrolState);
-            var distanceTriggerState = new DistanceTriggerState(data, () =>fleeState);
+            var distanceTriggerState = new DistanceTriggerState(data, () => fleeState);
             _combinedPatrolState = new StateCombiner(() => patrolState, () => distanceTriggerState);
         }
 

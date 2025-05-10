@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ParticlesPack
 {
-    public class ParticlesPoolObject : PoolObject
+    public class ParticlesPoolObject : SimplePoolObject
     {
         private PoolManager _poolManager;
         

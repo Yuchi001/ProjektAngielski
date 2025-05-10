@@ -25,6 +25,11 @@ namespace EnemyPack.States
             if (!looksAtMe && _lookType == ELookType.LOOK_AWAY) state.SwitchState(_nextState.Invoke());
         }
 
+        public override void LazyExecute(EnemyLogic state, float lazyDeltaTime)
+        {
+            
+        }
+
         public enum ELookType
         {
             LOOK_AT,

@@ -69,7 +69,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var newProjectile = ProjectileManager.SpawnProjectile(projectileMovementStrategy, this);
             newProjectile.transform.position = projectile.transform.position;
             newProjectile.SetDestroyOnCollision(false)
-                .SetFixedUpdateAction(ProjectileUpdate)
+                .SetLazyUpdateAction(LazyProjectileUpdate)
                 .SetSprite(projectileSprite)
                 .SetScale(0.5f)
                 .SetRange(9999)
@@ -78,7 +78,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             return false;
         }
 
-        private void ProjectileUpdate(Projectile projectile)
+        private void LazyProjectileUpdate(Projectile projectile, float lazyDeltaTime)
         {
             if (!projectile.transform.InRange(PlayerPos, 0.1f)) return;
 

@@ -28,7 +28,9 @@ namespace EnemyPack.States
 
         public override void Execute(EnemyLogic state)
         {
-            _timer += state.fixedDeltaTime;
+            _lastState.Execute(state);
+            
+            _timer += Time.deltaTime;
             if (_timer < AttackSpeed) return;
 
             _timer = 0;
@@ -54,15 +56,18 @@ namespace EnemyPack.States
             state.SwitchState(_lastState);
         }
 
+        public override void LazyExecute(EnemyLogic state, float lazyDeltaTime)
+        {
+            _lastState.LazyExecute(state, lazyDeltaTime);
+            
+            if (InRange(state, _data.AttackRange)) return;
+            state.SwitchState(_lastState);
+        }
+
         private static Vector2 AngleToDirection(float angleInDegrees)
         {
             float radians = angleInDegrees * Mathf.Deg2Rad;
             return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)).normalized;
-        }
-
-        public override void Reset(EnemyLogic state)
-        {
-            _timer = -1;
         }
     }
 }

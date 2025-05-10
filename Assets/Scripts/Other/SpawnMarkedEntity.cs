@@ -5,7 +5,7 @@ using WorldGenerationPack;
 
 namespace Other
 {
-    public class SpawnMarkedEntity : PoolObject
+    public class SpawnMarkedEntity : SimplePoolObject
     {
         [SerializeField] private float spawnTime;
 

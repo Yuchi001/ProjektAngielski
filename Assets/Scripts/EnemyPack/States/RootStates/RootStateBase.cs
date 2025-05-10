@@ -19,7 +19,7 @@ namespace EnemyPack.States.RootStates
             // IGNORE
         }
 
-        public sealed override void Reset(EnemyLogic state)
+        public sealed override void LazyExecute(EnemyLogic state, float lazyDeltaTime)
         {
             // IGNORE
         }

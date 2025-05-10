@@ -91,7 +91,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 .SetScale(0.4f)
                 .SetOnHitAction(Projectile.CancelHit)
                 .SetUpdateAction(BackProjectileUpdate)
-                .SetFixedUpdateAction(BackProjectileFixedUpdate)
+                .SetLazyUpdateAction(BackProjectileLazyUpdate)
                 .Ready();
 
             return false;
@@ -104,7 +104,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             sr.Rotate(0, 0, 225);
         }
         
-        private void BackProjectileFixedUpdate(Projectile projectile)
+        private void BackProjectileLazyUpdate(Projectile projectile, float lazyDeltaTime)
         {
             if (!PlayerTransform.InRange(projectile.transform.position, 0.1f)) return;
 

@@ -31,7 +31,7 @@ namespace InventoryPack.WorldItemPack
             _poolManager.ReleasePoolObject(item);
         }
 
-        public void FixedExecute(WorldItem item)
+        public void LazyExecute(WorldItem item, float lazyDeltaTime)
         {
             
         }

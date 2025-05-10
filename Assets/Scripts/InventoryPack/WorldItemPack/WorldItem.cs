@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections;
-using ItemPack.Enums;
 using ItemPack.SO;
 using Other;
-using PlayerPack;
 using PoolPack;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utils;
-using Random = UnityEngine.Random;
 
 namespace InventoryPack.WorldItemPack
 {
@@ -101,10 +96,9 @@ namespace InventoryPack.WorldItemPack
             _currentState?.Execute(this);
         }
 
-        public override void InvokeFixedUpdate()
+        protected override void LazyUpdate(float lazyDeltaTime)
         {
-            base.InvokeFixedUpdate();
-            _currentState?.FixedExecute(this);
+            _currentState?.LazyExecute(this, lazyDeltaTime);
         }
 
         private void OnDrawGizmos()

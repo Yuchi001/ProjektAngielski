@@ -47,7 +47,7 @@ namespace PoolPack
         protected virtual PoolObject InvokeQueueUpdate()
         {
             var toRet = updateStack.Pop();
-            toRet.InvokeFixedUpdate();
+            toRet.InvokeLazyUpdate();
             return toRet;
         }
         

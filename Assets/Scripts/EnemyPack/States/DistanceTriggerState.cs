@@ -20,6 +20,11 @@ namespace EnemyPack.States
         
         public override void Execute(EnemyLogic state)
         {
+            // IGNORE
+        }
+
+        public override void LazyExecute(EnemyLogic state, float lazyDeltaTime)
+        {
             if (PlayerManager.IsPlayerNearby(state.transform.position, _data.TriggerDistance)) return;
             
             var inRange = state.transform.InRange(PlayerPos, _data.TriggerDistance);
