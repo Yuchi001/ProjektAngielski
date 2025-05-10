@@ -17,7 +17,7 @@ MonoBehaviour:
   canStack: 0
   effectName: Poison
   effectSprite: {fileID: 21300000, guid: b707c0ae7c196154eab297950c8de76b, type: 3}
-  effectParticles: {fileID: 3056877686207287091, guid: 8689277780798524cbe676bd4cb79031, type: 3}
   effectColor: {r: 0, g: 0.5471698, b: 0.021552023, a: 1}
   effectType: 1
+  particlesType: 4
   poisonDamage: 10

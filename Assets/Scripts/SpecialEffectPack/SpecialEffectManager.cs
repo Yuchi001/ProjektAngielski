@@ -21,8 +21,6 @@ namespace SpecialEffectPack
 
             var prefab = GameManager.GetPrefab<ExplosionAnimation>(PrefabNames.ExplosionBase);
             _explosionPool = PoolHelper.CreatePool(this, prefab, false);
-            
-            PrepareQueue();
         }
 
         #endregion
@@ -37,11 +35,6 @@ namespace SpecialEffectPack
         public override void ReleasePoolObject(PoolObject poolObject)
         {
             _explosionPool.Release(poolObject as ExplosionAnimation);
-        }
-
-        private void Update()
-        {
-            RunUpdatePoolStack();
         }
 
         public static void SpawnExplosion(ESpecialEffectType specialEffectType, Vector2 position, float range, Color color = default)

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c91ab68ff294480833c826daae8226e, type: 3}
   m_Name: Heal
   m_EditorClassIdentifier: 
-  particlesType: 1
+  particlesType: 2
   particlesPrefab: {fileID: -6588434987953268906, guid: 877920fa71092614cb362fb6205349c2, type: 3}
   poolSize: 5
-  maxUpdateTime: 0.5

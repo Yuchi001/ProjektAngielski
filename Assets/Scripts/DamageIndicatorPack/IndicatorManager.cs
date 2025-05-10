@@ -9,7 +9,7 @@ using UnityEngine.Pool;
 
 namespace DamageIndicatorPack
 {
-    public class IndicatorManager : PoolManager
+    public class IndicatorManager : PoolManager, IMainSingleton
     {
         [SerializeField] private Gradient damageColorGradient;
         [SerializeField] private Color healColor;
@@ -22,32 +22,18 @@ namespace DamageIndicatorPack
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
-
-            GameManager.OnGMStart += GmStart;
         }
 
         #endregion
 
-        private void OnDisable()
-        {
-            GameManager.OnGMStart -= GmStart;
-        }
-
         private ObjectPool<DamageIndicator> _pool;
 
-        private void GmStart()
+        public void Init()
         {
             var prefab = GameManager.GetPrefab<DamageIndicator>(PrefabNames.DamageIndicatorHolder);
             _pool = PoolHelper.CreatePool(this, prefab, false);
-            
-            PrepareQueue();
         }
-
-        private void Update()
-        {
-            RunUpdatePoolStack();
-        }
-
+        
         protected override T GetPoolObject<T>()
         {
             return _pool.Get() as T;

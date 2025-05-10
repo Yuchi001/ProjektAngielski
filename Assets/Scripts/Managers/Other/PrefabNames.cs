@@ -3,8 +3,6 @@
     public static class PrefabNames
     {
         public const string Enemy = "Enemy";
-        public const string Food = "Food";
-        public const string LaserProjectile = "LaserProjectile";
         public const string PlayerInventoryManager = "PlayerInventoryManager";
         public const string Projectile = "Projectile";
         public const string SlashAttack = "SlashAttack";

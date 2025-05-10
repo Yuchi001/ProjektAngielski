@@ -12,17 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 303ad9df09f541778a51541999e44895, type: 3}
   m_Name: PlainsRegion
   m_EditorClassIdentifier: 
-  regionType: 1
+  regionType: 2
   regionTheme: 1
   structures:
   - structure: {fileID: 11400000, guid: f30d9f681a327fc4d82283fe672a159e, type: 2}
-    countPerSquare:
-      min: 0.01
-      max: 0.005
+    squaresPerStructure: 50
   - structure: {fileID: 11400000, guid: d44a612a9d19e544fa2259f2bd617209, type: 2}
-    countPerSquare:
-      min: 0.01
-      max: 0.005
+    squaresPerStructure: 25
   uniqueEffects: []
   uniqueSpawner: {fileID: 2460370905230009043, guid: 0e8a7dde9c78aa741bb50ed18f5fa55c, type: 3}
   soulCountPerDiff:

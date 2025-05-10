@@ -27,7 +27,7 @@ namespace EnemyPack.States
         {
             base.Execute(state);
             
-            _timer += state.deltaTime;
+            _timer += state.fixedDeltaTime;
             if (_timer < _data.FreezeTime) return;
 
             state.SwitchState(_nextState.Invoke());

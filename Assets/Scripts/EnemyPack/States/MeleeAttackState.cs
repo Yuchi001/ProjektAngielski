@@ -35,7 +35,7 @@ namespace EnemyPack.States
             }
             
             _lastState.Execute(state);
-            _timer += state.deltaTime;
+            _timer += state.fixedDeltaTime;
             if (_timer < AttackSpeed) return;
 
             _timer = 0;

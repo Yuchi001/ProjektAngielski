@@ -15,6 +15,7 @@ using ShopPack;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
+using MonoBehaviour = UnityEngine.MonoBehaviour;
 
 namespace Managers
 {
@@ -28,9 +29,6 @@ namespace Managers
 
         private int _stageCount = 1;
         public static int StageCount => Instance._stageCount;
-
-        public delegate void InitDelegate();
-        public static event InitDelegate OnGMStart;
 
         private SaveManager.PlayerSaveData playerSaveData;
 
@@ -69,11 +67,12 @@ namespace Managers
                 .Setup(soCharacter, PlayerManager.State.IN_MENU);
             
             SaveManager.LoadData();
-        }
 
-        private void Start()
-        {
-            OnGMStart?.Invoke();
+            foreach (var singleton in FindObjectsOfType<MonoBehaviour>().OfType<IMainSingleton>())
+            {
+                singleton.Init();
+                ((MonoBehaviour)singleton).gameObject.SetActive(true);
+            }
         }
 
         public static void StartRun(MapManager.MissionData missionData)

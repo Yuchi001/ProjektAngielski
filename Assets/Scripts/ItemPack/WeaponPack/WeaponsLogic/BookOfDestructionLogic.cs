@@ -20,7 +20,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
         private float Range => GetStatValue(EItemSelfStatType.BlastRange);
         private float DropExpChance => GetStatValue(EItemSelfStatType.DropExpChance);
 
-        private List<EnemyLogic> _cachedTargetList = new();
+        private List<EnemyLogic> _cachedExplosionTargetList = new();
 
         private void Start()
         {
@@ -41,7 +41,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         protected override bool Use()
         {
-            var found = TargetDetector.TryGetEnemiesInRange(PlayerPos, Range, ref _cachedTargetList);
+            var found = TargetDetector.TryGetEnemiesInRange(PlayerPos, Range, ref _cachedExplosionTargetList);
             if (found) StartCoroutine(QueueDeaths());
 
             return found;
@@ -49,7 +49,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         private IEnumerator QueueDeaths()
         {
-            foreach (var enemy in _cachedTargetList)
+            foreach (var enemy in _cachedExplosionTargetList)
             {
                 if(enemy == null || !enemy.Active) continue;
 
@@ -65,7 +65,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
                 yield return new WaitForSeconds(0.05f);
             }
-            _cachedTargetList.Clear();
+            _cachedExplosionTargetList.Clear();
         } 
 
         public float GetRange()

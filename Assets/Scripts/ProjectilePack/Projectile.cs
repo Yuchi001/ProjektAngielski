@@ -57,6 +57,7 @@ namespace ProjectilePack
         private Func<Projectile, CanBeDamaged, bool> _onHitAction;
         private Action<Projectile, CanBeDamaged> _onHitStayAction;
         private Action<Projectile> _onUpdateAction;
+        private Action<Projectile> _onFixedUpdateAction;
         private Func<Projectile, bool> _onOutOfRangeAction; // returns info if we should brake from base behaviour
 
         // CUSTOM DATA
@@ -174,6 +175,12 @@ namespace ProjectilePack
             _onUpdateAction = onUpdateAction;
             return this;
         }
+        
+        public Projectile SetFixedUpdateAction(Action<Projectile> onFixedUpdateAction)
+        {
+            _onFixedUpdateAction = onFixedUpdateAction;
+            return this;
+        }
 
         public Projectile SetEffect(EEffectType effectType, float effectTime)
         {
@@ -241,17 +248,25 @@ namespace ProjectilePack
             trailRenderer.Clear();
         }
 
-        public override void InvokeUpdate()
+        private void Update()
         {
             if (!Active) return;
             
-            base.InvokeUpdate();
             ManageLifeTime();
             ManageAnimation();
-            _targetDetector?.CheckForTriggers();
             
             _onUpdateAction?.Invoke(this);
-            _projectileMovementStrategy.MoveProjectile(this, deltaTime);
+            _projectileMovementStrategy.MoveProjectile(this, Time.deltaTime);
+        }
+
+        public override void InvokeFixedUpdate()
+        {
+            if (!Active) return;
+            
+            base.InvokeFixedUpdate();
+            
+            _onFixedUpdateAction?.Invoke(this);
+            _targetDetector?.CheckForTriggers();
 
             if (transform.InRange(SET_startPosition, maxDistance)) return;
             
@@ -265,7 +280,7 @@ namespace ProjectilePack
         {
             if (!_animationSprites.CanCycle()) return;
 
-            UPDATE_animationTimer += deltaTime;
+            UPDATE_animationTimer += Time.deltaTime;
             if (UPDATE_animationTimer < 1f / _animationSpeed) return;
             UPDATE_animationTimer = 0;
 
@@ -276,7 +291,7 @@ namespace ProjectilePack
         {
             if (!_lifeTime.HasValue) return;
             
-            UPDATE_currentLifeTime += deltaTime;
+            UPDATE_currentLifeTime += Time.deltaTime;
             if (UPDATE_currentLifeTime < _lifeTime.Value) return;
             _poolManager.ReleasePoolObject(this);
             _lifeTime = null;

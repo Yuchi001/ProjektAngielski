@@ -62,10 +62,8 @@ namespace ItemPack.WeaponPack.WeaponsLogic
 
         private void HitStayAction(Projectile projectile, CanBeDamaged enemy)
         {
-            if (projectile.CheckTimer(BOOK_OF_POISON_TIMER_ID) < 1f / DamageRate) return;
+            if (enemy is not EnemyLogic enemyScript || projectile.CheckTimer(BOOK_OF_POISON_TIMER_ID) < 1f / DamageRate) return;
             projectile.SetTimer(BOOK_OF_POISON_TIMER_ID);
-
-            if (enemy is not EnemyLogic enemyScript) return;
             
             enemyScript.GetDamaged(Damage);
         }

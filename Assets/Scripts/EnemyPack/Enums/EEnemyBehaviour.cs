@@ -11,6 +11,7 @@
         Brain,
         Crab,
         StoneMan,
-        Face
+        Face,
+        Dummy,
     }
 }

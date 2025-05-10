@@ -18,6 +18,7 @@ namespace MapPack
     {
         [SerializeField] private MinMax missionCount;
         [SerializeField] private Transform shopPosition;
+        [SerializeField] private Region debugRegion;
 
         private List<Region> _regions;
         private List<MissionData> _missions;
@@ -32,12 +33,20 @@ namespace MapPack
                 return;
             }
             
-            _regions = FindObjectsOfType<Region>().ToList();
+            _regions = FindObjectsOfType<Region>().Where(r => r.RegionData.RegionType != ERegionType.DEBUG).ToList();
             _missions = GameManager.GetMissions();
             while (_missions.Count < missionCount.RandomInt())
             {
                 _missions.Add(GenerateMission());
             }
+
+            if (debugRegion != null)
+            {
+                if (_missions.All(m => m.RegionType != ERegionType.DEBUG))
+                {
+                    _missions.Add(new MissionData(DifficultyExtensions.EDifficulty.EASY, debugRegion));
+                }
+            }   
 
             if (GameManager.StageCount > 1)
             {

@@ -51,7 +51,7 @@ namespace EnemyPack.States
                 return;
             }
             
-            _timer += state.deltaTime;
+            _timer += state.fixedDeltaTime;
             if (_timer > 1f / _data.ChargePositionUpdateRate)
             {
                 _timer = 0;

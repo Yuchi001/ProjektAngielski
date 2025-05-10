@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8444939458893896403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3c0000f01ce4e1794216e8093d8bec9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolMovementSpeed: 0
+  patrolRange: 0
+--- !u!114 &-7665401762459961179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 322fd9c8fbc14a13b671ba774b1c7096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRange: 0
+  attackRate: 0
+  damage: 0
+--- !u!114 &-3084299553790229957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b506d1152dea496995e674f3e7272731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseMovementSpeed: 0
+  chaseDetectionRange: 0
+  chaseStopRange: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3abc4373d41d4b1da044bae3984686d2, type: 3}
+  m_Name: Dummy
+  m_EditorClassIdentifier: 
+  sprite: {fileID: -761857381, guid: fd19495ced03b574f9a5201680923f8d, type: 3}
+  walkingAnimationClip: {fileID: 7400000, guid: 9ab5b56788980ec4983574328b002965, type: 2}
+  maxHealth: 999999
+  bodyScale: 1
+  animationSpeed: 1
+  difficulty: 1
+  occurenceList: 00000000
+  spriteRotation: 2
+  useCustomDropCount: 0
+  soulDropCount:
+    min: 0
+    max: 0
+  scrapDropCount:
+    min: 0
+    max: 0
+  statesData:
+  - {fileID: -8444939458893896403}
+  - {fileID: -7665401762459961179}
+  - {fileID: -3084299553790229957}
+  - {fileID: 6947640161196855705}
+  - {fileID: 4287482063008049757}
+  enemyBehaviour: 10
+--- !u!114 &4287482063008049757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25fb4ffda64e49b8b1aa22e011b3ee2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useFreezeSprite: 0
+  invincible: 0
+  freezeSprite: {fileID: 0}
+--- !u!114 &6947640161196855705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5416de017ad482ca8f38bf8d1db7288, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerDistance: 0
+  triggerType: 0

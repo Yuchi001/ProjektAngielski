@@ -18,6 +18,7 @@ namespace EnemyPack.States
         
         public abstract void Enter(EnemyLogic state, StateBase lastState);
         public abstract void Execute(EnemyLogic state);
+        public virtual void FixedExecute(EnemyLogic state) { }
 
         public abstract void Reset(EnemyLogic state);
 
@@ -51,7 +52,7 @@ namespace EnemyPack.States
 
         protected float GetMovementSpeed(EnemyLogic state, float baseMovementSpeed)
         {
-            return state.deltaTime * baseMovementSpeed * (state.HasEffect(EEffectType.Slow) ? 0.5f : 1f);
+            return state.fixedDeltaTime * baseMovementSpeed * (state.HasEffect(EEffectType.Slow) ? 0.5f : 1f);
         }
     }
 }

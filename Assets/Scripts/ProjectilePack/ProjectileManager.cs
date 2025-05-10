@@ -24,7 +24,6 @@ namespace ProjectilePack
 
             var prefab = GameManager.GetPrefab<Projectile>(PrefabNames.Projectile);
             _pool = PoolHelper.CreatePool(this, prefab, false);
-            PrepareQueue();
             
             GameManager.EnqueueUnloadGameAction(() => ClearAll(_pool));
         }
@@ -59,11 +58,6 @@ namespace ProjectilePack
         public static void ReturnProjectile(Projectile projectile)
         {
             Instance.ReleasePoolObject(projectile);
-        }
-
-        private void Update()
-        {
-            RunUpdatePoolStack();
         }
     }
 }

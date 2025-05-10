@@ -20,6 +20,7 @@ namespace EnemyPack.States
             { EEnemyBehaviour.Crab, enemy => new CrabMain(enemy) },
             { EEnemyBehaviour.Brain, enemy => new BrainMain(enemy) },
             { EEnemyBehaviour.Face, enemy => new FaceMain(enemy) },
+            { EEnemyBehaviour.Dummy, enemy => new DummyMain(enemy) },
         };
 
         public static RootStateBase GetState(EEnemyBehaviour behaviour, SoEnemy data)

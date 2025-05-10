@@ -12,21 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 303ad9df09f541778a51541999e44895, type: 3}
   m_Name: MinesRegion
   m_EditorClassIdentifier: 
-  regionType: 0
+  regionType: 1
   regionTheme: 0
   structures:
   - structure: {fileID: 11400000, guid: d44a612a9d19e544fa2259f2bd617209, type: 2}
-    countPerSquare:
-      min: 0.01
-      max: 0.05
+    squaresPerStructure: 25
   - structure: {fileID: 11400000, guid: f30d9f681a327fc4d82283fe672a159e, type: 2}
-    countPerSquare:
-      min: 0.001
-      max: 0.005
+    squaresPerStructure: 100
   - structure: {fileID: 11400000, guid: dc321d57c272f35479e6f20e428679c0, type: 2}
-    countPerSquare:
-      min: 0.001
-      max: 0.005
+    squaresPerStructure: 50
   uniqueEffects: []
   uniqueSpawner: {fileID: 1469964570941688561, guid: b419b73374d1f654685a43bc2391a611, type: 3}
   soulCountPerDiff:

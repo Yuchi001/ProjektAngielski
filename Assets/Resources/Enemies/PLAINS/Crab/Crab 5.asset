@@ -33,7 +33,7 @@ MonoBehaviour:
   bodyScale: 2
   animationSpeed: 1
   difficulty: 8
-  occurenceList: 01000000
+  occurenceList: 02000000
   spriteRotation: 2
   useCustomDropCount: 0
   soulDropCount:

@@ -62,9 +62,9 @@ namespace EnemyPack
             Instance._activeEnemies.UpdatePosition(enemyLogic, lastPos, enemyLogic.transform.position);
         }
 
-        public static void RemovePos(EnemyLogic enemyLogic)
+        public static void RemovePos(EnemyLogic enemyLogic, Vector2 oldPos)
         {
-            Instance._activeEnemies?.Remove(enemyLogic, enemyLogic.transform.position);
+            Instance._activeEnemies?.Remove(enemyLogic, oldPos);
         }
 
         public static int CountActive => _currentSpawner.CountActive;

@@ -14,8 +14,8 @@ namespace SpecialEffectPack
 
         [SerializeField] private List<ExplosionData> explosionDataList;
 
-        private const string EXPLOSION_ANIMATION_TIMER_ID = "EXPLOSION_ANIMATION_TIMER_ID";
         private SpecialEffectManager _pool;
+        private float _timer = 0;
 
         private Dictionary<ESpecialEffectType, ExplosionData> _explosionDataDict = new();
 
@@ -35,8 +35,8 @@ namespace SpecialEffectPack
             
             var scale = range / data.ExplosionRangeScaling;
             transform.localScale = Vector2.one * scale;
-            
-            SetTimer(EXPLOSION_ANIMATION_TIMER_ID);
+
+            _timer = 0;
             
             if (color != default) spriteRenderer.color = color;
             
@@ -51,9 +51,10 @@ namespace SpecialEffectPack
             return clip.length / stateInfo.speed - 0.1f;
         }
 
-        public override void InvokeUpdate()
+        public void Update()
         {
-            if (CheckTimer(EXPLOSION_ANIMATION_TIMER_ID) <= GetLifeTime()) return;
+            _timer += Time.deltaTime;
+            if (_timer < GetLifeTime()) return;
             
             _pool.ReleasePoolObject(this);
         }

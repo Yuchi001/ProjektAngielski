@@ -101,28 +101,25 @@ namespace EnemyPack
 
             if (_enemySpawner == null) return;
             EnemyManager.RegisterEnemyDeath(this);
-            EnemyManager.RemovePos(this);
+            EnemyManager.RemovePos(this, _lastPos);
         }
 
         private void OnDestroy()
         {
-            EnemyManager.RemovePos(this);
+            EnemyManager.RemovePos(this, _lastPos);
         }
 
-        public override void InvokeUpdate()
+        private void Update()
         {
-            base.InvokeUpdate();
+            if (Dead || !Active) return;
             
-            animator.speed = Stuned ? 0 : Slowed ? EnemyData.AnimationSpeed / 2f : EnemyData.AnimationSpeed;
-            if (Dead || (Stuned && _currentState.CanBeStunned) || !Active) return;
-
             if (_lastPos != transform.position) EnemyManager.UpdatePos(this, _lastPos);
             _lastPos = transform.position;
-
+            
             if (_pushTime > 0)
             {
-                _pushTime -= deltaTime;
-                transform.position += (Vector3)(knockbackVelocity * deltaTime);
+                _pushTime -= fixedDeltaTime;
+                transform.position += (Vector3)(knockbackVelocity * fixedDeltaTime);
                 return;
             }
 
@@ -134,9 +131,19 @@ namespace EnemyPack
                 SpriteRenderer.flipX = playerOnLeft == rotationRight;
             }
             
+            _currentState.Execute(this);
+        }
+
+        public override void InvokeFixedUpdate()
+        {
+            base.InvokeFixedUpdate();
+            
+            animator.speed = Stuned ? 0 : Slowed ? EnemyData.AnimationSpeed / 2f : EnemyData.AnimationSpeed;
+            if (Dead || (Stuned && _currentState.CanBeStunned) || !Active) return;
+            
             _enemyHealthBar.ManageHealthBar();
             
-            _currentState.Execute(this);
+            _currentState.FixedExecute(this);
         }
 
         public bool SwitchState(StateBase state)

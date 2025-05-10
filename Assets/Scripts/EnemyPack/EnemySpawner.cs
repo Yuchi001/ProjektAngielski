@@ -50,7 +50,6 @@ namespace EnemyPack
             var enemyPrefab = GameManager.GetPrefab<EnemyLogic>(PrefabNames.Enemy);
             _enemyPool = PoolHelper.CreatePool(this, enemyPrefab, true);
             GameManager.EnqueueUnloadGameAction(() => ClearAll(_enemyPool));
-            PrepareQueue();
             
             _spawn = true;
         }
@@ -66,7 +65,6 @@ namespace EnemyPack
             }
             
             _progression += Time.deltaTime;
-            RunUpdatePoolStack();
 
             if (!_spawn) return;
             

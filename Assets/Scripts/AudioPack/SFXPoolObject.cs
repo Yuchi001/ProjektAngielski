@@ -16,9 +16,9 @@ namespace AudioPack
 
         private AudioManager _audioManager;
 
-        private string SOUND_TIMER_ID = "SOUND_TIMER_ID";
-
         private float _clipLength = 999;
+
+        private float _timer = 0;
         
         public override void OnCreate(PoolManager poolManager)
         {
@@ -47,15 +47,16 @@ namespace AudioPack
             _audioSource.pitch -= Random.Range(-0.1f, 0.1f);
             _audioSource.PlayOneShot(clipData.AudioClip);
             _clipLength = clipData.AudioClip.length;
-            
-            SetTimer(SOUND_TIMER_ID);
+
+            _timer = 0;
             
             OnGet(null);
         }
 
         private void Update()
         {
-            if (CheckTimer(SOUND_TIMER_ID) < _clipLength) return;
+            _timer += Time.deltaTime;
+            if (_timer < _clipLength) return;
             
             _audioManager.ReleasePoolObject(this);
         }

@@ -1,4 +1,5 @@
-﻿using UnityEngine.Pool;
+﻿using UnityEngine;
+using UnityEngine.Pool;
 using Object = UnityEngine.Object;
 
 namespace PoolPack
@@ -23,7 +24,7 @@ namespace PoolPack
 
         private static T Create<T>(T prefab, PoolManager poolManager) where T: PoolObject
         {
-            var obj = Object.Instantiate(prefab, poolManager != null ? poolManager.transform : null);
+            var obj = Object.Instantiate(prefab, poolManager.transform);
             var ret = obj.GetComponent<T>();
             ret.OnCreate(poolManager);
             ret.SetActive(true);

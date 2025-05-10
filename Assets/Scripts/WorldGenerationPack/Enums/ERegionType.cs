@@ -2,6 +2,7 @@
 {
     public enum ERegionType
     {
+        DEBUG,
         Mineshaft,
         Plains
     }

@@ -295,7 +295,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11702656b926492f96e3b92562620bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.02
+  usesUpdateStack: 0
+  maxUpdateStackDuration: 0
   <PoolSize>k__BackingField: 50
   sounds:
   - AudioClip: {fileID: 8300000, guid: 7c8538fa233774d47a8e57f8d093c412, type: 3}
@@ -703,7 +704,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a7133b68154c879303020d5013ef22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.2
+  usesUpdateStack: 0
+  maxUpdateStackDuration: 0
   <PoolSize>k__BackingField: 50
 --- !u!4 &783534116
 Transform:
@@ -894,7 +896,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b886df3244394b1fa40ef8e63fc20d78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.5
+  usesUpdateStack: 0
+  maxUpdateStackDuration: 0
   <PoolSize>k__BackingField: 50
   damageColorGradient:
     serializedVersion: 2
@@ -1302,7 +1305,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd182f2fc5d74f35b106d381102e100c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.002
+  usesUpdateStack: 1
+  maxUpdateStackDuration: 0.02
   <PoolSize>k__BackingField: 100
 --- !u!4 &1954272737
 Transform:

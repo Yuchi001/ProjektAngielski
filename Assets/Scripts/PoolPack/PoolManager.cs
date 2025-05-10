@@ -9,7 +9,8 @@ namespace PoolPack
 {
     public abstract class PoolManager : MonoBehaviour
     {
-        [SerializeField] protected float maxUpdateStackDuration = 0.5f;
+        [SerializeField] private bool usesUpdateStack;
+        [SerializeField] protected float maxUpdateStackDuration = 0.02f;
         [field: SerializeField, Range(10, 1000)] public int PoolSize { get; protected set; }
         public List<PoolObject> ActiveObjects { get; } = new();
         protected abstract T GetPoolObject<T>() where T: PoolObject;
@@ -23,13 +24,15 @@ namespace PoolPack
         private Stack<PoolObject> updateStack = new();
         private float _currentQueueLength = 1;
         
-        protected void PrepareQueue()
+        private void PrepareQueue()
         {
             updateStack = new Stack<PoolObject>(ActiveObjects);
         }
 
-        protected void RunUpdatePoolStack()
+        protected virtual void Update()
         {
+            if (!usesUpdateStack) return;
+            
             if (updateStack.Count == 0) PrepareQueue();
             
             var fps = 1.0f / Time.unscaledDeltaTime;
@@ -44,7 +47,7 @@ namespace PoolPack
         protected virtual PoolObject InvokeQueueUpdate()
         {
             var toRet = updateStack.Pop();
-            toRet.InvokeUpdate();
+            toRet.InvokeFixedUpdate();
             return toRet;
         }
         

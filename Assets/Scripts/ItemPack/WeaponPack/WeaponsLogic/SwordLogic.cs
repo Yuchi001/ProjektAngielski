@@ -91,6 +91,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
                 .SetScale(0.4f)
                 .SetOnHitAction(Projectile.CancelHit)
                 .SetUpdateAction(BackProjectileUpdate)
+                .SetFixedUpdateAction(BackProjectileFixedUpdate)
                 .Ready();
 
             return false;
@@ -101,7 +102,10 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var sr = projectile.SpriteRenderer.transform;
             TransformExtensions.LookAt(sr, PlayerPos);
             sr.Rotate(0, 0, 225);
-
+        }
+        
+        private void BackProjectileFixedUpdate(Projectile projectile)
+        {
             if (!PlayerTransform.InRange(projectile.transform.position, 0.1f)) return;
 
             _didComeBack = true;

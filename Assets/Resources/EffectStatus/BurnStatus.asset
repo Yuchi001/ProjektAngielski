@@ -17,7 +17,7 @@ MonoBehaviour:
   canStack: 0
   effectName: Burn
   effectSprite: {fileID: 21300000, guid: 10931207c7dbaca42aa8539ba68ee1aa, type: 3}
-  effectParticles: {fileID: 6018507598625937068, guid: 89c0086434b47224d8bcbcdbcd0eb1c3, type: 3}
   effectColor: {r: 1, g: 0.53673553, b: 0, a: 1}
   effectType: 2
+  particlesType: 5
   burnDamage: 2

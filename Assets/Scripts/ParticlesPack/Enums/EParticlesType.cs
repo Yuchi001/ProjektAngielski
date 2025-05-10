@@ -2,8 +2,12 @@
 {
     public enum EParticlesType
     {
+        None,
         Blood,
         Heal,
+        Slow,
+        Poison,
+        Burn,
         Explosion
     }
 }

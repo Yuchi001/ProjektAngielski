@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c91ab68ff294480833c826daae8226e, type: 3}
   m_Name: Blood
   m_EditorClassIdentifier: 
-  particlesType: 0
+  particlesType: 1
   particlesPrefab: {fileID: -2424901098344701491, guid: c5673512605494643b11f243bc5e09dd, type: 3}
   poolSize: 100
-  maxUpdateTime: 0.5

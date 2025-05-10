@@ -171,12 +171,12 @@ namespace StagePack
         public struct StructureGenerationData
         {
             [SerializeField] private SoStructure structure;
-            [SerializeField] private MinMax countPerSquare;
+            [SerializeField] private float squaresPerStructure;
             
             public List<SoStructure> GetStructures(Vector2Int worldSize)
             {
                 var list = new List<SoStructure>();
-                var count = worldSize.x * worldSize.y * countPerSquare.RandomFloat();
+                var count = worldSize.x * worldSize.y / squaresPerStructure;
                 for (var i = 0; i < count; i++) list.Add(structure);
 
                 return list;

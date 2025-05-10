@@ -196,6 +196,12 @@ namespace PlayerPack.PlayerItemPack
                 }
             }
 
+            /*var item = _allItems[0];
+            selectedItems.Clear();
+            selectedItems.Add(item);
+            selectedItems.Add(item);
+            selectedItems.Add(item);
+            selectedItems.Add(item);*/
             return selectedItems;
         }
 

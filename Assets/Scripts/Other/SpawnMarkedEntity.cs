@@ -42,11 +42,9 @@ namespace Other
 
         #endregion
 
-        public override void InvokeUpdate()
+        public void Update()
         {
-            base.InvokeUpdate();
-
-            _timer += deltaTime;
+            _timer += Time.deltaTime;
             if (_timer < spawnTime) return;
 
             _invoker.SpawnRandomEntity(transform.position);

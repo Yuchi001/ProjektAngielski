@@ -1,6 +1,6 @@
 ﻿using EnemyPack;
 
-namespace MapPack
+namespace MapPack.Spawners
 {
     public class PlainsEnemySpawner : EnemySpawner
     {

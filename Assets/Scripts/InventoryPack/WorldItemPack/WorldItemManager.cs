@@ -11,7 +11,7 @@ using UnityEngine.Pool;
 
 namespace InventoryPack.WorldItemPack
 {
-    public class WorldItemManager : PoolManager
+    public class WorldItemManager : PoolManager, IMainSingleton
     {
         private ObjectPool<WorldItem> _pool;
         private List<SoCoinItem> _coins;
@@ -27,18 +27,10 @@ namespace InventoryPack.WorldItemPack
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
-
-            GameManager.OnGMStart += GmStart;
         }
-
         #endregion
-
-        private void OnDisable()
-        {
-            GameManager.OnGMStart -= GmStart;
-        }
-
-        private void GmStart()
+        
+        public void Init()
         {
             _soulItem = Resources.Load<SoSoulItem>("Items/Soul");
             _scrapItem = Resources.Load<SoScrapItem>("Items/Scrap");
@@ -48,8 +40,6 @@ namespace InventoryPack.WorldItemPack
             
             var prefab = GameManager.GetPrefab<WorldItem>(PrefabNames.WorldItem);
             _pool = PoolHelper.CreatePool(this, prefab, false);
-            
-            PrepareQueue();
         }
 
         private static void SpawnItem(SoItem data, Vector2 position, params int[] paramsArray)
@@ -105,11 +95,6 @@ namespace InventoryPack.WorldItemPack
 
                 if (value <= 0) return;
             }
-        }
-
-        private void Update()
-        {
-            RunUpdatePoolStack();
         }
         
         protected override T GetPoolObject<T>()

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Managers;
 using Other;
 using ParticlesPack.Enums;
@@ -11,7 +9,7 @@ using UnityEngine.Pool;
 
 namespace ParticlesPack
 {
-    public class ParticleManager : MonoBehaviour
+    public class ParticleManager : MonoBehaviour, IMainSingleton
     {
         private readonly Dictionary<EParticlesType, ParticlePool> _particlesDict = new();
         
@@ -21,16 +19,9 @@ namespace ParticlesPack
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
-
-            GameManager.OnGMStart += Init;
         }
 
-        private void OnDisable()
-        {
-            GameManager.OnGMStart -= Init;
-        }
-
-        private void Init()
+        public void Init()
         {
             var soList = Resources.LoadAll<SoParticles>("ParticleSystems");
             
@@ -60,16 +51,8 @@ namespace ParticlesPack
             {
                 _data = data;
                 PoolSize = data.PoolSize;
-                maxUpdateStackDuration = data.MaxUpdateTime;
                 _pool = PoolHelper.CreatePool(this, data.ParticlesPrefab, true);
                 GameManager.EnqueueUnloadGameAction(() => ClearAll(_pool));
-                
-                PrepareQueue();
-            }
-
-            private void Update()
-            {
-                RunUpdatePoolStack();
             }
 
             protected override T GetPoolObject<T>()

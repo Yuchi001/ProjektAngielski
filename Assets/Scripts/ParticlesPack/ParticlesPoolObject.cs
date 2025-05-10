@@ -1,4 +1,5 @@
-﻿using Other;
+﻿using System;
+using Other;
 using ParticlesPack.SO;
 using PoolPack;
 using UnityEngine;
@@ -7,36 +8,35 @@ namespace ParticlesPack
 {
     public class ParticlesPoolObject : PoolObject
     {
-        private ParticleManager.ParticlePool _particleManager;
+        private PoolManager _poolManager;
         
         private ParticleSystem _particleSystem;
         private float _lifeTime;
 
         private float _timer = 0;
-
+        
         public override void OnGet(SoPoolObject so)
         {
             base.OnGet(so);
 
             var data = (SoParticles)so;
-            
+
             _particleSystem.Play();
             _lifeTime = data.LifeTime;
             _timer = 0;
         }
 
-        public override void InvokeUpdate()
+        private void Update()
         {
-            base.InvokeUpdate();
-            _timer += deltaTime;
+            _timer += Time.deltaTime;
             if (_timer < _lifeTime) return;
             
-            _particleManager.ReleasePoolObject(this);
+            _poolManager.ReleasePoolObject(this);
         }
 
         public override void OnCreate(PoolManager poolManager)
         {
-            _particleManager = (ParticleManager.ParticlePool)poolManager;
+            _poolManager = poolManager;
             _particleSystem = GetComponent<ParticleSystem>();
             _particleSystem.Clear();
             _particleSystem.Stop();

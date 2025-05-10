@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 
 namespace WorldGenerationPack
 {
-    public class StructureManager : MonoBehaviour
+    public class StructureManager : MonoBehaviour, IMainSingleton
     {
         private List<SoStructure> _structures = new();
 
@@ -26,16 +26,9 @@ namespace WorldGenerationPack
         {
             if (Instance != null && Instance != this) Destroy(gameObject);
             else Instance = this;
-
-            GameManager.OnGMStart += Init;
         }
 
-        private void OnDisable()
-        {
-            GameManager.OnGMStart -= Init;
-        }
-
-        private void Init()
+        public void Init()
         {
             _structures = Resources.LoadAll<SoStructure>("Structures").ToList();
             _structurePrefab = GameManager.GetPrefab<StructureBase>(PrefabNames.StructureBase);

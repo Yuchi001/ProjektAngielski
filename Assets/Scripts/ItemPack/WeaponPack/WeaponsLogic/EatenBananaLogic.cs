@@ -15,10 +15,9 @@ namespace ItemPack.WeaponPack.WeaponsLogic
     public class EatenBananaLogic : ItemLogicBase
     {
         [SerializeField] private Sprite projectileSprite;
-        [SerializeField] private GameObject boomParticles;
 
         private float BlastRange => GetStatValue(EItemSelfStatType.BlastRange);
-        private List<EnemyLogic> _cachedTargetList = new();
+        private List<EnemyLogic> _cachedExplosionTargetList = new();
 
         protected override List<EItemSelfStatType> UsedStats { get; } = new()
         {
@@ -43,16 +42,16 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var projectilePos = projectile.transform.position;
             SpecialEffectManager.SpawnExplosion(ESpecialEffectType.ExplosionBig, projectilePos, BlastRange);
 
-            var found = TargetDetector.TryGetEnemiesInRange(projectilePos, BlastRange, ref _cachedTargetList);
+            var found = TargetDetector.TryGetEnemiesInRange(projectilePos, BlastRange, ref _cachedExplosionTargetList);
             if (!found) return false;
             
-            foreach (var enemy in _cachedTargetList)
+            foreach (var enemy in _cachedExplosionTargetList)
             {
                 var damageContext = PlayerManager.GetDamageContextManager()
                     .GetDamageContext(Damage, projectile, hitObj, InventoryItem.ItemTags);
                 enemy.GetDamaged(damageContext.Damage);
             }
-            _cachedTargetList.Clear();
+            _cachedExplosionTargetList.Clear();
 
             return false;
         }

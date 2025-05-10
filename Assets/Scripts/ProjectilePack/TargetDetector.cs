@@ -118,15 +118,14 @@ namespace ProjectilePack
 
             if (!EnemyManager.GetNearbyEnemies(center, Mathf.Sqrt(maxDistanceSqr), ref candidates)) return false;
 
-            foreach (var enemy in candidates)
+            for (var i = candidates.Count - 1; i > 0; i--)
             {
+                var enemy = candidates[i];
                 var pos = (Vector2)enemy.transform.position;
 
-                if (pos.x >= bottomLeft.x && pos.x <= topRight.x &&
-                    pos.y >= bottomLeft.y && pos.y <= topRight.y)
-                {
-                    candidates.Add(enemy);
-                }
+                if (pos.x >= bottomLeft.x && pos.x <= topRight.x && pos.y >= bottomLeft.y && pos.y <= topRight.y) continue;
+
+                candidates.Remove(enemy);
             }
 
             return candidates.Count > 0;

@@ -20,7 +20,7 @@ namespace SavePack
 
         public static PlayerSaveData LoadData()
         {
-            Instance._data = FileManager.GetPlayerData();
+            Instance._data = FileManager.GetPlayerData() ?? new PlayerSaveData();
             foreach (var obj in GetSubscribers())
             {
                 obj.OnLoadData(Instance._data);

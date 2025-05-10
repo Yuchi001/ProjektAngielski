@@ -44,7 +44,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var spawnedProjectiles = 0;
             for (var i = 0; i < ProjectileCount; i++)
             {
-                var target = FindTarget(NearPlayerStrategy, Range, targetedEnemies); 
+                var target = FindTarget(NearPlayerStrategy, 20f, targetedEnemies); 
                 if (target == null) continue;
 
                 spawnedProjectiles++;
@@ -69,7 +69,7 @@ namespace ItemPack.WeaponPack.WeaponsLogic
             var newProjectile = ProjectileManager.SpawnProjectile(projectileMovementStrategy, this);
             newProjectile.transform.position = projectile.transform.position;
             newProjectile.SetDestroyOnCollision(false)
-                .SetUpdateAction(ProjectileUpdate)
+                .SetFixedUpdateAction(ProjectileUpdate)
                 .SetSprite(projectileSprite)
                 .SetScale(0.5f)
                 .SetRange(9999)

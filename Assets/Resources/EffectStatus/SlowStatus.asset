@@ -17,6 +17,6 @@ MonoBehaviour:
   canStack: 0
   effectName: Slow
   effectSprite: {fileID: 21300000, guid: f69166c5d08a66845b4d72c6dc8938de, type: 3}
-  effectParticles: {fileID: 2576825669441834355, guid: c8cb045d53a95d14dbcd66e9eecba55b, type: 3}
   effectColor: {r: 0, g: 0.39658165, b: 1, a: 1}
   effectType: 4
+  particlesType: 3

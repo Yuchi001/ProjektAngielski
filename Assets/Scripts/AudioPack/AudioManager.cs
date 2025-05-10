@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Managers;
 using Managers.Enums;
@@ -10,7 +11,7 @@ using UnityEngine.Pool;
 
 namespace AudioPack
 {
-    public class AudioManager : PoolManager
+    public class AudioManager : PoolManager, IMainSingleton
     {
         [SerializeField] private List<SoundData> sounds = new();
         [SerializeField] private List<ThemeData> themes = new();
@@ -29,23 +30,14 @@ namespace AudioPack
         {
             if (Instance != this && Instance != null) Destroy(gameObject);
             else Instance = this;
-            
-            GameManager.OnGMStart += GmStart;
         }
 
         #endregion
 
-        private void GmStart()
+        public void Init()
         {
             var sfxPrefab = GameManager.GetPrefab<SFXPoolObject>(PrefabNames.SFX);
             _sfxPool = PoolHelper.CreatePool(this, sfxPrefab, false);
-            
-            PrepareQueue();
-        }
-
-        private void OnDisable()
-        {
-            GameManager.OnGMStart -= GmStart;
         }
 
         public static void PlaySound(ESoundType soundType)

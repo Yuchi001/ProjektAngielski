@@ -330,7 +330,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1930559287
   m_SortingLayer: -3
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -406,7 +406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a52be63b0e404a26be4084251991755e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.002
+  usesUpdateStack: 1
+  maxUpdateStackDuration: 0.02
   <PoolSize>k__BackingField: 30
 --- !u!4 &786756427
 Transform:
@@ -452,7 +453,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83276bcd949143ab9faf38e9df6386b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxUpdateStackDuration: 0.5
+  usesUpdateStack: 0
+  maxUpdateStackDuration: 0
   <PoolSize>k__BackingField: 10
 --- !u!4 &1250408642
 Transform:
@@ -705,7 +707,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1930559287
   m_SortingLayer: -3
-  m_SortingOrder: -1
+  m_SortingOrder: -2
   m_Sprite: {fileID: -954555875, guid: 2f82523736271b046ae94cc682d4d558, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

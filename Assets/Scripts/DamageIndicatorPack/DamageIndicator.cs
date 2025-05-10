@@ -1,4 +1,5 @@
-﻿using Managers;
+﻿using System;
+using Managers;
 using PoolPack;
 using TMPro;
 using UIPack;
@@ -43,10 +44,9 @@ namespace DamageIndicatorPack
             _timer = 0;
         }
 
-        public override void InvokeUpdate()
+        private void Update()
         {
-            base.InvokeUpdate();
-            _timer += deltaTime;
+            _timer += Time.deltaTime;
             if (_timer < lifeTime) return;
             
             _poolManager.ReleasePoolObject(this);

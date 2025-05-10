@@ -11,7 +11,7 @@ namespace PoolPack
         private readonly Dictionary<string, float> _lastMeasure = new();
         private float _lastUpdatedTime;
         
-        public float deltaTime { get; private set; }
+        public float fixedDeltaTime { get; private set; }
 
         public T As<T>() where T: PoolObject
         {
@@ -31,7 +31,7 @@ namespace PoolPack
         
         public virtual void OnGet(SoPoolObject so)
         {
-            deltaTime = Time.deltaTime;
+            fixedDeltaTime = Time.deltaTime;
             _lastUpdatedTime = Time.time;
         }
         
@@ -56,10 +56,10 @@ namespace PoolPack
         /// <summary>
         /// Base method contains deltaTime calculation
         /// </summary>
-        public virtual void InvokeUpdate()
+        public virtual void InvokeFixedUpdate()
         {
             var now = Time.time;
-            deltaTime = now - _lastUpdatedTime;
+            fixedDeltaTime = now - _lastUpdatedTime;
             _lastUpdatedTime = now;
         }
     }

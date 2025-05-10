@@ -1,5 +1,7 @@
 ﻿using EffectPack.SO;
 using Other;
+using ParticlesPack;
+using ParticlesPack.Enums;
 using PlayerPack.Decorators;
 using TMPro;
 using UnityEngine;
@@ -17,8 +19,6 @@ namespace EffectPack
 
         private SoEffectBase _pickedEffectBase;
         public SoEffectBase EffectBase => _pickedEffectBase;
-        
-        private ParticleSystem _spawnedParticles;
 
         private float _resolveTimer;
         private float _effectTimer;
@@ -27,8 +27,6 @@ namespace EffectPack
         private CanBeDamaged _canBeDamaged;
 
         private Transform _transform;
-
-        private bool _hasParticles;
         
         public bool IsActive { get; private set; }
         public int CurrentStacks => _damageStacks;
@@ -58,17 +56,8 @@ namespace EffectPack
 
             _pickedEffectBase = effectBase;
             if (_pickedEffectBase == default) return;
-
-            _hasParticles = _pickedEffectBase.EffectParticles != null;
             
             _effectImage.sprite = _pickedEffectBase.EffectSprite;
-
-            if (!_hasParticles) return;
-            
-            _spawnedParticles = Instantiate(_pickedEffectBase.EffectParticles, transform);
-            _spawnedParticles.Clear();
-            _spawnedParticles.Stop();
-            _spawnedParticles.transform.position = Vector3.zero;
         }
         
         public void Setup()
@@ -80,13 +69,6 @@ namespace EffectPack
             _resolveTimer = 0;
             _effectTimer = 0;
             _additionalDamage = 0;
-            
-            if (_hasParticles)
-            {
-                _spawnedParticles.Clear();
-                _spawnedParticles.Stop();
-                _spawnedParticles.transform.position = Vector3.zero;
-            }
             
             gameObject.SetActive(false);
         }
@@ -108,7 +90,7 @@ namespace EffectPack
 
             _canBeDamaged.SpriteRenderer.color = _pickedEffectBase.EffectColor;
             
-            if (_pickedEffectBase.IsCountinues && _hasParticles) _spawnedParticles.Play();
+            if (_pickedEffectBase.IsCountinues && _pickedEffectBase.HasParticles) ParticleManager.SpawnParticles(_pickedEffectBase.ParticlesType, transform.position);
         }
 
         private void Update()
@@ -130,7 +112,7 @@ namespace EffectPack
             _resolveTimer = 0;
 
             _pickedEffectBase.OnResolve(_effectsManager, _damageStacks, _canBeDamaged, _additionalDamage);
-            if (_hasParticles) _spawnedParticles.Play();
+            if (_pickedEffectBase.HasParticles) ParticleManager.SpawnParticles(_pickedEffectBase.ParticlesType, transform.position);
         }
     }
 }
